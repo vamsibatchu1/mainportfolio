@@ -1,19 +1,11 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 export type IconProps = React.HTMLAttributes<SVGElement>;
 
 export default function Page() {
   return (
     <main className="relative min-h-screen z-3">
-      <Image className="fixed top-4 left-4"
-        src="/logos/logo.png" 
-        alt="About"
-        width={200}  // adjust as needed
-        height={100} // adjust as needed
-      />
-
       {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center relative">
         <div className="container mx-auto px-4 relative z-10">
