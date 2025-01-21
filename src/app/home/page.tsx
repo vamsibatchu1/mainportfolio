@@ -7,7 +7,7 @@ import { RetroGrid } from "@/components/ui/retro-grid";
 export type IconProps = React.HTMLAttributes<SVGElement>;
 
 const benne = localFont({
-  src: "../../../public/fonts/benne.woff2",
+  src: '../../fonts/benne.woff2',
   display: "swap",
   variable: "--font-benne",
 });
