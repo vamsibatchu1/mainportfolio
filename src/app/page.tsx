@@ -1,3 +1,9 @@
-export default function Page() {
-  return null; // or redirect to home
+"use client";
+import React from "react";
+export default function RootPage() {
+  return (
+    <main className="relative">
+      
+    </main>
+  );
 }
