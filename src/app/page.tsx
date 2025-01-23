@@ -1,9 +1,7 @@
 "use client";
 import React from "react";
-export default function RootPage() {
-  return (
-    <main className="relative">
-      
-    </main>
-  );
+import { redirect } from 'next/navigation';
+
+export default function Page() {
+  redirect('/home');
 }
