@@ -3,6 +3,7 @@ import "./globals.css";
 import { CalendarIcon, HomeIcon, MailIcon, PencilIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import { motion } from "framer-motion";
 
 
 import { ModeToggle } from "@/components/ui/mode-toggle";
@@ -96,7 +97,11 @@ export default function RootLayout({
       <body>
         <div className="min-h-screen flex flex-col">
           {/* Navigation at the top */}
-          <nav className="absolute px-8 md:px-[6%] pt-8 z-50">
+          <motion.nav
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.4 }}
+          className="absolute px-8 md:px-[6%] pt-8 z-50">
             <TooltipProvider>
               <Dock className="border border-gray-200/8 bg-white shadow-none rounded-8">
                 {DATA.navbar.map((item) => (
@@ -144,7 +149,7 @@ export default function RootLayout({
                 ))}
               </Dock>
             </TooltipProvider>
-          </nav>
+          </motion.nav>
 
           {/* Main content below nav */}
           <main className="flex-1">

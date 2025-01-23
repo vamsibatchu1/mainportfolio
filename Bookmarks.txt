@@ -1,0 +1,10 @@
+Bounce Cards:
+https://21st.dev/DavidHDev/bounce-cards/default
+
+Testimonial:
+https://21st.dev/anurag-mishra22/testimonial/default
+
+Text Link Preview as Hover:
+https://21st.dev/aceternity/link-preview/default
+
+
