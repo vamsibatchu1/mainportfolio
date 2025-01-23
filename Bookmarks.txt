@@ -8,3 +8,17 @@ Text Link Preview as Hover:
 https://21st.dev/aceternity/link-preview/default
 
 
+Contact Me Cards:
+https://21st.dev/designali-in/highlighter/default
+
+
+https://21st.dev/Codehagen/display-cards/default
+
+
+Animated Avatar:
+https://21st.dev/Codehagen/animated-avatar/default
+
+
+Animated Modal:
+https://21st.dev/aceternity/animated-modal/default
+

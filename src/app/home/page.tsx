@@ -6,6 +6,8 @@ import { DM_Sans } from "next/font/google";
 import { TextAnimate } from "@/components/ui/text-animate";
 import { BounceCards } from "@/components/ui/bounce-cards";
 import { motion } from "framer-motion";
+import { TestimonialCarousel } from "@/components/ui/testimonial"
+
 
 //Benne Font
 const benne = Benne({
@@ -19,6 +21,30 @@ const dmSans = DM_Sans({
   subsets: ["latin"],
 });
 
+//Testimonial Data
+const TESTIMONIAL_DATA = [
+    {
+      id: 1,
+      name: "John Doe",
+      avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+      description: "Amazing experience working with this team! The results exceeded my expectations."
+    },
+    {
+      id: 2,
+      name: "Jane Smith",
+      avatar: "https://randomuser.me/api/portraits/women/1.jpg",
+      description: "Highly recommended! Great service and professional approach."
+    },
+    {
+      id: 3,
+      name: "Mike Johnson",
+      avatar: "https://randomuser.me/api/portraits/men/2.jpg",
+      description: "Exceptional quality and professionalism. Would definitely work with them again."
+    }
+  ]
+
+
+//Images for the bounce cards
 const images = [
     "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=500&auto=format",
     "https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?q=80&w=500&auto=format",
@@ -94,6 +120,50 @@ export default function Page() {
           </div>
         </div>
       </motion.section>
-    </main>
+
+
+
+{/*Section 2 - Mentorship*/}
+
+<section className="bg-[#fff] min-h-screen px-8 md:px-[6%] relative pt-40">
+      <div className="bg-[#f7f7f1] grid grid-cols-1 md:grid-cols-2 gap-8 items-start rounded-3xl p-24">
+        <div className="space-y-8">          
+          <h2 className={`${benne.className} text-[#000000] text-4xl md:text-4xl font-serif leading-tight`}>
+            Over the years, I've had the privilege of mentoring aspiring designers and individuals worldwide, helping
+            them in land their ideal design roles & offering career guidance in their day to day work.
+          </h2>
+          <ul className="space-y-4">
+            <li className="flex items-center gap-3">
+              <div className="w-4 h-4 rounded-full bg-[#ab95ce]" />
+              <span className={`${benne.className} text-[#000000] text-2xl font-medium`}>Portfolio reviews</span>
+            </li>
+            <li className="flex items-center gap-3">
+              <div className="w-4 h-4 rounded-full bg-[#85aef2]" />
+              <span className={`${benne.className} text-[#000000] text-2xl font-medium`}>Design leadership coaching</span>
+            </li>
+            <li className="flex items-center gap-3">
+              <div className="w-4 h-4 rounded-full bg-[#7ac7a3]" />
+              <span className={`${benne.className} text-[#000000] text-2xl font-medium`}>Mock interview practice</span>
+            </li>
+            <li className="flex items-center gap-3">
+              <div className="w-4 h-4 rounded-full bg-[#f3d56a]" />
+              <span className={`${benne.className} text-[#000000] text-2xl font-medium`}>Day to day work guidance</span>
+            </li>
+          </ul>
+        </div>
+        <div className="space-y-8">
+          <p className={`${dmSans.className} text-[#797979] text-xl md:text-2xl`}>
+            I offer 1:1 mentorship for designers and non designers on ADP List on a variety of subjects. Let's connect
+            and elevate your design journey together!
+          </p>
+          <TestimonialCarousel 
+      testimonials={TESTIMONIAL_DATA}
+      className="max-w-2xl mx-auto"
+    />
+        </div>
+      </div>
+    </section>
+
+</main>
   );
 }
