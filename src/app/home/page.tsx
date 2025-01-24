@@ -3,6 +3,7 @@
 import React from "react";
 import { Benne } from "next/font/google";
 import { DM_Sans } from "next/font/google";
+import { Nunito_Sans } from "next/font/google";
 import { TextAnimate } from "@/components/ui/text-animate";
 import { BounceCards } from "@/components/ui/bounce-cards";
 import { motion } from "framer-motion";
@@ -18,6 +19,12 @@ const benne = Benne({
 
 //DM Sans Font
 const dmSans = DM_Sans({
+  weight: "400",
+  subsets: ["latin"],
+});
+
+//Nunito Sans Font
+const nunitoSans = Nunito_Sans({
   weight: "400",
   subsets: ["latin"],
 });
@@ -72,59 +79,142 @@ export default function Page() {
       transition={{ duration: 1.4, delay: 0.2 }}
       className="bg-white min-h-screen relative">
         <div className="w-full px-8 md:px-[6%] absolute top-40 md:bottom-0">
-          <div className="bg-[#FCE695] rounded-3xl p-12 md:p-24 min-h-[80vh]">
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-            className={`${benne.className} text-[#000] text-3xl md:text-5xl lg:text-6xl font-serif max-w-4xl leading-tight`}>
-              Hi there ! I am Vamsi Batchu. A product design leader working at the intersection of craft&nbsp;
-              <span className="inline-block w-6 h-6 bg-blue-400 transform rounded-4 rotate-45 ml-2" aria-hidden="true" />
-              &nbsp;and code
-              <span className="inline-block w-6 h-6 bg-orange-400 rounded-full ml-2" aria-hidden="true" />
-            </motion.h1>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 min-h-[70vh]">
+            {/* Left Column - Green Section */}
+            <div className="md:col-span-2 bg-[#1E7160] rounded-3xl p-12 md:p-24">
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className={`${benne.className} text-[#fff] text-3xl md:text-5xl lg:text-7xl font-serif leading-tight`}
+              >
+                Hello, I'm Vamsi Batchu. A product design leader working at the intersection of {'{craft}'}&nbsp;
+                <span className="inline-block w-12 h-12 bg-orange-400 rounded-full ml-2" aria-hidden="true" />
+                &nbsp;and {'<code>'}&nbsp;
+                <span className="inline-block w-12 h-12 bg-blue-400 transform rounded-12 rotate-45 ml-2" aria-hidden="true" />
+              </motion.h1>
+            </div>
 
-        {/* Two Column Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 md:pt-40">
-
-        {/* Left Column - Text */}
-        <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.4, delay: 1.2 }}
-        className={`${dmSans.className} text-[#837339] text-xl md:text-2xl lg:text-2xl flex justify-end items-center font-light`}>
-            <TextAnimate animation="slideUp" by="word">
-          Hands-on product design leader with ten+ years of experience in designing and leading teams developing highly impactful products at scale.
-          Currently leading an enterprise design team at Rocket, helping build impactful banking and operational experiences.
-            </TextAnimate>
-        </motion.div>
-        
-        {/* Right Column - Cards */}
-        <motion.div 
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.8, delay: 1.6 }}
-        className="flex justify-end items-center h-full">
-            <BounceCards
-                images={images}
-                containerWidth={200}
-                containerHeight={200}
-                animationDelay={1}
-                animationStagger={0.08}
-                easeType="elastic.out(1, 0.5)"
-                transformStyles={transformStyles}
-                className="mx-auto"
-            />
-        </motion.div>
-      </div>
+            {/* Right Column - Stacked Cards */}
+            <div className="flex flex-col gap-8 h-full">
+              {/* Top Card */}
+              <div className="flex-1 bg-gray-100 rounded-3xl p-8">
+                <div className="h-full flex items-center justify-center">
+                  {/* Add content for first card */}
+                </div>
+              </div>
+              
+              {/* Bottom Card */}
+              <div className="flex-1 bg-[#FDF4F0] rounded-3xl p-16">
+                <div className="h-full flex flex-col justify-center">
+                  <img src="/logos/rocket.png" alt="Rocket Logo" className="w-1/2" /> <br></br>
+                  <p className={`${benne.className} text-[#373333] text-3xl`}>
+                    Currently leading an enterprise design focused on banking and AI experiences
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </motion.section>
 
 
 
-{/*Section 2 - Mentorship*/}
 
+{/*Section 2 - Experience*/}
+<section className="bg-[#fff] min-h-screen px-8 md:px-[6%] relative pt-20">
+  <div className="bg-[#fff] space-y-16 border-t-2 border-[#000000] pt-24">
+    {/* Row 1 - Header */}
+    <div className="w-full">
+      <h2 className={`${benne.className} text-3xl md:text-4xl lg:text-5xl leading-tight max-w-5xl`}>
+        Hands-on product design leader with ten+ years of experience in designing and leading teams developing highly impactful products at scale.
+      </h2>
+    </div>
+
+    {/* Row 2 - Content */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+      {/* Left Column - Two Column Text */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="space-y-4">
+          <p className={`${nunitoSans.className} text-gray-500 text-xl leading-relaxed`}>
+            I guide teams while staying deeply involved in the process—designing intuitive interactions, building scalable systems, and refining user flows. By blending strategic vision with attention to detail, I ensure every product reflects thoughtfulness, usability, and high-quality execution.
+          </p>
+          <p className={`${nunitoSans.className} text-gray-500 text-xl leading-relaxed`}>
+            I specialize in turning ambiguity into clarity, transforming big ideas into impactful solutions. Whether crafting zero-to-one products or refining existing systems, I bring vision, strategy, and alignment to help teams navigate complexity.
+          </p>
+        </div>
+        <div className="space-y-4">
+        <p className={`${nunitoSans.className} text-gray-500 text-xl leading-relaxed`}>
+        My focus is on building meaningful, scalable experiences that solve real problems while empowering teams to deliver their best work. With a strong ability to connect design, product, and engineering, I foster collaboration and alignment across disciplines.
+          </p>
+          <p className={`${nunitoSans.className} text-gray-500 text-xl leading-relaxed`}>
+            My technical fluency and strategic approach ensure every decision is rooted in both creative and practical feasibility. By combining innovation, quality, and user value, I aim to leave a lasting impact.
+          </p>
+        </div>
+      </div>
+
+      {/* Right Column - Image */}
+      <div className="relative h-full">
+        <img 
+          src="/images/projects.png" 
+          alt="Product Design Skills" 
+          className="w-full h-auto object-contain"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+{/*Section 3 - Projects*/}
+<section className="bg-[#fff] min-h-screen px-8 md:px-[6%] relative pt-20">
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {/* First Row */}
+    <div className="md:col-span-2 h-[600px] rounded-3xl overflow-hidden bg-[#3B1914] flex flex-col justify-end items-center">
+      <img 
+        src="/images/bento1.png" 
+        alt="Project 1" 
+        className="w-[90%] object-contain" 
+      />
+    </div>
+    <div className="h-[600px] rounded-3xl overflow-hidden bg-[#F8D7E3]">
+      <img 
+        src="/images/bento2.png" 
+        alt="Project 2" 
+        className="w-full h-full object-cover"
+      />
+    </div>
+
+    {/* Second Row */}
+    <div className="h-[400px] rounded-3xl overflow-hidden bg-[#7CC3F7]">
+      <img 
+        src="/images/bento3.png" 
+        alt="Project 3" 
+        className="w-full h-full object-cover"
+      />
+    </div>
+    <div className="h-[400px] rounded-3xl overflow-hidden bg-[#F5B748]">
+      <img 
+        src="/images/bento4.png" 
+        alt="Project 4" 
+        className="w-full h-full object-cover"
+      />
+    </div>
+    <div className="h-[400px] rounded-3xl overflow-hidden bg-[#F37F5F]">
+      <img 
+        src="/images/bento5.png" 
+        alt="Project 5" 
+        className="w-full h-full object-cover"
+      />
+    </div>
+  </div>
+</section>
+
+
+
+
+{/*Section 4 - Mentorship*/}
 <section className="bg-[#fff] min-h-screen px-8 md:px-[6%] relative pt-20">
       <div className="bg-[#f7f7f1] grid grid-cols-1 md:grid-cols-2 gap-8 items-start rounded-3xl p-12 md:p-24">
         <div className="space-y-8">          
@@ -166,6 +256,13 @@ export default function Page() {
         </div>
       </div>
     </section>
+
+
+
+
+
+
+
 
 </main>
   );
