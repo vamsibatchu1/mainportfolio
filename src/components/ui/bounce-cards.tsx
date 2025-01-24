@@ -82,8 +82,8 @@ export function BounceCards({
         <div
           key={idx}
           className={cn(
-            "card absolute w-[200px] aspect-square rounded-[30px] overflow-hidden",
-            "border-8 border-white dark:border-white/90",
+            "card absolute w-[203.38px] h-[241px] aspect-square rounded-[24px] overflow-hidden",
+            //"border-8 border-white dark:border-white/90",
             "shadow-lg dark:shadow-black/20"
           )}
           style={{

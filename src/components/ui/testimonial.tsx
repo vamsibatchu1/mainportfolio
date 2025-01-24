@@ -21,7 +21,7 @@ const TestimonialCarousel = React.forwardRef<
   TestimonialCarouselProps
 >(
   (
-    { className, testimonials, showArrows = true, showDots = true, ...props },
+    { className, testimonials, showArrows = false, showDots = true, ...props },
     ref,
   ) => {
     const [currentIndex, setCurrentIndex] = React.useState(0)
@@ -128,7 +128,7 @@ const TestimonialCarousel = React.forwardRef<
                   className={cn(
                     "w-2 h-2 rounded-full transition-colors",
                     index === currentIndex
-                      ? "bg-blue-500 dark:bg-primary"
+                      ? "bg-gray-500 dark:bg-primary"
                       : "bg-gray-300 dark:bg-muted-foreground/30",
                   )}
                 />

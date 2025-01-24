@@ -70,13 +70,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <body>
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col items-center md:items-end">
           {/* Navigation at the top */}
           <motion.nav
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.4 }}
-          className="absolute px-8 md:px-[6%] pt-8 z-50">
+          className="absolute md:px-[6%] pt-8 z-50">
             <TooltipProvider>
               <Dock className="border border-gray-200/8 bg-white shadow-none rounded-8">
                 {DATA.navbar.map((item) => (
