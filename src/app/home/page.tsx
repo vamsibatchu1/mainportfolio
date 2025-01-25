@@ -124,11 +124,17 @@ function IntroSequence() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <AnimatedLogo width={300} height={200} color="#ffffff" />
+            <div className="w-[150px] md:w-[300px] h-[100px] md:h-[200px] pt-12 md:pt-24">
+              <AnimatedLogo 
+                width="100%"
+                height="100%"
+                color="#ffffff"
+              />
+            </div>
           </motion.div>
         ) : (
           <motion.div
-            className="pt-10"
+            className="pt-4 md:pt-12"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
