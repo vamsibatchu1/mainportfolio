@@ -99,9 +99,9 @@ export default function Page() {
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.2, delay: 0.2 }}
-        className="bg-[#0F413B] min-h-screen relative"
+        className="bg-[#0F413B] h-screen relative overflow-hidden"
       >
-        <div className="w-full px-8 md:px-[6%] absolute top-40 md:bottom-0 bottom-0 flex flex-col items-center justify-end">
+        <div className="w-full px-8 md:px-[6%] absolute top-40 bottom-0 flex items-end justify-center pb-0">
           <div className="relative w-full max-w-2xl">
             {/* Typing Text Container - Positioned absolutely over the monitor screen */}
             <div className="absolute top-[22%] left-[50%] transform -translate-x-1/2 w-[65%] z-10">
