@@ -119,8 +119,7 @@ export default function Page() {
   <div className="bg-[#fff] space-y-16 border-t-2 border-[#000000] pt-24">
     {/* Row 1 - Header */}
     <div className="w-full">
-      <TextAnimate className={`${benne.className} text-3xl md:text-4xl lg:text-5xl leading-tight max-w-5xl`} text="Hands-on product design leader with ten+ years of experience in designing and leading teams developing highly impactful products at scale." />
-      <h2 >
+      <h2 className={`${benne.className} text-3xl md:text-4xl lg:text-5xl leading-tight max-w-5xl`}>
         Hands-on product design leader with ten+ years of experience in designing and leading teams developing highly impactful products at scale.
       </h2>
     </div>
