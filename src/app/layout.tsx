@@ -78,55 +78,6 @@ export default function RootLayout({
 
           {/* Main content */}
           <main className="flex-1">
-          <nav className="fixed top-8 right-8 z-50">
-            <TooltipProvider>
-              <Dock className="border-0 bg-transparent shadow-none">
-                {DATA.navbar.map((item) => (
-                  <DockIcon key={item.label}>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Link
-                          href={item.href}
-                          aria-label={item.label}
-                          className={cn(
-                            buttonVariants({ variant: "ghost", size: "icon" }),
-                            "size-12 rounded-full text-gray hover:text-gray"
-                          )}
-                        >
-                          <item.icon className="size-4" />
-                        </Link>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{item.label}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </DockIcon>
-                ))}
-                <Separator orientation="vertical" className="h-full" />
-                {Object.entries(DATA.contact.social).map(([name, social]) => (
-                  <DockIcon key={name}>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Link
-                          href={social.url}
-                          aria-label={social.name}
-                          className={cn(
-                            buttonVariants({ variant: "ghost", size: "icon" }),
-                            "size-12 rounded-full text-gray hover:text-gray"
-                          )}
-                        >
-                          <social.icon className="size-4" />
-                        </Link>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{name}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </DockIcon>
-                ))}
-              </Dock>
-            </TooltipProvider>
-          </nav>
             {children}
           </main>
         </div>
