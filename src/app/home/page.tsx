@@ -115,10 +115,10 @@ export default function Page() {
               >
                 <TypewriterText 
                   text={`Hello, I'm Vamsi Batchu.
-Atlanta based product design
-leader working at the
-intersection of {craft}
-& <code>`}
+Atlanta based product 
+design leader working at 
+the intersection of 
+{craft} & <code>`}
                 />
               </motion.div>
             </div>
