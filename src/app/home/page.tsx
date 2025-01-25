@@ -66,15 +66,24 @@ function TypewriterText({ text }: { text: string }) {
     }
   }, [currentIndex, text]);
 
+  const getFontSize = () => {
+    if (typeof window !== 'undefined') {
+      if (window.innerWidth < 768) {
+        return '26px';
+      } else {
+        return '42px';
+      }
+    }
+    return '44px'; // Default size for SSR
+  };
+
   return (
     <pre style={{ 
       whiteSpace: 'pre',
       display: 'block',
       lineHeight: '1',
       fontFamily: "'128k', monospace",
-      fontSize: window.innerWidth < 768 ? '18px' : '24px',
-      fontSize: window.innerWidth > 768 ? '42px' : '24px',
-
+      fontSize: getFontSize()
     }}>
       {displayText}
       <span className="animate-pulse">_</span>
