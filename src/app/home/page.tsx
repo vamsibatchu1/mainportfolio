@@ -9,6 +9,10 @@ import { TestimonialCarousel } from "@/components/ui/testimonial"
 import { TextAnimate } from "@/components/ui/text-animate";
 import { TypeAnimation } from "react-type-animation";
 //import { GeistMono } from "next/font/google";
+import { AnimatedLogo } from '@/components/ui/animated-logo';
+
+// Usage example
+
 
 //Benne Font
 const benne = Benne({
@@ -91,6 +95,63 @@ function TypewriterText({ text }: { text: string }) {
   );
 }
 
+function IntroSequence() {
+  const [showLogo, setShowLogo] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLogo(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <div className="absolute top-[22%] left-[50%] transform -translate-x-1/2 w-[65%] z-10">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="text-[#F0BFFF] text-sm md:text-base space-y-2"
+        style={{ 
+          fontFamily: "'128k', monospace", 
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "left"
+        }}
+      >
+        {showLogo ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <AnimatedLogo 
+              width={300} 
+              height={200} 
+              color="#ffffff" 
+            />
+          </motion.div>
+        ) : (
+          <motion.div
+            className="pt-10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <TypewriterText
+              text={`Hello, I'm Vamsi Batchu.
+Atlanta based product 
+design leader working at 
+the intersection of 
+{craft} & <code>`}
+            />
+          </motion.div>
+        )}
+      </motion.div>
+    </div>
+  );
+}
+
 export default function Page() {
   return (
     <main className="relative min-h-screen">
@@ -103,25 +164,7 @@ export default function Page() {
       >
         <div className="w-full h-full px-8 md:px-[6%] flex items-end">
           <div className="relative w-full max-w-2xl mx-auto">
-            {/* Typing Text Container - Positioned absolutely over the monitor screen */}
-            <div className="absolute top-[22%] left-[50%] transform -translate-x-1/2 w-[65%] z-10">
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-[#F0BFFF] text-sm md:text-base space-y-2"
-                style={{ 
-                  fontFamily: "'128k', monospace"
-                }}
-              >
-                <TypewriterText 
-                  text={`Hello, I'm Vamsi Batchu.
-Atlanta based product 
-design leader working at 
-the intersection of 
-{craft} & <code>`}
-                />
-              </motion.div>
-            </div>
+            <IntroSequence />
 
             {/* Monitor SVG */}
             <motion.img 
@@ -132,6 +175,7 @@ the intersection of
               alt="Retro Monitor" 
               className="w-full h-auto"
             />
+            
           </div>
         </div>
       </motion.section>
