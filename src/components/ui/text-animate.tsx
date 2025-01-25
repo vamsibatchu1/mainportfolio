@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion, MotionProps, Variants } from "motion/react";
 import { ElementType } from "react";
@@ -21,7 +22,7 @@ interface TextAnimateProps extends MotionProps {
   /**
    * The text content to animate
    */
-  children: string;
+  children: React.ReactNode;
   /**
    * The class name to be applied to the component
    */
@@ -339,22 +340,24 @@ export function TextAnimate({
       }
     : { container: defaultContainerVariants, item: defaultItemVariants };
 
+  const text = React.Children.toArray(children).join('');
   let segments: string[] = [];
+
   switch (by) {
     case "word":
-      segments = children.toString().split(/\s+/).map((word, i, arr) => 
+      segments = text.split(/\s+/).map((word, i, arr) => 
         i === arr.length - 1 ? word : word + " "
       );
       break;
     case "character":
-      segments = children.toString().split("");
+      segments = text.split("");
       break;
     case "line":
-      segments = children.split("\n");
+      segments = text.split("\n");
       break;
     case "text":
     default:
-      segments = [children];
+      segments = [text];
       break;
   }
 

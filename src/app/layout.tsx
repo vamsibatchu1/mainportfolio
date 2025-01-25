@@ -4,7 +4,7 @@ import { CalendarIcon, FolderOpen, HomeIcon, MailIcon, PencilIcon, UserIcon } fr
 import Link from "next/link";
 import React from "react";
 import { motion } from "framer-motion";
-
+import type { Metadata } from 'next'
 
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { buttonVariants } from "@/components/ui/button";
@@ -61,7 +61,6 @@ const DATA = {
   },
 };
 
-
 export default function RootLayout({
   children,
 }: {
@@ -69,13 +68,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+      <head>
+        {/* Add any additional head elements if needed */}
+      </head>
       <body>
         <div className="min-h-screen flex flex-col items-center md:items-end">
           {/* Navigation at the top */}
           <motion.nav
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.4 }}
+          transition={{ duration: 0.4, delay: 0.6 }}
           className="absolute md:px-[6%] pt-8 z-50">
             <TooltipProvider>
               <Dock className="border border-gray-200/8 bg-white shadow-none rounded-8">

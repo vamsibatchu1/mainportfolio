@@ -4,11 +4,10 @@ import React from "react";
 import { Benne } from "next/font/google";
 import { DM_Sans } from "next/font/google";
 import { Nunito_Sans } from "next/font/google";
-import { TextAnimate } from "@/components/ui/text-animate";
-import { BounceCards } from "@/components/ui/bounce-cards";
 import { motion } from "framer-motion";
 import { TestimonialCarousel } from "@/components/ui/testimonial"
-import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button"
+import { TextAnimate } from "@/components/ui/text-animate";
+
 
 
 //Benne Font
@@ -33,9 +32,9 @@ const nunitoSans = Nunito_Sans({
 const TESTIMONIAL_DATA = [
     {
       id: 1,
-      name: "John Doe",
+      name: "Kriti B",
       avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-      description: "Amazing experience working with this team! The results exceeded my expectations."
+      description: "Vamsi has been the most approachable mentor I came across! He is so easy to talk to and his guidance was very detailed. Vamsi is encouraging, supportive and very passionate about the design field! I would 200% recommend Vamsi"
     },
     {
       id: 2,
@@ -52,23 +51,7 @@ const TESTIMONIAL_DATA = [
   ]
 
 
-//Images for the bounce cards
-const images = [
-    "/images/card1.png",
-    "/images/card2.png",
-    "https://images.unsplash.com/photo-1452626212852-811d58933cae?q=80&w=500&auto=format",
-    "https://images.unsplash.com/photo-1572120360610-d971b9d7767c?q=80&w=500&auto=format"
-  ]
-  
-  const transformStyles = [
-    "rotate(5deg) translate(-150px)",
-    "rotate(0deg) translate(-70px)",
-    "rotate(-5deg)",
-    "rotate(5deg) translate(70px)",
-    "rotate(-5deg) translate(150px)"
-  ]
 
-//
 export default function Page() {
   return (
     <main className="relative min-h-screen">
@@ -76,7 +59,7 @@ export default function Page() {
       <motion.section 
       initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1.4, delay: 0.2 }}
+      transition={{ duration: 0.2, delay: 0.2 }}
       className="bg-white min-h-screen relative">
         <div className="w-full px-8 md:px-[6%] absolute top-40 md:bottom-0">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 min-h-[70vh]">
@@ -85,8 +68,8 @@ export default function Page() {
               <motion.h1 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className={`${benne.className} text-[#fff] text-3xl md:text-5xl lg:text-7xl font-serif leading-tight`}
+                transition={{ duration: 0.4, delay: 0.3 }}
+                className={`${benne.className} text-[#fff] text-3xl md:text-3xl lg:text-5xl font-serif leading-tight`}
               >
                 Hello, I'm Vamsi Batchu. A product design leader working at the intersection of {'{craft}'}&nbsp;
                 <span className="inline-block w-12 h-12 bg-orange-400 rounded-full ml-2" aria-hidden="true" />
@@ -97,22 +80,32 @@ export default function Page() {
 
             {/* Right Column - Stacked Cards */}
             <div className="flex flex-col gap-8 h-full">
+
+
               {/* Top Card */}
-              <div className="flex-1 bg-gray-100 rounded-3xl p-8">
+              <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2, delay: 0.6 }}
+              className="flex-1 bg-gray-100 rounded-3xl p-8">
                 <div className="h-full flex items-center justify-center">
                   {/* Add content for first card */}
                 </div>
-              </div>
+              </motion.div>
               
               {/* Bottom Card */}
-              <div className="flex-1 bg-[#FDF4F0] rounded-3xl p-16">
+              <motion.div 
+             initial={{ opacity: 0, y: 20 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 0.2, delay: 1 }} 
+              className="flex-1 bg-[#FDF4F0] rounded-3xl p-16">
                 <div className="h-full flex flex-col justify-center">
                   <img src="/logos/rocket.png" alt="Rocket Logo" className="w-1/2" /> <br></br>
                   <p className={`${benne.className} text-[#373333] text-3xl`}>
                     Currently leading an enterprise design focused on banking and AI experiences
                   </p>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
@@ -126,7 +119,8 @@ export default function Page() {
   <div className="bg-[#fff] space-y-16 border-t-2 border-[#000000] pt-24">
     {/* Row 1 - Header */}
     <div className="w-full">
-      <h2 className={`${benne.className} text-3xl md:text-4xl lg:text-5xl leading-tight max-w-5xl`}>
+      <TextAnimate className={`${benne.className} text-3xl md:text-4xl lg:text-5xl leading-tight max-w-5xl`} text="Hands-on product design leader with ten+ years of experience in designing and leading teams developing highly impactful products at scale." />
+      <h2 >
         Hands-on product design leader with ten+ years of experience in designing and leading teams developing highly impactful products at scale.
       </h2>
     </div>
@@ -139,16 +133,10 @@ export default function Page() {
           <p className={`${nunitoSans.className} text-gray-500 text-xl leading-relaxed`}>
             I guide teams while staying deeply involved in the process—designing intuitive interactions, building scalable systems, and refining user flows. By blending strategic vision with attention to detail, I ensure every product reflects thoughtfulness, usability, and high-quality execution.
           </p>
-          <p className={`${nunitoSans.className} text-gray-500 text-xl leading-relaxed`}>
-            I specialize in turning ambiguity into clarity, transforming big ideas into impactful solutions. Whether crafting zero-to-one products or refining existing systems, I bring vision, strategy, and alignment to help teams navigate complexity.
-          </p>
         </div>
         <div className="space-y-4">
         <p className={`${nunitoSans.className} text-gray-500 text-xl leading-relaxed`}>
-        My focus is on building meaningful, scalable experiences that solve real problems while empowering teams to deliver their best work. With a strong ability to connect design, product, and engineering, I foster collaboration and alignment across disciplines.
-          </p>
-          <p className={`${nunitoSans.className} text-gray-500 text-xl leading-relaxed`}>
-            My technical fluency and strategic approach ensure every decision is rooted in both creative and practical feasibility. By combining innovation, quality, and user value, I aim to leave a lasting impact.
+            I specialize in turning ambiguity into clarity, transforming big ideas into impactful solutions. Whether crafting zero-to-one products or refining existing systems, I bring vision, strategy, and alignment to help teams navigate complexity.
           </p>
         </div>
       </div>
