@@ -164,7 +164,16 @@ export default function Page() {
         transition={{ duration: 0.2, delay: 0.2 }}
         className="bg-[#135FB6] h-[100dvh] relative overflow-hidden flex flex-col"
       >
-        <div className="w-full h-full px-8 md:px-[6%] flex items-end">
+        <motion.div 
+          className="w-full h-full px-8 md:px-[6%] flex items-end"
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ 
+            duration: 0.4, 
+            ease: "easeOut",
+            delay: 0.6 // Delay to let background appear first
+          }}
+        >
           <div className="relative w-full max-w-2xl mx-auto">
             <IntroSequence />
 
@@ -178,7 +187,7 @@ export default function Page() {
               className="w-full h-auto"
             />
           </div>
-        </div>
+        </motion.div>
       </motion.section>
 
       {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}

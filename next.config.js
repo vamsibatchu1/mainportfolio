@@ -1,6 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // your config options here
-}
+  transpilePackages: ['gsap'],
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'gsap/MorphSVGPlugin': 'gsap/dist/MorphSVGPlugin'
+    };
+    return config;
+  }
+};
 
-module.exports = nextConfig 
+module.exports = nextConfig; 

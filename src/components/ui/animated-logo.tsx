@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
 
 interface AnimatedLogoProps {
   width?: number | string;
@@ -13,9 +13,11 @@ export function AnimatedLogo({
   color = 'currentColor',
   className = ''
 }: AnimatedLogoProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   return (
-    <div className={`container ${className}`}>
-      <div className="container__inner">
+    <div className={`container ${className}`} ref={containerRef}>
+      <div className='container__inner'>
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
           width={width} 
@@ -23,23 +25,21 @@ export function AnimatedLogo({
           viewBox="0 0 1515.29 779"
           style={{ color: color }}
         >
-          <defs>
-            <filter id="filter">
-              <feDropShadow 
-                stdDeviation="10 10" 
-                in="SourceGraphic" 
-                dx="0" 
-                dy="0" 
-                floodColor="#80d4b2" 
-                floodOpacity="0.7" 
-                x="0%" 
-                y="0%" 
-                width="100%" 
-                height="100%" 
-                result="dropShadow" 
-              />
-            </filter>
-          </defs>
+          <filter id="filter">
+            <feDropShadow 
+              stdDeviation="10 10" 
+              in="SourceGraphic" 
+              dx="0" 
+              dy="0" 
+              floodColor="#80d4b2" 
+              floodOpacity="0.7" 
+              x="0%" 
+              y="0%" 
+              width="100%" 
+              height="100%" 
+              result="dropShadow" 
+            />
+          </filter>
 
           <g filter="url(#filter)">
             <g id="outline" fill="none" stroke="currentColor" strokeMiterlimit="10">
@@ -48,54 +48,12 @@ export function AnimatedLogo({
             </g>
 
             <g id="moving_lines" mask="url(#moving_lines_mask)">
-              <motion.path 
-                d="M757.64 27.35c-395.56 0-716.23 162.14-716.23 362.15s320.67 362.15 716.23 362.15" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeMiterlimit="10" 
-                strokeWidth="19" 
-                id="line_1" 
-              />
-              <motion.path 
-                d="M757.64 751.65c395.57 0 716.23-162.14 716.23-362.15S1153.21 27.35 757.64 27.35" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeMiterlimit="10" 
-                strokeWidth="19" 
-                id="line_6" 
-              />
-              <motion.path 
-                d="M757.64 751.65c251.66 0 455.68-162.14 455.68-362.15S1009.3 27.35 757.64 27.35" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeMiterlimit="10" 
-                strokeWidth="19" 
-                id="line_5" 
-              />
-              <motion.path 
-                d="M757.64 751.65c88.74 0 160.68-162.14 160.68-362.15S846.38 27.35 757.64 27.35" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeMiterlimit="10" 
-                strokeWidth="19" 
-                id="line_4" 
-              />
-              <motion.path 
-                d="M757.64 27.35C668.91 27.35 597 189.49 597 389.5s71.94 362.15 160.67 362.15" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeMiterlimit="10" 
-                strokeWidth="19" 
-                id="line_3" 
-              />
-              <motion.path 
-                d="M757.64 27.35C506 27.35 302 189.49 302 389.5s204 362.15 455.64 362.15" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeMiterlimit="10" 
-                strokeWidth="19" 
-                id="line_2" 
-              />
+              <path d="M757.64 27.35c-395.56 0-716.23 162.14-716.23 362.15s320.67 362.15 716.23 362.15" fill="none" stroke="currentColor" strokeMiterlimit="10" strokeWidth="19" id="line_1" />
+              <path d="M757.64 751.65c395.57 0 716.23-162.14 716.23-362.15S1153.21 27.35 757.64 27.35" fill="none" stroke="currentColor" strokeMiterlimit="10" strokeWidth="19" id="line_6" />
+              <path d="M757.64 751.65c251.66 0 455.68-162.14 455.68-362.15S1009.3 27.35 757.64 27.35" fill="none" stroke="currentColor" strokeMiterlimit="10" strokeWidth="19" id="line_5" />
+              <path d="M757.64 751.65c88.74 0 160.68-162.14 160.68-362.15S846.38 27.35 757.64 27.35" fill="none" stroke="currentColor" strokeMiterlimit="10" strokeWidth="19" id="line_4" />
+              <path d="M757.64 27.35C668.91 27.35 597 189.49 597 389.5s71.94 362.15 160.67 362.15" fill="none" stroke="currentColor" strokeMiterlimit="10" strokeWidth="19" id="line_3" />
+              <path d="M757.64 27.35C506 27.35 302 189.49 302 389.5s204 362.15 455.64 362.15" fill="none" stroke="currentColor" strokeMiterlimit="10" strokeWidth="19" id="line_2" />
             </g>
 
             <g id="text">
