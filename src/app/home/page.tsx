@@ -99,10 +99,10 @@ export default function Page() {
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.2, delay: 0.2 }}
-        className="bg-[#0F413B] h-screen relative overflow-hidden"
+        className="bg-[#0F413B] h-screen relative overflow-hidden flex flex-col"
       >
-        <div className="w-full px-8 md:px-[6%] absolute top-40 bottom-0 flex items-end justify-center pb-0">
-          <div className="relative w-full max-w-2xl">
+        <div className="w-full px-8 md:px-[6%] flex-1 flex items-end">
+          <div className="relative w-full max-w-2xl mx-auto mb-0">
             {/* Typing Text Container - Positioned absolutely over the monitor screen */}
             <div className="absolute top-[22%] left-[50%] transform -translate-x-1/2 w-[65%] z-10">
               <motion.div 
@@ -125,9 +125,9 @@ intersection of {craft}
 
             {/* Monitor SVG */}
             <motion.img 
-             initial={{ opacity: 0, scale: 0.98 }}
-             animate={{ opacity: 1, scale: 1 }}
-             transition={{ duration: 0.5, delay: 0.2 }}
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
               src="/images/mac.svg" 
               alt="Retro Monitor" 
               className="w-full h-auto"
