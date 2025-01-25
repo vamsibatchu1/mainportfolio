@@ -72,15 +72,15 @@ export default function RootLayout({
         {/* Add any additional head elements if needed */}
       </head>
       <body>
-        <div className="min-h-screen flex flex-col items-center md:items-end">
-          {/* Navigation at the top */}
-          <motion.nav
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.6 }}
-          className="absolute md:px-[6%] pt-8 z-50">
+        <div className="min-h-screen flex flex-col">
+          {/* Navigation on the right */}
+       
+
+          {/* Main content */}
+          <main className="flex-1">
+          <nav className="fixed top-8 right-8 z-50">
             <TooltipProvider>
-              <Dock className="border border-gray-200/8 bg-white shadow-none rounded-8">
+              <Dock className="border-0 bg-transparent shadow-none">
                 {DATA.navbar.map((item) => (
                   <DockIcon key={item.label}>
                     <Tooltip>
@@ -126,10 +126,7 @@ export default function RootLayout({
                 ))}
               </Dock>
             </TooltipProvider>
-          </motion.nav>
-
-          {/* Main content below nav */}
-          <main className="flex-1">
+          </nav>
             {children}
           </main>
         </div>
