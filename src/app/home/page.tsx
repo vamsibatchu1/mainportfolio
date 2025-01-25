@@ -99,7 +99,7 @@ export default function Page() {
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-[#98FF98] text-sm md:text-base space-y-2"
+                className="text-[#F0BFFF] text-sm md:text-base space-y-2"
                 style={{ 
                   fontFamily: "'128k', monospace"
                 }}
