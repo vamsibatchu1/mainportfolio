@@ -157,7 +157,7 @@ the intersection of
 }
 
 export default function Page() {
-  const ref = useRef();
+  const ref = useRef<HTMLDivElement>(null);
 
   return (
     <main className="relative min-h-screen">
@@ -168,7 +168,8 @@ export default function Page() {
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.2, delay: 0.2 }}
-        className="bg-[#0F413B] h-screen flex items-center justify-center px-8 md:px-[15%] relative">
+        className="bg-[#0F413B] h-screen flex items-center justify-center px-8 md:px-[15%] relative"
+      >
         <motion.div
           className="w-full h-full px-8 md:px-[6%] flex items-end"
           initial={{ opacity: 0, y: 100 }}
@@ -226,9 +227,9 @@ export default function Page() {
               className={`${benne.className} text-[24px] md:text-3xl lg:text-5xl leading-tight`}
             >
               Design, to me, is fundamentally about providing clarity in
-              complexity. Every pixel we place and system we architect
-              architect has the power to make someone's day better or their work
-              more efficient.
+              complexity. Every pixel we place and system we architect architect
+              has the power to make someone's day better or their work more
+              efficient.
             </h2>
           </motion.div>
 
@@ -252,7 +253,8 @@ export default function Page() {
                   as a computer science engineer who discovered design through
                   building solutions, I've learned that impactful products
                   aren't just beautiful interfaces – they're thoughtfully
-                  architected systems. What excites me about design is its potential to orchestrate meaningful change.
+                  architected systems. What excites me about design is its
+                  potential to orchestrate meaningful change.
                 </p>
               </div>
               <div className="space-y-4">
