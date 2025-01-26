@@ -59,6 +59,7 @@ const TESTIMONIAL_DATA = [
   },
 ];
 
+//Typewriter Text Animation 
 function TypewriterText({ text }: { text: string }) {
   const [displayText, setDisplayText] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -75,7 +76,7 @@ function TypewriterText({ text }: { text: string }) {
   }, [currentIndex, text]);
 
 
-  //Font size of the typewriter animation on the monitor
+  //Typewriter Text Font Size
   const getFontSize = () => {
     if (typeof window !== "undefined") {
       if (window.innerWidth < 768) {
