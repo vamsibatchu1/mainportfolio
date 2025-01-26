@@ -82,27 +82,26 @@ body {
   font-display: swap;
 }
 
-/* Adjust scroll snap behavior */
+/* Adjust scroll snap behavior
 html {
   scroll-snap-type: y mandatory;
   overflow-y: scroll;
   scroll-behavior: smooth;
   height: 100vh;
-  overflow: hidden; /* Prevent double scrollbars */
-}
+  overflow: hidden; 
+} */
 
-body {
+/* body {
   height: 100vh;
   overflow-y: auto;
   scroll-snap-type: y mandatory;
-}
-
+} */
+/* 
 section {
   scroll-snap-align: start;
-  scroll-snap-stop: always;
-  height: 100vh; /* Ensure consistent height */
-  overflow: hidden; /* Prevent internal scrolling */
-}
+  scroll-snap-stop: always; */
+  /* height: 100vh; Ensure consistent height */
+  /* overflow: hidden; /* Prevent internal scrolling */
 
 /* Disable scroll snap for touch devices */
 @media (hover: none) and (pointer: coarse) {

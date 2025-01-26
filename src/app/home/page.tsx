@@ -212,7 +212,7 @@ export default function Page() {
             },
             hidden: {},
           }}
-          className="bg-[#fff] space-y-16 pt-24"
+          className="bg-[#fff] space-y-8 pt-24"
         >
           {/* Row 1 - Header */}
           <motion.div
@@ -224,7 +224,7 @@ export default function Page() {
             transition={{ duration: 1, ease: "easeOut" }}
           >
             <h2
-              className={`${benne.className} text-[24px] md:text-3xl lg:text-5xl leading-tight`}
+              className={`${benne.className} text-[24px] md:text-[24px] lg:text-[42px] leading-tight`}
             >
               Design, to me, is fundamentally about providing clarity in
               complexity. Every pixel we place and system we architect architect
