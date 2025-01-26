@@ -74,10 +74,12 @@ function TypewriterText({ text }: { text: string }) {
     }
   }, [currentIndex, text]);
 
+
+  //Font size of the typewriter animation on the monitor
   const getFontSize = () => {
     if (typeof window !== "undefined") {
       if (window.innerWidth < 768) {
-        return "26px";
+        return "22px";
       } else {
         return "42px";
       }
