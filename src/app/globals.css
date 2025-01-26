@@ -159,20 +159,3 @@ section {
   transform: rotate(calc(var(--power, 0) * -5deg)) 
              translateY(calc(var(--power, 0) * -40%));
 }
-
-/* Add these responsive styles for the monitor container */
-@media (max-width: 768px) {
-  .monitor-container {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    transform: none;
-  }
-
-  .monitor-section {
-    min-height: 100svh;
-    padding-bottom: 250px; /* Adjust based on your monitor image height */
-  }
-}

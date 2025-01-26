@@ -198,7 +198,7 @@ export default function Page() {
 
       {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
 
-      <section className="bg-[#fff] min-h-screen flex items-center justify-center px-8 md:px-[15%] relative monitor-section">
+      <section className="bg-[#fff] h-screen px-8 md:px-[15%] relative pt-0 md:pt-20">
         <motion.div
           ref={ref}
           initial="hidden"
@@ -317,9 +317,6 @@ export default function Page() {
             </motion.div>
           </div>
         </motion.div>
-        <div className="monitor-container">
-          {/* ... existing monitor image ... */}
-        </div>
       </section>
 
       {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
