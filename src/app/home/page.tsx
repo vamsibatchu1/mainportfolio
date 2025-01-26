@@ -171,10 +171,10 @@ export default function Page() {
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.2, delay: 0.2 }}
-        className="bg-[#0F413B] min-h-screen h-[100svh] flex flex-col justify-between px-8 md:px-[15%] relative"
+        className="bg-[#0F413B] h-[100svh] flex flex-col justify-between px-8 md:px-[15%] relative"
       >
         <motion.div
-          className="w-full h-full px-8 md:px-[6%] flex items-end pb-[0vh] md:pb-0"
+          className="w-full h-full px-8 md:px-[6%] flex items-end pb-[0] md:pb-0"
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
