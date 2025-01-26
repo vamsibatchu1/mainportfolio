@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Benne } from "next/font/google";
 import { DM_Sans } from "next/font/google";
 import { Nunito_Sans } from "next/font/google";
 import { Poppins } from "next/font/google";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { TestimonialCarousel } from "@/components/ui/testimonial";
 //import { GeistMono } from "next/font/google";
 import { AnimatedLogo } from "@/components/ui/animated-logo";
@@ -157,6 +157,8 @@ the intersection of
 }
 
 export default function Page() {
+  const ref = useRef();
+
   return (
     <main className="relative min-h-screen">
       {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
@@ -166,8 +168,7 @@ export default function Page() {
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.2, delay: 0.2 }}
-        className="bg-[#0F413B] h-[100dvh] relative overflow-hidden flex flex-col"
-      >
+        className="bg-[#0F413B] h-screen flex items-center justify-center px-8 md:px-[15%] relative">
         <motion.div
           className="w-full h-full px-8 md:px-[6%] flex items-end"
           initial={{ opacity: 0, y: 100 }}
@@ -196,39 +197,88 @@ export default function Page() {
 
       {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
 
-      {/*Section 2 - Experience*/}
-      <section className="bg-[#fff] min-h-screen px-8 md:px-[15%] relative pt-20">
-        <div className="bg-[#fff] space-y-16 pt-24">
+      <section className="bg-[#fff] h-screen px-8 md:px-[15%] relative pt-20">
+        <motion.div
+          ref={ref}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.3,
+              },
+            },
+            hidden: {},
+          }}
+          className="bg-[#fff] space-y-16 pt-24"
+        >
           {/* Row 1 - Header */}
-          <div className="w-full">
+          <motion.div
+            className="w-full"
+            variants={{
+              visible: { opacity: 1, y: 0 },
+              hidden: { opacity: 0, y: 20 },
+            }}
+            transition={{ duration: 1, ease: "easeOut" }}
+          >
             <h2
               className={`${benne.className} text-3xl md:text-4xl lg:text-5xl leading-tight`}
             >
-             
-              Design, to me, is fundamentally about providing clarity in complexity. What excites me about design is its potential to orchestrate meaningful change. Every pixel we place and system we architect has the power to make someone's day better or their work more efficient.
+              Design, to me, is fundamentally about providing clarity in
+              complexity. What excites me about design is its potential to
+              orchestrate meaningful change. Every pixel we place and system we
+              architect has the power to make someone's day better or their work
+              more efficient.
             </h2>
-          </div>
+          </motion.div>
 
           {/* Row 2 - Content */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* Left Column - Two Column Text */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-[90%]">
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-[90%]"
+              variants={{
+                visible: { opacity: 1, y: 0 },
+                hidden: { opacity: 0, y: 30 },
+              }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
               <div className="space-y-4">
-                <p className={`${poppins.className} text-gray-500 text-[18px] leading-[1.8] max-w-[460px]`}>
-                I believe great product design emerges at the intersection of empathy, systems thinking, 
-                and craftsmanship. Having started as a computer science engineer who discovered design 
-                through building solutions, I've learned that impactful products aren't just 
-                beautiful interfaces – they're thoughtfully architected systems. 
+                <p
+                  className={`${poppins.className} text-gray-500 text-[18px] leading-[1.8] max-w-[460px]`}
+                >
+                  I believe great product design emerges at the intersection of
+                  empathy, systems thinking, and craftsmanship. Having started
+                  as a computer science engineer who discovered design through
+                  building solutions, I've learned that impactful products
+                  aren't just beautiful interfaces – they're thoughtfully
+                  architected systems.
                 </p>
-              </div>  
-              <div className="space-y-4">
-                <p className={`${poppins.className} text-gray-500 text-[18px] leading-[1.8] max-w-[460px]`}>
-                I emphasize both macro and micro aspects of design – from high-level strategy to delightful details that make products lovable. As a creative leader, I foster environments where creativity flourishes alongside technical excellence, never losing sight of the humans we're designing for. The best designs create possibilities.                </p>
               </div>
-            </div>
+              <div className="space-y-4">
+                <p
+                  className={`${poppins.className} text-gray-500 text-[18px] leading-[1.8] max-w-[460px]`}
+                >
+                  I emphasize both macro and micro aspects of design – from
+                  high-level strategy to delightful details that make products
+                  lovable. As a creative leader, I foster environments where
+                  creativity flourishes alongside technical excellence, never
+                  losing sight of the humans we're designing for. The best
+                  designs create possibilities.{" "}
+                </p>
+              </div>
+            </motion.div>
 
             {/* Right Column - Image */}
-            <div className="relative h-full flex flex-col justify-end">
+            <motion.div
+              className="relative h-full flex flex-col justify-end"
+              variants={{
+                visible: { opacity: 1, y: 0 },
+                hidden: { opacity: 0, y: 40 },
+              }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
               <StackedCards
                 cards={[
                   {
@@ -263,18 +313,19 @@ export default function Page() {
                   },
                 ]}
               />
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
 
       {/*Section 3 - Projects*/}
-      <section className="bg-[#fff] min-h-screen px-8 md:px-[6%] relative pt-20">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* First Row */}
-          <div className="md:col-span-2 aspect-[16/9] rounded-3xl overflow-hidden bg-[#3B1914]">
+      {/* <section className="bg-[#fff] min-h-screen px-8 md:px-[6%] relative pt-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6"> */}
+
+      {/* First Row */}
+      {/* <div className="md:col-span-2 aspect-[16/9] rounded-3xl overflow-hidden bg-[#3B1914]">
             <img
               src="/images/bento1.png"
               alt="Project 1"
@@ -287,10 +338,10 @@ export default function Page() {
               alt="Project 2"
               className="w-full h-full object-cover"
             />
-          </div>
+          </div> */}
 
-          {/* Second Row */}
-          <div className="aspect-[4/3] rounded-3xl overflow-hidden bg-[#7CC3F7]">
+      {/* Second Row */}
+      {/* <div className="aspect-[4/3] rounded-3xl overflow-hidden bg-[#7CC3F7]">
             <img
               src="/images/bento3.png"
               alt="Project 3"
@@ -312,12 +363,12 @@ export default function Page() {
             />
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
 
       {/*Section 4 - Mentorship*/}
-      <section className="bg-[#fff] min-h-screen px-8 md:px-[6%] relative pt-20">
+      {/* <section className="bg-[#fff] min-h-screen px-8 md:px-[6%] relative pt-20">
         <div className="bg-[#f7f7f1] grid grid-cols-1 md:grid-cols-2 gap-8 items-start rounded-3xl p-12 md:p-24">
           <div className="space-y-8">
             <h2
@@ -362,7 +413,6 @@ export default function Page() {
                 </span>
               </li>
             </ul>
-            {/*  <InteractiveHoverButton text="Connect with me" className="w-auto pl-12 pr-12"/> */}
           </div>
           <div className="space-y-8">
             <p
@@ -378,8 +428,7 @@ export default function Page() {
             />
           </div>
         </div>
-      </section>
+      </section> */}
     </main>
   );
 }
-

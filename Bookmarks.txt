@@ -77,3 +77,92 @@ DOCK CODE:
               </Dock>
             </TooltipProvider>
           </nav>
+
+
+
+           {/*Section 2 - Experience*/}
+      <section className="bg-[#fff] min-h-screen px-8 md:px-[15%] relative pt-20">
+        <div className="bg-[#fff] space-y-16 pt-24">
+          {/* Row 1 - Header */}
+          <div className="w-full">
+            <h2
+              className={`${benne.className} text-3xl md:text-4xl lg:text-5xl leading-tight`}
+            >
+              Design, to me, is fundamentally about providing clarity in
+              complexity. What excites me about design is its potential to
+              orchestrate meaningful change. Every pixel we place and system we
+              architect has the power to make someone's day better or their work
+              more efficient.
+            </h2>
+          </div>
+
+          {/* Row 2 - Content */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {/* Left Column - Two Column Text */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-[90%]">
+              <div className="space-y-4">
+                <p
+                  className={`${poppins.className} text-gray-500 text-[18px] leading-[1.8] max-w-[460px]`}
+                >
+                  I believe great product design emerges at the intersection of
+                  empathy, systems thinking, and craftsmanship. Having started
+                  as a computer science engineer who discovered design through
+                  building solutions, I've learned that impactful products
+                  aren't just beautiful interfaces – they're thoughtfully
+                  architected systems.
+                </p>
+              </div>
+              <div className="space-y-4">
+                <p
+                  className={`${poppins.className} text-gray-500 text-[18px] leading-[1.8] max-w-[460px]`}
+                >
+                  I emphasize both macro and micro aspects of design – from
+                  high-level strategy to delightful details that make products
+                  lovable. As a creative leader, I foster environments where
+                  creativity flourishes alongside technical excellence, never
+                  losing sight of the humans we're designing for. The best
+                  designs create possibilities.{" "}
+                </p>
+              </div>
+            </div>
+
+            {/* Right Column - Image */}
+            <div className="relative h-full flex flex-col justify-end">
+              <StackedCards
+                cards={[
+                  {
+                    color: "#40BCD9",
+                    content: "Creating next gen 0-1 products and mvps",
+                    icon: "/images/stackcard1.png",
+                  },
+                  {
+                    color: "#F0CB46",
+                    content: "leading system wide redesigns",
+                    icon: "/images/stackcard2.png",
+                  },
+                  {
+                    color: "#6F66A5",
+                    content: "delightful consumer apps",
+                    icon: "/images/stackcard3.png",
+                  },
+                  {
+                    color: "#CA84C0",
+                    content: "setting high bar for craft",
+                    icon: "/images/stackcard4.png",
+                  },
+                  {
+                    color: "#F18520",
+                    content: "designing large scale enterprise products",
+                    icon: "/images/stackcard5.png",
+                  },
+                  {
+                    color: "#26AA52",
+                    content: "defining product vision & strategy",
+                    icon: "/images/stackcard6.png",
+                  },
+                ]}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
