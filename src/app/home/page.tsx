@@ -266,7 +266,7 @@ export default function Page() {
                   lovable. As a creative leader, I foster environments where
                   creativity flourishes alongside technical excellence, never
                   losing sight of the humans we're designing for. The best
-                  designs create possibilities.{" "}
+                  designs create possibilities.
                 </p>
               </div>
             </motion.div>

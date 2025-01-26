@@ -1,14 +1,25 @@
 .container {
-  width: 100%;
-  max-width: 1080px;
-  padding: 1rem;
-  margin: 0 auto;
+  width: 90%;
   position: relative;
-  height: 400px;
+  height: 200px;
   overflow: visible;
   clip-path: inset(-100% -100% 0% -100%);
-  padding-left: 4rem;
 }
+
+@media (min-width: 1024px) {
+    .container {
+        width: 100%;
+        max-width: 1080px;
+        padding: 1rem;
+        margin: 0 auto;
+        position: relative;
+        height: 400px;
+        overflow: visible;
+        clip-path: inset(-100% -100% 0% -100%);
+        padding-left: 4rem;
+      }
+  }
+
 
 .cardsList {
   display: grid;
@@ -32,22 +43,45 @@
 
 .cardButton {
   position: absolute;
-  width:400%;
+  width:600%;
   height: 380px;
   aspect-ratio: 2/4;
   background: var(--color);
   border-radius: 1.2rem;
   border: none;
-  padding: 1rem;
   cursor: pointer;
   transform-origin: center bottom;
   transition: all 0.3s ease-out;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  transform: rotate(calc(var(--power, 0) * -8deg)) 
+  transform: rotate(calc(var(--power, 0) * -30deg)) 
              translateY(calc(var(--power, 0) * -10%));
 }
+
+@media (min-width: 1024px) {
+    .cardButton {
+        position: absolute;
+        width:400%;
+        height: 380px;
+        aspect-ratio: 2/4;
+        background: var(--color);
+        border-radius: 1.2rem;
+        border: none;
+        padding: 1rem;
+        cursor: pointer;
+        transform-origin: center bottom;
+        transition: all 0.3s ease-out;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        transform: rotate(calc(var(--power, 0) * -8deg)) 
+                   translateY(calc(var(--power, 0) * -10%));
+      }
+  }
+
+
+
 
 .cardButton:hover {
   translate: 0 calc(clamp(0.9, var(--power), 1) * (var(--distance, 40) * -1%));
@@ -55,7 +89,7 @@
 
 .cardButton span {
   font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 24px;
+  font-size: 16px;
   font-weight: 500;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -64,11 +98,31 @@
   transform: translateY(20px);
   transition: all 0.3s ease-out;
   position: absolute;
-  top: 80px;
-  left: 32px;
-  max-width: 80%;
+  top: 40px;
+  left: 16px;
+  max-width: 100%;
   text-align: left;
 }
+
+
+@media (min-width: 1024px) {
+    .cardButton span {
+        font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        color: rgba(0, 0, 0, 0.8);
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.3s ease-out;
+        position: absolute;
+        top: 80px;
+        left: 32px;
+        max-width: 80%;
+        text-align: left;
+      }
+  }
 
 .cardButton:hover span,
 .cardButton:focus-visible span {
@@ -89,9 +143,20 @@
 
 .cardIcon {
   position: absolute;
-  top: 32px;
-  left: 32px;
-  width: 24px;
-  height: 24px;
+  top: 12px;
+  left: 12px;
+  width: 16px;
+  height: 16px;
   object-fit: contain;
 } 
+
+@media (min-width: 1024px) {
+    .cardIcon {
+        position: absolute;
+        top: 32px;
+        left: 32px;
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+      } 
+  }
