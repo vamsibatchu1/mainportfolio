@@ -197,7 +197,7 @@ export default function Page() {
 
       {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
 
-      <section className="bg-[#fff] h-screen px-8 md:px-[15%] relative pt-20">
+      <section className="bg-[#fff] h-screen px-8 md:px-[15%] relative pt-0 md:pt-20">
         <motion.div
           ref={ref}
           initial="hidden"
@@ -223,11 +223,10 @@ export default function Page() {
             transition={{ duration: 1, ease: "easeOut" }}
           >
             <h2
-              className={`${benne.className} text-3xl md:text-4xl lg:text-5xl leading-tight`}
+              className={`${benne.className} text-[24px] md:text-3xl lg:text-5xl leading-tight`}
             >
               Design, to me, is fundamentally about providing clarity in
-              complexity. What excites me about design is its potential to
-              orchestrate meaningful change. Every pixel we place and system we
+              complexity. Every pixel we place and system we architect
               architect has the power to make someone's day better or their work
               more efficient.
             </h2>
@@ -237,7 +236,7 @@ export default function Page() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* Left Column - Two Column Text */}
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-[90%]"
+              className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-[95%]"
               variants={{
                 visible: { opacity: 1, y: 0 },
                 hidden: { opacity: 0, y: 30 },
@@ -246,19 +245,19 @@ export default function Page() {
             >
               <div className="space-y-4">
                 <p
-                  className={`${poppins.className} text-gray-500 text-[18px] leading-[1.8] max-w-[460px]`}
+                  className={`${poppins.className} text-gray-500 text-[16px] md:text-[18px] leading-[1.8] max-w-[460px]`}
                 >
                   I believe great product design emerges at the intersection of
                   empathy, systems thinking, and craftsmanship. Having started
                   as a computer science engineer who discovered design through
                   building solutions, I've learned that impactful products
                   aren't just beautiful interfaces – they're thoughtfully
-                  architected systems.
+                  architected systems. What excites me about design is its potential to orchestrate meaningful change.
                 </p>
               </div>
               <div className="space-y-4">
                 <p
-                  className={`${poppins.className} text-gray-500 text-[18px] leading-[1.8] max-w-[460px]`}
+                  className={`${poppins.className} text-gray-500 text-[16px] md:text-[18px] leading-[1.8] max-w-[460px]`}
                 >
                   I emphasize both macro and micro aspects of design – from
                   high-level strategy to delightful details that make products
@@ -292,7 +291,7 @@ export default function Page() {
                     icon: "/images/stackcard2.png",
                   },
                   {
-                    color: "#6F66A5",
+                    color: "#948DBC",
                     content: "delightful consumer apps",
                     icon: "/images/stackcard3.png",
                   },
@@ -307,7 +306,7 @@ export default function Page() {
                     icon: "/images/stackcard5.png",
                   },
                   {
-                    color: "#26AA52",
+                    color: "#47AB68",
                     content: "defining product vision & strategy",
                     icon: "/images/stackcard6.png",
                   },

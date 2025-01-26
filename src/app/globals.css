@@ -110,3 +110,52 @@ section {
     scroll-snap-type: none;
   }
 }
+
+.stacked-cards-container {
+  width: 100%;
+  max-width: 1080px;
+  padding: 1rem;
+  margin: 0 auto;
+  position: relative;
+  height: 400px; /* Adjusted height */
+  overflow: hidden; /* Changed back to hidden to clip bottom */
+  clip-path: inset(-100% -100% 0 -100%); /* This clips everything below while allowing overflow above */
+}
+
+.cards-list {
+  display: grid;
+  grid-template-columns: repeat(calc(var(--swatch-count) + 3), 1fr);
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  transform: translateY(72%); /* This pushes cards down, showing only tops */
+}
+
+.card-item {
+  position: relative;
+  aspect-ratio: 1/4;
+  --delay: calc(sin(((var(--i)) / var(--swatch-count)) * 45deg) * 1s);
+  animation: enter 0.2s var(--delay) ease-out both;
+}
+
+.card-button {
+  position: absolute;
+  width: 400%;
+  aspect-ratio: 3/4;
+  background: var(--color);
+  border-radius: 1.2rem;
+  border: none;
+  padding: 1rem;
+  cursor: pointer;
+  transform-origin: center bottom; /* Changed to bottom */
+  transition: all 0.2s ease-out;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  transform: rotate(calc(var(--power, 0) * -5deg)) 
+             translateY(calc(var(--power, 0) * -40%));
+}
