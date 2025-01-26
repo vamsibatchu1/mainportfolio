@@ -10,6 +10,7 @@ import { TestimonialCarousel } from "@/components/ui/testimonial";
 //import { GeistMono } from "next/font/google";
 import { AnimatedLogo } from "@/components/ui/animated-logo";
 import { StackedCards } from "@/components/ui/stacked-cards";
+import { MobileCardsGrid } from "@/components/ui/mobile-cards-grid";
 
 //Benne Font
 const benne = Benne({
@@ -276,7 +277,7 @@ export default function Page() {
 
             {/* Right Column - Image */}
             <motion.div
-              className="relative h-full flex flex-col justify-end"
+              className="relative h-full xs:hidden flex flex-col justify-end"
               variants={{
                 visible: { opacity: 1, y: 0 },
                 hidden: { opacity: 0, y: 40 },
@@ -433,6 +434,44 @@ export default function Page() {
           </div>
         </div>
       </section> */}
+
+      {/* Mobile Cards Section */}
+      <section className="md:hidden bg-[#fff] px-8 py-16">
+        <MobileCardsGrid
+          cards={[
+            {
+              color: "#40BCD9",
+              content: "DESIGNING NEXT GENERATION 0-1 PRODUCTS FROM NEW & MESSY PROBLEMS",
+              icon: "/images/stackcard1.png",
+            },
+            {
+              color: "#F0CB46",
+              content: "LEADING ECOSYSTEM WIDE REDESIGN PROJECTS",
+              icon: "/images/stackcard2.png",
+            },
+            {
+              color: "#6F66A5",
+              content: "BUILDING DELIGHTFUL CONSUMER PRODUCTS",
+              icon: "/images/stackcard3.png",
+            },
+            {
+              color: "#CA84C0",
+              content: "SETTING HIGH BAR FOR CRAFT",
+              icon: "/images/stackcard4.png",
+            },
+            {
+              color: "#F18520",
+              content: "DESIGNING LARGE SCALE ENTERPRISE APPS",
+              icon: "/images/stackcard5.png",
+            },
+            {
+              color: "#26AA52",
+              content: "DEFINING PRODUCT DESIGN & STRATEGY",
+              icon: "/images/stackcard6.png",
+            },
+          ]}
+        />
+      </section>
     </main>
   );
 }
