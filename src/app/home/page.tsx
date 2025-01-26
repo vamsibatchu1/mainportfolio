@@ -4,10 +4,12 @@ import React, { useState, useEffect } from "react";
 import { Benne } from "next/font/google";
 import { DM_Sans } from "next/font/google";
 import { Nunito_Sans } from "next/font/google";
+import { Poppins } from "next/font/google";
 import { motion } from "framer-motion";
 import { TestimonialCarousel } from "@/components/ui/testimonial";
 //import { GeistMono } from "next/font/google";
 import { AnimatedLogo } from "@/components/ui/animated-logo";
+import { StackedCards } from "@/components/ui/stacked-cards";
 
 //Benne Font
 const benne = Benne({
@@ -23,6 +25,12 @@ const dmSans = DM_Sans({
 
 //Nunito Sans Font
 const nunitoSans = Nunito_Sans({
+  weight: "400",
+  subsets: ["latin"],
+});
+
+//Poppins Font
+const poppins = Poppins({
   weight: "400",
   subsets: ["latin"],
 });
@@ -109,7 +117,7 @@ function IntroSequence() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="text-[#F5B53D] text-sm md:text-base space-y-2"
+        className="text-[#F0BFFF] text-sm md:text-base space-y-2"
         style={{
           fontFamily: "'128k', monospace",
           display: "flex",
@@ -125,11 +133,7 @@ function IntroSequence() {
             exit={{ opacity: 0 }}
           >
             <div className="w-[150px] md:w-[300px] h-[100px] md:h-[200px] pt-12 md:pt-24">
-              <AnimatedLogo 
-                width="100%"
-                height="100%"
-                color="#ffffff"
-              />
+              <AnimatedLogo width="100%" height="100%" color="#ffffff" />
             </div>
           </motion.div>
         ) : (
@@ -162,16 +166,16 @@ export default function Page() {
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.2, delay: 0.2 }}
-        className="bg-[#135FB6] h-[100dvh] relative overflow-hidden flex flex-col"
+        className="bg-[#0F413B] h-[100dvh] relative overflow-hidden flex flex-col"
       >
-        <motion.div 
+        <motion.div
           className="w-full h-full px-8 md:px-[6%] flex items-end"
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ 
-            duration: 0.4, 
+          transition={{
+            duration: 0.4,
             ease: "easeOut",
-            delay: 0.6 // Delay to let background appear first
+            delay: 0.6, // Delay to let background appear first
           }}
         >
           <div className="relative w-full max-w-2xl mx-auto">
@@ -193,53 +197,71 @@ export default function Page() {
       {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
 
       {/*Section 2 - Experience*/}
-      <section className="bg-[#fff] min-h-screen px-8 md:px-[6%] relative pt-20">
+      <section className="bg-[#fff] min-h-screen px-8 md:px-[15%] relative pt-20">
         <div className="bg-[#fff] space-y-16 pt-24">
           {/* Row 1 - Header */}
           <div className="w-full">
             <h2
-              className={`${benne.className} text-3xl md:text-4xl lg:text-5xl leading-tight max-w-5xl`}
+              className={`${benne.className} text-3xl md:text-4xl lg:text-5xl leading-tight`}
             >
-              Hands-on product design leader with ten+ years of experience in
-              designing and leading teams developing highly impactful products
-              at scale.
+             
+              Design, to me, is fundamentally about providing clarity in complexity. What excites me about design is its potential to orchestrate meaningful change. Every pixel we place and system we architect has the power to make someone's day better or their work more efficient.
             </h2>
           </div>
 
           {/* Row 2 - Content */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* Left Column - Two Column Text */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-[90%]">
               <div className="space-y-4">
-                <p
-                  className={`${nunitoSans.className} text-gray-500 text-xl leading-relaxed`}
-                >
-                  I guide teams while staying deeply involved in the
-                  process—designing intuitive interactions, building scalable
-                  systems, and refining user flows. By blending strategic vision
-                  with attention to detail, I ensure every product reflects
-                  thoughtfulness, usability, and high-quality execution.
+                <p className={`${poppins.className} text-gray-500 text-[18px] leading-[1.8] max-w-[460px]`}>
+                I believe great product design emerges at the intersection of empathy, systems thinking, 
+                and craftsmanship. Having started as a computer science engineer who discovered design 
+                through building solutions, I've learned that impactful products aren't just 
+                beautiful interfaces – they're thoughtfully architected systems. 
                 </p>
-              </div>
+              </div>  
               <div className="space-y-4">
-                <p
-                  className={`${nunitoSans.className} text-gray-500 text-xl leading-relaxed`}
-                >
-                  I specialize in turning ambiguity into clarity, transforming
-                  big ideas into impactful solutions. Whether crafting
-                  zero-to-one products or refining existing systems, I bring
-                  vision, strategy, and alignment to help teams navigate
-                  complexity.
-                </p>
+                <p className={`${poppins.className} text-gray-500 text-[18px] leading-[1.8] max-w-[460px]`}>
+                I emphasize both macro and micro aspects of design – from high-level strategy to delightful details that make products lovable. As a creative leader, I foster environments where creativity flourishes alongside technical excellence, never losing sight of the humans we're designing for. The best designs create possibilities.                </p>
               </div>
             </div>
 
             {/* Right Column - Image */}
-            <div className="relative h-full">
-              <img
-                src="/images/projects.png"
-                alt="Product Design Skills"
-                className="w-full h-auto object-contain"
+            <div className="relative h-full flex flex-col justify-end">
+              <StackedCards
+                cards={[
+                  {
+                    color: "#40BCD9",
+                    content: "Creating next gen 0-1 products and mvps",
+                    icon: "/images/stackcard1.png",
+                  },
+                  {
+                    color: "#F0CB46",
+                    content: "leading system wide redesigns",
+                    icon: "/images/stackcard2.png",
+                  },
+                  {
+                    color: "#6F66A5",
+                    content: "delightful consumer apps",
+                    icon: "/images/stackcard3.png",
+                  },
+                  {
+                    color: "#CA84C0",
+                    content: "setting high bar for craft",
+                    icon: "/images/stackcard4.png",
+                  },
+                  {
+                    color: "#F18520",
+                    content: "designing large scale enterprise products",
+                    icon: "/images/stackcard5.png",
+                  },
+                  {
+                    color: "#26AA52",
+                    content: "defining product vision & strategy",
+                    icon: "/images/stackcard6.png",
+                  },
+                ]}
               />
             </div>
           </div>
@@ -360,3 +382,4 @@ export default function Page() {
     </main>
   );
 }
+
