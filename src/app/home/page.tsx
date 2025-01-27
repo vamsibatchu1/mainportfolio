@@ -1,10 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Benne } from "next/font/google";
-import { DM_Sans } from "next/font/google";
-import { Nunito_Sans } from "next/font/google";
-import { Poppins } from "next/font/google";
+import { Balsamiq_Sans, Benne } from "next/font/google";
+import { Ubuntu } from "next/font/google";
 import { motion, useInView } from "framer-motion";
 import { TestimonialCarousel } from "@/components/ui/testimonial";
 //import { GeistMono } from "next/font/google";
@@ -18,20 +16,14 @@ const benne = Benne({
   subsets: ["latin"],
 });
 
-//DM Sans Font
-const dmSans = DM_Sans({
+//Ubuntu Font
+const ubuntu = Ubuntu({
   weight: "400",
   subsets: ["latin"],
 });
 
-//Nunito Sans Font
-const nunitoSans = Nunito_Sans({
-  weight: "400",
-  subsets: ["latin"],
-});
-
-//Poppins Font
-const poppins = Poppins({
+//Balsamiq Sans Font
+const balsamiqSans = Balsamiq_Sans({
   weight: "400",
   subsets: ["latin"],
 });
@@ -228,7 +220,7 @@ export default function Page() {
             transition={{ duration: 1, ease: "easeOut" }}
           >
             <h2
-              className={`${benne.className} text-[24px] md:text-[24px] lg:text-[42px] leading-tight`}
+              className={`${benne.className} text-[26px] md:text-[24px] lg:text-[42px] leading-tight`}
             >
               Design, to me, is fundamentally about providing clarity in
               complexity. Every pixel we place and system we architect architect
@@ -250,7 +242,7 @@ export default function Page() {
             >
               <div className="space-y-4">
                 <p
-                  className={`${poppins.className} text-gray-500 text-[16px] md:text-[18px] leading-[1.8] max-w-[460px]`}
+                  className={`${ubuntu.className} text-gray-500 text-[18px] md:text-[18px] leading-[1.8] max-w-[460px]`}
                 >
                   I believe great product design emerges at the intersection of
                   empathy, systems thinking, and craftsmanship. Having started
@@ -263,7 +255,7 @@ export default function Page() {
               </div>
               <div className="space-y-4">
                 <p
-                  className={`${poppins.className} text-gray-500 text-[16px] md:text-[18px] leading-[1.8] max-w-[460px]`}
+                  className={`${ubuntu.className} text-gray-500 text-[18px] md:text-[18px] leading-[1.8] max-w-[460px]`}
                 >
                   I emphasize both macro and micro aspects of design – from
                   high-level strategy to delightful details that make products
@@ -276,8 +268,10 @@ export default function Page() {
             </motion.div>
 
             {/* Right Column - Image */}
+            {/*/////Web View/////*/}
+
             <motion.div
-              className="relative h-full xs:hidden flex flex-col justify-end"
+              className="relative h-full hidden md:flex flex-col justify-end"
               variants={{
                 visible: { opacity: 1, y: 0 },
                 hidden: { opacity: 0, y: 40 },
@@ -319,125 +313,10 @@ export default function Page() {
                 ]}
               />
             </motion.div>
-          </div>
-        </motion.div>
-      </section>
 
-      {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
-
-      {/*Section 3 - Projects*/}
-      {/* <section className="bg-[#fff] min-h-screen px-8 md:px-[6%] relative pt-20">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6"> */}
-
-      {/* First Row */}
-      {/* <div className="md:col-span-2 aspect-[16/9] rounded-3xl overflow-hidden bg-[#3B1914]">
-            <img
-              src="/images/bento1.png"
-              alt="Project 1"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="aspect-[4/3] rounded-3xl overflow-hidden bg-[#F8D7E3]">
-            <img
-              src="/images/bento2.png"
-              alt="Project 2"
-              className="w-full h-full object-cover"
-            />
-          </div> */}
-
-      {/* Second Row */}
-      {/* <div className="aspect-[4/3] rounded-3xl overflow-hidden bg-[#7CC3F7]">
-            <img
-              src="/images/bento3.png"
-              alt="Project 3"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="aspect-[4/3] rounded-3xl overflow-hidden bg-[#F5B748]">
-            <img
-              src="/images/bento4.png"
-              alt="Project 4"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="aspect-[4/3] rounded-3xl overflow-hidden bg-[#F37F5F]">
-            <img
-              src="/images/bento5.png"
-              alt="Project 5"
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-      </section> */}
-
-      {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
-
-      {/*Section 4 - Mentorship*/}
-      {/* <section className="bg-[#fff] min-h-screen px-8 md:px-[6%] relative pt-20">
-        <div className="bg-[#f7f7f1] grid grid-cols-1 md:grid-cols-2 gap-8 items-start rounded-3xl p-12 md:p-24">
-          <div className="space-y-8">
-            <h2
-              className={`${benne.className} text-[#000000] text-2xl md:text-4xl font-serif leading-tight`}
-            >
-              Over the years, I had the privilege of mentoring aspiring
-              designers and individuals worldwide, helping them in land their
-              ideal design roles & offering career guidance in their day to day
-              work.
-            </h2>
-            <ul className="space-y-4">
-              <li className="flex items-center gap-3">
-                <div className="w-4 h-4 rounded-full bg-[#ab95ce]" />
-                <span
-                  className={`${benne.className} text-[#000000] text-xl md:text-2xl font-medium`}
-                >
-                  Portfolio reviews
-                </span>
-              </li>
-              <li className="flex items-center gap-3">
-                <div className="w-4 h-4 rounded-full bg-[#85aef2]" />
-                <span
-                  className={`${benne.className} text-[#000000] text-xl md:text-2xl font-medium`}
-                >
-                  Design leadership coaching
-                </span>
-              </li>
-              <li className="flex items-center gap-3">
-                <div className="w-4 h-4 rounded-full bg-[#7ac7a3]" />
-                <span
-                  className={`${benne.className} text-[#000000] text-xl md:text-2xl font-medium`}
-                >
-                  Mock interview practice
-                </span>
-              </li>
-              <li className="flex items-center gap-3">
-                <div className="w-4 h-4 rounded-full bg-[#f3d56a]" />
-                <span
-                  className={`${benne.className} text-[#000000] text-xl md:text-2xl font-medium`}
-                >
-                  Day to day work guidance
-                </span>
-              </li>
-            </ul>
-          </div>
-          <div className="space-y-8">
-            <p
-              className={`${dmSans.className} text-[#797979] text-lg md:text-2xl`}
-            >
-              I offer 1:1 mentorship for designers and non designers on ADP List
-              on a variety of subjects. Let us connect and elevate your design
-              journey together!
-            </p>
-            <TestimonialCarousel
-              testimonials={TESTIMONIAL_DATA}
-              className="max-w-2xl mx-auto"
-            />
-          </div>
-        </div>
-      </section> */}
-
-      {/* Mobile Cards Section */}
-      <section className="md:hidden bg-[#fff] px-8 py-16">
-        <MobileCardsGrid
+            {/*/////Mobile View/////*/}
+            <div className="md:hidden">
+            <MobileCardsGrid
           cards={[
             {
               color: "#40BCD9",
@@ -470,8 +349,12 @@ export default function Page() {
               icon: "/images/stackcard6.png",
             },
           ]}
-        />
+              />
+            </div>
+          </div>
+        </motion.div>
       </section>
+
     </main>
   );
 }
