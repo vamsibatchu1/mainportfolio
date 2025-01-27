@@ -52,7 +52,7 @@ const TESTIMONIAL_DATA = [
   },
 ];
 
-//Typewriter Text Animation 
+//Typewriter Text Animation
 function TypewriterText({ text }: { text: string }) {
   const [displayText, setDisplayText] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -67,7 +67,6 @@ function TypewriterText({ text }: { text: string }) {
       return () => clearTimeout(timeout);
     }
   }, [currentIndex, text]);
-
 
   //Typewriter Text Font Size
   const getFontSize = () => {
@@ -244,25 +243,14 @@ export default function Page() {
                 <p
                   className={`${ubuntu.className} text-gray-500 text-[18px] md:text-[18px] leading-[1.8] max-w-[460px]`}
                 >
-                  I believe great product design emerges at the intersection of
-                  empathy, systems thinking, and craftsmanship. Having started
-                  as a computer science engineer who discovered design through
-                  building solutions, I've learned that impactful products
-                  aren't just beautiful interfaces – they're thoughtfully
-                  architected systems. What excites me about design is its
-                  potential to orchestrate meaningful change.
+                 I believe great product design emerges at the intersection of empathy, systems thinking, and craftsmanship. As a computer science engineer who discovered design through building solutions, I've learned that impactful products aren't just beautiful interfaces – they're thoughtfully architected systems that orchestrate meaningful change.
                 </p>
               </div>
               <div className="space-y-4">
                 <p
                   className={`${ubuntu.className} text-gray-500 text-[18px] md:text-[18px] leading-[1.8] max-w-[460px]`}
                 >
-                  I emphasize both macro and micro aspects of design – from
-                  high-level strategy to delightful details that make products
-                  lovable. As a creative leader, I foster environments where
-                  creativity flourishes alongside technical excellence, never
-                  losing sight of the humans we're designing for. The best
-                  designs create possibilities.
+                 My approach emphasizes both macro and micro aspects of design – from high-level strategy to delightful details that make products lovable. As a creative leader, I foster environments where creativity flourishes alongside technical excellence, never losing sight of the humans we're designing for and the possibilities we can create.
                 </p>
               </div>
             </motion.div>
@@ -316,45 +304,45 @@ export default function Page() {
 
             {/*/////Mobile View/////*/}
             <div className="md:hidden">
-            <MobileCardsGrid
-          cards={[
-            {
-              color: "#40BCD9",
-              content: "DESIGNING NEXT GENERATION 0-1 PRODUCTS FROM NEW & MESSY PROBLEMS",
-              icon: "/images/stackcard1.png",
-            },
-            {
-              color: "#F0CB46",
-              content: "LEADING ECOSYSTEM WIDE REDESIGN PROJECTS",
-              icon: "/images/stackcard2.png",
-            },
-            {
-              color: "#6F66A5",
-              content: "BUILDING DELIGHTFUL CONSUMER PRODUCTS",
-              icon: "/images/stackcard3.png",
-            },
-            {
-              color: "#CA84C0",
-              content: "SETTING HIGH BAR FOR CRAFT",
-              icon: "/images/stackcard4.png",
-            },
-            {
-              color: "#F18520",
-              content: "DESIGNING LARGE SCALE ENTERPRISE APPS",
-              icon: "/images/stackcard5.png",
-            },
-            {
-              color: "#26AA52",
-              content: "DEFINING PRODUCT DESIGN & STRATEGY",
-              icon: "/images/stackcard6.png",
-            },
-          ]}
+              <MobileCardsGrid
+                cards={[
+                  {
+                    color: "#40BCD9",
+                    content:
+                      "DESIGNING NEXT GENERATION 0-1 PRODUCTS FROM NEW & MESSY PROBLEMS",
+                    icon: "/images/stackcard1.png",
+                  },
+                  {
+                    color: "#F0CB46",
+                    content: "LEADING ECOSYSTEM WIDE REDESIGN PROJECTS",
+                    icon: "/images/stackcard2.png",
+                  },
+                  {
+                    color: "#6F66A5",
+                    content: "BUILDING DELIGHTFUL CONSUMER PRODUCTS",
+                    icon: "/images/stackcard3.png",
+                  },
+                  {
+                    color: "#CA84C0",
+                    content: "SETTING HIGH BAR FOR CRAFT",
+                    icon: "/images/stackcard4.png",
+                  },
+                  {
+                    color: "#F18520",
+                    content: "DESIGNING LARGE SCALE ENTERPRISE APPS",
+                    icon: "/images/stackcard5.png",
+                  },
+                  {
+                    color: "#26AA52",
+                    content: "DEFINING PRODUCT DESIGN & STRATEGY",
+                    icon: "/images/stackcard6.png",
+                  },
+                ]}
               />
             </div>
           </div>
         </motion.div>
       </section>
-
     </main>
   );
 }
