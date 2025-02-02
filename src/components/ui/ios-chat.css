@@ -1,0 +1,43 @@
+.chat-bubble-send::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: -7px;
+  width: 20px;
+  height: 25px;
+  background-color: #0B93F6;
+  border-bottom-left-radius: 16px 14px;
+}
+
+.chat-bubble-send::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: -26px;
+  width: 26px;
+  height: 25px;
+  background-color: white;
+  border-bottom-left-radius: 10px;
+}
+
+.chat-bubble-receive::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: -7px;
+  width: 20px;
+  height: 25px;
+  background-color: #E5E5EA;
+  border-bottom-right-radius: 16px 14px;
+}
+
+.chat-bubble-receive::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: -26px;
+  width: 26px;
+  height: 25px;
+  background-color: white;
+  border-bottom-right-radius: 10px;
+} 

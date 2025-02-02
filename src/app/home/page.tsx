@@ -9,7 +9,7 @@ import { TestimonialCarousel } from "@/components/ui/testimonial";
 import { AnimatedLogo } from "@/components/ui/animated-logo";
 import { StackedCards } from "@/components/ui/stacked-cards";
 import { MobileCardsGrid } from "@/components/ui/mobile-cards-grid";
-import DynamicIslandWrapper from "@/components/ui/DynamicIsland/DynamicIslandWrapper";
+import DynamicIslandWrapper from "@/components/ui/DynamicIsland/IslandController";
 
 
 
