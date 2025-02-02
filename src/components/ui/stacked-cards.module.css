@@ -1,5 +1,5 @@
 .container {
-  width: 90%;
+  width: 100%;
   position: relative;
   height: 200px;
   overflow: visible;
@@ -61,8 +61,8 @@
 @media (min-width: 1024px) {
   .cardButton {
     position: absolute;
-    width: 400%;
-    height: 380px;
+    width: 500%;
+    height: 400px;
     aspect-ratio: 2/4;
     background: var(--color);
     border-radius: 1.2rem;

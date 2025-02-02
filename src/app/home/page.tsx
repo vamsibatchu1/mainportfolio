@@ -1,18 +1,27 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Balsamiq_Sans, Benne } from "next/font/google";
-import { Ubuntu } from "next/font/google";
+import { CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
+import { Balsamiq_Sans, Benne, Ubuntu, Cormorant_Garamond} from "next/font/google";
 import { motion, useInView } from "framer-motion";
 import { TestimonialCarousel } from "@/components/ui/testimonial";
 //import { GeistMono } from "next/font/google";
 import { AnimatedLogo } from "@/components/ui/animated-logo";
 import { StackedCards } from "@/components/ui/stacked-cards";
 import { MobileCardsGrid } from "@/components/ui/mobile-cards-grid";
+import DynamicIslandWrapper from "@/components/ui/DynamicIsland/DynamicIslandWrapper";
+
+
 
 //Benne Font
 const benne = Benne({
-  weight: "400",
+  weight: ["400"],
+  subsets: ["latin"],
+});
+
+//Cormorant Garamond Font
+const cormorantGaramond = Cormorant_Garamond({
+  weight: ["400", "300"],
   subsets: ["latin"],
 });
 
@@ -219,7 +228,7 @@ export default function Page() {
             transition={{ duration: 1, ease: "easeOut" }}
           >
             <h2
-              className={`${benne.className} text-[26px] md:text-[24px] lg:text-[42px] leading-tight`}
+              className={`${cormorantGaramond.className} text-[26px] md:text-[24px] lg:text-[42px] leading-tight`}
             >
               Design, to me, is fundamentally about providing clarity in
               complexity. Every pixel we place and system we architect architect
@@ -343,6 +352,16 @@ export default function Page() {
           </div>
         </motion.div>
       </section>
+
+ {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
+
+ <section>
+        {/*<AnimatedDynamicIsland />*/}
+        <div className="p-4 border-[1px] rounded-md">
+          <DynamicIslandWrapper />
+        </div>
+  </section>
+
     </main>
   );
 }
