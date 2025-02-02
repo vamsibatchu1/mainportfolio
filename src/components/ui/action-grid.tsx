@@ -1,6 +1,7 @@
 "use client";
 import { Contact, AppWindow, Users, Newspaper, Layers } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 interface ActionButtonProps {
   icon: React.ReactNode;
@@ -28,35 +29,80 @@ const ActionButton = ({ icon, label, fullWidth, onClick }: ActionButtonProps) =>
   </button>
 );
 
-export function ActionGrid() {
+export function ActionGrid({ show = false }) {
+  console.log("ActionGrid show state:", show);
+
+  const containerVariants = {
+    hidden: { 
+      opacity: 0,
+      y: 20
+    },
+    visible: { 
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        when: "beforeChildren",
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { 
+      opacity: 0,
+      y: 20
+    },
+    visible: { 
+      opacity: 1,
+      y: 0
+    }
+  };
+
   const actions = [
     { icon: <Contact />, label: "My story" },
-    { icon: <Contact />, label: "Contact me" },
+    { icon: <Contact />, label: "Connect with me" },
     { icon: <AppWindow />, label: "Look at my work" },
     { 
       icon: <Users />, 
       label: "What colleagues are saying about me",
       fullWidth: true 
     },
-    { icon: <Newspaper />, label: "My writings" },
+    { icon: <Newspaper />, label: "Read my articles" },
     { icon: <Layers />, label: "My skills" }
   ];
 
   return (
-    <div className="w-full max-w-[367px] p-0 flex flex-col gap-3.5 font-['SF_Pro_Text',-apple-system,BlinkMacSystemFont,sans-serif]">
-      <h2 className="text-xs text-[rgba(60,60,67,0.6)] tracking-[-0.4px]">
-        What do you want to know about?
-      </h2>
-      <div className="flex flex-wrap gap-3 w-full">
-        {actions.map((action, index) => (
-          <ActionButton
-            key={index}
-            icon={action.icon}
-            label={action.label}
-            fullWidth={action.fullWidth}
-          />
-        ))}
-      </div>
-    </div>
+    <>
+
+      <motion.div 
+        className={cn(
+          "w-full max-w-[367px] p-0 flex flex-col gap-3.5",
+          "font-['SF_Pro_Text',-apple-system,BlinkMacSystemFont,sans-serif]",
+          "border-2 border-transparent"
+        )}
+        initial="hidden"
+        animate={show ? "visible" : "hidden"}
+        variants={containerVariants}
+      >
+        <motion.h2 
+          className="text-xs text-[rgba(60,60,67,0.6)] tracking-[-0.4px]"
+          variants={itemVariants}
+        >
+          What do you want to know about?
+        </motion.h2>
+        <div className="flex flex-wrap gap-3 w-full">
+          {actions.map((action, index) => (
+            <motion.div key={index} variants={itemVariants}>
+              <ActionButton
+                icon={action.icon}
+                label={action.label}
+                fullWidth={action.fullWidth}
+              />
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+    </>
   );
 } 

@@ -13,42 +13,51 @@ const STATE_DURATIONS = {
   faceid: 1700,    // Face ID state 
   hello: 2000,     // Hello state
   atlanta: 2200,    // Atlanta state
-  work: 3200   // Work state 
+  work: 2800   // Work state 
 } as const;
 
+// Add onComplete prop
+interface IslandControllerProps {
+  onComplete?: () => void;
+}
+
 // Wrapper component that manages the dynamic island states and their transitions
-const IslandController = () => {
+const IslandController = ({ onComplete }: IslandControllerProps) => {
   const [active, setActive] = useState<IslandTypes>("default");
-  const [isComplete, setIsComplete] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
 
   useEffect(() => {
+    if (isFinished) return; // Don't start sequence if already finished
+
+    console.log("IslandController mounted");
     const states: IslandTypes[] = ["default", "faceid", "default", "hello", "default", "atlanta", "default", "work"];
     let currentIndex = 0;
+    let timeoutId: NodeJS.Timeout;
 
     const nextState = () => {
-      if (currentIndex >= states.length - 1) {
-        setIsComplete(true);
-        return; // Stop the sequence
+      if (currentIndex === states.length - 1) {
+        console.log("Reached final work state - stopping sequence");
+        setIsFinished(true);
+        onComplete?.();
+        return;
       }
 
       currentIndex += 1;
       const newState = states[currentIndex];
+      console.log(`Setting active state to: ${newState}`);
       setActive(newState);
       
-      // Schedule next transition if not at the end
-      if (currentIndex < states.length - 1) {
-        setTimeout(nextState, STATE_DURATIONS[newState]);
-      }
+      timeoutId = setTimeout(nextState, STATE_DURATIONS[newState]);
     };
 
     // Start the sequence
-    setTimeout(nextState, STATE_DURATIONS[states[0]]);
+    timeoutId = setTimeout(nextState, STATE_DURATIONS[states[0]]);
 
     return () => {
-      // Cleanup
-      setIsComplete(false);
+      console.log("Cleaning up IslandController");
+      clearTimeout(timeoutId);
     };
-  }, []);
+  }, [onComplete, isFinished]); // Add isFinished to dependencies
 
   return (
     <div className="relative p-4 min-h-[450px] h-full flex items-center w-full justify-center">
