@@ -4,7 +4,9 @@ import React, { useState, useEffect } from "react";
 import IslandController from "@/components/ui/DynamicIsland/IslandController";
 /*import { IOSChat } from "@/components/ui/ios-chat";*/
 import { ActionGrid } from "@/components/ui/action-grid";
-/*import { motion } from "framer-motion";*/
+import { ContentContainer } from "@/components/ui/content-container";
+import { motion, AnimatePresence } from "framer-motion";
+
 
 
 /*const messages = [
@@ -19,6 +21,7 @@ import { ActionGrid } from "@/components/ui/action-grid";
 
 export default function Page() {
   const [isComplete, setIsComplete] = useState(false);
+  const [activeContent, setActiveContent] = useState<string | null>(null);
 
   // Debug mount
   useEffect(() => {
@@ -30,20 +33,52 @@ export default function Page() {
     console.log("isComplete state changed:", isComplete);
   }, [isComplete]);
 
+  const handleActionClick = (content: string) => {
+    setActiveContent(content);
+  };
+
+  const handleCloseContent = () => {
+    setActiveContent(null);
+  };
+
   return (
     <section className="min-h-screen flex flex-col items-center">
-      <IslandController 
-        onComplete={() => {
-          console.log("IslandController animation sequence complete");
-          console.log("Setting isComplete to true");
-          setIsComplete(true);
-        }} 
-      />
-      
-      {/* Only render ActionGrid after IslandController is complete */}
+      <div className="relative w-full flex justify-center">
+        <AnimatePresence mode="wait">
+          {!activeContent ? (
+            <motion.div
+              key="island"
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <IslandController onComplete={() => setIsComplete(true)} />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="content"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ContentContainer 
+                isOpen={true}
+                onClose={handleCloseContent}
+                activeContent={activeContent}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
       {isComplete && (
         <div className="mt-8">
-          <ActionGrid show={true} />
+          <ActionGrid 
+            show={true} 
+            onActionClick={handleActionClick}
+            isCollapsed={activeContent !== null}
+          />
         </div>
       )}
     </section>

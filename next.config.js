@@ -7,7 +7,13 @@ const nextConfig = {
       'gsap/MorphSVGPlugin': 'gsap/dist/MorphSVGPlugin'
     };
     return config;
-  }
+  },
+  images: {
+    domains: [
+      'images.unsplash.com',
+      'assets.dub.co'
+    ],
+  },
 };
 
 module.exports = nextConfig; 

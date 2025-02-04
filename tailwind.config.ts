@@ -70,6 +70,10 @@ export default {
   					transform: 'translateY(0)'
   				}
   			}
+  		},
+  		transitionProperty: {
+  			height: 'height',
+  			spacing: 'margin, padding'
   		}
   	}
   },
