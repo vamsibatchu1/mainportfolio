@@ -60,7 +60,12 @@ export default function Page() {
   };
 
   return (
-    <section className={`min-h-screen flex flex-col items-center ${doto.variable}`}>
+    <section 
+      className={`min-h-screen flex flex-col items-center ${doto.variable}`}
+      style={{ 
+        backgroundImage: 'linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%)'
+      }}
+    >
       <div className="relative w-full flex justify-center">
         <AnimatePresence mode="wait">
           {!isComplete ? (

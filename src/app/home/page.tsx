@@ -6,15 +6,26 @@ import { Balsamiq_Sans, Benne, Ubuntu, Cormorant_Garamond} from "next/font/googl
 import { motion, useInView } from "framer-motion";
 import { TestimonialCarousel } from "@/components/ui/testimonial";
 //import { GeistMono } from "next/font/google";
-import { AnimatedLogo } from "@/components/ui/animated-logo";
-import { StackedCards } from "@/components/ui/stacked-cards";
-import { MobileCardsGrid } from "@/components/ui/mobile-cards-grid";
-import DynamicIslandWrapper from "@/components/ui/DynamicIsland/IslandController";
 import dynamic from 'next/dynamic';
 
-// Dynamic import components that use document
-const TextScramble = dynamic(
-  () => import('@/components/ui/text-scramble').then(mod => mod.TextScramble),
+// Dynamic imports for components that might use document
+const AnimatedLogo = dynamic(
+  () => import('@/components/ui/animated-logo').then(mod => mod.AnimatedLogo),
+  { ssr: false }
+);
+
+const StackedCards = dynamic(
+  () => import('@/components/ui/stacked-cards').then(mod => mod.StackedCards),
+  { ssr: false }
+);
+
+const MobileCardsGrid = dynamic(
+  () => import('@/components/ui/mobile-cards-grid').then(mod => mod.MobileCardsGrid),
+  { ssr: false }
+);
+
+const DynamicIslandWrapper = dynamic(
+  () => import('@/components/ui/DynamicIsland/IslandController'),
   { ssr: false }
 );
 
