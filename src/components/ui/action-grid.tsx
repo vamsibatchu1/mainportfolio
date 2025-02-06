@@ -2,7 +2,15 @@
 import { Contact, AppWindow, Users, Newspaper, Layers, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { JetBrains_Mono } from "next/font/google";
 import { useState, useEffect } from "react";
+
+const redditMono = JetBrains_Mono({
+    subsets: ["latin"],
+    weight: ["400", "700"],
+    variable: "--font-jetbrains-mono",
+  });
+
 
 interface ActionGridProps {
   show: boolean;
@@ -106,7 +114,8 @@ export function ActionGrid({ show = false, onActionClick, isCollapsed, initialDe
         "fixed bottom-0 left-1/2 -translate-x-1/2",
         "rounded-t-[16px]",
         "border-t border-gray-200",
-        "bg-[#FCFCFC]"
+        "bg-[#FCFCFC]",
+        redditMono.variable
       )}
       variants={containerVariants}
       initial="expanded"
@@ -117,7 +126,7 @@ export function ActionGrid({ show = false, onActionClick, isCollapsed, initialDe
         className="w-full max-w-[420px] flex flex-col gap-3.5 pt-5 px-5 pb-8 rounded-t-[16px] font-['SF_Pro_Text',-apple-system,BlinkMacSystemFont,sans-serif]"
       >
         <div className="flex items-center justify-between pb-3">
-          <h2 className="text-md text-black">
+          <h2 className="text-sm text-black font-jetbrains-mono">
             What do you want to know about?
           </h2>
           <motion.div
