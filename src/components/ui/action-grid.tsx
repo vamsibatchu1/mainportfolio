@@ -76,7 +76,7 @@ export function ActionGrid({ show = false, onActionClick, isCollapsed, initialDe
       className={cn(
         "flex items-center gap-2.5 px-5 py-3.5",
         "bg-[rgb(242,242,247)] hover:bg-[rgb(232,232,237)]",
-        "rounded-[100px] border-none cursor-pointer transition-all duration-200",
+        "rounded-[16px] border-[1px] border-[#E7E7E7] cursor-pointer transition-all duration-200",
         fullWidth ? "w-full" : "flex-1 min-w-[140px]"
       )}
       onClick={onClick}
@@ -105,7 +105,8 @@ export function ActionGrid({ show = false, onActionClick, isCollapsed, initialDe
         "w-full max-w-[420px] cursor-pointer",
         "fixed bottom-0 left-1/2 -translate-x-1/2",
         "rounded-t-[16px]",
-        "bg-gray-900"
+        "border-t border-gray-200",
+        "bg-[#FCFCFC]"
       )}
       variants={containerVariants}
       initial="expanded"
@@ -115,8 +116,8 @@ export function ActionGrid({ show = false, onActionClick, isCollapsed, initialDe
       <motion.div
         className="w-full max-w-[420px] flex flex-col gap-3.5 pt-5 px-5 pb-8 rounded-t-[16px] font-['SF_Pro_Text',-apple-system,BlinkMacSystemFont,sans-serif]"
       >
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm text-white">
+        <div className="flex items-center justify-between pb-3">
+          <h2 className="text-md text-black">
             What do you want to know about?
           </h2>
           <motion.div
