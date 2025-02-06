@@ -2,13 +2,22 @@
 
 import React, { useState, useEffect } from "react";
 import localFont from 'next/font/local';
-import IslandController from "@/components/ui/DynamicIsland/IslandController";
+import dynamic from 'next/dynamic';
 /*import { IOSChat } from "@/components/ui/ios-chat";*/
-import { ActionGrid } from "@/components/ui/action-grid";
 import { ContentContainer } from "@/components/ui/content-container";
 import { motion, AnimatePresence } from "framer-motion";
 import { TextScramble } from "@/components/ui/text-scramble"
 
+// Dynamic import with no SSR for components that need document
+const DynamicIslandController = dynamic(
+  () => import('@/components/ui/DynamicIsland/IslandController'),
+  { ssr: false }
+);
+
+const ActionGrid = dynamic(
+  () => import('@/components/ui/action-grid').then(mod => mod.ActionGrid),
+  { ssr: false }
+);
 
 // Load local font
 const doto = localFont({
@@ -61,7 +70,7 @@ export default function Page() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <IslandController onComplete={() => setIsComplete(true)} />
+              <DynamicIslandController onComplete={() => setIsComplete(true)} />
             </motion.div>
           ) : !activeContent ? (
             <motion.div

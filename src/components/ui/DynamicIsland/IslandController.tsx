@@ -22,7 +22,7 @@ interface IslandControllerProps {
 }
 
 // Wrapper component that manages the dynamic island states and their transitions
-const IslandController = ({ onComplete }: IslandControllerProps) => {
+export default function IslandController({ onComplete }: IslandControllerProps) {
   const [active, setActive] = useState<IslandTypes>("default");
   const [isFinished, setIsFinished] = useState(false);
 
@@ -69,6 +69,4 @@ const IslandController = ({ onComplete }: IslandControllerProps) => {
       </IslandLayout>
     </div>
   );
-};
-
-export default IslandController;
+}
