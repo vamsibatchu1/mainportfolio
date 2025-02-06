@@ -10,8 +10,13 @@ import { AnimatedLogo } from "@/components/ui/animated-logo";
 import { StackedCards } from "@/components/ui/stacked-cards";
 import { MobileCardsGrid } from "@/components/ui/mobile-cards-grid";
 import DynamicIslandWrapper from "@/components/ui/DynamicIsland/IslandController";
+import dynamic from 'next/dynamic';
 
-
+// Dynamic import components that use document
+const TextScramble = dynamic(
+  () => import('@/components/ui/text-scramble').then(mod => mod.TextScramble),
+  { ssr: false }
+);
 
 //Benne Font
 const benne = Benne({
