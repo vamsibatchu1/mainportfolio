@@ -1,7 +1,7 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
-import { SkillsView, StoryView, WorkView } from "@/components/content-views";
+import { SkillsView, StoryView, WorkView, TestimonialsView } from "@/components/content-views";
 
 interface ContentContainerProps {
   isOpen: boolean;
@@ -41,6 +41,8 @@ export function ContentContainer({ isOpen, onClose, activeContent }: ContentCont
         return <StoryView />;
       case "work":
         return <WorkView />;
+      case "testimonials":
+        return <TestimonialsView />;
       default:
         return null;
     }

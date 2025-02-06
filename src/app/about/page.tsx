@@ -1,13 +1,20 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import localFont from 'next/font/local';
 import IslandController from "@/components/ui/DynamicIsland/IslandController";
 /*import { IOSChat } from "@/components/ui/ios-chat";*/
 import { ActionGrid } from "@/components/ui/action-grid";
 import { ContentContainer } from "@/components/ui/content-container";
 import { motion, AnimatePresence } from "framer-motion";
+import { TextScramble } from "@/components/ui/text-scramble"
 
 
+// Load local font
+const doto = localFont({
+  src: '../../../public/fonts/doto.ttf',
+  variable: '--font-doto'
+});
 
 /*const messages = [
   { type: "send", message: "Hey there! What's up" },
@@ -19,6 +26,8 @@ import { motion, AnimatePresence } from "framer-motion";
   { type: "receive", message: "Wow that's impressive. But what's even more impressive is that this bubble is really high." }
 ] as const;*/
 
+// Main portfolio page that orchestrates the Dynamic Island controller and content switching
+// Uses AnimatePresence for smooth transitions between states and manages the overall layout
 export default function Page() {
   const [isComplete, setIsComplete] = useState(false);
   const [activeContent, setActiveContent] = useState<string | null>(null);
@@ -42,10 +51,10 @@ export default function Page() {
   };
 
   return (
-    <section className="min-h-screen flex flex-col items-center">
+    <section className={`min-h-screen flex flex-col items-center ${doto.variable}`}>
       <div className="relative w-full flex justify-center">
         <AnimatePresence mode="wait">
-          {!activeContent ? (
+          {!isComplete ? (
             <motion.div
               key="island"
               initial={{ opacity: 1 }}
@@ -53,6 +62,19 @@ export default function Page() {
               transition={{ duration: 0.3 }}
             >
               <IslandController onComplete={() => setIsComplete(true)} />
+            </motion.div>
+          ) : !activeContent ? (
+            <motion.div
+              key="logo"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="text-center mt-[180px]"
+            >
+              <TextScramble className={`text-6xl font-normal ${doto.className}`}>
+                VAMSI BATCHU
+              </TextScramble>
             </motion.div>
           ) : (
             <motion.div
@@ -78,6 +100,7 @@ export default function Page() {
             show={true} 
             onActionClick={handleActionClick}
             isCollapsed={activeContent !== null}
+            initialDelay={1}
           />
         </div>
       )}
