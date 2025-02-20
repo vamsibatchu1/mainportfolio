@@ -79,24 +79,65 @@ function MacWindow({ children }: { children: React.ReactNode }) {
   );
 }
 
-function IntroSequence() {
-  const [showBoot, setShowBoot] = useState(true);
-
+// Sequence 1: Retro Boot (1984)
+function RetroBootSequence() {
   return (
     <div className={styles.desktop}>
-      {showBoot && (
-        <MacWindow>
-          <TypewriterText
-            text={BOOT_SEQUENCE}
-            speed={50}
-            className="text-black"
-          />
-        </MacWindow>
-      )}
+      <MacWindow>
+        <TypewriterText
+          text={BOOT_SEQUENCE}
+          speed={50}
+          className="text-black"
+        />
+      </MacWindow>
     </div>
   );
 }
 
+// Sequence 2: Time Travel
+function TimeJumpSequence() {
+  return (
+    <div className={styles.timeJump}>
+      {/* Time travel animation/transition will go here */}
+    </div>
+  );
+}
+
+// Sequence 3: Modern Era (2025)
+function ModernSequence() {
+  return (
+    <div className={styles.modern}>
+      {/* Modern UI will go here */}
+    </div>
+  );
+}
+
+// Main sequence controller
+function SequenceController() {
+  const [currentSequence, setCurrentSequence] = useState<'retro' | 'jump' | 'modern'>('retro');
+
+  useEffect(() => {
+    // Handle sequence transitions
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === "Enter" && currentSequence === 'retro') {
+        setCurrentSequence('jump');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [currentSequence]);
+
+  return (
+    <div className="h-full w-full">
+      {currentSequence === 'retro' && <RetroBootSequence />}
+      {currentSequence === 'jump' && <TimeJumpSequence />}
+      {currentSequence === 'modern' && <ModernSequence />}
+    </div>
+  );
+}
+
+// Main page component
 export default function Page() {
   return (
     <motion.div
@@ -105,7 +146,7 @@ export default function Page() {
       transition={{ duration: 0.4 }}
       className="h-[100svh] w-full overflow-hidden relative"
     >
-      <IntroSequence />
+      <SequenceController />
     </motion.div>
   );
 }
