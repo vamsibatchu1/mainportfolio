@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import styles from './styles.module.css';
 
 // First, let's create the boot sequence text
@@ -80,16 +80,28 @@ function MacWindow({ children }: { children: React.ReactNode }) {
 }
 
 // Sequence 1: Retro Boot (1984)
-function RetroBootSequence() {
+function RetroBootSequence({ onComplete }: { onComplete: () => void }) {
   return (
     <div className={styles.desktop}>
-      <MacWindow>
-        <TypewriterText
-          text={BOOT_SEQUENCE}
-          speed={50}
-          className="text-black"
-        />
-      </MacWindow>
+      <div className={styles.desktopBg} />
+      <motion.div
+        initial={{ y: "100vh" }}
+        animate={{ y: 0 }}
+        exit={{ y: "100vh" }}
+        transition={{ 
+          type: "spring",
+          duration: 0.8,
+          bounce: 0.2
+        }}
+      >
+        <MacWindow>
+          <TypewriterText
+            text={BOOT_SEQUENCE}
+            speed={50}
+            className="text-black"
+          />
+        </MacWindow>
+      </motion.div>
     </div>
   );
 }
@@ -117,7 +129,6 @@ function SequenceController() {
   const [currentSequence, setCurrentSequence] = useState<'retro' | 'jump' | 'modern'>('retro');
 
   useEffect(() => {
-    // Handle sequence transitions
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.key === "Enter" && currentSequence === 'retro') {
         setCurrentSequence('jump');
@@ -130,9 +141,16 @@ function SequenceController() {
 
   return (
     <div className="h-full w-full">
-      {currentSequence === 'retro' && <RetroBootSequence />}
-      {currentSequence === 'jump' && <TimeJumpSequence />}
-      {currentSequence === 'modern' && <ModernSequence />}
+      <AnimatePresence mode="wait">
+        {currentSequence === 'retro' && (
+          <RetroBootSequence 
+            key="retro"
+            onComplete={() => setCurrentSequence('jump')} 
+          />
+        )}
+        {currentSequence === 'jump' && <TimeJumpSequence key="jump" />}
+        {currentSequence === 'modern' && <ModernSequence key="modern" />}
+      </AnimatePresence>
     </div>
   );
 }
