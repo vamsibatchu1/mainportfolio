@@ -1,118 +1,58 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
-import { Balsamiq_Sans, Benne, Ubuntu, Cormorant_Garamond} from "next/font/google";
-import { motion, useInView } from "framer-motion";
-import { TestimonialCarousel } from "@/components/ui/testimonial";
-//import { GeistMono } from "next/font/google";
-import dynamic from 'next/dynamic';
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import styles from './styles.module.css';
 
-// Dynamic imports for components that might use document
-const AnimatedLogo = dynamic(
-  () => import('@/components/ui/animated-logo').then(mod => mod.AnimatedLogo),
-  { ssr: false }
-);
+// First, let's create the boot sequence text
+const BOOT_SEQUENCE = `SEARCHING FOR PORTFOLIO.SYS...
+[................................]
 
-const StackedCards = dynamic(
-  () => import('@/components/ui/stacked-cards').then(mod => mod.StackedCards),
-  { ssr: false }
-);
+ERROR 404: PORTFOLIO NOT FOUND
 
-const MobileCardsGrid = dynamic(
-  () => import('@/components/ui/mobile-cards-grid').then(mod => mod.MobileCardsGrid),
-  { ssr: false }
-);
+TEMPORAL ANALYSIS COMPLETE:
+> Target "Vamsi Batchu" not found in current timeline
+> MESSAGE: Oops! Looks like we're a bit early. 
+The designer you're looking for hasn't started his journey yet.
 
-const DynamicIslandWrapper = dynamic(
-  () => import('@/components/ui/DynamicIsland/IslandController'),
-  { ssr: false }
-);
+> Recommendation: Time jump required to 2025
+[Press ENTER to initiate temporal shift]"`;
 
-//Benne Font
-const benne = Benne({
-  weight: ["400"],
-  subsets: ["latin"],
-});
-
-//Cormorant Garamond Font
-const cormorantGaramond = Cormorant_Garamond({
-  weight: ["400", "300"],
-  subsets: ["latin"],
-});
-
-//Ubuntu Font
-const ubuntu = Ubuntu({
-  weight: "400",
-  subsets: ["latin"],
-});
-
-//Balsamiq Sans Font
-const balsamiqSans = Balsamiq_Sans({
-  weight: "400",
-  subsets: ["latin"],
-});
-
-//Testimonial Data
-const TESTIMONIAL_DATA = [
-  {
-    id: 1,
-    name: "Kriti B",
-    avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-    description:
-      "Vamsi has been the most approachable mentor I came across! He is so easy to talk to and his guidance was very detailed. Vamsi is encouraging, supportive and very passionate about the design field! I would 200% recommend Vamsi",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    avatar: "https://randomuser.me/api/portraits/women/1.jpg",
-    description: "Highly recommended! Great service and professional approach.",
-  },
-  {
-    id: 3,
-    name: "Mike Johnson",
-    avatar: "https://randomuser.me/api/portraits/men/2.jpg",
-    description:
-      "Exceptional quality and professionalism. Would definitely work with them again.",
-  },
-];
-
-//Typewriter Text Animation
-function TypewriterText({ text }: { text: string }) {
+function TypewriterText({ 
+  text, 
+  speed = 100,
+  className = "",
+  style = {}
+}: { 
+  text: string;
+  speed?: number;
+  className?: string;
+  style?: React.CSSProperties;
+}) {
   const [displayText, setDisplayText] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     if (currentIndex < text.length) {
       const timeout = setTimeout(() => {
-        setDisplayText((prev) => prev + text[currentIndex]);
-        setCurrentIndex((prev) => prev + 1);
-      }, 100);
+        setDisplayText(prev => prev + text[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }, speed);
 
       return () => clearTimeout(timeout);
     }
-  }, [currentIndex, text]);
-
-  //Typewriter Text Font Size
-  const getFontSize = () => {
-    if (typeof window !== "undefined") {
-      if (window.innerWidth < 768) {
-        return "22px";
-      } else {
-        return "42px";
-      }
-    }
-    return "44px"; // Default size for SSR
-  };
+  }, [currentIndex, text, speed]);
 
   return (
     <pre
+      className={`font-mono ${className}`}
       style={{
-        whiteSpace: "pre",
+        whiteSpace: "pre-wrap",
         display: "block",
-        lineHeight: "1",
+        lineHeight: "1.5",
         fontFamily: "'128k', monospace",
-        fontSize: getFontSize(),
+        fontSize: "16px",
+        ...style
       }}
     >
       {displayText}
@@ -121,100 +61,52 @@ function TypewriterText({ text }: { text: string }) {
   );
 }
 
+function MacWindow({ children }: { children: React.ReactNode }) {
+  return (
+    <div className={styles.window} data-is-open={true}>
+      <div className={styles.titleBar}>
+        <h1 className={styles.title}> System Boot</h1>
+      </div>
+      <div className={styles.detailsBar}>
+        <span>MARCH 10, 1984</span>
+        <span>RAM: 128K</span>
+        <span>SYSTEM STATUS: READY</span>
+      </div>
+      <div className={styles.windowPane}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 function IntroSequence() {
-  const [showLogo, setShowLogo] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowLogo(false);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
+  const [showBoot, setShowBoot] = useState(true);
 
   return (
-    <div className="absolute top-[22%] left-[50%] transform -translate-x-1/2 w-[65%] z-10">
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="text-[#ffffff] text-sm md:text-base space-y-2"
-        style={{
-          fontFamily: "'128k', monospace",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "left",
-        }}
-      >
-        {showLogo ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <div className="w-[150px] md:w-[300px] h-[100px] md:h-[200px] pt-12 md:pt-24">
-              <AnimatedLogo width="100%" height="100%" color="#ffffff" />
-            </div>
-          </motion.div>
-        ) : (
-          <motion.div
-            className="pt-4 md:pt-12"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            <TypewriterText
-              text={`Hello, I'm Vamsi Batchu.
-Atlanta based product 
-design leader working at 
-the intersection of 
-{craft} & <code>`}
-            />
-          </motion.div>
-        )}
-      </motion.div>
+    <div className={styles.desktop}>
+      {showBoot && (
+        <MacWindow>
+          <TypewriterText
+            text={BOOT_SEQUENCE}
+            speed={50}
+            className="text-black"
+          />
+        </MacWindow>
+      )}
     </div>
   );
 }
 
 export default function Page() {
-  const ref = useRef<HTMLDivElement>(null);
-
   return (
-    <main className="relative min-h-screen">
-      {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
-
-      {/* Hero Section */}
-      <motion.section
-        initial={{ opacity: 0, scale: 0.98 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.2, delay: 0.2 }}
-        className="bg-[#E76324] h-[100svh] flex flex-col justify-between px-8 md:px-[15%] relative [&::before]:absolute [&::before]:inset-0 [&::before]:bg-noise [&::before]:opacity-[0.03] [&::before]:pointer-events-none"
-      >
-        <motion.div
-          className="w-full h-full px-8 md:px-[6%] flex items-end pb-[0] md:pb-0"
-          initial={{ opacity: 0, y: 100 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.4,
-            ease: "easeOut",
-            delay: 0.6,
-          }}
-        >
-          <div className="relative w-full max-w-2xl mx-auto">
-            <IntroSequence />
-
-            {/* Monitor SVG */}
-            <motion.img
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              src="/images/mac.png"
-              alt="Retro Monitor"
-              className="w-full h-auto"
-            />
-          </div>
-        </motion.div>
-      </motion.section>
-    </main>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+      className="h-[100svh] w-full overflow-hidden relative"
+    >
+      <IntroSequence />
+    </motion.div>
   );
 }
+
