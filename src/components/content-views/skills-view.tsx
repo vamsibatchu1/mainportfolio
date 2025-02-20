@@ -18,7 +18,8 @@ const redditMono = JetBrains_Mono({
 
 // Add type for the menu items
 type MenuItem = {
-  icon: string;
+  baseIcon: string;
+  activeIcon: string;
   text: MenuItemKey;
 };
 
@@ -45,27 +46,33 @@ type ContentData = {
 
 const menuItems: MenuItem[] = [
   {
-    icon: "/images/skill1.svg",
+    baseIcon: "/images/skill1.svg",
+    activeIcon: "/images/skill1-color.svg",
     text: "DEVELOPING PRODUCT VISION",
   },
   {
-    icon: "/images/skill2.svg",
+    baseIcon: "/images/skill2.svg",
+    activeIcon: "/images/skill2-color.svg",
     text: "REDESIGN OVERHAULS",
   },
   {
-    icon: "/images/skill3.svg",
+    baseIcon: "/images/skill3.svg",
+    activeIcon: "/images/skill3-color.svg",
     text: "DESIGNING CONSUMER APPS",
   },
   {
-    icon: "/images/skill4.svg",
+    baseIcon: "/images/skill4.svg",
+    activeIcon: "/images/skill4-color.svg",
     text: "SETTING HIGH CRAFT BAR",
   },
   {
-    icon: "/images/skill5.svg",
+    baseIcon: "/images/skill5.svg",
+    activeIcon: "/images/skill5-color.svg",
     text: "ENTERPRISE APPS",
   },
   {
-    icon: "/images/skill6.svg",
+    baseIcon: "/images/skill6.svg",
+    activeIcon: "/images/skill6-color.svg",
     text: "DEFINING STRATEGY",
   },
 ];
@@ -103,7 +110,7 @@ const contentData: ContentData = {
   }
 };
 
-export function SkillsView() {
+export function SkillsView(): JSX.Element {
   const [selectedItem, setSelectedItem] = useState<MenuItemKey>("DEVELOPING PRODUCT VISION");
 
   return (
@@ -111,44 +118,35 @@ export function SkillsView() {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col md:flex-row bg-[#f2f2f7] rounded-3xl overflow-hidden border-0 w-full"
+      className="flex flex-col md:flex-row bg-[#000] rounded-3xl overflow-hidden border-0 w-full"
     >
-      {/* Green section */}
-      <div className="flex-col w-full md:w-[380px] items-start justify-center gap-4 p-8 md:pl-8 md:pr-0 md:py-6 bg-[#2c8042] flex min-h-[300px] shrink-0">
-        {menuItems.map((item, index) => (
+      {/* Sidebar section */}
+      <div className="flex-col w-full md:w-[100px] items-start justify-center gap-4 p-8 md:pl-8 md:pr-0 md:py-6 bg-[#000] flex min-h-[300px] shrink-0">
+        {menuItems.map((item: MenuItem, index: number) => (
           <div
             key={index}
             className="w-full items-center gap-4 flex relative cursor-pointer"
             onClick={() => setSelectedItem(item.text)}
           >
-            <div className="relative flex items-center justify-center">
+            <div className="relative flex items-center justify-center w-8 h-8">
               <Image 
-                src={item.icon}
+                src={selectedItem === item.text ? item.activeIcon : item.baseIcon}
                 alt={item.text}
                 width={32}
                 height={32}
-                className="text-white"
+                className="transition-all duration-200"
               />
-            </div>
-            <div className={`relative w-fit font-normal text-[#c7eed1] text-[14px] whitespace-nowrap ${redditMono.className}`}>
-              {item.text}
             </div>
           </div>
         ))}
       </div>
 
-      {/* Grey section */}
-      <div className="flex-1 flex flex-col p-8 min-w-0">
+      {/* Content section */}
+      <div className="flex-1 flex flex-col p-8 min-w-0 bg-white">
         <div className="flex items-center justify-between w-full mb-4">
           <div className={`${redditMono.className} font-normal text-black text-[26px]`}>
             {contentData[selectedItem].title}
           </div>
-          <Image 
-            src={contentData[selectedItem].icon} 
-            alt="icon" 
-            width={29.52} 
-            height={29.52} 
-          />
         </div>
 
         <div className="w-full">

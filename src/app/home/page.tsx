@@ -137,7 +137,7 @@ function IntroSequence() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="text-[#F0BFFF] text-sm md:text-base space-y-2"
+        className="text-[#ffffff] text-sm md:text-base space-y-2"
         style={{
           fontFamily: "'128k', monospace",
           display: "flex",
@@ -188,7 +188,7 @@ export default function Page() {
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.2, delay: 0.2 }}
-        className="bg-[#0F413B] h-[100svh] flex flex-col justify-between px-8 md:px-[15%] relative"
+        className="bg-[#E76324] h-[100svh] flex flex-col justify-between px-8 md:px-[15%] relative [&::before]:absolute [&::before]:inset-0 [&::before]:bg-noise [&::before]:opacity-[0.03] [&::before]:pointer-events-none"
       >
         <motion.div
           className="w-full h-full px-8 md:px-[6%] flex items-end pb-[0] md:pb-0"
@@ -208,176 +208,13 @@ export default function Page() {
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              src="/images/mac.svg"
+              src="/images/mac.png"
               alt="Retro Monitor"
               className="w-full h-auto"
             />
           </div>
         </motion.div>
       </motion.section>
-
-      {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
-
-      <section className="bg-[#fff] h-screen px-8 md:px-[15%] relative pt-0 md:pt-20">
-        <motion.div
-          ref={ref}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={{
-            visible: {
-              transition: {
-                staggerChildren: 0.3,
-              },
-            },
-            hidden: {},
-          }}
-          className="bg-[#fff] space-y-8 pt-24"
-        >
-          {/* Row 1 - Header */}
-          <motion.div
-            className="w-full"
-            variants={{
-              visible: { opacity: 1, y: 0 },
-              hidden: { opacity: 0, y: 20 },
-            }}
-            transition={{ duration: 1, ease: "easeOut" }}
-          >
-            <h2
-              className={`${cormorantGaramond.className} text-[26px] md:text-[24px] lg:text-[42px] leading-tight`}
-            >
-              Design, to me, is fundamentally about providing clarity in
-              complexity. Every pixel we place and system we architect architect
-              has the power to make someone's day better or their work more
-              efficient.
-            </h2>
-          </motion.div>
-
-          {/* Row 2 - Content */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {/* Left Column - Two Column Text */}
-            <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-[95%]"
-              variants={{
-                visible: { opacity: 1, y: 0 },
-                hidden: { opacity: 0, y: 30 },
-              }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
-              <div className="space-y-4">
-                <p
-                  className={`${ubuntu.className} text-gray-500 text-[18px] md:text-[18px] leading-[1.8] max-w-[460px]`}
-                >
-                 I believe great product design emerges at the intersection of empathy, systems thinking, and craftsmanship. As a computer science engineer who discovered design through building solutions, I've learned that impactful products aren't just beautiful interfaces – they're thoughtfully architected systems that orchestrate meaningful change.
-                </p>
-              </div>
-              <div className="space-y-4">
-                <p
-                  className={`${ubuntu.className} text-gray-500 text-[18px] md:text-[18px] leading-[1.8] max-w-[460px]`}
-                >
-                 My approach emphasizes both macro and micro aspects of design – from high-level strategy to delightful details that make products lovable. As a creative leader, I foster environments where creativity flourishes alongside technical excellence, never losing sight of the humans we're designing for and the possibilities we can create.
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Right Column - Image */}
-            {/*/////Web View/////*/}
-
-            <motion.div
-              className="relative h-full hidden md:flex flex-col justify-end"
-              variants={{
-                visible: { opacity: 1, y: 0 },
-                hidden: { opacity: 0, y: 40 },
-              }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
-              <StackedCards
-                cards={[
-                  {
-                    color: "#40BCD9",
-                    content: "Creating next gen 0-1 products and mvps",
-                    icon: "/images/stackcard1.png",
-                  },
-                  {
-                    color: "#F0CB46",
-                    content: "leading system wide redesigns",
-                    icon: "/images/stackcard2.png",
-                  },
-                  {
-                    color: "#948DBC",
-                    content: "delightful consumer apps",
-                    icon: "/images/stackcard3.png",
-                  },
-                  {
-                    color: "#CA84C0",
-                    content: "setting high bar for craft",
-                    icon: "/images/stackcard4.png",
-                  },
-                  {
-                    color: "#F18520",
-                    content: "designing large scale enterprise products",
-                    icon: "/images/stackcard5.png",
-                  },
-                  {
-                    color: "#47AB68",
-                    content: "defining product vision & strategy",
-                    icon: "/images/stackcard6.png",
-                  },
-                ]}
-              />
-            </motion.div>
-
-            {/*/////Mobile View/////*/}
-            <div className="md:hidden">
-              <MobileCardsGrid
-                cards={[
-                  {
-                    color: "#40BCD9",
-                    content:
-                      "DESIGNING NEXT GENERATION 0-1 PRODUCTS FROM NEW & MESSY PROBLEMS",
-                    icon: "/images/stackcard1.png",
-                  },
-                  {
-                    color: "#F0CB46",
-                    content: "LEADING ECOSYSTEM WIDE REDESIGN PROJECTS",
-                    icon: "/images/stackcard2.png",
-                  },
-                  {
-                    color: "#6F66A5",
-                    content: "BUILDING DELIGHTFUL CONSUMER PRODUCTS",
-                    icon: "/images/stackcard3.png",
-                  },
-                  {
-                    color: "#CA84C0",
-                    content: "SETTING HIGH BAR FOR CRAFT",
-                    icon: "/images/stackcard4.png",
-                  },
-                  {
-                    color: "#F18520",
-                    content: "DESIGNING LARGE SCALE ENTERPRISE APPS",
-                    icon: "/images/stackcard5.png",
-                  },
-                  {
-                    color: "#26AA52",
-                    content: "DEFINING PRODUCT DESIGN & STRATEGY",
-                    icon: "/images/stackcard6.png",
-                  },
-                ]}
-              />
-            </div>
-          </div>
-        </motion.div>
-      </section>
-
- {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
-
- <section>
-        {/*<AnimatedDynamicIsland />*/}
-        <div className="p-4 border-[1px] rounded-md">
-          <DynamicIslandWrapper />
-        </div>
-  </section>
-
     </main>
   );
 }

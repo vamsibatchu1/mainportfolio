@@ -11,7 +11,8 @@ const nextConfig = {
   images: {
     domains: [
       'images.unsplash.com',
-      'assets.dub.co'
+      'assets.dub.co',
+      'blog-interaction.vercel.app'
     ],
   },
 };

@@ -113,8 +113,7 @@ export function ActionGrid({ show = false, onActionClick, isCollapsed, initialDe
         "w-full max-w-[420px] cursor-pointer",
         "fixed bottom-0 left-1/2 -translate-x-1/2",
         "rounded-t-[16px]",
-        "border-t border-gray-200",
-        "bg-[#FCFCFC]",
+        "bg-[#695A4D]/[0.23]",
         redditMono.variable
       )}
       variants={containerVariants}
