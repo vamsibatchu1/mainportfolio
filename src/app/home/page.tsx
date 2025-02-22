@@ -7,20 +7,17 @@ import styles from './styles.module.css';
 // First, let's create the boot sequence text
 const BOOT_SEQUENCE = `
 INITIALIZING SYSTEM...
-[███████████████████] 100%
+[███████████████] 100%
 
 SEARCHING FOR PORTFOLIO.SYS...
-[░░░░░░░░░░░░░░░░░░░]
+[░░░░░░░░░░░░░░░]
 
-<span style="color: #ff3e3e; font-size: 42px; text-shadow: 0 0 10px rgba(255, 62, 62, 0.7); display: block; margin: 8px 0;">ERROR 404: PORTFOLIO NOT FOUND</span>
+<span style="color: #ffa94d; font-size: 42px; text-shadow: 0 0 10px rgba(255, 169, 77, 0.7); display: block; margin: 8px 0;">ERROR 404: PORTFOLIO NOT FOUND</span>
 
 TEMPORAL ANALYSIS COMPLETE:
-> Target "Vamsi Batchu" not found
-> MESSAGE: Time anomaly detected
-> STATUS: Portfolio not yet created
+> Time anomaly detected and target "Vamsi Batchu" not found
 
-Recommendation: Time jump required to 2025
-[Press ENTER to initiate temporal shift]`;
+[Press ENTER to initiate temporal jump to 2025]`;
 
 function TypewriterText({ 
   text, 
@@ -77,8 +74,8 @@ function TypewriterText({
         lineHeight: "1.5",
         fontFamily: "'VT323', monospace",
         fontSize: "24px",
-        color: "#ffa94d",
-        textShadow: "0 0 5px rgba(255, 169, 77, 0.3)",
+        color: "#EFE7D1",
+        textShadow: "0 0 5px rgba(239, 231, 209, 0.3)",
         position: "absolute",
         bottom: "24px",
         left: "24px",
@@ -95,7 +92,8 @@ function TypewriterText({
 
 function CoordinateDisplay() {
   return (
-    <div className="p-0 font-mono text-[#ffa94d] w-full">
+    <div className="p-0 font-mono text-[#EFE7D1] w-full h-full flex flex-col justify-between">
+      {/* Top Section */}
       <div className="space-y-4">
         {/* Header */}
         <div className="text-sm">
@@ -103,11 +101,11 @@ function CoordinateDisplay() {
           <div>Extracting R:\das6391\tracking_</div>
         </div>
 
-        {/* Main Content */}
+        {/* Coordinates */}
         <div className="space-y-2">
           {/* Latitude Section */}
           <div>
-            <div className="text-[#ff3e3e]">LATITUDE:</div>
+            <div className="text-[#ffa94d]">LATITUDE:</div>
             <div className="grid grid-cols-3 gap-1 bg-[#1a0f02] p-1">
               <div className="bg-[#2a1705] px-2">N 30°</div>
               <div className="bg-[#2a1705] px-2">54&apos;</div>
@@ -117,7 +115,7 @@ function CoordinateDisplay() {
 
           {/* Longitude Section */}
           <div>
-            <div className="text-[#ff3e3e]">LONGITUDE:</div>
+            <div className="text-[#ffa94d]">LONGITUDE:</div>
             <div className="grid grid-cols-3 gap-1 bg-[#1a0f02] p-1">
               <div className="bg-[#2a1705] px-2">W 3°</div>
               <div className="bg-[#2a1705] px-2">56&apos;</div>
@@ -125,31 +123,37 @@ function CoordinateDisplay() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Bottom Section */}
+      <div className="space-y-4">
+        {/* Array Values */}
+        <div className="space-y-1 mt-4 font-mono">
+          <div className="bg-[#ffa94d] px-2 py-1 inline-block">
+            <span className="text-[#2a1705] font-bold">C_ARRAY 49C/E58AA1</span>
+          </div>
+          <div className="bg-[#ffa94d] px-2 py-1 inline-block">
+            <span className="text-[#2a1705] font-bold">A_ARRAY 9B/1761268</span>
+          </div>
+        </div>
 
         {/* Footer */}
         <div className="text-sm space-y-1">
           <div>Tracked Location (Approximate)</div>
-          <div>Address: N13, Morocco</div>
-          <div>Latitude: 30.904581°</div>
-          <div>Longitude: -3.938599°</div>
+          <div>Address: N13, Atlanta</div>
+          <div>Latitude: NOT FOUND</div>
+          <div>Longitude: NOT FOUND</div>
           <div className="flex justify-between">
             <div>
               <div>Accuracy: route</div>
-              <div>Status: 200</div>
+              <div>Status: 400</div>
             </div>
             {/* Battery Icon */}
-            <div className="w-4 h-6 border border-[#ffa94d] relative">
-              <div className="w-2 h-1 bg-[#ffa94d] absolute -top-1 left-1/2 -translate-x-1/2"></div>
-              <div className="w-full h-2/3 bg-[#ffa94d] absolute bottom-0"></div>
+            <div className="w-4 h-6 border border-[#EFE7D1] relative">
+              <div className="w-2 h-1 bg-[#EFE7D1] absolute -top-1 left-1/2 -translate-x-1/2"></div>
+              <div className="w-full h-2/3 bg-[#EFE7D1] absolute bottom-0"></div>
             </div>
           </div>
-        </div>
-
-        {/* Array Values */}
-        <div className="space-y-1 mt-4 font-mono text-[#ffa94d]">
-          <div>C_ARRAY 49C/E58AA1</div>
-          <div>B_ARRAY FFE/B04F74</div>
-          <div>A_ARRAY 9B/1761268</div>
         </div>
       </div>
     </div>
@@ -177,10 +181,10 @@ function WeaponSystemDisplay() {
   }, []);
 
   return (
-    <div className="mt-4 font-mono text-[#ffa94d] border border-[#ffa94d] border-1 rounded-2xl p-4">
+    <div className="mt-4 font-mono text-[#EFE7D1] border border-[#EFE7D1] border-1 rounded-2xl p-4">
       {/* Header */}
-      <div className="border-b border-[#ffa94d] pb-2 mb-4 flex justify-between items-center">
-        <div className="w-6 h-6 border border-[#ffa94d] rounded-full flex items-center justify-center text-sm">A</div>
+      <div className="border-b border-[#EFE7D1] pb-2 mb-4 flex justify-between items-center">
+        <div className="w-6 h-6 border border-[#EFE7D1] rounded-full flex items-center justify-center text-sm">A</div>
         <div className="text-center">
           <div className="text-base">UA 571-C</div>
         </div>
@@ -194,7 +198,7 @@ function WeaponSystemDisplay() {
             <div className="text-sm mb-1">Rounds Remaining</div>
             <div className="flex items-center">
               <div className="text-xl mr-2">▶</div>
-              <div className="border border-[#ffa94d] px-3 py-1 text-2xl">500</div>
+              <div className="border border-[#EFE7D1] px-3 py-1 text-2xl">500</div>
             </div>
           </div>
 
@@ -205,7 +209,7 @@ function WeaponSystemDisplay() {
               <br />
               (secs)
             </div>
-            <div className="border border-[#ffa94d] px-3 py-1 text-2xl">{time.toFixed(2)}</div>
+            <div className="border border-[#EFE7D1] px-3 py-1 text-2xl">{time.toFixed(2)}</div>
           </div>
         </div>
 
@@ -214,9 +218,9 @@ function WeaponSystemDisplay() {
           {/* Temperature Bar */}
           <div className="flex flex-col h-full">
             <div className="text-xs mb-1">Temp</div>
-            <div className="flex-1 w-6 border border-[#ffa94d] relative">
+            <div className="flex-1 w-6 border border-[#EFE7D1] relative">
               <div
-                className="absolute bottom-0 left-0 right-0 bg-[#ffa94d] transition-all duration-300"
+                className="absolute bottom-0 left-0 right-0 bg-[#EFE7D1] transition-all duration-300"
                 style={{ height: `${temp}%`, opacity: 0.3 }}
               />
             </div>
@@ -225,7 +229,7 @@ function WeaponSystemDisplay() {
           {/* R(M) Bar */}
           <div className="flex flex-col h-full">
             <div className="text-xs mb-1">R(M)</div>
-            <div className="flex-1 w-6 border border-[#ffa94d]"></div>
+            <div className="flex-1 w-6 border border-[#EFE7D1]"></div>
           </div>
         </div>
       </div>
