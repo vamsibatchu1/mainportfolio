@@ -13,6 +13,11 @@ import {
 } from "@/components/ui/tooltip";
 import { TextScramble } from "@/components/ui/text-scramble";
 import { doto } from '../fonts';
+import Lottie from "lottie-react";
+import workAnimation from '/public/images/work.json';
+import blogAnimation from '/public/images/blog.json';
+import aboutAnimation from '/public/images/about.json';
+import askAnimation from '/public/images/ask.json';
 
 // Initialize IBM Plex Mono
 const ibmPlexMono = IBM_Plex_Mono({
@@ -22,7 +27,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 type MenuItem = {
-  icon: React.ReactNode
+  icon: (lottieRef: any) => React.ReactNode
   label: string
 }
 
@@ -41,34 +46,78 @@ type MenuItemContent = {
 
 const menuItems: MenuItem[] = [
   {
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
-      </svg>
+    icon: (lottieRef: any) => (
+      <div className="h-6 w-6">
+        <Lottie
+          lottieRef={lottieRef}
+          animationData={workAnimation}
+          loop={false}
+          autoplay={false}
+          className="w-full h-full"
+          onComplete={() => {
+            if (lottieRef.current) {
+              lottieRef.current.goToAndStop(0, true);
+            }
+          }}
+        />
+      </div>
     ),
     label: 'Work',
   },
   {
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
-      </svg>
+    icon: (lottieRef: any) => (
+      <div className="h-6 w-6">
+        <Lottie
+          lottieRef={lottieRef}
+          animationData={blogAnimation}
+          loop={false}
+          autoplay={false}
+          className="w-full h-full"
+          onComplete={() => {
+            if (lottieRef.current) {
+              lottieRef.current.goToAndStop(0, true);
+            }
+          }}
+        />
+      </div>
     ),
     label: 'Blog',
   },
   {
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-      </svg>
+    icon: (lottieRef: any) => (
+      <div className="h-6 w-6">
+        <Lottie
+          lottieRef={lottieRef}
+          animationData={aboutAnimation}
+          loop={false}
+          autoplay={false}
+          className="w-full h-full"
+          onComplete={() => {
+            if (lottieRef.current) {
+              lottieRef.current.goToAndStop(0, true);
+            }
+          }}
+        />
+      </div>
     ),
     label: 'About',
   },
   {
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-      </svg>
+    icon: (lottieRef: any) => (
+      <div className="h-6 w-6">
+        <Lottie
+          lottieRef={lottieRef}
+          animationData={askAnimation}
+          loop={false}
+          autoplay={false}
+          className="w-full h-full"
+          onComplete={() => {
+            if (lottieRef.current) {
+              lottieRef.current.goToAndStop(0, true);
+            }
+          }}
+        />
+      </div>
     ),
     label: 'Ask',
   },
@@ -441,7 +490,7 @@ function LiveActivityCard() {
               <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.137 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
             </svg>
             <span className="font-medium">GitHub</span>
-            <span className="text-sm text-gray-500 ml-auto">12 contributions this week</span>
+            <span className="text-gray-500 ml-auto">12 contributions this week</span>
           </div>
           <div className="space-y-2">
             {[
@@ -786,11 +835,30 @@ function SubstackCard() {
   );
 }
 
+function useLottieControl() {
+  const lottieRef = useRef<any>(null);
+
+  const play = () => {
+    if (lottieRef.current) {
+      lottieRef.current.goToAndPlay(0);
+    }
+  };
+
+  const stop = () => {
+    if (lottieRef.current) {
+      lottieRef.current.goToAndStop(0);
+    }
+  };
+
+  return { lottieRef, play, stop };
+}
+
 function ActionBar() {
   const [showInfo, setShowInfo] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const ref = useRef(null);
+  const lottieRefs = useRef(menuItems.map(() => React.createRef())).current;
 
   useOnClickOutside(ref, () => setShowInfo(false));
 
@@ -807,11 +875,20 @@ function ActionBar() {
 
   const handleMouseEnter = (index: number) => {
     setActiveIndex(index);
+    const lottieInstance = lottieRefs[index].current;
+    if (lottieInstance) {
+      lottieInstance.goToAndPlay(0);
+    }
   };
 
   const handleMouseLeave = (event: React.MouseEvent<HTMLElement>) => {
     if (menuRef.current && !menuRef.current.contains(event.relatedTarget as Node)) {
       setActiveIndex(null);
+      lottieRefs.forEach(ref => {
+        if (ref.current) {
+          ref.current.goToAndStop(0);
+        }
+      });
     }
   };
 
@@ -824,11 +901,19 @@ function ActionBar() {
         {menuItems.map((item, index) => (
           <motion.button
             key={index}
-            className="flex items-center justify-center gap-2 px-4 py-4 transition-colors duration-300 hover:bg-black/5"
+            className="relative flex items-center justify-center gap-2 px-4 py-4 transition-colors duration-300 hover:bg-black/5"
             style={{ borderRadius: 16 }}
             onMouseEnter={() => handleMouseEnter(index)}
           >
-            {item.icon}
+            <motion.div 
+              className="relative"
+              animate={{ 
+                scale: activeIndex === index ? 1.1 : 1
+              }}
+              transition={{ duration: 0.2 }}
+            >
+              {item.icon(lottieRefs[index])}
+            </motion.div>
             <span className="font-medium text-[#2D1D2C]">{item.label}</span>
           </motion.button>
         ))}
@@ -840,7 +925,7 @@ function ActionBar() {
           className="overflow-hidden bg-white backdrop-blur-xl border border-[#D7D3D0]"
           style={{ borderRadius: 16 }}
           animate={{
-            width: activeIndex !== null ? ['500px', '460px', '480px', '460px'][activeIndex] : '410px',
+            width: activeIndex !== null ? ['500px', '460px', '480px', '460px'][activeIndex] : '440px',
             height: activeIndex !== null ? ['290px', '244px', '226px', '280px'][activeIndex] : '48px',
             y: activeIndex !== null ? 17 : 0,
           }}

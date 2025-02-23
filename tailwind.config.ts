@@ -59,7 +59,8 @@ export default {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		animation: {
-  			grid: 'grid 15s linear infinite'
+  			grid: 'grid 15s linear infinite',
+  			'play-once': 'playOnce 1s steps(1) forwards'
   		},
   		keyframes: {
   			grid: {
@@ -69,6 +70,10 @@ export default {
   				'100%': {
   					transform: 'translateY(0)'
   				}
+  			},
+  			playOnce: {
+  				'0%': { animationPlayState: 'running' },
+  				'100%': { animationPlayState: 'running' }
   			}
   		},
   		transitionProperty: {
