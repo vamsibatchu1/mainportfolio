@@ -13,11 +13,51 @@ import {
 } from "@/components/ui/tooltip";
 import { TextScramble } from "@/components/ui/text-scramble";
 import { doto } from '../fonts';
-import Lottie from "lottie-react";
-import workAnimation from '/public/images/work.json';
-import blogAnimation from '/public/images/blog.json';
-import aboutAnimation from '/public/images/about.json';
-import askAnimation from '/public/images/ask.json';
+import Lottie, { LottieRefCurrentProps } from "lottie-react";
+import dynamic from 'next/dynamic';
+
+// Define animation data type
+interface LottieAsset {
+  id: string;
+  w: number;
+  h: number;
+  u: string;
+  p: string;
+  e: number;
+}
+
+interface LottieLayer {
+  ddd: number;
+  ind: number;
+  ty: number;
+  nm: string;
+  sr: number;
+  ks: Record<string, unknown>;
+  ao: number;
+  ip: number;
+  op: number;
+  st: number;
+  bm: number;
+}
+
+interface AnimationData {
+  v: string;
+  fr: number;
+  ip: number;
+  op: number;
+  w: number;
+  h: number;
+  nm: string;
+  ddd: number;
+  assets: LottieAsset[];
+  layers: LottieLayer[];
+}
+
+// Load animations
+const workAnimation: AnimationData = require('@/animations/work.json');
+const blogAnimation: AnimationData = require('@/animations/blog.json');
+const aboutAnimation: AnimationData = require('@/animations/about.json');
+const askAnimation: AnimationData = require('@/animations/ask.json');
 
 // Initialize IBM Plex Mono
 const ibmPlexMono = IBM_Plex_Mono({
@@ -27,7 +67,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 type MenuItem = {
-  icon: (lottieRef: any) => React.ReactNode
+  icon: (lottieRef: React.RefObject<LottieRefCurrentProps>) => React.ReactNode
   label: string
 }
 
@@ -46,7 +86,7 @@ type MenuItemContent = {
 
 const menuItems: MenuItem[] = [
   {
-    icon: (lottieRef: any) => (
+    icon: (lottieRef) => (
       <div className="h-6 w-6">
         <Lottie
           lottieRef={lottieRef}
@@ -65,7 +105,7 @@ const menuItems: MenuItem[] = [
     label: 'Work',
   },
   {
-    icon: (lottieRef: any) => (
+    icon: (lottieRef) => (
       <div className="h-6 w-6">
         <Lottie
           lottieRef={lottieRef}
@@ -84,7 +124,7 @@ const menuItems: MenuItem[] = [
     label: 'Blog',
   },
   {
-    icon: (lottieRef: any) => (
+    icon: (lottieRef) => (
       <div className="h-6 w-6">
         <Lottie
           lottieRef={lottieRef}
@@ -103,7 +143,7 @@ const menuItems: MenuItem[] = [
     label: 'About',
   },
   {
-    icon: (lottieRef: any) => (
+    icon: (lottieRef) => (
       <div className="h-6 w-6">
         <Lottie
           lottieRef={lottieRef}
@@ -835,30 +875,12 @@ function SubstackCard() {
   );
 }
 
-function useLottieControl() {
-  const lottieRef = useRef<any>(null);
-
-  const play = () => {
-    if (lottieRef.current) {
-      lottieRef.current.goToAndPlay(0);
-    }
-  };
-
-  const stop = () => {
-    if (lottieRef.current) {
-      lottieRef.current.goToAndStop(0);
-    }
-  };
-
-  return { lottieRef, play, stop };
-}
-
 function ActionBar() {
   const [showInfo, setShowInfo] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const ref = useRef(null);
-  const lottieRefs = useRef(menuItems.map(() => React.createRef())).current;
+  const lottieRefs = useRef(menuItems.map(() => React.createRef<LottieRefCurrentProps>())).current;
 
   useOnClickOutside(ref, () => setShowInfo(false));
 
