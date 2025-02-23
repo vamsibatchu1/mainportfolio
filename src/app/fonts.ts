@@ -15,4 +15,9 @@ export const redditSans = localFont({
 export const kilimanjaro = localFont({
   src: '../../public/fonts/kilimanjaro-sans.otf',
   variable: '--font-kilimanjaro'
+});
+
+export const doto = localFont({
+  src: '../../public/fonts/doto.ttf',
+  variable: '--font-doto'
 }); 
