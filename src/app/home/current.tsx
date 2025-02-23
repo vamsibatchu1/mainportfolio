@@ -15,18 +15,19 @@ import { TextScramble } from "@/components/ui/text-scramble";
 import { doto } from '../fonts';
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
 
-interface KeyframePoint {
+interface KeyframeData {
+  t: number;
+  s: number[] | { i: number[][]; o: number[][]; v: number[][]; c: boolean; }[];
+  h?: number;
   i?: { x: number | number[]; y: number | number[] };
   o?: { x: number | number[]; y: number | number[] };
-  t: number;
-  s: number[];
   to?: number[];
   ti?: number[];
 }
 
 interface TransformProperty {
   a: number;
-  k: number | number[] | KeyframePoint[];
+  k: number | number[] | KeyframeData[] | { i: number[][]; o: number[][]; v: number[][]; c: boolean; } | { i: { x: number[]; y: number[] }; o: { x: number[]; y: number[] }; t: number; s: number[] }[];
   ix: number;
   l?: number;
 }
@@ -37,6 +38,50 @@ interface Transform {
   p: TransformProperty;
   a: TransformProperty;
   s: TransformProperty;
+}
+
+interface ShapeTransform {
+  a: number;
+  k: number | number[] | KeyframeData[] | { i: number[][]; o: number[][]; v: number[][]; c: boolean; } | KeyframeData;
+  ix: number;
+}
+
+interface ShapeElement {
+  ty: string;
+  it?: (ShapeElement | {
+    ty: string;
+    p?: { a: number; k: number[]; ix: number };
+    a?: { a: number; k: number[]; ix: number };
+    s?: { a: number; k: number[]; ix: number };
+    r?: { a: number; k: number; ix: number };
+    o?: { a: number; k: number | { t: number; s: number[]; h: number; }[]; ix: number };
+    sk?: { a: number; k: number; ix: number };
+    sa?: { a: number; k: number; ix: number };
+  })[];
+  ind?: number;
+  ix?: number;
+  ks?: ShapeTransform;
+  s?: ShapeTransform;
+  e?: ShapeTransform;
+  o?: ShapeTransform | { a: number; k: number | KeyframeData[]; ix: number };
+  r?: number | ShapeTransform;
+  p?: ShapeTransform;
+  nm?: string;
+  mn?: string;
+  mm?: number;
+  hd?: boolean;
+  c?: ShapeTransform;
+  w?: ShapeTransform;
+  lc?: number;
+  lj?: number;
+  bm?: number;
+  m?: number;
+  g?: {
+    p: number;
+    k: { k: number[] }[];
+  };
+  d?: unknown[];
+  tr?: Transform;
 }
 
 interface MaskProperty {
@@ -52,12 +97,6 @@ interface Effect {
   ty: number;
   nm: string;
   ef: unknown[];
-}
-
-interface Shape {
-  ty: string;
-  it: unknown[];
-  nm: string;
 }
 
 interface Marker {
@@ -81,10 +120,11 @@ interface LottieLayer {
   parent?: number;
   cl?: string;
   td?: number;
+  tt?: number;
   hasMask?: boolean;
   masksProperties?: MaskProperty[];
   ef?: Effect[];
-  shapes?: Shape[];
+  shapes?: ShapeElement[];
   w?: number;
   h?: number;
   refId?: string;
@@ -94,13 +134,17 @@ interface LottieLayer {
 interface LottieAsset {
   id: string;
   nm: string;
-  fr: number;
+  fr?: number;
   layers: LottieLayer[];
   w?: number;
   h?: number;
   p?: string;
   u?: string;
   bounds?: { l: number; t: number; b: number; r: number };
+  e?: number;
+  ip?: number;
+  op?: number;
+  st?: number;
 }
 
 interface AnimationData {
