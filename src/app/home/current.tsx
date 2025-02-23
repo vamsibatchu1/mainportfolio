@@ -53,27 +53,6 @@ interface AnimationData {
   layers: LottieLayer[];
 }
 
-// Initialize animations as null and load them dynamically
-let workAnimation: any = null;
-let blogAnimation: any = null;
-let aboutAnimation: any = null;
-let askAnimation: any = null;
-
-// Load animations on the client side
-if (typeof window !== 'undefined') {
-  Promise.all([
-    import('@/animations/work.json'),
-    import('@/animations/blog.json'),
-    import('@/animations/about.json'),
-    import('@/animations/ask.json')
-  ]).then(([work, blog, about, ask]) => {
-    workAnimation = work.default;
-    blogAnimation = blog.default;
-    aboutAnimation = about.default;
-    askAnimation = ask.default;
-  });
-}
-
 // Initialize IBM Plex Mono
 const ibmPlexMono = IBM_Plex_Mono({
   weight: ['400', '500', '600'],
@@ -82,7 +61,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 type MenuItem = {
-  icon: (lottieRef: React.RefObject<LottieRefCurrentProps>) => React.ReactNode
+  icon: (lottieRef: React.RefObject<LottieRefCurrentProps>, animation: AnimationData | null) => React.ReactNode
   label: string
 }
 
@@ -98,146 +77,6 @@ type SubMenuItem = {
 type MenuItemContent = {
   items: SubMenuItem[]
 }
-
-const menuItems: MenuItem[] = [
-  {
-    icon: (lottieRef) => (
-      <div className="h-6 w-6">
-        <Lottie
-          lottieRef={lottieRef}
-          animationData={workAnimation}
-          loop={false}
-          autoplay={false}
-          className="w-full h-full"
-          onComplete={() => {
-            if (lottieRef.current) {
-              lottieRef.current.goToAndStop(0, true);
-            }
-          }}
-        />
-      </div>
-    ),
-    label: 'Work',
-  },
-  {
-    icon: (lottieRef) => (
-      <div className="h-6 w-6">
-        <Lottie
-          lottieRef={lottieRef}
-          animationData={blogAnimation}
-          loop={false}
-          autoplay={false}
-          className="w-full h-full"
-          onComplete={() => {
-            if (lottieRef.current) {
-              lottieRef.current.goToAndStop(0, true);
-            }
-          }}
-        />
-      </div>
-    ),
-    label: 'Blog',
-  },
-  {
-    icon: (lottieRef) => (
-      <div className="h-6 w-6">
-        <Lottie
-          lottieRef={lottieRef}
-          animationData={aboutAnimation}
-          loop={false}
-          autoplay={false}
-          className="w-full h-full"
-          onComplete={() => {
-            if (lottieRef.current) {
-              lottieRef.current.goToAndStop(0, true);
-            }
-          }}
-        />
-      </div>
-    ),
-    label: 'About',
-  },
-  {
-    icon: (lottieRef) => (
-      <div className="h-6 w-6">
-        <Lottie
-          lottieRef={lottieRef}
-          animationData={askAnimation}
-          loop={false}
-          autoplay={false}
-          className="w-full h-full"
-          onComplete={() => {
-            if (lottieRef.current) {
-              lottieRef.current.goToAndStop(0, true);
-            }
-          }}
-        />
-      </div>
-    ),
-    label: 'Ask',
-  },
-]
-
-const menuItemsContent: MenuItemContent[] = [
-  {
-    items: [
-      {
-        image: '/images/project_rocket.png',
-        title: 'Home Buying Plan',
-        description: 'Led design for a 0-1 nurturing product to help first time home buyers',
-      },
-      {
-        image: '/images/project_truist.png',
-        title: 'Billpay Redesign',
-        description: 'Redesigned a billpay system for 6 million users of a major bank',
-      },
-    ],
-  },
-  {
-    items: [
-      {
-        title: 'Design Systems',
-        tag: 'Process',
-        date: 'Jun 2024',
-        icon: <Link size={20} />,
-      },
-      {
-        title: 'Product Strategy',
-        tag: 'Leadership',
-        date: 'May 2024',
-        icon: <Link size={20} />,
-      },
-    ],
-  },
-  {
-    items: [
-      {
-        title: 'Experience',
-        date: '10+ years',
-        icon: <Link size={20} />,
-      },
-      {
-        title: 'Leadership',
-        date: '5+ years',
-        icon: <Link size={20} />,
-      },
-    ],
-  },
-  {
-    items: [
-      {
-        title: 'Ask me anything',
-        description: 'Questions about design, leadership, or career',
-        icon: <Link size={20} />,
-      },
-      {
-        title: 'Schedule a chat',
-        description: 'Book a 30-minute consultation',
-        icon: <Link size={20} />,
-      },
-    ],
-  },
-]
 
 function ImageCard({ delay }: { delay: number }) {
   return (
@@ -893,9 +732,27 @@ function SubstackCard() {
 function ActionBar() {
   const [showInfo, setShowInfo] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [animations, setAnimations] = useState<(AnimationData | null)[]>([null, null, null, null]);
   const menuRef = useRef<HTMLDivElement>(null);
   const ref = useRef(null);
-  const lottieRefs = useRef(menuItems.map(() => React.createRef<LottieRefCurrentProps>())).current;
+  const lottieRefs = useRef(Array(4).fill(null).map(() => React.createRef<LottieRefCurrentProps>())).current;
+
+  useEffect(() => {
+    // Load animations on client side
+    Promise.all([
+      import('@/animations/work.json'),
+      import('@/animations/blog.json'),
+      import('@/animations/about.json'),
+      import('@/animations/ask.json')
+    ]).then(([work, blog, about, ask]) => {
+      setAnimations([
+        work.default,
+        blog.default,
+        about.default,
+        ask.default
+      ]);
+    });
+  }, []);
 
   useOnClickOutside(ref, () => setShowInfo(false));
 
@@ -929,6 +786,154 @@ function ActionBar() {
     }
   };
 
+  const menuItems: MenuItem[] = [
+    {
+      icon: (lottieRef, animation) => (
+        <div className="h-6 w-6">
+          {animation && (
+            <Lottie
+              lottieRef={lottieRef}
+              animationData={animation}
+              loop={false}
+              autoplay={false}
+              className="w-full h-full"
+              onComplete={() => {
+                if (lottieRef.current) {
+                  lottieRef.current.goToAndStop(0, true);
+                }
+              }}
+            />
+          )}
+        </div>
+      ),
+      label: 'Work',
+    },
+    {
+      icon: (lottieRef, animation) => (
+        <div className="h-6 w-6">
+          {animation && (
+            <Lottie
+              lottieRef={lottieRef}
+              animationData={animation}
+              loop={false}
+              autoplay={false}
+              className="w-full h-full"
+              onComplete={() => {
+                if (lottieRef.current) {
+                  lottieRef.current.goToAndStop(0, true);
+                }
+              }}
+            />
+          )}
+        </div>
+      ),
+      label: 'Blog',
+    },
+    {
+      icon: (lottieRef, animation) => (
+        <div className="h-6 w-6">
+          {animation && (
+            <Lottie
+              lottieRef={lottieRef}
+              animationData={animation}
+              loop={false}
+              autoplay={false}
+              className="w-full h-full"
+              onComplete={() => {
+                if (lottieRef.current) {
+                  lottieRef.current.goToAndStop(0, true);
+                }
+              }}
+            />
+          )}
+        </div>
+      ),
+      label: 'About',
+    },
+    {
+      icon: (lottieRef, animation) => (
+        <div className="h-6 w-6">
+          {animation && (
+            <Lottie
+              lottieRef={lottieRef}
+              animationData={animation}
+              loop={false}
+              autoplay={false}
+              className="w-full h-full"
+              onComplete={() => {
+                if (lottieRef.current) {
+                  lottieRef.current.goToAndStop(0, true);
+                }
+              }}
+            />
+          )}
+        </div>
+      ),
+      label: 'Ask',
+    },
+  ];
+
+  const menuItemsContent: MenuItemContent[] = [
+    {
+      items: [
+        {
+          image: '/images/project_rocket.png',
+          title: 'Home Buying Plan',
+          description: 'Led design for a 0-1 nurturing product to help first time home buyers',
+        },
+        {
+          image: '/images/project_truist.png',
+          title: 'Billpay Redesign',
+          description: 'Redesigned a billpay system for 6 million users of a major bank',
+        },
+      ],
+    },
+    {
+      items: [
+        {
+          title: 'Design Systems',
+          tag: 'Process',
+          date: 'Jun 2024',
+          icon: <Link size={20} />,
+        },
+        {
+          title: 'Product Strategy',
+          tag: 'Leadership',
+          date: 'May 2024',
+          icon: <Link size={20} />,
+        },
+      ],
+    },
+    {
+      items: [
+        {
+          title: 'Experience',
+          date: '10+ years',
+          icon: <Link size={20} />,
+        },
+        {
+          title: 'Leadership',
+          date: '5+ years',
+          icon: <Link size={20} />,
+        },
+      ],
+    },
+    {
+      items: [
+        {
+          title: 'Ask me anything',
+          description: 'Questions about design, leadership, or career',
+          icon: <Link size={20} />,
+        },
+        {
+          title: 'Schedule a chat',
+          description: 'Book a 30-minute consultation',
+          icon: <Link size={20} />,
+        },
+      ],
+    },
+  ]
+
   return (
     <div className="fixed bottom-8 left-0 right-0 flex items-end justify-center z-50">
       <motion.div
@@ -949,7 +954,7 @@ function ActionBar() {
               }}
               transition={{ duration: 0.2 }}
             >
-              {item.icon(lottieRefs[index])}
+              {item.icon(lottieRefs[index], animations[index])}
             </motion.div>
             <span className="font-medium text-[#2D1D2C]">{item.label}</span>
           </motion.button>
