@@ -16,12 +16,28 @@ import { doto } from '../fonts';
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import dynamic from 'next/dynamic';
 
-// Define animation data type
-interface LottieAsset {
-  id: string;
-  nm: string;
-  fr: number;
-  layers: LottieLayer[];
+interface KeyframePoint {
+  i?: { x: number | number[]; y: number | number[] };
+  o?: { x: number | number[]; y: number | number[] };
+  t: number;
+  s: number[];
+  to?: number[];
+  ti?: number[];
+}
+
+interface TransformProperty {
+  a: number;
+  k: number | number[] | KeyframePoint[];
+  ix: number;
+  l?: number;
+}
+
+interface Transform {
+  o: TransformProperty;
+  r: TransformProperty;
+  p: TransformProperty;
+  a: TransformProperty;
+  s: TransformProperty;
 }
 
 interface LottieLayer {
@@ -30,13 +46,7 @@ interface LottieLayer {
   ty: number;
   nm: string;
   sr: number;
-  ks: {
-    o: { a: number; k: number; ix: number };
-    r: { a: number; k: number; ix: number };
-    p: { a: number; k: number[]; ix: number; l?: number };
-    a: Record<string, unknown>;
-    s: Record<string, unknown>;
-  };
+  ks: Transform;
   ao: number;
   ip: number;
   op: number;
@@ -44,6 +54,27 @@ interface LottieLayer {
   bm: number;
   parent?: number;
   cl?: string;
+  td?: number;
+  hasMask?: boolean;
+  masksProperties?: any[];
+  ef?: any[];
+  shapes?: any[];
+  w?: number;
+  h?: number;
+  refId?: string;
+  bounds?: { l: number; t: number; b: number; r: number };
+}
+
+interface LottieAsset {
+  id: string;
+  nm: string;
+  fr: number;
+  layers: LottieLayer[];
+  w?: number;
+  h?: number;
+  p?: string;
+  u?: string;
+  bounds?: { l: number; t: number; b: number; r: number };
 }
 
 interface AnimationData {
@@ -57,6 +88,7 @@ interface AnimationData {
   ddd: number;
   assets: LottieAsset[];
   layers: LottieLayer[];
+  markers?: any[];
 }
 
 // Initialize IBM Plex Mono
