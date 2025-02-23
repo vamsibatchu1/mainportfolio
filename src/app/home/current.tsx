@@ -53,11 +53,26 @@ interface AnimationData {
   layers: LottieLayer[];
 }
 
-// Load animations
-const workAnimation: AnimationData = require('@/animations/work.json');
-const blogAnimation: AnimationData = require('@/animations/blog.json');
-const aboutAnimation: AnimationData = require('@/animations/about.json');
-const askAnimation: AnimationData = require('@/animations/ask.json');
+// Initialize animations as null and load them dynamically
+let workAnimation: any = null;
+let blogAnimation: any = null;
+let aboutAnimation: any = null;
+let askAnimation: any = null;
+
+// Load animations on the client side
+if (typeof window !== 'undefined') {
+  Promise.all([
+    import('@/animations/work.json'),
+    import('@/animations/blog.json'),
+    import('@/animations/about.json'),
+    import('@/animations/ask.json')
+  ]).then(([work, blog, about, ask]) => {
+    workAnimation = work.default;
+    blogAnimation = blog.default;
+    aboutAnimation = about.default;
+    askAnimation = ask.default;
+  });
+}
 
 // Initialize IBM Plex Mono
 const ibmPlexMono = IBM_Plex_Mono({
