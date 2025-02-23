@@ -29,40 +29,42 @@ export default function Home() {
 
   // Render current phase with AnimatePresence for smooth transitions
   return (
-    <AnimatePresence mode="wait">
-      {currentPhase === 'past' && (
-        <motion.div
-          key="past"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Past />
-        </motion.div>
-      )}
-      {currentPhase === 'transition' && (
-        <motion.div
-          key="transition"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Transition />
-        </motion.div>
-      )}
-      {currentPhase === 'current' && (
-        <motion.div
-          key="current"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Current />
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <main>
+      <AnimatePresence mode="wait">
+        {currentPhase === 'past' && (
+          <motion.div
+            key="past"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Past />
+          </motion.div>
+        )}
+        {currentPhase === 'transition' && (
+          <motion.div
+            key="transition"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Transition />
+          </motion.div>
+        )}
+        {currentPhase === 'current' && (
+          <motion.div
+            key="current"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Current />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </main>
   );
 }
 

@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import { Dock, DockIcon } from "@/components/ui/dock";
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
+import { redditSans } from './fonts';
 
 export type IconProps = React.HTMLAttributes<SVGElement>;
 
@@ -67,7 +68,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable} ${redditSans.variable}`}>
       <head>
         {/* Add any additional head elements if needed */}
       </head>

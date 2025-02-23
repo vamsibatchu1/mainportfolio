@@ -89,7 +89,7 @@ function TypewriterText({
 
 function CoordinateDisplay() {
   return (
-    <div className="p-0 font-mono text-[#EFE7D1] w-full h-full flex flex-col justify-between">
+    <div className="p-0 font-mono text-[#33ff33] w-full h-full flex flex-col justify-between">
       {/* Top Section */}
       <div className="space-y-4">
         {/* Header */}
@@ -102,21 +102,21 @@ function CoordinateDisplay() {
         <div className="space-y-2">
           {/* Latitude Section */}
           <div>
-            <div className="text-[#ffa94d]">LATITUDE:</div>
-            <div className="grid grid-cols-3 gap-1 bg-[#1a0f02] p-1">
-              <div className="bg-[#2a1705] px-2">N 30°</div>
-              <div className="bg-[#2a1705] px-2">54&apos;</div>
-              <div className="bg-[#2a1705] px-2">16.4929&quot;</div>
+            <div className="text-[#33ff33]">LATITUDE:</div>
+            <div className="grid grid-cols-3 gap-1 bg-[#002b0d] p-1">
+              <div className="bg-[#004714] px-2 border border-[#33ff33]/20 shadow-[0_0_10px_rgba(51,255,51,0.1)]">N 30°</div>
+              <div className="bg-[#004714] px-2 border border-[#33ff33]/20">54&apos;</div>
+              <div className="bg-[#004714] px-2 border border-[#33ff33]/20">16.4929&quot;</div>
             </div>
           </div>
 
           {/* Longitude Section */}
           <div>
-            <div className="text-[#ffa94d]">LONGITUDE:</div>
-            <div className="grid grid-cols-3 gap-1 bg-[#1a0f02] p-1">
-              <div className="bg-[#2a1705] px-2">W 3°</div>
-              <div className="bg-[#2a1705] px-2">56&apos;</div>
-              <div className="bg-[#2a1705] px-2">18.9551&quot;</div>
+            <div className="text-[#33ff33]">LONGITUDE:</div>
+            <div className="grid grid-cols-3 gap-1 bg-[#002b0d] p-1">
+              <div className="bg-[#004714] px-2 border border-[#33ff33]/20 shadow-[0_0_10px_rgba(51,255,51,0.1)]">W 3°</div>
+              <div className="bg-[#004714] px-2 border border-[#33ff33]/20">56&apos;</div>
+              <div className="bg-[#004714] px-2 border border-[#33ff33]/20">18.9551&quot;</div>
             </div>
           </div>
         </div>
@@ -126,11 +126,11 @@ function CoordinateDisplay() {
       <div className="space-y-4">
         {/* Array Values */}
         <div className="space-y-1 mt-4 font-mono">
-          <div className="bg-[#ffa94d] px-2 py-1 inline-block">
-            <span className="text-[#2a1705] font-bold">C_ARRAY 49C/E58AA1</span>
+          <div className="bg-[#004714] px-2 py-1 inline-block border border-[#33ff33]/20">
+            <span className="text-[#33ff33]">C_ARRAY 49C/E58AA1</span>
           </div>
-          <div className="bg-[#ffa94d] px-2 py-1 inline-block">
-            <span className="text-[#2a1705] font-bold">A_ARRAY 9B/1761268</span>
+          <div className="bg-[#004714] px-2 py-1 inline-block border border-[#33ff33]/20">
+            <span className="text-[#33ff33]">A_ARRAY 9B/1761268</span>
           </div>
         </div>
 
@@ -142,13 +142,13 @@ function CoordinateDisplay() {
           <div>Longitude: NOT FOUND</div>
           <div className="flex justify-between">
             <div>
-              <div>Accuracy: route</div>
-              <div>Status: 400</div>
+              <div>Accuracy: 98.3%</div>
+              <div className="text-[#33ff33] animate-pulse">Status: READY FOR JUMP</div>
             </div>
             {/* Battery Icon */}
-            <div className="w-4 h-6 border border-[#EFE7D1] relative">
-              <div className="w-2 h-1 bg-[#EFE7D1] absolute -top-1 left-1/2 -translate-x-1/2"></div>
-              <div className="w-full h-2/3 bg-[#EFE7D1] absolute bottom-0"></div>
+            <div className="w-4 h-6 border border-[#33ff33] relative">
+              <div className="w-2 h-1 bg-[#33ff33] absolute -top-1 left-1/2 -translate-x-1/2"></div>
+              <div className="w-full h-2/3 bg-[#33ff33] absolute bottom-0"></div>
             </div>
           </div>
         </div>
@@ -180,10 +180,10 @@ function WeaponSystemDisplay() {
   return (
     <div className="mt-4 font-mono text-[#EFE7D1] border border-[#EFE7D1] border-1 rounded-2xl p-4">
       {/* Header */}
-      <div className="border-b border-[#EFE7D1] pb-2 mb-4 flex justify-between items-center">
-        <div className="w-6 h-6 border border-[#EFE7D1] rounded-full flex items-center justify-center text-sm">A</div>
+      <div className="pb-2 mb-4 flex justify-between items-center">
+        <div className="w-6 h-6 flex items-center justify-center text-sm">A</div>
         <div className="text-center">
-          <div className="text-base">UA 571-C</div>
+          <div className="text-base">TMP 571-C</div>
         </div>
       </div>
 
@@ -192,19 +192,23 @@ function WeaponSystemDisplay() {
         <div className="space-y-4">
           {/* Rounds Display */}
           <div>
-            <div className="text-sm mb-1">Rounds Remaining</div>
+            <div className="text-sm mb-1">Time Buffer</div>
             <div className="flex items-center">
               <div className="text-xl mr-2">▶</div>
-              <div className="border border-[#EFE7D1] px-3 py-1 text-2xl">500</div>
+              <div className="px-3 py-1 text-2xl relative overflow-hidden">
+                500ms
+                <div className="absolute bottom-0 left-0 h-[2px] w-full bg-[#EFE7D1] opacity-50">
+                  <div className="h-full w-1/3 bg-[#EFE7D1] animate-[loading_2s_ease-in-out_infinite]"></div>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Time Display */}
           <div>
             <div className="text-sm mb-1">
-              TIME AT 100%
+              Sync Rate
               <br />
-              (secs)
             </div>
             <div className="border border-[#EFE7D1] px-3 py-1 text-2xl">{time.toFixed(2)}</div>
           </div>
@@ -214,7 +218,7 @@ function WeaponSystemDisplay() {
         <div className="flex justify-between h-full">
           {/* Temperature Bar */}
           <div className="flex flex-col h-full">
-            <div className="text-xs mb-1">Temp</div>
+            <div className="text-xs mb-1">Flux</div>
             <div className="flex-1 w-6 border border-[#EFE7D1] relative">
               <div
                 className="absolute bottom-0 left-0 right-0 bg-[#EFE7D1] transition-all duration-300"
@@ -225,7 +229,7 @@ function WeaponSystemDisplay() {
 
           {/* R(M) Bar */}
           <div className="flex flex-col h-full">
-            <div className="text-xs mb-1">R(M)</div>
+            <div className="text-xs mb-1">Sync</div>
             <div className="flex-1 w-6 border border-[#EFE7D1]"></div>
           </div>
         </div>
@@ -238,9 +242,43 @@ function RadarDisplay() {
   return (
     <div className={styles.radarDisplay}>
       <div className={styles.radarGrid}>
-        <div className={styles.radarBlip} style={{ top: '30%', left: '40%' }}></div>
-        <div className={styles.radarBlip} style={{ top: '60%', left: '70%' }}></div>
-        <div className={styles.radarBlip} style={{ top: '20%', left: '80%' }}></div>
+        {/* Error Icon (X) */}
+        <div className={styles.radarBlip} style={{ top: '30%', left: '40%' }}>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path 
+              d="M3 3L11 11M11 3L3 11" 
+              stroke="#ffa94d" 
+              strokeWidth="2.5" 
+              strokeLinecap="round"
+              strokeOpacity="0.9"
+            />
+          </svg>
+        </div>
+
+        {/* Triangle */}
+        <div className={styles.radarBlip} style={{ top: '60%', left: '70%' }}>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path 
+              d="M7 2L12 11H2L7 2Z" 
+              fill="#ffa94d"
+              fillOpacity="0.9"
+            />
+          </svg>
+        </div>
+
+        {/* Square */}
+        <div className={styles.radarBlip} style={{ top: '20%', left: '80%' }}>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect 
+              x="2" 
+              y="2" 
+              width="10" 
+              height="10" 
+              fill="#ffa94d"
+              fillOpacity="0.9"
+            />
+          </svg>
+        </div>
       </div>
       <WeaponSystemDisplay />
     </div>
@@ -251,7 +289,7 @@ function IntroSequence() {
   return (
     <div className={styles.desktop}>
       <motion.div 
-        className={styles.terminalCard}
+        className={`${styles.terminalCard} ${styles.terminal}`}
         initial={{ y: "100%", opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ 
@@ -262,6 +300,7 @@ function IntroSequence() {
           duration: 0.8
         }}
       >
+        <div className={styles.noise} />
         {/* First column: Typing */}
         <div className={styles.mainSection}>
           <TypewriterText text={BOOT_SEQUENCE} speed={50} />
