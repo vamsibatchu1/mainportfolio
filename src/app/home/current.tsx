@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { neueMontreal, doto } from '../../app/fonts';
 import { IBM_Plex_Mono } from 'next/font/google';
 import { Link, X } from 'lucide-react';
@@ -651,6 +651,12 @@ function SunsetCard() {
 }
 
 function SubstackCard() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, {
+    once: true,
+    margin: "-100px"
+  });
+
   const articles = [
     {
       title: "From personal computing to personal software",
@@ -671,10 +677,11 @@ function SubstackCard() {
 
   return (
     <motion.div 
+      ref={ref}
       className="w-full max-w-[1200px] bg-[#2D1D2C] rounded-[12px] p-12 grid grid-cols-4 gap-8 h-[300px] relative overflow-hidden"
       initial={{ y: 100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 1.8, duration: 0.6 }}
+      animate={isInView ? { y: 0, opacity: 1 } : { y: 100, opacity: 0 }}
+      transition={{ duration: 0.6 }}
     >
       {/* Header - First Column */}
       <div className={`${doto.className} text-white text-4xl self-start pt-4`}>
@@ -693,7 +700,7 @@ function SubstackCard() {
             rel="noopener noreferrer"
             className="w-full relative group transform-gpu"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             whileHover={{ 
               y: -40,
               transition: {
@@ -703,7 +710,7 @@ function SubstackCard() {
               }
             }}
             transition={{
-              opacity: { duration: 0.5, delay: 2.0 + index * 0.1 }
+              opacity: { duration: 0.5, delay: index * 0.1 }
             }}
           >
             <motion.div 
