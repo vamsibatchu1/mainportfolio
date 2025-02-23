@@ -1,10 +1,7 @@
 'use client';
 import "./globals.css";
 import { CalendarIcon, FolderOpen, HomeIcon, MailIcon, PencilIcon, UserIcon } from "lucide-react";
-import Link from "next/link";
 import React from "react";
-import { motion } from "framer-motion";
-import type { Metadata } from 'next'
 
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { buttonVariants } from "@/components/ui/button";
