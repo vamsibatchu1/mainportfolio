@@ -268,11 +268,11 @@ function MainCard() {
 
 function ProfileCard() {
   return (
-    <div className="w-[400px] shrink-0 bg-white rounded-xl p-4 flex flex-col gap-2">
+    <div className="w-[400px] shrink-0 bg-[#E9E8E4] rounded-xl p-4 flex flex-col justify-between border border-[#D7D3D0]">
       {/* Header */}
       <div className="flex items-center gap-2">
-        <h2 className="text-lg font-semibold">the bro-grammers</h2>
-        <div className="flex items-center gap-1">
+        <h2 className={`${doto.className} text-lg font-semibold`}>PROFILE</h2>
+        <div className="flex items-center gap-4">
           <svg className="w-4 h-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
           </svg>
@@ -302,12 +302,13 @@ function ProfileCard() {
           </div>
         </div>
       </div>
-
+      
+      <div className="flex flex-col gap-4">
       {/* Players Count */}
       <div className="text-gray-500">0 players</div>
 
       {/* Progress Bar */}
-      <div className="relative w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+      <div className="relative w-full h-2 bg-white rounded-full overflow-hidden">
         <div className="absolute left-0 top-0 h-full w-[70%] bg-green-400 rounded-full"></div>
       </div>
 
@@ -316,6 +317,8 @@ function ProfileCard() {
         <div className="text-gray-600">21 / 30XP</div>
         <div className="font-semibold">lv3</div>
       </div>
+      </div>
+
 
       {/* User Info */}
       <div className="flex items-center gap-3 mt-2">
@@ -363,7 +366,7 @@ function ProfileCard() {
 function LiveActivityCard() {
   return (
     <motion.div 
-      className="flex-1 bg-white rounded-xl p-4 flex flex-col gap-4 border border-[#D7D3D0]"
+      className="flex-1 bg-[#E9E8E4] rounded-xl p-4 flex flex-col gap-4 border border-[#D7D3D0]"
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 1.4, duration: 0.6 }}
@@ -372,7 +375,7 @@ function LiveActivityCard() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-          <h2 className="text-lg font-semibold">Live Activity</h2>
+          <h2 className={`${doto.className} text-lg font-semibold`}>LIVE ACTIVITY</h2>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-500">Last updated 2m ago</span>
@@ -475,6 +478,30 @@ function LiveActivityCard() {
           </div>
         </div>
       </div>
+    </motion.div>
+  );
+}
+
+function CurrentWorkCard() {
+  return (
+    <motion.div 
+      className="w-full max-w-[1200px] bg-white rounded-xl p-6 flex items-center justify-between border border-[#D7D3D0]"
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ 
+        delay: 0.8,
+        duration: 0.6,
+        ease: "easeOut"
+      }}
+    >
+      <span className={`${redditSans.className} text-[#767676]`}>
+        Currently leading a team of designers focused on enterprise tools and AI products
+      </span>
+      <img 
+        src="/images/Rocket.png" 
+        alt="Rocket" 
+        className="w-[130px] h-auto object-contain"
+      />
     </motion.div>
   );
 }
@@ -635,8 +662,9 @@ function ActionBar() {
 
 export default function Current() {
   return (
-    <div className="min-h-[100svh] px-24 pt-16 flex flex-col items-center gap-4 bg-[#EAE7E0]">
+    <div className="min-h-[100svh] px-24 pt-16 flex flex-col items-center gap-4 bg-[#F5F4F0]">
       <MainCard />
+      <CurrentWorkCard />
       <div className="w-full max-w-[1200px] flex gap-4">
         <ProfileCard />
         <LiveActivityCard />
