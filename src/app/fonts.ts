@@ -20,4 +20,9 @@ export const kilimanjaro = localFont({
 export const doto = localFont({
   src: '../../public/fonts/doto.ttf',
   variable: '--font-doto'
+});
+
+export const neueMontreal = localFont({
+  src: '../../public/fonts/NeueMontreal-Regular.otf',
+  variable: '--font-neue-montreal'
 }); 

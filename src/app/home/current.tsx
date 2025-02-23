@@ -2,11 +2,17 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { redditSans, doto } from '../../app/fonts';
-import { CodeXml, Link, X } from 'lucide-react';
+import { neueMontreal, doto } from '../../app/fonts';
+import { Link, X } from 'lucide-react';
 import { useOnClickOutside } from 'usehooks-ts';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type MenuItem = {
   icon: React.ReactNode
@@ -164,7 +170,7 @@ function MapCard() {
               strokeLinejoin="round"
             />
           </svg>
-          <span className={`${redditSans.className} text-sm`}>Currently based out of Atlanta</span>
+          <span className={`${neueMontreal.className} text-sm`}>Currently based out of Atlanta</span>
         </div>
       </div>
       <div ref={mapContainer} className="w-full h-[300px]" />
@@ -200,7 +206,7 @@ function LocationCard() {
           strokeLinejoin="round"
         />
       </svg>
-      <span className={`${redditSans.className} text-sm`}>Currently based out of Atlanta</span>
+      <span className={`${neueMontreal.className} text-sm`}>Currently based out of Atlanta</span>
     </motion.div>
   );
 }
@@ -223,12 +229,13 @@ function ImageCard({ delay }: { delay: number }) {
 function MainCard() {
   return (
     <motion.div 
-      className="bg-[#F5F5F4] text-white rounded-3xl p-12 w-full max-w-[1200px] h-[400px] border border-[#FAFAF9]"
+      className="bg-[#F5F5F4] text-white rounded-3xl p-12 w-full max-w-[1200px] flex flex-col gap-8 border border-[#FAFAF9]"
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6 }}
     >
-      <div className="flex gap-4 h-full">
+      {/* First Row */}
+      <div className="flex gap-4 h-[400px]">
         <div className="flex-1 flex flex-col justify-between">
           <motion.h1 
             className={`${doto.className} text-[92px] leading-[84%] tracking-[2px] text-[#000]`}
@@ -240,7 +247,7 @@ function MainCard() {
           </motion.h1>
           
           <motion.p
-            className={`${redditSans.className} text-[20px] leading-[120%] tracking-[0px] text-[#767676]`}
+            className={`${neueMontreal.className} text-[20px] leading-[120%] tracking-[0px] text-[#767676]`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8, duration: 0.6 }}
@@ -262,6 +269,67 @@ function MainCard() {
           </div>
         </div>
       </div>
+
+      {/* Second Row - Current Work */}
+      <motion.div 
+        className="flex items-center justify-between"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.0, duration: 0.6 }}
+      >
+        <span className={`${neueMontreal.className} text-[#767676]`}>
+          Currently leading a team of designers focused on{' '}
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button className="font-medium underline decoration-dotted">
+                  enterprise tools
+                </button>
+              </TooltipTrigger>
+              <TooltipContent 
+                className="py-3 bg-white"
+                sideOffset={5}
+              >
+                <AnimatePresence>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 400,
+                      damping: 25
+                    }}
+                  >
+                    <div className="space-y-2">
+                      <img
+                        className="w-full rounded"
+                        src="/images/enterprise-tools.png"
+                        width={382}
+                        height={216}
+                        alt="Enterprise Tools"
+                      />
+                      <div className="space-y-1">
+                        <p className="text-[13px] font-medium">Enterprise Design Systems</p>
+                        <p className="text-xs text-muted-foreground">
+                          Building scalable design systems and tools that power enterprise applications,
+                          focusing on consistency, accessibility, and performance.
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          {' '}and AI products
+        </span>
+        <img 
+          src="/images/Rocket.png" 
+          alt="Rocket" 
+          className="w-[130px] h-auto object-contain"
+        />
+      </motion.div>
     </motion.div>
   );
 }
@@ -625,26 +693,99 @@ function SunsetCard() {
   );
 }
 
-function CurrentWorkCard() {
+function SubstackCard() {
+  const articles = [
+    {
+      title: "From personal computing to personal software",
+      link: "https://google.com"
+    },
+    {
+      title: "The next era of design is intent-driven",
+      link: "https://google.com"
+    },
+    {
+      title: "Reimagining prototyping with AI: A new era for designers",
+      link: "https://google.com"
+    }
+  ];
+
   return (
     <motion.div 
-      className="w-full max-w-[1200px] bg-white rounded-xl p-6 flex items-center justify-between border border-[#D7D3D0]"
+      className="w-full max-w-[1200px] bg-[#2D1D2C] rounded-3xl p-12 grid grid-cols-4 gap-8 h-[400px] relative overflow-hidden"
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ 
-        delay: 0.8,
-        duration: 0.6,
-        ease: "easeOut"
-      }}
+      transition={{ delay: 1.8, duration: 0.6 }}
     >
-      <span className={`${redditSans.className} text-[#767676]`}>
-        Currently leading a team of designers focused on enterprise tools and AI products
-      </span>
-      <img 
-        src="/images/Rocket.png" 
-        alt="Rocket" 
-        className="w-[130px] h-auto object-contain"
-      />
+      {/* Header - First Column */}
+      <div className={`${doto.className} text-white text-4xl self-start pt-4`}>
+        MY RECENT<br />
+        WRITINGS ON<br />
+        DESIGN<span className="text-[#ffa94d]">.</span>
+      </div>
+
+      {/* Notes Container */}
+      <div className="col-span-3 flex gap-8 absolute -bottom-4 right-12">
+        {articles.map((article, index) => (
+          <motion.a
+            key={index}
+            href={article.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full relative group transform-gpu"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            whileHover={{ y: -40 }}
+            transition={{
+              y: { type: "spring", stiffness: 300, damping: 20 },
+              opacity: { duration: 0.5, delay: 2.0 + index * 0.1 }
+            }}
+          >
+            <motion.div 
+              className="relative w-full"
+              whileHover={{
+                scale: 1.02,
+                boxShadow: "0 20px 30px -10px rgba(0,0,0,0.2)"
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 20
+              }}
+            >
+              <img 
+                src="/images/note.svg" 
+                alt="Note background" 
+                className="w-full h-auto"
+              />
+              <div className="absolute inset-0 p-8 flex flex-col">
+                <div className={`${doto.className} space-y-1 text-[#2D1D2C]`}>
+                  <motion.div 
+                    className="text-2xl"
+                    whileHover={{ x: 5 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {article.title}
+                  </motion.div>
+                  <motion.div 
+                    className="text-2xl"
+                    whileHover={{ x: 5 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {article.subtitle}
+                  </motion.div>
+                  <motion.div 
+                    className={`text-2xl ${index === 0 ? 'text-[#2D1D2C]' : 'text-[#ffa94d]'}`}
+                    whileHover={{ x: 5 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {article.highlight}
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.a>
+        ))}
+      </div>
     </motion.div>
   );
 }
@@ -866,7 +1007,7 @@ export default function Current() {
   return (
     <div className="min-h-[100svh] px-24 pt-16 flex flex-col items-center gap-4 bg-[#FFFFFF]">
       <MainCard />
-      <CurrentWorkCard />
+      <SubstackCard />
       <div className="w-full max-w-[1200px] flex gap-4">
         <ProfileCard />
         <div className="flex-1 flex gap-4">
@@ -874,7 +1015,7 @@ export default function Current() {
           <SunsetCard />
         </div>
       </div>
-      <MapCard />
+      {/* <MapCard /> */} 
       <div className="w-full max-w-[1200px] flex justify-center mt-4">
         <IdCard />
       </div>
