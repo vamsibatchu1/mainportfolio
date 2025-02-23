@@ -19,11 +19,9 @@ import dynamic from 'next/dynamic';
 // Define animation data type
 interface LottieAsset {
   id: string;
-  w: number;
-  h: number;
-  u: string;
-  p: string;
-  e: number;
+  nm: string;
+  fr: number;
+  layers: LottieLayer[];
 }
 
 interface LottieLayer {
@@ -32,12 +30,20 @@ interface LottieLayer {
   ty: number;
   nm: string;
   sr: number;
-  ks: Record<string, unknown>;
+  ks: {
+    o: { a: number; k: number; ix: number };
+    r: { a: number; k: number; ix: number };
+    p: { a: number; k: number[]; ix: number; l?: number };
+    a: Record<string, unknown>;
+    s: Record<string, unknown>;
+  };
   ao: number;
   ip: number;
   op: number;
   st: number;
   bm: number;
+  parent?: number;
+  cl?: string;
 }
 
 interface AnimationData {
