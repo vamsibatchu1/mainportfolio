@@ -208,7 +208,7 @@ function LocationCard() {
 function ImageCard({ delay }: { delay: number }) {
   return (
     <motion.div 
-      className="bg-[#F5F5F4] rounded-2xl w-full h-full"
+      className="bg-[#fff] rounded-2xl w-full h-full"
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{
@@ -223,7 +223,7 @@ function ImageCard({ delay }: { delay: number }) {
 function MainCard() {
   return (
     <motion.div 
-      className="bg-white text-white rounded-3xl p-12 w-full max-w-[1200px] h-[400px] border border-[#D7D3D0]"
+      className="bg-[#F5F5F4] text-white rounded-3xl p-12 w-full max-w-[1200px] h-[400px] border border-[#FAFAF9]"
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6 }}
@@ -268,12 +268,12 @@ function MainCard() {
 
 function ProfileCard() {
   return (
-    <div className="w-[400px] shrink-0 bg-[#E9E8E4] rounded-xl p-4 flex flex-col justify-between border border-[#D7D3D0]">
+    <div className="w-[400px] shrink-0 bg-[#F5F5F4] rounded-xl p-4 flex flex-col justify-between border border-[#E7E5E4]">
       {/* Header */}
       <div className="flex items-center gap-2">
         <h2 className={`${doto.className} text-lg font-semibold`}>PROFILE</h2>
         <div className="flex items-center gap-4">
-          <svg className="w-4 h-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <svg className="w-4 h-4 text-white-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
           </svg>
           <svg className="w-4 h-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -366,7 +366,7 @@ function ProfileCard() {
 function LiveActivityCard() {
   return (
     <motion.div 
-      className="flex-1 bg-[#E9E8E4] rounded-xl p-4 flex flex-col gap-4 border border-[#D7D3D0]"
+      className="flex-1 bg-[#F5F5F4] rounded-xl p-4 flex flex-col gap-4 border border-[#E7E5E4]"
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 1.4, duration: 0.6 }}
@@ -476,6 +476,149 @@ function LiveActivityCard() {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function SunsetCard() {
+  const sunsetData = {
+    time: "6:42",
+    date: "March 15, 2024",
+    timeToDestination: "1h 23m",
+    distance: "12.4 mi",
+    conditions: "Clear",
+    temperature: 72,
+    cloudHeight: "23,000 ft",
+    humidity: 46,
+    visibility: 85,
+    colors: {
+      dots: ["bg-orange-200", "bg-orange-300", "bg-orange-400"],
+      gradient: "bg-gradient-to-br from-orange-100 via-orange-200 to-orange-300"
+    }
+  };
+
+  return (
+    <motion.div
+      className="w-[400px] rounded-3xl overflow-hidden border border-[#E7E5E4]"
+      whileHover={{ scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+    >
+      {/* Gradient Background */}
+      <div className={`h-52 relative ${sunsetData.colors.gradient}`}>
+        <div className="absolute top-4 left-4 flex flex-col gap-2">
+          {sunsetData.colors.dots.map((color, i) => (
+            <div key={i} className={`w-2 h-2 rounded-full ${color}`} />
+          ))}
+        </div>
+      </div>
+
+      {/* Content Section */}
+      <div className="bg-[#F5F5F4] p-6 space-y-6">
+        {/* Header */}
+        <div className="space-y-1">
+          <div className={`${doto.className} text-xs uppercase tracking-wider text-gray-500`}>Today&apos;s Sunset</div>
+          <div className="flex items-center justify-between">
+            <div className="text-5xl font-mono">
+              {sunsetData.time}
+              <span className="text-lg">pm</span>
+            </div>
+            <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </div>
+          <div className="text-xs text-gray-500">{sunsetData.date}</div>
+        </div>
+
+        {/* Time and Distance */}
+        <div className="grid grid-cols-2 gap-8">
+          <div>
+            <div className={`${doto.className} text-xs uppercase tracking-wider text-gray-500 mb-1`}>Time to Destination</div>
+            <div className="text-2xl font-mono">{sunsetData.timeToDestination}</div>
+          </div>
+          <div>
+            <div className={`${doto.className} text-xs uppercase tracking-wider text-gray-500 mb-1`}>Distance Left</div>
+            <div className="text-2xl font-mono">{sunsetData.distance}</div>
+          </div>
+        </div>
+
+        {/* Conditions Grid */}
+        <div className="grid grid-cols-2 gap-8">
+          <div className="space-y-4">
+            <div>
+              <div className={`${doto.className} text-xs uppercase tracking-wider text-gray-500 mb-1`}>Sunset Conditions</div>
+              <div className="flex items-center gap-3">
+                <div>{sunsetData.conditions}</div>
+                <div className="w-1 h-6 bg-white rounded-full overflow-hidden">
+                  <motion.div
+                    className="w-full bg-orange-400"
+                    initial={{ height: 0 }}
+                    animate={{ height: "60%" }}
+                    transition={{ delay: 0.5 }}
+                  />
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className={`${doto.className} text-xs uppercase tracking-wider text-gray-500 mb-1`}>Cloud Height</div>
+              <div className="flex items-center gap-3">
+                <div>{sunsetData.cloudHeight}</div>
+                <div className="w-1 h-6 bg-white rounded-full overflow-hidden">
+                  <motion.div
+                    className="w-full bg-orange-400"
+                    initial={{ height: 0 }}
+                    animate={{ height: "80%" }}
+                    transition={{ delay: 0.6 }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="space-y-4">
+            <div>
+              <div className={`${doto.className} text-xs uppercase tracking-wider text-gray-500 mb-1`}>Temperature</div>
+              <div className="flex items-center gap-3">
+                <div>{sunsetData.temperature}°</div>
+                <div className="w-1 h-6 bg-white rounded-full overflow-hidden">
+                  <motion.div
+                    className="w-full bg-orange-400"
+                    initial={{ height: 0 }}
+                    animate={{ height: "40%" }}
+                    transition={{ delay: 0.7 }}
+                  />
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className={`${doto.className} text-xs uppercase tracking-wider text-gray-500 mb-1`}>Humidity</div>
+              <div className="flex items-center gap-3">
+                <div>{sunsetData.humidity}%</div>
+                <div className="w-1 h-6 bg-white rounded-full overflow-hidden">
+                  <motion.div
+                    className="w-full bg-orange-400"
+                    initial={{ height: 0 }}
+                    animate={{ height: "46%" }}
+                    transition={{ delay: 0.8 }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Visibility Bar */}
+        <div>
+          <div className={`${doto.className} text-xs uppercase tracking-wider text-gray-500 mb-2`}>% Full Visibility</div>
+          <div className="h-2 w-full bg-white rounded-full overflow-hidden">
+            <motion.div
+              className={`h-full ${sunsetData.colors.gradient}`}
+              initial={{ width: 0 }}
+              animate={{ width: `${sunsetData.visibility}%` }}
+              transition={{ delay: 1, duration: 1 }}
+            />
+          </div>
+          <div className="mt-1 font-mono">{sunsetData.visibility}</div>
         </div>
       </div>
     </motion.div>
@@ -660,16 +803,81 @@ function ActionBar() {
   );
 }
 
+function IdCard() {
+  const cardData = {
+    name: "Vamsi Batchu",
+    title: "Product Design Leader",
+    description: "Designing and leading teams developing highly impactful products at scale. Currently focused on enterprise tools and AI products.",
+    imageUrl: "/images/profile.jpg"  // Add your profile image to public/images/
+  };
+
+  return (
+    <motion.div 
+      className="w-[320px] bg-[#ff69b4] rounded-2xl overflow-hidden font-mono"
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ delay: 2.4, duration: 0.6 }}
+    >
+      {/* Main Content */}
+      <div className="p-4 space-y-4">
+        {/* Title */}
+        <h1 className="text-black text-5xl font-black tracking-tighter">AGORA</h1>
+
+        {/* Photo */}
+        <div className="aspect-[3/4] w-full bg-gray-900">
+          <img
+            src={cardData.imageUrl}
+            alt={cardData.name}
+            className="w-full h-full object-cover grayscale contrast-125"
+          />
+        </div>
+
+        {/* Name and Title */}
+        <div className="space-y-1">
+          <h2 className="text-black text-2xl font-bold tracking-tight">
+            {cardData.name.toUpperCase()}
+          </h2>
+          <p className="text-black text-sm font-medium">
+            {cardData.title.toUpperCase()}
+          </p>
+        </div>
+
+        {/* Description */}
+        <p className="text-black text-sm leading-tight">
+          {cardData.description}
+        </p>
+      </div>
+
+      {/* Bottom Strip */}
+      <div className="bg-black text-white text-xs py-1 px-4 whitespace-nowrap overflow-hidden">
+        <div className="animate-scroll-x flex gap-2">
+          {Array(10)
+            .fill("GRATUITO →")
+            .map((text, i) => (
+              <span key={i}>{text}</span>
+            ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function Current() {
   return (
-    <div className="min-h-[100svh] px-24 pt-16 flex flex-col items-center gap-4 bg-[#F5F4F0]">
+    <div className="min-h-[100svh] px-24 pt-16 flex flex-col items-center gap-4 bg-[#FFFFFF]">
       <MainCard />
       <CurrentWorkCard />
       <div className="w-full max-w-[1200px] flex gap-4">
         <ProfileCard />
-        <LiveActivityCard />
+        <div className="flex-1 flex gap-4">
+          <LiveActivityCard />
+          <SunsetCard />
+        </div>
       </div>
       <MapCard />
+      <div className="w-full max-w-[1200px] flex justify-center mt-4">
+        <IdCard />
+      </div>
       <div className="relative w-full h-[200px] mt-8">
         <ActionBar />
       </div>
