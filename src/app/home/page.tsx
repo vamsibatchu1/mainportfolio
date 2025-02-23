@@ -4,9 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Past from './past';
 import Transition from './transition';
-import Current from './current';
+import dynamic from 'next/dynamic';
 
 type Phase = 'past' | 'transition' | 'current';
+
+const Current = dynamic(() => import('./current'), { ssr: false });
 
 export default function Home() {
   const [currentPhase, setCurrentPhase] = useState<Phase>('past');

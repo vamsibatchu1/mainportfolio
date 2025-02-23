@@ -14,7 +14,6 @@ import {
 import { TextScramble } from "@/components/ui/text-scramble";
 import { doto } from '../fonts';
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
-import dynamic from 'next/dynamic';
 
 interface KeyframePoint {
   i?: { x: number | number[]; y: number | number[] };
@@ -40,6 +39,33 @@ interface Transform {
   s: TransformProperty;
 }
 
+interface MaskProperty {
+  inv: boolean;
+  mode: string;
+  pt: { k: number[] }[];
+  o: { k: number };
+  x: { k: number };
+  nm: string;
+}
+
+interface Effect {
+  ty: number;
+  nm: string;
+  ef: unknown[];
+}
+
+interface Shape {
+  ty: string;
+  it: unknown[];
+  nm: string;
+}
+
+interface Marker {
+  tm: number;
+  cm: string;
+  dr: number;
+}
+
 interface LottieLayer {
   ddd: number;
   ind: number;
@@ -56,9 +82,9 @@ interface LottieLayer {
   cl?: string;
   td?: number;
   hasMask?: boolean;
-  masksProperties?: any[];
-  ef?: any[];
-  shapes?: any[];
+  masksProperties?: MaskProperty[];
+  ef?: Effect[];
+  shapes?: Shape[];
   w?: number;
   h?: number;
   refId?: string;
@@ -88,7 +114,7 @@ interface AnimationData {
   ddd: number;
   assets: LottieAsset[];
   layers: LottieLayer[];
-  markers?: any[];
+  markers?: Marker[];
 }
 
 // Initialize IBM Plex Mono
