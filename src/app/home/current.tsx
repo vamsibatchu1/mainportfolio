@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
-import { neueMontreal, doto } from '../../app/fonts';
 import { IBM_Plex_Mono } from 'next/font/google';
 import { Link, X } from 'lucide-react';
 import { useOnClickOutside } from 'usehooks-ts';
@@ -13,6 +12,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { TextScramble } from "@/components/ui/text-scramble";
+import { doto } from '../fonts';
 
 // Initialize IBM Plex Mono
 const ibmPlexMono = IBM_Plex_Mono({
@@ -64,22 +64,28 @@ const menuItems: MenuItem[] = [
     ),
     label: 'About',
   },
+  {
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+      </svg>
+    ),
+    label: 'Ask',
+  },
 ]
 
 const menuItemsContent: MenuItemContent[] = [
   {
     items: [
       {
-        image: '/work/project1.jpg',
-        title: 'Project One',
-        description: 'Design System',
-        tag: 'UX Design',
+        image: '/images/project_rocket.png',
+        title: 'Home Buying Plan',
+        description: 'Led design for a 0-1 nurturing product to help first time home buyers',
       },
       {
-        image: '/work/project2.jpg',
-        title: 'Project Two',
-        description: 'Mobile App',
-        tag: 'Product',
+        image: '/images/project_truist.png',
+        title: 'Billpay Redesign',
+        description: 'Redesigned a billpay system for 6 million users of a major bank',
       },
     ],
   },
@@ -109,6 +115,20 @@ const menuItemsContent: MenuItemContent[] = [
       {
         title: 'Leadership',
         date: '5+ years',
+        icon: <Link size={20} />,
+      },
+    ],
+  },
+  {
+    items: [
+      {
+        title: 'Ask me anything',
+        description: 'Questions about design, leadership, or career',
+        icon: <Link size={20} />,
+      },
+      {
+        title: 'Schedule a chat',
+        description: 'Book a 30-minute consultation',
         icon: <Link size={20} />,
       },
     ],
@@ -166,7 +186,7 @@ function MainCard() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8, duration: 0.6 }}
           >
-            hands-on product design leader with 10+ years of experience in designing and leading teams developing highly impactful products at scale.
+            hands-on product design leader with 11+ years of experience in designing and leading teams developing highly impactful products at scale.
           </motion.p>
         </div>
 
@@ -217,7 +237,7 @@ function MainCard() {
                     <div className="space-y-2">
                       <img
                         className="w-full rounded"
-                        src="/images/enterprise-tools.png"
+                        src="/images/tooltip_enterprise.png"
                         width={382}
                         height={216}
                         alt="Enterprise Tools"
@@ -796,15 +816,15 @@ function ActionBar() {
   };
 
   return (
-    <div className="absolute inset-0 flex items-end justify-center pb-8">
+    <div className="fixed bottom-8 left-0 right-0 flex items-end justify-center z-50">
       <motion.div
-        className="absolute z-[2] flex w-[410px] items-center justify-center gap-2 bg-white rounded-2xl"
+        className="absolute z-[2] flex w-[440px] items-center justify-center gap-2 bg-white rounded-xl"
         style={{ borderRadius: 16 }}
       >
         {menuItems.map((item, index) => (
           <motion.button
             key={index}
-            className="flex items-center justify-center gap-2 px-4 py-3 transition-colors duration-300 hover:bg-black/5"
+            className="flex items-center justify-center gap-2 px-4 py-4 transition-colors duration-300 hover:bg-black/5"
             style={{ borderRadius: 16 }}
             onMouseEnter={() => handleMouseEnter(index)}
           >
@@ -820,8 +840,8 @@ function ActionBar() {
           className="overflow-hidden bg-white backdrop-blur-xl border border-[#D7D3D0]"
           style={{ borderRadius: 16 }}
           animate={{
-            width: activeIndex !== null ? ['500px', '460px', '480px'][activeIndex] : '410px',
-            height: activeIndex !== null ? ['290px', '284px', '226px'][activeIndex] : '48px',
+            width: activeIndex !== null ? ['500px', '460px', '480px', '460px'][activeIndex] : '410px',
+            height: activeIndex !== null ? ['290px', '244px', '226px', '280px'][activeIndex] : '48px',
             y: activeIndex !== null ? 17 : 0,
           }}
           transition={{
@@ -835,7 +855,7 @@ function ActionBar() {
             {activeIndex !== null && (
               <motion.div
                 key={activeIndex}
-                className="absolute bottom-16 flex w-full flex-col items-center p-4"
+                className="absolute bottom-20 flex w-full flex-col items-center p-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -858,9 +878,9 @@ function ActionBar() {
                     )}
                     {item.icon && <div className="mr-1.5">{item.icon}</div>}
                     <div className="flex w-full flex-col items-start">
-                      <p className="font-medium">{item.title}</p>
+                      <p className={`font-medium`}>{item.title}</p>
                       {item.description && (
-                        <p className="opacity-80">{item.description}</p>
+                        <p className={`${ibmPlexMono.className} text-sm opacity-80`}>{item.description}</p>
                       )}
                     </div>
                     {item.tag && (
@@ -878,7 +898,6 @@ function ActionBar() {
                     )}
                   </div>
                 ))}
-                <div className="mt-4 h-[2px] w-[95%] bg-black/10"></div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -920,65 +939,6 @@ function ActionBar() {
   );
 }
 
-function IdCard() {
-  const cardData = {
-    name: "Vamsi Batchu",
-    title: "Product Design Leader",
-    description: "Designing and leading teams developing highly impactful products at scale. Currently focused on enterprise tools and AI products.",
-    imageUrl: "/images/profile.jpg"  // Add your profile image to public/images/
-  };
-
-  return (
-    <motion.div 
-      className="w-[320px] bg-[#ff69b4] rounded-2xl overflow-hidden font-mono"
-      initial={{ y: 100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 2.4, duration: 0.6 }}
-    >
-      {/* Main Content */}
-      <div className="p-4 space-y-4">
-        {/* Title */}
-        <h1 className="text-black text-5xl font-black tracking-tighter">AGORA</h1>
-
-        {/* Photo */}
-        <div className="aspect-[3/4] w-full bg-gray-900">
-          <img
-            src={cardData.imageUrl}
-            alt={cardData.name}
-            className="w-full h-full object-cover grayscale contrast-125"
-          />
-        </div>
-
-        {/* Name and Title */}
-        <div className="space-y-1">
-          <h2 className="text-black text-2xl font-bold tracking-tight">
-            {cardData.name.toUpperCase()}
-          </h2>
-          <p className="text-black text-sm font-medium">
-            {cardData.title.toUpperCase()}
-          </p>
-        </div>
-
-        {/* Description */}
-        <p className="text-black text-sm leading-tight">
-          {cardData.description}
-        </p>
-      </div>
-
-      {/* Bottom Strip */}
-      <div className="bg-black text-white text-xs py-1 px-4 whitespace-nowrap overflow-hidden">
-        <div className="animate-scroll-x flex gap-2">
-          {Array(10)
-            .fill("GRATUITO →")
-            .map((text, i) => (
-              <span key={i}>{text}</span>
-            ))}
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
 export default function Current() {
   return (
     <div className="min-h-[100svh] px-24 pt-16 flex flex-col items-center gap-4 bg-[#F5F4F0]">
@@ -990,9 +950,6 @@ export default function Current() {
           <LiveActivityCard />
           <SunsetCard />
         </div>
-      </div>
-      <div className="w-full max-w-[1200px] flex justify-center mt-4">
-        <IdCard />
       </div>
       <div className="relative w-full h-[200px] mt-8">
         <ActionBar />
