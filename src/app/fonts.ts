@@ -26,3 +26,8 @@ export const neueMontreal = localFont({
   src: '../../public/fonts/NeueMontreal-Regular.otf',
   variable: '--font-neue-montreal'
 }); 
+
+export const newake = localFont({
+  src: '../../public/fonts/Newake.otf',
+  variable: '--font-newake'
+}); 
