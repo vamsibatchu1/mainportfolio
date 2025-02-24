@@ -194,62 +194,6 @@ function MainCard() {
   );
 }
 
-function ProfileCard() {
-  return (
-    <div className="w-[400px] shrink-0 bg-[#fff] rounded-xl p-4 flex flex-col justify-between border border-[#E7E5E4]">
-      <div className="flex items-center gap-2">
-        <h2 className={`${doto.className} text-lg font-semibold`}>PROFILE</h2>
-      </div>
-      <div className="flex flex-col gap-4">
-        <div className="text-gray-500">0 players</div>
-        <div className="relative w-full h-2 bg-white rounded-full overflow-hidden">
-          <div className="absolute left-0 top-0 h-full w-[70%] bg-green-400 rounded-full"></div>
-        </div>
-        <div className="flex justify-between items-center">
-          <div className="text-gray-600">21 / 30XP</div>
-          <div className="font-semibold">lv3</div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function LiveActivityCard() {
-  return (
-    <motion.div 
-      className="flex-1 bg-[#fff] rounded-xl p-4 flex flex-col gap-4 border border-[#E7E5E4]"
-      initial={{ y: 100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 1.4, duration: 0.6 }}
-    >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-          <h2 className={`${doto.className} text-lg font-semibold`}>LIVE ACTIVITY</h2>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-function SunsetCard() {
-  return (
-    <motion.div
-      className="w-[400px] rounded-3xl overflow-hidden border border-[#E7E5E4]"
-      whileHover={{ scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 400, damping: 30 }}
-    >
-      <div className="h-52 relative bg-gradient-to-br from-orange-100 via-orange-200 to-orange-300">
-        <div className="absolute top-4 left-4 flex flex-col gap-2">
-          {["bg-orange-200", "bg-orange-300", "bg-orange-400"].map((color, i) => (
-            <div key={i} className={`w-2 h-2 rounded-full ${color}`} />
-          ))}
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
 function SubstackCard() {
   const ref = useRef(null);
   const isInView = useInView(ref, {
@@ -371,13 +315,6 @@ export default function Current() {
     <div className="min-h-[100svh] px-24 pt-16 flex flex-col items-center gap-4 bg-[#F5F4F0]">
       <MainCard />
       <SubstackCard />
-      <div className="w-full max-w-[1200px] flex gap-4">
-        <ProfileCard />
-        <div className="flex-1 flex gap-4">
-          <LiveActivityCard />
-          <SunsetCard />
-        </div>
-      </div>
     </div>
   );
 } 
