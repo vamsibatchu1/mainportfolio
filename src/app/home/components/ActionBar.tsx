@@ -7,6 +7,7 @@ import { useOnClickOutside } from 'usehooks-ts';
 import { useRouter } from 'next/navigation';
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import { IBM_Plex_Mono } from 'next/font/google';
+import { MENU_CONTENT_MAP } from './menu-content';
 
 const ibmPlexMono = IBM_Plex_Mono({
   weight: ['400', '500', '600'],
@@ -277,98 +278,9 @@ export default function ActionBar() {
     },
   ];
 
-  const menuItemsContent: MenuItemContent[] = [
-    {
-      items: [
-        {
-          title: 'Welcome',
-          description: 'Return to the home page',
-          icon: <Link size={20} />,
-        },
-        {
-          title: 'Portfolio',
-          description: 'Explore my work and projects',
-          icon: <Link size={20} />,
-        },
-      ],
-    },
-    {
-      items: [
-        {
-          image: '/images/project_rocket.png',
-          title: 'Home Buying Plan',
-          description: 'Led design for a 0-1 nurturing product to help first time home buyers',
-        },
-        {
-          image: '/images/project_truist.png',
-          title: 'Billpay Redesign',
-          description: 'Redesigned a billpay system for 6 million users of a major bank',
-        },
-      ],
-    },
-    {
-      items: [
-        {
-          title: 'Design Systems',
-          tag: 'Process',
-          date: 'Jun 2024',
-          icon: <Link size={20} />,
-        },
-        {
-          title: 'Product Strategy',
-          tag: 'Leadership',
-          date: 'May 2024',
-          icon: <Link size={20} />,
-        },
-      ],
-    },
-    {
-      items: [
-        {
-          title: 'Interactive Demos',
-          description: 'Explore interactive design experiments',
-          icon: <Link size={20} />,
-        },
-        {
-          title: 'Prototypes',
-          description: 'View design prototypes and concepts',
-          icon: <Link size={20} />,
-        },
-      ],
-    },
-    {
-      items: [
-        {
-          title: 'Experience',
-          date: '10+ years',
-          icon: <Link size={20} />,
-        },
-        {
-          title: 'Leadership',
-          date: '5+ years',
-          icon: <Link size={20} />,
-        },
-      ],
-    },
-    {
-      items: [
-        {
-          title: 'Ask me anything',
-          description: 'Questions about design, leadership, or career',
-          icon: <Link size={20} />,
-        },
-        {
-          title: 'Schedule a chat',
-          description: 'Book a 30-minute consultation',
-          icon: <Link size={20} />,
-        },
-      ],
-    },
-  ];
-
   return (
     <motion.div 
-      className="fixed bottom-8 left-0 right-0 flex items-end justify-center z-50"
+      className="fixed bottom-4 left-0 right-0 flex items-end justify-center z-50"
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ 
@@ -380,7 +292,7 @@ export default function ActionBar() {
       }}
     >
       <motion.div
-        className="absolute z-[2] flex w-[720px] items-center justify-center gap-2 bg-white rounded-xl"
+        className="absolute z-[2] flex w-[720px] items-center justify-center gap-2 bg-white rounded-xl py-2"
         style={{ borderRadius: 16 }}
       >
         {menuItems.map((item, index) => (
@@ -389,7 +301,13 @@ export default function ActionBar() {
             className="relative flex items-center justify-center gap-2 px-4 py-4 transition-colors duration-300 hover:bg-black/5"
             style={{ borderRadius: 16 }}
             onMouseEnter={() => handleMouseEnter(index)}
-            onClick={() => handleNavigation(item.path)}
+            onClick={() => {
+              if (activeIndex === index) {
+                handleNavigation(item.path);
+              } else {
+                handleMouseEnter(index);
+              }
+            }}
           >
             <motion.div 
               className="relative"
@@ -411,8 +329,8 @@ export default function ActionBar() {
           className="overflow-hidden bg-white backdrop-blur-xl border border-[#D7D3D0]"
           style={{ borderRadius: 16 }}
           animate={{
-            width: activeIndex !== null ? ['500px', '460px', '480px', '460px'][activeIndex] : '440px',
-            height: activeIndex !== null ? ['290px', '244px', '226px', '280px'][activeIndex] : '48px',
+            width: activeIndex !== null ? ['730px', '730px', '730px', '730px', '730px', '730px'][activeIndex] : '720px',
+            height: activeIndex !== null ? ['280px', '320px', '240px', '280px', '226px', '240px'][activeIndex] : '48px',
             y: activeIndex !== null ? 17 : 0,
           }}
           transition={{
@@ -426,49 +344,21 @@ export default function ActionBar() {
             {activeIndex !== null && (
               <motion.div
                 key={activeIndex}
-                className="absolute bottom-20 flex w-full flex-col items-center p-4"
+                className="absolute w-full pt-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                {menuItemsContent[activeIndex].items.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="flex w-[95%] cursor-pointer items-center gap-1.5 py-3 duration-300 hover:bg-black/5 hover:px-3"
-                    onClick={() => setShowInfo(true)}
-                    style={{ borderRadius: 16 }}
-                  >
-                    {item.image && (
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="mr-1.5 h-16 w-16 shrink-0 object-cover"
-                        style={{ borderRadius: 12 }}
-                      />
-                    )}
-                    {item.icon && <div className="mr-1.5">{item.icon}</div>}
-                    <div className="flex w-full flex-col items-start">
-                      <p className={`font-medium`}>{item.title}</p>
-                      {item.description && (
-                        <p className={`${ibmPlexMono.className} text-sm opacity-80`}>{item.description}</p>
-                      )}
-                    </div>
-                    {item.tag && (
-                      <span
-                        className="block shrink-0 border border-black/50 px-2 py-1 text-sm opacity-80"
-                        style={{ borderRadius: 8 }}
-                      >
-                        {item.tag}
-                      </span>
-                    )}
-                    {item.date && (
-                      <span className="text-md block shrink-0 px-2 py-1 opacity-80">
-                        {item.date}
-                      </span>
-                    )}
-                  </div>
-                ))}
+                {(() => {
+                  const ContentComponent = MENU_CONTENT_MAP[menuItems[activeIndex].path];
+                  return ContentComponent ? (
+                    <ContentComponent 
+                      isActive={true} 
+                      onClose={() => setActiveIndex(null)} 
+                    />
+                  ) : null;
+                })()}
               </motion.div>
             )}
           </AnimatePresence>
