@@ -12,7 +12,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 
 export function AskContent({ isActive }: MenuContentProps) {
   const items = [
-    {
+    /*{
       title: 'Ask me anything',
       description: 'Questions about design, leadership, or career',
       icon: <Link size={20} />,
@@ -21,7 +21,7 @@ export function AskContent({ isActive }: MenuContentProps) {
       title: 'Schedule a chat',
       description: 'Book a 30-minute consultation',
       icon: <Link size={20} />,
-    }
+    }*/
   ];
 
   return (

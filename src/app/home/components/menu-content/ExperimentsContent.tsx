@@ -1,8 +1,9 @@
 "use client";
 
-import { Link } from 'lucide-react';
+import React from 'react';
 import { IBM_Plex_Mono } from 'next/font/google';
-import { MenuContentProps } from './types';
+import { X } from 'lucide-react';
+import type { MenuContentProps } from './types';
 
 const ibmPlexMono = IBM_Plex_Mono({
   weight: ['400', '500', '600'],
@@ -10,40 +11,49 @@ const ibmPlexMono = IBM_Plex_Mono({
   display: 'swap',
 });
 
-export function ExperimentsContent({ isActive }: MenuContentProps) {
-  const items = [
-    {
-      title: 'Interactive Demos',
-      description: 'Explore interactive design experiments',
-      icon: <Link size={20} />,
-      link: '/experiments/demos'
-    },
-    {
-      title: 'Prototypes',
-      description: 'View design prototypes and concepts',
-      icon: <Link size={20} />,
-      link: '/experiments/prototypes'
-    }
-  ];
+// Sample experiment data
+const experiments = [
+  {
+    id: 1,
+    title: 'Goodflicks',
+    description: 'An AI powered movie recommendation and social media app',
+    image: '/images/experiments/goodflicks.jpg',
+    link: '/home/experiments/goodflicks'
+  },
+  {
+    id: 2,
+    title: 'Soundscape',
+    description: 'Interactive audio visualization experiment with Three.js',
+    image: '/images/experiments/soundscape.jpg',
+    link: '/home/experiments/soundscape'
+  }
+];
 
+export function ExperimentsContent({ isActive, onClose }: MenuContentProps) {
   return (
-    <div className="flex w-full flex-col items-center p-4">
-      {items.map((item, idx) => (
-        <a
-          key={idx}
-          href={item.link}
-          className="flex w-[95%] cursor-pointer items-center gap-1.5 py-3 duration-300 hover:bg-black/5 hover:px-3"
-          style={{ borderRadius: 16 }}
-        >
-          {item.icon && <div className="mr-1.5">{item.icon}</div>}
-          <div className="flex w-full flex-col items-start">
-            <p className="font-medium">{item.title}</p>
-            {item.description && (
-              <p className={`${ibmPlexMono.className} text-sm opacity-80`}>{item.description}</p>
-            )}
-          </div>
-        </a>
-      ))}
+    <div className="p-6 h-full">  
+      <div className="grid grid-cols-2 gap-4">
+        {experiments.map((experiment) => (
+          <a 
+            key={experiment.id}
+            href={experiment.link}
+            className="block group"
+          >
+            <div className="bg-gray-100 rounded-lg overflow-hidden hover:shadow-md transition-all duration-300">
+              <div className="p-4">
+                <h4 className="font-medium mb-1">{experiment.title}</h4>
+                <p className={`${ibmPlexMono.className} text-sm text-gray-600`}>
+                  {experiment.description}
+                </p>
+              </div>
+              <div className="bg-gray-200 h-32 w-full">
+                {/* Image placeholder - in production, use next/image */}
+                {/* <Image src={experiment.image} alt={experiment.title} width={300} height={128} /> */}
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
     </div>
   );
 } 

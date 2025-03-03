@@ -12,7 +12,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 
 export function AboutContent({ isActive }: MenuContentProps) {
   const items = [
-    {
+   /* {
       title: 'Experience',
       description: '10+ years of design and development',
       date: '10+ years',
@@ -21,7 +21,7 @@ export function AboutContent({ isActive }: MenuContentProps) {
       title: 'Leadership',
       description: 'Leading design teams and initiatives',
       date: '5+ years',
-    }
+    }*/
   ];
 
   return (

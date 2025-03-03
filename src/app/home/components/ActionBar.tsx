@@ -143,6 +143,7 @@ export default function ActionBar() {
   };
 
   const handleNavigation = (path: string) => {
+    setActiveIndex(null);
     router.push(`/home/${path.toLowerCase()}`);
   };
 
@@ -287,85 +288,99 @@ export default function ActionBar() {
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ 
-        delay: 2.0, // Start after MainCard animations (1.8s) + small gap
+        delay: 2.0,
         duration: 0.6,
         type: "spring",
         stiffness: 400,
         damping: 30
       }}
     >
-      <motion.div
-        className="absolute z-[2] flex w-[720px] items-center justify-center gap-2 bg-white rounded-xl py-2"
-        style={{ borderRadius: 16 }}
+      <div 
+        className="flex items-end justify-center w-full"
+        onMouseLeave={() => {
+          setActiveIndex(null);
+          lottieRefs.forEach(ref => {
+            if (ref.current) {
+              ref.current.goToAndStop(0);
+            }
+          });
+        }}
       >
-        {menuItems.map((item, index) => (
-          <motion.button
-            key={index}
-            className="relative flex items-center justify-center gap-2 px-4 py-4 transition-colors duration-300 hover:bg-black/5"
-            style={{ borderRadius: 16 }}
-            onMouseEnter={() => handleMouseEnter(index)}
-            onClick={() => {
-              if (activeIndex === index) {
-                handleNavigation(item.path);
-              } else {
-                handleMouseEnter(index);
-              }
-            }}
-          >
-            <motion.div 
-              className="relative"
-              animate={{ 
-                scale: activeIndex === index ? 1.1 : 1
-              }}
-              transition={{ duration: 0.2 }}
-            >
-              {item.icon(lottieRefs[index], animations[index])}
-            </motion.div>
-            <span className="font-medium text-[#2D1D2C]">{item.label}</span>
-          </motion.button>
-        ))}
-      </motion.div>
-
-      <div className="absolute left-1/2 -translate-x-1/2">
         <motion.div
-          ref={menuRef}
-          className="overflow-hidden bg-white backdrop-blur-xl border border-[#D7D3D0]"
+          className="relative z-[2] flex w-[720px] items-center justify-center gap-2 bg-white rounded-xl py-2"
           style={{ borderRadius: 16 }}
-          animate={{
-            width: activeIndex !== null ? ['730px', '730px', '730px', '730px', '730px', '730px'][activeIndex] : '720px',
-            height: activeIndex !== null ? ['280px', '320px', '240px', '280px', '226px', '240px'][activeIndex] : '48px',
-            y: activeIndex !== null ? 17 : 0,
-          }}
-          transition={{
-            type: 'spring',
-            stiffness: 500,
-            damping: 30,
-          }}
-          onMouseLeave={handleMouseLeave}
         >
-          <AnimatePresence>
-            {activeIndex !== null && (
-              <motion.div
-                key={activeIndex}
-                className="absolute w-full pt-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+          {menuItems.map((item, index) => (
+            <motion.button
+              key={index}
+              className="relative flex items-center justify-center gap-2 px-4 py-4 transition-colors duration-300 hover:bg-black/5"
+              style={{ borderRadius: 16 }}
+              onMouseEnter={() => handleMouseEnter(index)}
+              onClick={() => {
+                if (activeIndex === index) {
+                  handleNavigation(item.path);
+                } else {
+                  handleMouseEnter(index);
+                }
+              }}
+            >
+              <motion.div 
+                className="relative"
+                animate={{ 
+                  scale: activeIndex === index ? 1.1 : 1
+                }}
+                transition={{ duration: 0.2 }}
               >
-                {(() => {
-                  const ContentComponent = MENU_CONTENT_MAP[menuItems[activeIndex].path];
-                  return ContentComponent ? (
-                    <ContentComponent 
-                      isActive={true} 
-                      onClose={() => setActiveIndex(null)} 
-                    />
-                  ) : null;
-                })()}
+                {item.icon(lottieRefs[index], animations[index])}
               </motion.div>
-            )}
-          </AnimatePresence>
+              <span className="font-medium text-[#2D1D2C]">{item.label}</span>
+            </motion.button>
+          ))}
         </motion.div>
+
+        <div className="absolute left-1/2 -translate-x-1/2">
+          <motion.div
+            ref={menuRef}
+            className="overflow-hidden bg-white backdrop-blur-xl border border-[#D7D3D0]"
+            style={{ borderRadius: 16 }}
+            animate={{
+              width: activeIndex !== null ? ['730px', '730px', '730px', '730px', '730px', '730px'][activeIndex] : '720px',
+              height: activeIndex !== null ? ['280px', '320px', '240px', '380px', '226px', '240px'][activeIndex] : '48px',
+              y: activeIndex !== null ? 17 : 0,
+            }}
+            transition={{
+              type: 'spring',
+              stiffness: 500,
+              damping: 40,
+              mass: 1,
+              restDelta: 0.001
+            }}
+            onMouseLeave={handleMouseLeave}
+          >
+            <AnimatePresence>
+              {activeIndex !== null && (
+                <motion.div
+                  key={activeIndex}
+                  className="absolute w-full pt-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {(() => {
+                    const ContentComponent = MENU_CONTENT_MAP[menuItems[activeIndex].path];
+                    return ContentComponent ? (
+                      <ContentComponent 
+                        isActive={true} 
+                        onClose={() => setActiveIndex(null)} 
+                      />
+                    ) : null;
+                  })()}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </div>
       </div>
 
       <AnimatePresence>

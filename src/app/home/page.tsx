@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Current from './current';
+import StatusCard from './components/StatusCard';
 
 export default function HomePage() {
   const router = useRouter();
@@ -17,6 +18,11 @@ export default function HomePage() {
     }
   }, [router]);
 
-  return <Current />;
+  return (
+    <main>
+      <StatusCard />
+      <Current />
+    </main>
+  );
 }
 

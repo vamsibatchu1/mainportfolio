@@ -79,7 +79,10 @@ export default {
   		transitionProperty: {
   			height: 'height',
   			spacing: 'margin, padding'
-  		}
+  		},
+  		gridTemplateColumns: {
+  			'16': 'repeat(16, minmax(0, 1fr))',
+  		},
   	}
   },
 
