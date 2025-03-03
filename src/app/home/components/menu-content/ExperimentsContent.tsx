@@ -39,7 +39,7 @@ export function ExperimentsContent({ isActive, onClose }: MenuContentProps) {
             href={experiment.link}
             className="block group"
           >
-            <div className="bg-gray-100 rounded-lg overflow-hidden hover:shadow-md transition-all duration-300">
+            <div className="bg-gray-100 rounded-lg overflow-hidden transition-all duration-300">
               <div className="p-4">
                 <h4 className="font-medium mb-1">{experiment.title}</h4>
                 <p className={`${ibmPlexMono.className} text-sm text-gray-600`}>
