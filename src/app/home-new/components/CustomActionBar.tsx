@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ActionBar from '../../home/components/ActionBar';
 import styles from './styles.module.css';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 export default function CustomActionBar() {
   const [isVisible, setIsVisible] = useState(false);
@@ -97,33 +97,21 @@ export default function CustomActionBar() {
   
   return (
     <>
-      {/* Combined ActionBar and blur with single AnimatePresence */}
-      <AnimatePresence>
-        {isVisible && (
-          <>
-            {/* Page blur overlay */}
-            <motion.div 
-              className={styles.pageBlurOverlay}
-              initial={{ opacity: 1 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.05 }}
-            />
-            
-            {/* ActionBar */}
-            <motion.div 
-              ref={actionBarRef} 
-              className={styles.actionBarWrapper}
-              initial={{ y: 0, opacity: 1 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 0, opacity: 0 }}
-              transition={{ duration: 0.05 }}
-            >
-              <ActionBar />
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      {/* Instant display of both blur and action bar together */}
+      {isVisible && (
+        <>
+          {/* Page blur overlay - no animation */}
+          <div className={styles.pageBlurOverlay} />
+          
+          {/* ActionBar - no animation */}
+          <div 
+            ref={actionBarRef} 
+            className={styles.actionBarWrapper}
+          >
+            <ActionBar />
+          </div>
+        </>
+      )}
       
       {/* Additional blur for menu items when expanded */}
       {showBlur && isVisible && (

@@ -2,10 +2,18 @@
 
 import React, { useState, useEffect } from 'react';
 import { louize, doto } from '../fonts';
+import { IBM_Plex_Mono } from 'next/font/google';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TextScramble } from '@/components/ui/text-scramble';
 import CustomActionBar from './components/CustomActionBar';
 import styles from './components/styles.module.css';
+
+// Initialize IBM Plex Mono font
+const ibmPlexMono = IBM_Plex_Mono({
+  weight: ['400', '500'],
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 // Define the carousel content
 const carouselContent = [
@@ -157,8 +165,13 @@ export default function NewHomePage() {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 1, ease: "easeOut" }}
                 >
-                  {/* Left Card Content - White background */}
-                  <div className="bg-[#fff] w-full h-full p-[40px] flex flex-col justify-between">
+                  {/* Left Card Content - White background with slide-up animation */}
+                  <motion.div 
+                    className="bg-[#fff] w-full h-full p-[40px] flex flex-col justify-between"
+                    initial={{ y: 50, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  >
                     <AnimatePresence>
                       {nameVisible && (
                         <div 
@@ -224,7 +237,7 @@ export default function NewHomePage() {
                         )}
                       </AnimatePresence>
                     </div>
-                  </div>
+                  </motion.div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -241,8 +254,13 @@ export default function NewHomePage() {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 1, ease: "easeOut" }}
                 >
-                  {/* Right Card Content - White background */}
-                  <div className="bg-[#fff] w-full h-full p-[40px] flex flex-col justify-between">
+                  {/* Right Card Content - White background with slide-up animation */}
+                  <motion.div 
+                    className="bg-[#fff] w-full h-full p-[40px] flex flex-col justify-between"
+                    initial={{ y: 50, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  >
                     {/* Larger image grid */}
                     <AnimatePresence>
                       {imageVisible && (
@@ -297,7 +315,7 @@ export default function NewHomePage() {
                         </div>
                       )}
                     </AnimatePresence>
-                  </div>
+                  </motion.div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -305,7 +323,7 @@ export default function NewHomePage() {
           
           {/* Navigation Hint Container - Below cards */}
           <motion.div 
-            className={styles.navigationHint}
+            className={`${styles.navigationHint} ${ibmPlexMono.className}`}
             style={{ 
               marginTop: '16px'
             }}
@@ -319,9 +337,12 @@ export default function NewHomePage() {
               damping: 20
             }}
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 22L12 2L22 22H2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+            <img 
+              src="/images/navbar.svg" 
+              alt="Navigation icon" 
+              width={24} 
+              height={24} 
+            />
             TAP SPACEBAR TO NAVIGATE
           </motion.div>
         </div>
