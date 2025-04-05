@@ -30,13 +30,24 @@ export function TextScramble({
   const MotionComponent = motion.create(
     Component as keyof JSX.IntrinsicElements
   );
-  const [displayText, setDisplayText] = useState(children);
+  const [displayText, setDisplayText] = useState('');
   const [isAnimating, setIsAnimating] = useState(false);
   const text = children;
 
   const scramble = async () => {
     if (isAnimating) return;
     setIsAnimating(true);
+
+    // Start with fully scrambled text
+    let initialScrambled = '';
+    for (let i = 0; i < text.length; i++) {
+      if (text[i] === ' ') {
+        initialScrambled += ' ';
+      } else {
+        initialScrambled += characterSet[Math.floor(Math.random() * characterSet.length)];
+      }
+    }
+    setDisplayText(initialScrambled);
 
     const steps = duration / speed;
     let step = 0;
@@ -74,7 +85,12 @@ export function TextScramble({
   useEffect(() => {
     if (!trigger) return;
 
-    scramble();
+    // Small delay to ensure component is fully mounted
+    const timer = setTimeout(() => {
+      scramble();
+    }, 50);
+
+    return () => clearTimeout(timer);
   }, [trigger]);
 
   return (

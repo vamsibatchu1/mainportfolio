@@ -31,3 +31,8 @@ export const newake = localFont({
   src: '../../public/fonts/Newake.otf',
   variable: '--font-newake'
 }); 
+
+export const louize = localFont({
+  src: '../../public/fonts/Louize.ttf',
+  variable: '--font-louize'
+}); 
