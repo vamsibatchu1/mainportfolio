@@ -1,56 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import ActionBar from '../../home/components/ActionBar';
+import { motion, AnimatePresence } from 'framer-motion';
 import styles from './styles.module.css';
-import { motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
+
+// Import our immediate action bar with no delays
+const ImmediateActionBar = dynamic(() => import('./ImmediateActionBar'), { ssr: false });
 
 export default function CustomActionBar() {
   const [isVisible, setIsVisible] = useState(false);
-  const [showBlur, setShowBlur] = useState(false);
   const actionBarRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
-    // This function checks if any menu item is expanded
-    const checkForExpandedMenu = () => {
-      const expandedMenus = document.querySelectorAll('.overflow-hidden.bg-white.backdrop-blur-xl');
-      const menuArray = Array.from(expandedMenus);
-      
-      for (const menu of menuArray) {
-        const rect = menu.getBoundingClientRect();
-        if (rect.height > 50) {
-          return true;
-        }
-      }
-      
-      return false;
-    };
-    
-    // Function to handle mouse movement across the entire document
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!actionBarRef.current || !isVisible) return;
-      
-      const actionBarRect = actionBarRef.current.getBoundingClientRect();
-      const expandedMenuActive = checkForExpandedMenu();
-      
-      // Check if mouse is inside the ActionBar area with some additional margin
-      const insideActionBarArea = 
-        e.clientX >= actionBarRect.left - 10 && 
-        e.clientX <= actionBarRect.right + 10 && 
-        e.clientY >= actionBarRect.top - 10 && 
-        e.clientY <= actionBarRect.bottom + 50; // Extra margin at bottom where expanded menu appears
-      
-      // Only show blur when menu is expanded AND mouse is in action bar area
-      if (expandedMenuActive && insideActionBarArea) {
-        setShowBlur(true);
-      } else if (!expandedMenuActive) {
-        setShowBlur(false);
-      }
-    };
-    
-    // Function to handle when mouse leaves the document entirely
-    const handleMouseLeave = () => {
-      setShowBlur(false);
-    };
-    
     // Function to handle keyboard events
     const handleKeyDown = (e: KeyboardEvent) => {
       // Toggle ActionBar visibility on spacebar press
@@ -65,58 +25,50 @@ export default function CustomActionBar() {
       }
     };
     
-    // Set up observers and event listeners
-    const observer = new MutationObserver(() => {
-      const expandedMenuActive = checkForExpandedMenu();
-      if (!expandedMenuActive) {
-        setShowBlur(false);
-      }
-    });
-    
-    // Observe the document for changes to detect menu expansion/collapse when visible
-    if (isVisible) {
-      observer.observe(document.body, { 
-        attributes: true,
-        childList: true,
-        subtree: true
-      });
-    }
-    
-    // Add global mouse and keyboard event listeners
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseleave', handleMouseLeave);
+    // Add global keyboard event listener
     document.addEventListener('keydown', handleKeyDown);
     
     return () => {
-      observer.disconnect();
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isVisible]);
+  }, []);
   
   return (
     <>
-      {/* Instant display of both blur and action bar together */}
-      {isVisible && (
-        <>
-          {/* Page blur overlay - no animation */}
-          <div className={styles.pageBlurOverlay} />
-          
-          {/* ActionBar - no animation */}
-          <div 
+      {/* Background blur overlay with enter/exit animations */}
+      <AnimatePresence>
+        {isVisible && (
+          <motion.div 
+            className={styles.blurOverlay}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          />
+        )}
+      </AnimatePresence>
+      
+      {/* ActionBar with enter/exit animations */}
+      <AnimatePresence>
+        {isVisible && (
+          <motion.div 
             ref={actionBarRef} 
             className={styles.actionBarWrapper}
+            style={{ zIndex: 999 }}
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            transition={{ 
+              duration: 0.3,
+              type: "spring", 
+              stiffness: 500, 
+              damping: 30 
+            }}
           >
-            <ActionBar />
-          </div>
-        </>
-      )}
-      
-      {/* Additional blur for menu items when expanded */}
-      {showBlur && isVisible && (
-        <div className={styles.menuBlurOverlay} />
-      )}
+            <ImmediateActionBar />
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       {/* Keyboard instruction indicator - shows briefly when page loads */}
       <motion.div 

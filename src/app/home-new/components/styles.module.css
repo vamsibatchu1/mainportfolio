@@ -6,30 +6,18 @@
   z-index: 60;
 }
 
-/* Page blur overlay when ActionBar is triggered */
-.pageBlurOverlay {
+/* Blur overlay for when ActionBar is active */
+.blurOverlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(8px);
-  z-index: 40;
-  pointer-events: none;
-}
-
-/* Additional blur for menu items when expanded */
-.menuBlurOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(5px);
   z-index: 50;
   pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
 /* Clean navigation hint that appears at the bottom center of the viewport */
