@@ -48,8 +48,8 @@ function ImageCard({ delay }: { delay: number }) {
   return (
     <motion.div 
       className="bg-[#f1f1f1] rounded-2xl w-full h-full"
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{
         delay,
         duration: 0.4,
@@ -63,13 +63,13 @@ function ImageCard({ delay }: { delay: number }) {
 const GridLayout1 = ({ delay = 0 }: { delay?: number }) => (
   <div className="relative h-full w-full">
     {/* 3-card layout (current one): 1 large left, 2 small right */}
-    <div className="absolute left-0 top-0 w-[343px] h-[448px]">
+    <div className="absolute left-0 top-0 w-[343px] h-[488px]">
       <ImageCard delay={delay + 0.2} />
     </div>
-    <div className="absolute right-0 top-0 w-[188px] h-[214px] ml-[20px]">
+    <div className="absolute right-0 top-0 w-[188px] h-[234px] ml-[20px]">
       <ImageCard delay={delay + 0.4} />
     </div>
-    <div className="absolute right-0 bottom-0 w-[188px] h-[214px] mt-[20px] ml-[20px]">
+    <div className="absolute right-0 bottom-0 w-[188px] h-[234px] mt-[20px] ml-[20px]">
       <ImageCard delay={delay + 0.6} />
     </div>
   </div>
@@ -78,10 +78,10 @@ const GridLayout1 = ({ delay = 0 }: { delay?: number }) => (
 const GridLayout2 = ({ delay = 0 }: { delay?: number }) => (
   <div className="relative h-full w-full">
     {/* 2-card layout: side by side equal width */}
-    <div className="absolute left-0 top-0 w-[270px] h-[448px]">
+    <div className="absolute left-0 top-0 w-[270px] h-[488px]">
       <ImageCard delay={delay + 0.2} />
     </div>
-    <div className="absolute right-0 top-0 w-[270px] h-[448px]">
+    <div className="absolute right-0 top-0 w-[270px] h-[488px]">
       <ImageCard delay={delay + 0.4} />
     </div>
   </div>
@@ -90,16 +90,16 @@ const GridLayout2 = ({ delay = 0 }: { delay?: number }) => (
 const GridLayout3 = ({ delay = 0 }: { delay?: number }) => (
   <div className="relative h-full w-full">
     {/* 4-card grid layout */}
-    <div className="absolute left-0 top-0 w-[270px] h-[214px]">
+    <div className="absolute left-0 top-0 w-[270px] h-[234px]">
       <ImageCard delay={delay + 0.2} />
     </div>
-    <div className="absolute right-0 top-0 w-[270px] h-[214px]">
+    <div className="absolute right-0 top-0 w-[270px] h-[234px]">
       <ImageCard delay={delay + 0.3} />
     </div>
-    <div className="absolute left-0 bottom-0 w-[270px] h-[214px]">
+    <div className="absolute left-0 bottom-0 w-[270px] h-[234px]">
       <ImageCard delay={delay + 0.4} />
     </div>
-    <div className="absolute right-0 bottom-0 w-[270px] h-[214px]">
+    <div className="absolute right-0 bottom-0 w-[270px] h-[234px]">
       <ImageCard delay={delay + 0.5} />
     </div>
   </div>
@@ -107,8 +107,8 @@ const GridLayout3 = ({ delay = 0 }: { delay?: number }) => (
 
 const GridLayout4 = ({ delay = 0 }: { delay?: number }) => (
   <div className="relative h-full w-full">
-    {/* 1 large card centered */}
-    <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px]">
+    {/* 1 large card centered - adjusted to maintain consistent margins */}
+    <div className="absolute left-0 top-0 w-full h-full">
       <ImageCard delay={delay + 0.2} />
     </div>
   </div>
@@ -116,35 +116,38 @@ const GridLayout4 = ({ delay = 0 }: { delay?: number }) => (
 
 const GridLayout5 = ({ delay = 0 }: { delay?: number }) => (
   <div className="relative h-full w-full">
-    {/* 3-card staggered layout */}
-    <div className="absolute left-0 top-0 w-[200px] h-[448px]">
+    {/* 4-card layout - adjusted for consistent margins */}
+    <div className="absolute left-0 top-0 w-[343px] h-[234px]">
       <ImageCard delay={delay + 0.2} />
     </div>
-    <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[230px] h-[230px]">
+    <div className="absolute right-0 top-0 w-[188px] h-[234px]">
+      <ImageCard delay={delay + 0.3} />
+    </div>
+    <div className="absolute left-0 bottom-0 w-[188px] h-[234px]">
       <ImageCard delay={delay + 0.4} />
     </div>
-    <div className="absolute right-0 bottom-0 w-[200px] h-[448px]">
-      <ImageCard delay={delay + 0.6} />
+    <div className="absolute right-0 bottom-0 w-[343px] h-[234px]">
+      <ImageCard delay={delay + 0.5} />
     </div>
   </div>
 );
 
 const GridLayout6 = ({ delay = 0 }: { delay?: number }) => (
   <div className="relative h-full w-full">
-    {/* 5-card mosaic */}
-    <div className="absolute left-0 top-0 w-[260px] h-[260px]">
+    {/* 5-card mosaic - adjusted for consistent margins */}
+    <div className="absolute left-0 top-0 w-[343px] h-[234px]">
       <ImageCard delay={delay + 0.1} />
     </div>
-    <div className="absolute right-0 top-0 w-[170px] h-[120px]">
+    <div className="absolute right-0 top-0 w-[188px] h-[110px]">
       <ImageCard delay={delay + 0.2} />
     </div>
-    <div className="absolute right-0 top-[140px] w-[170px] h-[120px]">
+    <div className="absolute right-0 top-[120px] w-[188px] h-[110px]">
       <ImageCard delay={delay + 0.3} />
     </div>
-    <div className="absolute left-0 bottom-0 w-[170px] h-[168px]">
+    <div className="absolute left-0 bottom-0 w-[160px] h-[234px]">
       <ImageCard delay={delay + 0.4} />
     </div>
-    <div className="absolute left-[190px] bottom-0 w-[349px] h-[168px]">
+    <div className="absolute left-[170px] bottom-0 w-[361px] h-[234px]">
       <ImageCard delay={delay + 0.5} />
     </div>
   </div>
@@ -445,8 +448,8 @@ export default function NewHomePage() {
                     <AnimatePresence mode="wait">
                       {imageVisible && (
                         <motion.div 
-                          key={currentPair} // Add key to force re-render when currentPair changes
-                          className="w-full h-[448px] overflow-hidden"
+                          key={currentPair}
+                          className="w-full h-[488px] overflow-hidden"
                           initial={{ opacity: 0, y: 30 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0 }}
@@ -461,7 +464,7 @@ export default function NewHomePage() {
                     {/* Right Side Content with rotating Icon/Text pairs */}
                     <AnimatePresence>
                       {iconTextVisible && (
-                        <div className="mt-auto">
+                        <div className="flex items-center">
                           <AnimatePresence mode="wait">
                             <motion.div 
                               key={currentPair}
@@ -594,8 +597,8 @@ export default function NewHomePage() {
                     <AnimatePresence mode="wait">
                       {imageVisible && (
                         <motion.div 
-                          key={currentPair} // Add key to force re-render when currentPair changes
-                          className="w-full h-[460px] mb-10"
+                          key={currentPair}
+                          className="w-full h-[500px] overflow-hidden"
                           initial={{ opacity: 0, y: 15 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0 }}
@@ -643,39 +646,42 @@ export default function NewHomePage() {
                           )}
                           {currentPair === 3 && (
                             <div className="relative h-full w-full">
-                              <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%]">
+                              <div className="absolute left-0 top-0 w-full h-full">
                                 <ImageCard delay={0.2} />
                               </div>
                             </div>
                           )}
                           {currentPair === 4 && (
                             <div className="relative h-full w-full">
-                              <div className="absolute left-0 top-0 w-[30%] h-full">
+                              <div className="absolute left-0 top-0 w-[61%] h-[48%]">
                                 <ImageCard delay={0.2} />
                               </div>
-                              <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[30%] h-[30%]">
+                              <div className="absolute right-0 top-0 w-[35%] h-[48%]">
+                                <ImageCard delay={0.3} />
+                              </div>
+                              <div className="absolute left-0 bottom-0 w-[35%] h-[48%]">
                                 <ImageCard delay={0.4} />
                               </div>
-                              <div className="absolute right-0 bottom-0 w-[30%] h-full">
-                                <ImageCard delay={0.6} />
+                              <div className="absolute right-0 bottom-0 w-[61%] h-[48%]">
+                                <ImageCard delay={0.5} />
                               </div>
                             </div>
                           )}
                           {currentPair === 5 && (
                             <div className="relative h-full w-full">
-                              <div className="absolute left-0 top-0 w-[61%] h-[61%]">
+                              <div className="absolute left-0 top-0 w-[61%] h-[48%]">
                                 <ImageCard delay={0.1} />
                               </div>
-                              <div className="absolute right-0 top-0 w-[35%] h-[28%]">
+                              <div className="absolute right-0 top-0 w-[35%] h-[22%]">
                                 <ImageCard delay={0.2} />
                               </div>
-                              <div className="absolute right-0 top-[32%] w-[35%] h-[28%]">
+                              <div className="absolute right-0 top-[26%] w-[35%] h-[22%]">
                                 <ImageCard delay={0.3} />
                               </div>
-                              <div className="absolute left-0 bottom-0 w-[35%] h-[35%]">
+                              <div className="absolute left-0 bottom-0 w-[29%] h-[48%]">
                                 <ImageCard delay={0.4} />
                               </div>
-                              <div className="absolute right-[37%] bottom-0 w-[63%] h-[35%]">
+                              <div className="absolute left-[33%] bottom-0 w-[67%] h-[48%]">
                                 <ImageCard delay={0.5} />
                               </div>
                             </div>
@@ -690,7 +696,7 @@ export default function NewHomePage() {
               {/* Right Side Content with rotating Icon/Text pairs for mobile - consistent padding */}
               <AnimatePresence>
                 {iconTextVisible && (
-                  <div className="h-[60px] mb-8">
+                  <div className="flex items-center h-[60px]">
                     <AnimatePresence mode="wait">
                       <motion.div 
                         key={currentPair}
