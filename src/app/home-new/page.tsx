@@ -59,18 +59,40 @@ function ImageCard({ delay }: { delay: number }) {
   );
 }
 
+// Add a new ImgCard component for cards with images
+function ImgCard({ delay, imageSrc }: { delay: number; imageSrc: string }) {
+  return (
+    <motion.div 
+      className="bg-[#f1f1f1] rounded-2xl w-full h-full relative flex items-center justify-center"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{
+        delay,
+        duration: 0.4,
+        ease: "easeOut"
+      }}
+    >
+      <img 
+        src={imageSrc} 
+        alt="Carousel image" 
+        className="w-auto h-auto max-w-[90%] max-h-[90%] object-contain absolute bottom-0 left-1/2 transform -translate-x-1/2"
+      />
+    </motion.div>
+  );
+}
+
 // Define different image grid layouts that correspond to each carousel item
 const GridLayout1 = ({ delay = 0 }: { delay?: number }) => (
   <div className="relative h-full w-full">
-    {/* 3-card layout (current one): 1 large left, 2 small right */}
-    <div className="absolute left-0 top-0 w-[343px] h-[488px]">
-      <ImageCard delay={delay + 0.2} />
+    {/* Updated layout: 1 large card on top, 2 equal cards on bottom */}
+    <div className="absolute left-0 top-0 w-full h-[320px]">
+      <ImgCard delay={delay + 0.2} imageSrc="/productshots/carousel-A1.svg" />
     </div>
-    <div className="absolute right-0 top-0 w-[188px] h-[234px] ml-[20px]">
-      <ImageCard delay={delay + 0.4} />
+    <div className="absolute left-0 bottom-0 w-[48%] h-[148px]">
+      <ImgCard delay={delay + 0.4} imageSrc="/productshots/carousel-A2.svg" />
     </div>
-    <div className="absolute right-0 bottom-0 w-[188px] h-[234px] mt-[20px] ml-[20px]">
-      <ImageCard delay={delay + 0.6} />
+    <div className="absolute right-0 bottom-0 w-[48%] h-[148px]">
+      <ImgCard delay={delay + 0.6} imageSrc="/productshots/carousel-A3.svg" />
     </div>
   </div>
 );
@@ -258,7 +280,7 @@ export default function NewHomePage() {
     if (iconTextVisible) {
       const carouselTimer = setInterval(() => {
         setCurrentPair((prev) => (prev + 1) % carouselContent.length);
-      }, 2000);
+      }, 4000);
       
       return () => clearInterval(carouselTimer);
     }
@@ -607,14 +629,15 @@ export default function NewHomePage() {
                           {/* Create simplified versions of the grid layouts for mobile */}
                           {currentPair === 0 && (
                             <div className="relative h-full w-full">
-                              <div className="absolute left-0 top-0 w-[61%] h-full">
-                                <ImageCard delay={0.2} />
+                              {/* Updated mobile layout to match desktop */}
+                              <div className="absolute left-0 top-0 w-full h-[65%]">
+                                <ImgCard delay={0.2} imageSrc="/productshots/carousel-A1.svg" />
                               </div>
-                              <div className="absolute right-0 top-0 w-[32%] h-[47%] ml-[16px]">
-                                <ImageCard delay={0.4} />
+                              <div className="absolute left-0 bottom-0 w-[48%] h-[30%]">
+                                <ImgCard delay={0.4} imageSrc="/productshots/carousel-A2.svg" />
                               </div>
-                              <div className="absolute right-0 bottom-0 w-[32%] h-[47%] mt-[16px] ml-[16px]">
-                                <ImageCard delay={0.6} />
+                              <div className="absolute right-0 bottom-0 w-[48%] h-[30%]">
+                                <ImgCard delay={0.6} imageSrc="/productshots/carousel-A3.svg" />
                               </div>
                             </div>
                           )}
