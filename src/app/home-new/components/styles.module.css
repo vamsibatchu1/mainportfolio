@@ -46,6 +46,7 @@
   justify-content: center;
   gap: 12px;
   z-index: 10;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 /* Keyboard hint styling */

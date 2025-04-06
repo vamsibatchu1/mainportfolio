@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { louize, doto } from '../fonts';
+import { louize, doto, ppNeueMontrealBook } from '../fonts';
 import { IBM_Plex_Mono } from 'next/font/google';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TextScramble } from '@/components/ui/text-scramble';
@@ -59,6 +59,107 @@ function ImageCard({ delay }: { delay: number }) {
   );
 }
 
+// Define different image grid layouts that correspond to each carousel item
+const GridLayout1 = ({ delay = 0 }: { delay?: number }) => (
+  <div className="relative h-full w-full">
+    {/* 3-card layout (current one): 1 large left, 2 small right */}
+    <div className="absolute left-0 top-0 w-[343px] h-[448px]">
+      <ImageCard delay={delay + 0.2} />
+    </div>
+    <div className="absolute right-0 top-0 w-[188px] h-[214px] ml-[20px]">
+      <ImageCard delay={delay + 0.4} />
+    </div>
+    <div className="absolute right-0 bottom-0 w-[188px] h-[214px] mt-[20px] ml-[20px]">
+      <ImageCard delay={delay + 0.6} />
+    </div>
+  </div>
+);
+
+const GridLayout2 = ({ delay = 0 }: { delay?: number }) => (
+  <div className="relative h-full w-full">
+    {/* 2-card layout: side by side equal width */}
+    <div className="absolute left-0 top-0 w-[270px] h-[448px]">
+      <ImageCard delay={delay + 0.2} />
+    </div>
+    <div className="absolute right-0 top-0 w-[270px] h-[448px]">
+      <ImageCard delay={delay + 0.4} />
+    </div>
+  </div>
+);
+
+const GridLayout3 = ({ delay = 0 }: { delay?: number }) => (
+  <div className="relative h-full w-full">
+    {/* 4-card grid layout */}
+    <div className="absolute left-0 top-0 w-[270px] h-[214px]">
+      <ImageCard delay={delay + 0.2} />
+    </div>
+    <div className="absolute right-0 top-0 w-[270px] h-[214px]">
+      <ImageCard delay={delay + 0.3} />
+    </div>
+    <div className="absolute left-0 bottom-0 w-[270px] h-[214px]">
+      <ImageCard delay={delay + 0.4} />
+    </div>
+    <div className="absolute right-0 bottom-0 w-[270px] h-[214px]">
+      <ImageCard delay={delay + 0.5} />
+    </div>
+  </div>
+);
+
+const GridLayout4 = ({ delay = 0 }: { delay?: number }) => (
+  <div className="relative h-full w-full">
+    {/* 1 large card centered */}
+    <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px]">
+      <ImageCard delay={delay + 0.2} />
+    </div>
+  </div>
+);
+
+const GridLayout5 = ({ delay = 0 }: { delay?: number }) => (
+  <div className="relative h-full w-full">
+    {/* 3-card staggered layout */}
+    <div className="absolute left-0 top-0 w-[200px] h-[448px]">
+      <ImageCard delay={delay + 0.2} />
+    </div>
+    <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[230px] h-[230px]">
+      <ImageCard delay={delay + 0.4} />
+    </div>
+    <div className="absolute right-0 bottom-0 w-[200px] h-[448px]">
+      <ImageCard delay={delay + 0.6} />
+    </div>
+  </div>
+);
+
+const GridLayout6 = ({ delay = 0 }: { delay?: number }) => (
+  <div className="relative h-full w-full">
+    {/* 5-card mosaic */}
+    <div className="absolute left-0 top-0 w-[260px] h-[260px]">
+      <ImageCard delay={delay + 0.1} />
+    </div>
+    <div className="absolute right-0 top-0 w-[170px] h-[120px]">
+      <ImageCard delay={delay + 0.2} />
+    </div>
+    <div className="absolute right-0 top-[140px] w-[170px] h-[120px]">
+      <ImageCard delay={delay + 0.3} />
+    </div>
+    <div className="absolute left-0 bottom-0 w-[170px] h-[168px]">
+      <ImageCard delay={delay + 0.4} />
+    </div>
+    <div className="absolute left-[190px] bottom-0 w-[349px] h-[168px]">
+      <ImageCard delay={delay + 0.5} />
+    </div>
+  </div>
+);
+
+// Array of grid layouts to match with carousel items
+const gridLayouts = [
+  GridLayout1, // Crafting large scale enterprise products
+  GridLayout2, // Developing 0-1 product vision & MVPs of new products
+  GridLayout3, // Designing delightful consumer apps for millions of customers
+  GridLayout4, // Defining product vision and strategy
+  GridLayout5, // Setting high bar for for product design craft
+  GridLayout6  // Leading major redesign overhaul of product interfaces
+];
+
 export default function NewHomePage() {
   // Card visibility states
   const [firstCardVisible, setFirstCardVisible] = useState(false);
@@ -76,6 +177,78 @@ export default function NewHomePage() {
   
   // Carousel state
   const [currentPair, setCurrentPair] = useState(0);
+  
+  // Letter-by-letter scramble states
+  const [nameVamsi, setNameVamsi] = useState("vamsi");
+  const [nameBatchu, setNameBatchu] = useState("batchu");
+  const [mobileNameVamsi, setMobileNameVamsi] = useState("Vamsi");
+  
+  // Scramble a single random letter in the provided text
+  const scrambleSingleLetter = (text: string, isUppercase = false) => {
+    // Choose a random position in the string
+    const position = Math.floor(Math.random() * text.length);
+    // Create an array from the string
+    const chars = text.split('');
+    // Get a random character from the alphabet
+    const randomChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[Math.floor(Math.random() * 26)];
+    // Replace the character at the chosen position
+    chars[position] = isUppercase ? randomChar : randomChar.toLowerCase();
+    
+    // Return the modified string
+    return chars.join('');
+  };
+  
+  // Create visual scrambling effect by rapidly changing a single letter multiple times
+  const createLetterScrambleEffect = (
+    word: string, 
+    setWord: React.Dispatch<React.SetStateAction<string>>, 
+    originalWord: string,
+    isUppercase = false
+  ) => {
+    // Number of rapid changes to create the scrambling effect
+    const iterations = 6;
+    let count = 0;
+    
+    // Create rapid scrambling effect with multiple changes
+    const interval = setInterval(() => {
+      setWord(scrambleSingleLetter(word, isUppercase));
+      count++;
+      
+      // After several quick changes, restore the original word
+      if (count >= iterations) {
+        clearInterval(interval);
+        setWord(originalWord);
+      }
+    }, 50); // Very quick interval between changes
+  };
+  
+  // Handle periodic random letter scrambling
+  useEffect(() => {
+    // Only start periodic animations after initial load is complete
+    if (scrambleFirst && scrambleSecond && contentVisible) {
+      // Initial delay to let everything settle after loading
+      const startDelay = setTimeout(() => {
+        const periodicScrambleTimer = setInterval(() => {
+          // Decide which name to scramble (randomly)
+          const scrambleFirstName = Math.random() > 0.5;
+          
+          if (scrambleFirstName) {
+            // Scramble a letter in "vamsi"
+            createLetterScrambleEffect(nameVamsi, setNameVamsi, "vamsi");
+            // Also scramble in mobile version
+            createLetterScrambleEffect(mobileNameVamsi, setMobileNameVamsi, "Vamsi", true);
+          } else {
+            // Scramble a letter in "batchu"
+            createLetterScrambleEffect(nameBatchu, setNameBatchu, "batchu");
+          }
+        }, 10000); // Every 10 seconds
+        
+        return () => clearInterval(periodicScrambleTimer);
+      }, 5000); // Wait 5 seconds after initial load before starting periodic animations
+      
+      return () => clearTimeout(startDelay);
+    }
+  }, [scrambleFirst, scrambleSecond, contentVisible, nameVamsi, nameBatchu, mobileNameVamsi]);
   
   // Handle carousel rotation
   useEffect(() => {
@@ -148,7 +321,13 @@ export default function NewHomePage() {
   }, []);
 
   return (
-    <div className="w-full h-screen bg-[#ee4428] overflow-hidden flex items-center justify-center">
+    <div className="w-full h-screen overflow-hidden flex items-center justify-center" 
+      style={{ 
+        backgroundImage: 'url(/backgrounds/pinkgradient.svg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }}
+    >
       {/* === DESKTOP LAYOUT === */}
       <div className="hidden lg:flex items-center justify-center w-full h-full">
         {/* Centered Content Container - Using flex layout (auto layout) */}
@@ -184,7 +363,7 @@ export default function NewHomePage() {
                             className="block"
                             trigger={scrambleFirst}
                           >
-                            vamsi
+                            {nameVamsi}
                           </TextScramble>
                           <TextScramble
                             duration={1.0}
@@ -193,7 +372,7 @@ export default function NewHomePage() {
                             className="block"
                             trigger={scrambleSecond}
                           >
-                            batchu
+                            {nameBatchu}
                           </TextScramble>
                         </div>
                       )}
@@ -203,20 +382,21 @@ export default function NewHomePage() {
                       <AnimatePresence>
                         {contentVisible && (
                           <>
-                            {/* Bio Text */}
-                            <motion.div 
-                              className={`${louize.className} text-black text-[26px] font-normal leading-[32px] tracking-[-1.1px]`}
-                              initial={{ opacity: 0, y: 30 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                            >
-                              Hands on product design leader with 11+ years of experience in designing & leading teams developing highly impactful products at scale.
-                            </motion.div>
-                            
-                            <div className="mt-auto">
-                              {/* Divider Line */}
+                            {/* Bottom container with consistent 32px spacing */}
+                            <div className="mt-auto flex flex-col">
+                              {/* Bio Text */}
                               <motion.div 
-                                className="w-full h-[1px] bg-black mb-[47px]"
+                                className={`${louize.className} text-black text-[26px] font-normal leading-[32px] tracking-[-1.1px]`}
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                              >
+                                Hands on product design leader with 11+ years of experience in designing & leading teams developing highly impactful products at scale.
+                              </motion.div>
+                              
+                              {/* Divider Line - 32px margin */}
+                              <motion.div 
+                                className="w-full h-[1px] bg-black my-[32px]"
                                 initial={{ opacity: 0, scaleX: 0 }}
                                 animate={{ opacity: 1, scaleX: 1 }}
                                 transition={{ duration: 0.6, delay: 1.1, ease: "easeOut" }}
@@ -225,7 +405,7 @@ export default function NewHomePage() {
                               
                               {/* Bottom Subtitle */}
                               <motion.div 
-                                className={`${louize.className} text-[#6f6f6f] text-[18px] font-normal leading-[22px] tracking-[-0.77px]`}
+                                className={`${ppNeueMontrealBook.className} text-[#6f6f6f] text-[18px] font-normal leading-[22px] tracking-[0px]`}
                                 initial={{ opacity: 0, y: 15 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6, delay: 1.5, ease: [0.22, 1, 0.36, 1] }}
@@ -261,30 +441,19 @@ export default function NewHomePage() {
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    {/* Larger image grid */}
-                    <AnimatePresence>
+                    {/* Larger image grid - Now dynamically changes based on carousel item */}
+                    <AnimatePresence mode="wait">
                       {imageVisible && (
                         <motion.div 
+                          key={currentPair} // Add key to force re-render when currentPair changes
                           className="w-full h-[448px] overflow-hidden"
                           initial={{ opacity: 0, y: 30 }}
                           animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0 }}
                           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                         >
-                          {/* Three card layout with equal spacing */}
-                          <div className="relative h-full w-full">
-                            {/* Main large card */}
-                            <div className="absolute left-0 top-0 w-[343px] h-[448px]">
-                              <ImageCard delay={0.2} />
-                            </div>
-                            
-                            {/* Two smaller cards on the right with equal spacing */}
-                            <div className="absolute right-0 top-0 w-[188px] h-[214px] ml-[20px]">
-                              <ImageCard delay={0.4} />
-                            </div>
-                            <div className="absolute right-0 bottom-0 w-[188px] h-[214px] mt-[20px] ml-[20px]">
-                              <ImageCard delay={0.6} />
-                            </div>
-                          </div>
+                          {/* Dynamically render the current grid layout based on carousel index */}
+                          {React.createElement(gridLayouts[currentPair], { delay: 0 })}
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -307,7 +476,7 @@ export default function NewHomePage() {
                                 alt="Shape icon" 
                                 className="w-[32px] h-[32px] object-contain" 
                               />
-                              <div className={`${louize.className} w-[491px] text-[#191919] text-[21.7px] font-normal leading-[26.1px] tracking-[-0.65px] mt-[-1px]`}>
+                              <div className={`${louize.className} w-[491px] text-[#191919] text-[21.7px] font-normal leading-[26.1px] tracking-[-0.65px]`}>
                                 {carouselContent[currentPair].text}
                               </div>
                             </motion.div>
@@ -337,12 +506,9 @@ export default function NewHomePage() {
               damping: 20
             }}
           >
-            <img 
-              src="/images/navbar.svg" 
-              alt="Navigation icon" 
-              width={24} 
-              height={24} 
-            />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 9.49958L2 11.9996L11.6422 16.8207C11.7734 16.8863 11.839 16.9191 11.9078 16.932C11.9687 16.9434 12.0313 16.9434 12.0922 16.932C12.161 16.9191 12.2266 16.8863 12.3578 16.8207L22 11.9996L17 9.49958M7 14.4996L2 16.9996L11.6422 21.8207C11.7734 21.8863 11.839 21.9191 11.9078 21.932C11.9687 21.9434 12.0313 21.9434 12.0922 21.932C12.161 21.9191 12.2266 21.8863 12.3578 21.8207L22 16.9996L17 14.4996M2 6.99958L11.6422 2.17846C11.7734 2.11287 11.839 2.08008 11.9078 2.06717C11.9687 2.05574 12.0313 2.05574 12.0922 2.06717C12.161 2.08008 12.2266 2.11287 12.3578 2.17846L22 6.99958L12.3578 11.8207C12.2266 11.8863 12.161 11.9191 12.0922 11.932C12.0313 11.9434 11.9687 11.9434 11.9078 11.932C11.839 11.9191 11.7734 11.8863 11.6422 11.8207L2 6.99958Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
             TAP SPACEBAR TO NAVIGATE
           </motion.div>
         </div>
@@ -370,7 +536,7 @@ export default function NewHomePage() {
                       className="block"
                       trigger={scrambleFirst}
                     >
-                      Vamsi
+                      {mobileNameVamsi}
                     </TextScramble>
                     <TextScramble
                       duration={1.0}
@@ -379,7 +545,7 @@ export default function NewHomePage() {
                       className="block"
                       trigger={scrambleSecond}
                     >
-                      batchu
+                      {nameBatchu}
                     </TextScramble>
                   </div>
                 )}
@@ -409,7 +575,7 @@ export default function NewHomePage() {
                     
                     {/* Bottom Subtitle */}
                     <motion.div 
-                      className={`${louize.className} text-[#6f6f6f] text-[16px] font-normal leading-[22px] tracking-[-0.6px] mb-6`}
+                      className={`${ppNeueMontrealBook.className} text-[#6f6f6f] text-[16px] font-normal leading-[22px] tracking-[0px] mb-6`}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
@@ -425,29 +591,95 @@ export default function NewHomePage() {
                 {secondCardVisible && (
                   <>
                     {/* Profile Image Placeholder - with equal spacing */}
-                    <AnimatePresence>
+                    <AnimatePresence mode="wait">
                       {imageVisible && (
                         <motion.div 
+                          key={currentPair} // Add key to force re-render when currentPair changes
                           className="w-full h-[460px] mb-10"
                           initial={{ opacity: 0, y: 15 }}
                           animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0 }}
                           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                         >
-                          {/* Three card layout for mobile with equal spacing */}
-                          <div className="relative h-full w-full">
-                            {/* Main large card */}
-                            <div className="absolute left-0 top-0 w-[61%] h-full">
-                              <ImageCard delay={0.2} />
+                          {/* Create simplified versions of the grid layouts for mobile */}
+                          {currentPair === 0 && (
+                            <div className="relative h-full w-full">
+                              <div className="absolute left-0 top-0 w-[61%] h-full">
+                                <ImageCard delay={0.2} />
+                              </div>
+                              <div className="absolute right-0 top-0 w-[32%] h-[47%] ml-[16px]">
+                                <ImageCard delay={0.4} />
+                              </div>
+                              <div className="absolute right-0 bottom-0 w-[32%] h-[47%] mt-[16px] ml-[16px]">
+                                <ImageCard delay={0.6} />
+                              </div>
                             </div>
-                            
-                            {/* Two smaller cards on the right with equal spacing */}
-                            <div className="absolute right-0 top-0 w-[32%] h-[47%] ml-[16px]">
-                              <ImageCard delay={0.4} />
+                          )}
+                          {currentPair === 1 && (
+                            <div className="relative h-full w-full">
+                              <div className="absolute left-0 top-0 w-[48%] h-full">
+                                <ImageCard delay={0.2} />
+                              </div>
+                              <div className="absolute right-0 top-0 w-[48%] h-full">
+                                <ImageCard delay={0.4} />
+                              </div>
                             </div>
-                            <div className="absolute right-0 bottom-0 w-[32%] h-[47%] mt-[16px] ml-[16px]">
-                              <ImageCard delay={0.6} />
+                          )}
+                          {currentPair === 2 && (
+                            <div className="relative h-full w-full">
+                              <div className="absolute left-0 top-0 w-[48%] h-[48%]">
+                                <ImageCard delay={0.2} />
+                              </div>
+                              <div className="absolute right-0 top-0 w-[48%] h-[48%]">
+                                <ImageCard delay={0.3} />
+                              </div>
+                              <div className="absolute left-0 bottom-0 w-[48%] h-[48%]">
+                                <ImageCard delay={0.4} />
+                              </div>
+                              <div className="absolute right-0 bottom-0 w-[48%] h-[48%]">
+                                <ImageCard delay={0.5} />
+                              </div>
                             </div>
-                          </div>
+                          )}
+                          {currentPair === 3 && (
+                            <div className="relative h-full w-full">
+                              <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%]">
+                                <ImageCard delay={0.2} />
+                              </div>
+                            </div>
+                          )}
+                          {currentPair === 4 && (
+                            <div className="relative h-full w-full">
+                              <div className="absolute left-0 top-0 w-[30%] h-full">
+                                <ImageCard delay={0.2} />
+                              </div>
+                              <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[30%] h-[30%]">
+                                <ImageCard delay={0.4} />
+                              </div>
+                              <div className="absolute right-0 bottom-0 w-[30%] h-full">
+                                <ImageCard delay={0.6} />
+                              </div>
+                            </div>
+                          )}
+                          {currentPair === 5 && (
+                            <div className="relative h-full w-full">
+                              <div className="absolute left-0 top-0 w-[61%] h-[61%]">
+                                <ImageCard delay={0.1} />
+                              </div>
+                              <div className="absolute right-0 top-0 w-[35%] h-[28%]">
+                                <ImageCard delay={0.2} />
+                              </div>
+                              <div className="absolute right-0 top-[32%] w-[35%] h-[28%]">
+                                <ImageCard delay={0.3} />
+                              </div>
+                              <div className="absolute left-0 bottom-0 w-[35%] h-[35%]">
+                                <ImageCard delay={0.4} />
+                              </div>
+                              <div className="absolute right-[37%] bottom-0 w-[63%] h-[35%]">
+                                <ImageCard delay={0.5} />
+                              </div>
+                            </div>
+                          )}
                         </motion.div>
                       )}
                     </AnimatePresence>

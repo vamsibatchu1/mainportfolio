@@ -36,3 +36,8 @@ export const louize = localFont({
   src: '../../public/fonts/Louize.ttf',
   variable: '--font-louize'
 }); 
+
+export const ppNeueMontrealBook = localFont({
+  src: '../../public/fonts/ppneuemontreal-book.otf',
+  variable: '--font-pp-neue-montreal-book'
+}); 
