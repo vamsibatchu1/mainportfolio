@@ -15,6 +15,23 @@ const nextConfig = {
       'blog-interaction.vercel.app'
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/',
+        destination: '/home-new',
+      },
+    ];
+  },
+  async redirects() {
+    return [
+      {
+        source: '/home',
+        destination: '/home-new',
+        permanent: false,
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig; 
