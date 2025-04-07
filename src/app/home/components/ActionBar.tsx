@@ -144,7 +144,13 @@ export default function ActionBar() {
 
   const handleNavigation = (path: string) => {
     setActiveIndex(null);
-    router.push(`/home/${path.toLowerCase()}`);
+    
+    // Update paths for the moved pages
+    if (path === 'about' || path === 'blog' || path === 'work') {
+      router.push(`/${path.toLowerCase()}`);
+    } else {
+      router.push(`/home/${path.toLowerCase()}`);
+    }
   };
 
   const menuItems: MenuItem[] = [

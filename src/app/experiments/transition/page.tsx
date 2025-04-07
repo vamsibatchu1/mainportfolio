@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
 function TimeVortex() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -107,26 +108,41 @@ function TimeVortex() {
 }
 
 export default function Transition() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setTimeout(() => {
+        router.push('/home-new');
+      }, 500);
+    }, 2500);
+
+    return () => clearTimeout(timer);
+  }, [router]);
+
   return (
-    <motion.div 
-      className="h-[100svh] w-full overflow-hidden relative bg-black"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <TimeVortex />
+    <AnimatePresence mode="wait">
       <motion.div 
-        className="absolute inset-0 flex items-center justify-center text-[#EFE7D1] font-mono text-4xl"
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: [0, 1, 1, 0], scale: [0.5, 1, 1, 1.5] }}
-        transition={{ 
-          duration: 2.5,
-          times: [0, 0.2, 0.8, 1],
-        }}
+        key="transition"
+        className="h-[100svh] w-full overflow-hidden relative bg-black"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
       >
-        INITIATING TEMPORAL JUMP TO 2025
+        <TimeVortex />
+        <motion.div 
+          className="absolute inset-0 flex items-center justify-center text-[#EFE7D1] font-mono text-4xl"
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: [0, 1, 1, 0], scale: [0.5, 1, 1, 1.5] }}
+          transition={{ 
+            duration: 2.5,
+            times: [0, 0.2, 0.8, 1],
+          }}
+        >
+          INITIATING TEMPORAL JUMP TO 2025
+        </motion.div>
       </motion.div>
-    </motion.div>
+    </AnimatePresence>
   );
 } 

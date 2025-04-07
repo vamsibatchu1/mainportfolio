@@ -3,3 +3,6 @@ https://www.cult-ui.com/docs/components/expandable
 https://once-ui.com/docs/glitchfx
 https://codepen.io/jh3y/pen/NWQYPvy
 https://codepen.io/jh3y/pen/zxOJdEe
+
+/experiments/past -> Retro terminal interface with Enter to initiate temporal jump
+/experiments/transition -> Time vortex animation transition effect

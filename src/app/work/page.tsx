@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { IBM_Plex_Mono } from 'next/font/google';
-import { doto } from '../../fonts';
+import { doto } from '../fonts';
 
 const ibmPlexMono = IBM_Plex_Mono({
   weight: ['400', '500', '600'],
