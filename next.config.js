@@ -19,15 +19,15 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/home-new',
+        destination: '/home',
       },
     ];
   },
   async redirects() {
     return [
       {
-        source: '/home',
-        destination: '/home-new',
+        source: '/home-new',
+        destination: '/home',
         permanent: false,
       },
     ];

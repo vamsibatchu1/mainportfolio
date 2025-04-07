@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { IBM_Plex_Mono } from 'next/font/google';
-import { doto } from '../fonts';
+import { doto } from '@/app/fonts';
 import {
   Tooltip,
   TooltipContent,

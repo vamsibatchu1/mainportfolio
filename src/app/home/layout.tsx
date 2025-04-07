@@ -1,45 +1,20 @@
-"use client";
+import React from 'react';
+import { Metadata } from 'next';
+import { louize } from '../fonts';
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { usePathname } from 'next/navigation';
-import ActionBar from '../home-new/components/ActionBar';
+export const metadata: Metadata = {
+  title: 'Vamsi Batchu | Product Design Leader',
+  description: 'Hands on product design leader with 11+ years of experience in designing & leading teams developing highly impactful products at scale.',
+};
 
-export default function HomeLayout({
+export default function HomeNewLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
-  
-  // Debug the current path
-  console.log('Current pathname:', pathname);
-  
-  // Use exact path matching
-  const isMainPage = pathname === '/home' || 
-                    pathname === '/home/ask' || pathname === '/home/experiments';
-
-  // Debug the condition
-  console.log('Is main page:', isMainPage);
-
   return (
-    <div className="min-h-[100svh] px-12 pt-4 flex flex-col items-center gap-4 bg-[#F5F4F0]">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={pathname}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
-          className="w-full"
-        >
-          {children}
-        </motion.div>
-      </AnimatePresence>
-      {isMainPage && (
-        <div className="relative w-full h-[200px] mt-8">
-          <ActionBar />
-        </div>
-      )}
+    <div className={`${louize.variable} min-h-screen overflow-hidden`}>
+      {children}
     </div>
   );
 } 

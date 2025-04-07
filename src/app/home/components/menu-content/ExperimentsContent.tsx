@@ -25,6 +25,13 @@ const experiments = [
     description: 'Interactive audio visualization experiment with Three.js',
     image: '/images/experiments/soundscape.jpg',
     link: '/home/experiments/soundscape'
+  },
+  {
+    id: 3,
+    title: 'Old Home',
+    description: 'Archive of the previous home page design and components',
+    image: '/images/experiments/old-home.jpg',
+    link: '/experiments/old-home'
   }
 ];
 

@@ -113,7 +113,7 @@ export default function Transition() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setTimeout(() => {
-        router.push('/home-new');
+        router.push('/home');
       }, 500);
     }, 2500);
 
