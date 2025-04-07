@@ -361,31 +361,18 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
         }}
       >
         <motion.div
-          className="relative z-[2] flex w-[720px] items-center justify-center gap-2 bg-white rounded-xl py-2 shadow-sm"
+          className="relative z-[2] flex w-[720px] items-center justify-center gap-2 bg-white rounded-xl py-2"
           style={{ borderRadius: 16 }}
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ 
-            duration: 0.4,
-            ease: [0.22, 1, 0.36, 1]
-          }}
         >
           {menuItems.map((item, index) => (
             <motion.button
               key={index}
               className="relative flex items-center justify-center gap-2 px-4 py-4 transition-all duration-300 hover:bg-black/5"
               style={{ borderRadius: 16 }}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
               whileHover={{ 
                 backgroundColor: "rgba(0, 0, 0, 0.05)",
                 y: -2,
                 transition: { y: { duration: 0.15 } }
-              }}
-              transition={{
-                duration: 0.3,
-                delay: 0.05 * index,
-                ease: "easeOut"
               }}
               onMouseEnter={() => handleMouseEnter(index)}
               onClick={() => {
@@ -417,7 +404,7 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
         <div className="absolute left-1/2 -translate-x-1/2">
           <motion.div
             ref={menuRef}
-            className="overflow-hidden bg-white backdrop-blur-xl border border-[#D7D3D0] shadow-md"
+            className="overflow-hidden bg-white backdrop-blur-xl border border-[#D7D3D0]"
             style={{ borderRadius: 16 }}
             animate={{
               width: activeIndex !== null ? ['730px', '730px', '730px', '730px', '730px', '730px'][activeIndex] : '720px',
@@ -540,15 +527,30 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
             <div className="fixed bottom-0 left-0 right-0 flex items-end justify-center z-[999] overflow-visible pointer-events-none pb-10">
               <motion.div 
                 ref={actionBarRef}
-                className="pointer-events-auto"
+                className="pointer-events-auto w-full"
                 initial={{ y: 80, opacity: 0, scale: 0.97 }}
-                animate={{ y: 0, opacity: 1, scale: 1 }}
-                exit={{ y: 80, opacity: 0, scale: 0.97 }}
-                transition={{ 
-                  duration: 0.5,
-                  ease: [0.22, 1, 0.36, 1],
-                  opacity: { duration: 0.4 },
-                  scale: { duration: 0.45 }
+                animate={{ 
+                  y: 0, 
+                  opacity: 1, 
+                  scale: 1,
+                  transition: {
+                    duration: 0.5,
+                    ease: [0.22, 1, 0.36, 1],
+                    opacity: { duration: 0.4 },
+                    scale: { duration: 0.45 },
+                    // Stagger children animations
+                    staggerChildren: 0.05,
+                    delayChildren: 0.1
+                  }
+                }}
+                exit={{ 
+                  y: 80, 
+                  opacity: 0, 
+                  scale: 0.97,
+                  transition: {
+                    duration: 0.4,
+                    ease: [0.22, 1, 0.36, 1]
+                  }
                 }}
               >
                 {renderActionBar()}
