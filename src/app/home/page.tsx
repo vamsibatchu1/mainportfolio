@@ -279,7 +279,23 @@ export default function NewHomePage() {
   useEffect(() => {
     if (iconTextVisible) {
       const carouselTimer = setInterval(() => {
-        setCurrentPair((prev) => (prev + 1) % carouselContent.length);
+        // First fade out the current content
+        setImageVisible(false);
+        setIconTextVisible(false);
+        
+        // Wait for fade out, then change content
+        setTimeout(() => {
+          setCurrentPair((prev) => (prev + 1) % carouselContent.length);
+          
+          // First show the image grid only
+          setImageVisible(true);
+          
+          // Wait for images to fully load (including their internal delays)
+          // The grid layouts have delays of 0.2-0.6 seconds for individual cards
+          setTimeout(() => {
+            setIconTextVisible(true);
+          }, 800); // Increased delay to ensure all images are visible first
+        }, 300); // Time for fade out
       }, 4000);
       
       return () => clearInterval(carouselTimer);
@@ -307,39 +323,34 @@ export default function NewHomePage() {
       setScrambleSecond(true);
     }, 1500);
     
-    // Show the rest of the content after the name scrambles (reduced delay)
+    // Show the rest of the content after the name scrambles
     const contentTimer = setTimeout(() => {
       setContentVisible(true);
-    }, 2200); // Reduced from 2700ms to 2200ms
+    }, 2200);
     
     // Then show the second card after first card's content animations are complete
-    // The divider finishes at contentTimer(2200) + delay(1.1) + duration(0.6) = ~3900ms
-    // The subtitle finishes at contentTimer(2200) + delay(1.5) + duration(0.6) = ~4300ms
     const secondCardTimer = setTimeout(() => {
       setSecondCardVisible(true);
-    }, 4300); // Adjusted to wait for first card animations to complete
+    }, 4300);
     
-    // Then start second card content animations after the card is in place
+    // Show image grid first
     const imageTimer = setTimeout(() => {
       setImageVisible(true);
-    }, 5100); // Adjusted based on secondCardTimer
+    }, 5100);
     
+    // Only show icon+text after image grid has fully loaded with its internal delays
     const iconTextTimer = setTimeout(() => {
       setIconTextVisible(true);
-    }, 5600); // Adjusted based on imageTimer
+    }, 5900); // Increased delay to ensure all grid images are visible first
     
     return () => {
-      // Cleanup card timers
+      // Cleanup all timers
       clearTimeout(firstCardTimer);
       clearTimeout(secondCardTimer);
-      
-      // Cleanup first card content timers
       clearTimeout(nameTimer);
       clearTimeout(contentTimer);
       clearTimeout(firstTimer);
       clearTimeout(secondTimer);
-      
-      // Cleanup second card content timers
       clearTimeout(imageTimer);
       clearTimeout(iconTextTimer);
     };
@@ -491,10 +502,10 @@ export default function NewHomePage() {
                             <motion.div 
                               key={currentPair}
                               className="inline-flex items-center gap-[20px]"
-                              initial={{ opacity: 0, y: 10 }}
+                              initial={{ opacity: 0, y: 20 }}
                               animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -10 }}
-                              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                              exit={{ opacity: 0, y: 20 }}
+                              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                             >
                               <img 
                                 src={carouselContent[currentPair].imageUrl} 
@@ -724,10 +735,10 @@ export default function NewHomePage() {
                       <motion.div 
                         key={currentPair}
                         className="flex items-center gap-4"
-                        initial={{ opacity: 0, y: 10 }}
+                        initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                        exit={{ opacity: 0, y: 20 }}
+                        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                       >
                         <img 
                           src={carouselContent[currentPair].imageUrl} 
