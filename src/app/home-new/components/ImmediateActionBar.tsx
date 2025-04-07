@@ -5,7 +5,7 @@ import { AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { useOnClickOutside } from 'usehooks-ts';
 import { useRouter } from 'next/navigation';
-import { MENU_CONTENT_MAP } from '../../../app/home/components/menu-content';
+import { MENU_CONTENT_MAP } from './menu-content';
 import type { LottieRefCurrentProps } from "lottie-react";
 
 // Import Lottie directly without dynamic loading to avoid delay

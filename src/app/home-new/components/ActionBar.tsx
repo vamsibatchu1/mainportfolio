@@ -3,38 +3,18 @@
 import dynamic from 'next/dynamic';
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useOnClickOutside } from 'usehooks-ts';
 import { useRouter } from 'next/navigation';
-import { IBM_Plex_Mono } from 'next/font/google';
 import { MENU_CONTENT_MAP } from './menu-content';
 import type { LottieRefCurrentProps } from "lottie-react";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
-const ibmPlexMono = IBM_Plex_Mono({
-  weight: ['400', '500', '600'],
-  subsets: ['latin'],
-  display: 'swap',
-});
-
 type MenuItem = {
   icon: (lottieRef: React.RefObject<LottieRefCurrentProps>, animation: AnimationData | null) => React.ReactNode;
   label: string;
   path: string;
-}
-
-type SubMenuItem = {
-  image?: string;
-  icon?: React.ReactNode;
-  title: string;
-  description?: string;
-  tag?: string;
-  date?: string;
-}
-
-type MenuItemContent = {
-  items: SubMenuItem[];
 }
 
 interface AnimationData {

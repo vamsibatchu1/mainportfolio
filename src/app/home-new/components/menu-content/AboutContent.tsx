@@ -1,7 +1,6 @@
 "use client";
 
 import React from 'react';
-import { Link } from 'lucide-react';
 import { IBM_Plex_Mono } from 'next/font/google';
 import type { MenuContentProps } from './types';
 

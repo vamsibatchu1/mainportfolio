@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, Send, Paperclip, Mic } from 'lucide-react';
+import { Send, Paperclip, Mic } from 'lucide-react';
 import { IBM_Plex_Mono } from 'next/font/google';
 import type { MenuContentProps } from './types';
 

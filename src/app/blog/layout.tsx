@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-import ActionBar from '../home/components/ActionBar';
+import ActionBar from '../home-new/components/ActionBar';
 
 export default function BlogLayout({
   children,

@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { IBM_Plex_Mono } from 'next/font/google';
-import { X } from 'lucide-react';
 import type { MenuContentProps } from './types';
 
 const ibmPlexMono = IBM_Plex_Mono({
