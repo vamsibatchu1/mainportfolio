@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-import ActionBar from '../../home/components/ActionBar';
+import UnifiedActionBar from '../../home/components/UnifiedActionBar';
 
 export default function HomeLayout({
   children,
@@ -38,7 +38,7 @@ export default function HomeLayout({
       </AnimatePresence>
       {isMainPage && (
         <div className="relative w-full h-[200px] mt-8">
-          <ActionBar />
+          <UnifiedActionBar alwaysVisible={true} />
         </div>
       )}
     </div>

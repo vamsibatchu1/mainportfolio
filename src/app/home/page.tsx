@@ -5,8 +5,8 @@ import { louize, doto, ppNeueMontrealBook } from '../fonts';
 import { IBM_Plex_Mono } from 'next/font/google';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TextScramble } from '@/components/ui/text-scramble';
-import CustomActionBar from './components/CustomActionBar';
 import styles from './components/styles.module.css';
+import UnifiedActionBar from './components/UnifiedActionBar';
 
 // Initialize IBM Plex Mono font
 const ibmPlexMono = IBM_Plex_Mono({
@@ -747,8 +747,8 @@ export default function NewHomePage() {
         </AnimatePresence>
       </div>
       
-      {/* Space-triggered Navigation Bar - Fixed at bottom */}
-      <CustomActionBar />
+      {/* Space-triggered Navigation Bar */}
+      <UnifiedActionBar />
     </div>
   );
 }
