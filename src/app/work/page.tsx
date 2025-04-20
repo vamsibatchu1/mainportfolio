@@ -2,14 +2,7 @@
 
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
-import { Work_Sans } from 'next/font/google';
 import ClientOnly from '../components/ClientOnly';
-
-const workSans = Work_Sans({ 
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap'
-});
 
 // Import WorkContent dynamically with no SSR
 const WorkContent = dynamic(() => import('./components/WorkContent'), {

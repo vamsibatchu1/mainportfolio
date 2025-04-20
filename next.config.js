@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  serverComponentsExternalPackages: ['gsap'],
+  transpilePackages: ['gsap'],
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
@@ -36,11 +36,6 @@ const nextConfig = {
   reactStrictMode: true,
   typescript: {
     ignoreBuildErrors: true,
-  },
-  experimental: {
-    serverActions: {
-      allowedOrigins: ['localhost:3000', 'vamsibatchu.com'],
-    }
   },
 };
 
