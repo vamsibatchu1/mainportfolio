@@ -3,6 +3,7 @@
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { Work_Sans } from 'next/font/google';
+import ClientOnly from '../components/ClientOnly';
 
 const workSans = Work_Sans({ 
   subsets: ['latin'],
@@ -17,12 +18,22 @@ const WorkContent = dynamic(() => import('./components/WorkContent'), {
 
 export default function WorkPage() {
   return (
-    <main className={`min-h-screen ${workSans.className}`}>
-      <div className="max-w-[1120px] mx-auto px-8">
-        <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
+    <div className="min-h-screen bg-white">
+      <ClientOnly
+        fallback={
+          <div className="w-full h-screen flex items-center justify-center">
+            <div className="animate-pulse text-xl text-gray-600">Loading...</div>
+          </div>
+        }
+      >
+        <Suspense fallback={
+          <div className="w-full h-screen flex items-center justify-center">
+            <div className="animate-pulse text-xl text-gray-600">Loading...</div>
+          </div>
+        }>
           <WorkContent />
         </Suspense>
-      </div>
-    </main>
+      </ClientOnly>
+    </div>
   );
 } 

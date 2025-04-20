@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { TextScramble } from '@/components/ui/text-scramble';
 import styles from './components/styles.module.css';
 import UnifiedActionBar from './components/UnifiedActionBar';
+import ClientOnly from '../components/ClientOnly';
 
 // Initialize IBM Plex Mono font
 const ibmPlexMono = IBM_Plex_Mono({
@@ -193,6 +194,21 @@ const gridLayouts = [
 ];
 
 export default function NewHomePage() {
+  return (
+    <ClientOnly
+      fallback={
+        <div className="w-full h-screen flex items-center justify-center">
+          <div className="animate-pulse text-xl text-gray-600">Loading...</div>
+        </div>
+      }
+    >
+      <HomeContent />
+    </ClientOnly>
+  );
+}
+
+// Separate the home content into its own component
+function HomeContent() {
   // Card visibility states
   const [firstCardVisible, setFirstCardVisible] = useState(false);
   const [secondCardVisible, setSecondCardVisible] = useState(false);
