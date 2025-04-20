@@ -31,6 +31,7 @@ export default function CaseStudyNavigation({
           <span className={`${louize.className} text-[16px] text-[#6f6f6f] hover:text-black transition-colors tracking-[-0.2px]`}>
             Back to case studies
           </span>
+        
         </Link>
         
         {/* Project Title */}
