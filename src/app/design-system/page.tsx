@@ -7,7 +7,7 @@ import {
   spacing, 
   borderRadius, 
 } from '@/lib/design-system';
-import { DualCard, TailwindDualCard, WhiteCard, TranslucentCard } from '@/components/ui/dual-card';
+import { DualCard, WhiteCard, TranslucentCard, TailwindDualCard } from '@/components/ui/dual-card';
 
 export default function DesignSystemPage() {
   return (

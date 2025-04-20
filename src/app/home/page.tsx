@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { louize, doto } from '../fonts';
-import { IBM_Plex_Mono } from 'next/font/google';
+import { IBM_Plex_Mono, Work_Sans } from 'next/font/google';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TextScramble } from '@/components/ui/text-scramble';
 import styles from './components/styles.module.css';
@@ -13,6 +13,13 @@ const ibmPlexMono = IBM_Plex_Mono({
   weight: ['400', '500'],
   subsets: ['latin'],
   display: 'swap',
+});
+
+// Initialize Work Sans font
+const workSans = Work_Sans({ 
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  display: 'swap'
 });
 
 // Define the carousel content
@@ -441,7 +448,7 @@ export default function NewHomePage() {
                               
                               {/* Bottom Subtitle */}
                               <motion.div 
-                                className={`font-sans text-[#6f6f6f] text-[18px] font-normal leading-[22px] tracking-[0px]`}
+                                className={`${workSans.className} text-[#6f6f6f] text-[18px] font-normal leading-[22px] tracking-[0px]`}
                                 initial={{ opacity: 0, y: 15 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6, delay: 1.5, ease: [0.22, 1, 0.36, 1] }}
@@ -611,7 +618,7 @@ export default function NewHomePage() {
                     
                     {/* Bottom Subtitle */}
                     <motion.div 
-                      className={`font-sans text-[#6f6f6f] text-[16px] font-normal leading-[22px] tracking-[0px] mb-6`}
+                      className={`${workSans.className} text-[#6f6f6f] text-[16px] font-normal leading-[22px] tracking-[0px] mb-6`}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}

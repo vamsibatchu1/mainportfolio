@@ -3,7 +3,6 @@
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { Work_Sans } from 'next/font/google';
-import { louize } from '../fonts';
 
 const workSans = Work_Sans({ 
   subsets: ['latin'],

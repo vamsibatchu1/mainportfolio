@@ -148,6 +148,63 @@ export function DualCard({
   );
 }
 
+/**
+ * Standalone White Card Component
+ */
+export function WhiteCard({ 
+  children, 
+  size = 'regular', 
+  className 
+}: { 
+  children: React.ReactNode, 
+  size?: 'small' | 'regular',
+  className?: string
+}) {
+  return (
+    <div 
+      className={cn('flex items-center justify-start bg-white', className)}
+      style={{
+        width: '500px',
+        height: size === 'small' ? '108px' : '180px',
+        borderRadius: '20px',
+      }}
+    >
+      <div className="flex flex-col items-start justify-center px-8">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Standalone Translucent Card Component
+ */
+export function TranslucentCard({ 
+  children, 
+  size = 'regular',
+  className
+}: { 
+  children: React.ReactNode, 
+  size?: 'small' | 'regular',
+  className?: string
+}) {
+  return (
+    <div 
+      className={cn('flex items-center justify-center', className)}
+      style={{
+        backgroundColor: 'rgba(0, 0, 0, 0.19)',
+        width: '180px',
+        height: size === 'small' ? '108px' : '180px',
+        borderRadius: '20px',
+      }}
+    >
+      <div className="flex items-center justify-center h-full">
+        {children}
+      </div>
+    </div>
+  );
+}
+
 // Title text for the white card
 export function CardTitle({ children, className, size = 'regular' }: { 
   children: React.ReactNode, 
@@ -185,5 +242,40 @@ export function CardSubtitle({ children, className, size = 'regular' }: {
     >
       {children}
     </p>
+  );
+}
+
+/**
+ * TailwindDualCard - A version that uses Tailwind classes instead of inline styles
+ */
+export function TailwindDualCard({
+  whiteCardContent,
+  translucentCardContent,
+  className,
+  whiteCardClassName,
+  translucentCardClassName,
+}: BaseDualCardProps) {
+  return (
+    <div className={cn('relative w-[694px]', className)}>
+      <div 
+        className={cn(
+          'absolute left-0 top-0 w-[500px] h-[108px] rounded-l-[20px] bg-white',
+          whiteCardClassName
+        )}
+      >
+        {whiteCardContent}
+      </div>
+      
+      <div 
+        className={cn(
+          'absolute left-[512px] top-0 w-[180px] h-[108px] rounded-r-[20px] bg-black/20',
+          translucentCardClassName
+        )}
+      >
+        <div className="flex items-center justify-center h-full">
+          {translucentCardContent}
+        </div>
+      </div>
+    </div>
   );
 } 
