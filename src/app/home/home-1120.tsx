@@ -185,7 +185,7 @@ const gridLayouts = [
   GridLayout6  // Leading major redesign overhaul of product interfaces
 ];
 
-export default function NewHomePage() {
+export default function Home1120() {
   // Card visibility states
   const [firstCardVisible, setFirstCardVisible] = useState(false);
   const [secondCardVisible, setSecondCardVisible] = useState(false);
@@ -366,18 +366,18 @@ export default function NewHomePage() {
     >
       {/* === DESKTOP LAYOUT === */}
       <div className="hidden lg:flex items-center justify-center w-full h-full">
-        {/* Centered Content Container - Using flex layout (auto layout) */}
-        <div className="flex flex-col items-start">
-          {/* Two Cards Container - Fixed width container for both cards */}
-          <div className="flex flex-row w-[1075px]"> {/* Updated width: 412px + 24px + 639px = 1075px */}
+        {/* Centered Content Container with 1120px max width */}
+        <div className="flex flex-col items-start max-w-[1120px] mx-auto px-8">
+          {/* Two Cards Container - Adjusted for 1120px width */}
+          <div className="flex flex-row w-full">
             
             {/* Left Card Container - Bio and intro */}
             <AnimatePresence>
               {firstCardVisible && (
-          <motion.div
-                  className="w-[412px] h-[628px]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+                <motion.div
+                  className="w-[380px] h-[628px]"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   transition={{ duration: 1, ease: "easeOut" }}
                 >
                   {/* Left Card Content - White background with rounded left corners only */}
@@ -454,20 +454,20 @@ export default function NewHomePage() {
                       </AnimatePresence>
                     </div>
                   </motion.div>
-          </motion.div>
-        )}
+                </motion.div>
+              )}
             </AnimatePresence>
             
-            {/* Spacer */}
-            <div className="w-[24px]"></div>
+            {/* Spacer - 32px gutter */}
+            <div className="w-[32px]"></div>
             
             {/* Right Card Container - Portfolio showcase */}
             <AnimatePresence>
               {secondCardVisible && (
-          <motion.div
-                  className="w-[639px] h-[628px]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+                <motion.div
+                  className="w-[708px] h-[628px]"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   transition={{ duration: 1, ease: "easeOut" }}
                 >
                   {/* Right Card Content - Translucent dark background with rounded right corners only */}
@@ -485,7 +485,7 @@ export default function NewHomePage() {
                           className="w-full h-[488px] overflow-hidden"
                           initial={{ opacity: 0, y: 30 }}
                           animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
+                          exit={{ opacity: 0 }}
                           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                         >
                           {/* Dynamically render the current grid layout based on carousel index */}
@@ -512,7 +512,7 @@ export default function NewHomePage() {
                                 alt="Shape icon" 
                                 className="w-[32px] h-[32px] object-contain" 
                               />
-                              <div className={`${louize.className} w-[491px] text-white text-[21.7px] font-normal leading-[26.1px] tracking-[-0.65px]`}>
+                              <div className={`${louize.className} w-[550px] text-white text-[21.7px] font-normal leading-[26.1px] tracking-[-0.65px]`}>
                                 {carouselContent[currentPair].text}
                               </div>
                             </motion.div>
@@ -755,11 +755,11 @@ export default function NewHomePage() {
               </AnimatePresence>
           </motion.div>
         )}
-      </AnimatePresence>
+        </AnimatePresence>
       </div>
       
       {/* Space-triggered Navigation Bar */}
       <UnifiedActionBar />
     </div>
   );
-}
+} 

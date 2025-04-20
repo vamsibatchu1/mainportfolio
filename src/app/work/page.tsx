@@ -2,9 +2,14 @@
 
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
-import { Inter } from 'next/font/google';
+import { Work_Sans } from 'next/font/google';
+import { louize } from '../fonts';
 
-const inter = Inter({ subsets: ['latin'] });
+const workSans = Work_Sans({ 
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  display: 'swap'
+});
 
 // Import WorkContent dynamically with no SSR
 const WorkContent = dynamic(() => import('./components/WorkContent'), {
@@ -13,10 +18,12 @@ const WorkContent = dynamic(() => import('./components/WorkContent'), {
 
 export default function WorkPage() {
   return (
-    <main className={`min-h-screen ${inter.className}`}>
-      <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
-        <WorkContent />
-      </Suspense>
+    <main className={`min-h-screen ${workSans.className}`}>
+      <div className="max-w-[1120px] mx-auto px-8">
+        <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
+          <WorkContent />
+        </Suspense>
+      </div>
     </main>
   );
 } 

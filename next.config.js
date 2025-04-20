@@ -12,7 +12,8 @@ const nextConfig = {
     domains: [
       'images.unsplash.com',
       'assets.dub.co',
-      'blog-interaction.vercel.app'
+      'blog-interaction.vercel.app',
+      'placehold.co'
     ],
   },
   async rewrites() {

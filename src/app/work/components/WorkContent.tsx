@@ -2,63 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
-import { Inter, Space_Grotesk } from 'next/font/google';
+import { louize } from '@/app/fonts';
+import { Work_Sans } from 'next/font/google';
 
-const inter = Inter({ subsets: ['latin'] });
-const spaceGrotesk = Space_Grotesk({ subsets: ['latin'] });
-
-// Project data
-const projects = [
-  {
-    id: 1,
-    title: 'SkinAI',
-    description: 'AI-powered skin cancer detection application',
-    image: '/projects/skinai.png',
-    category: 'Mobile App',
-    year: '2023',
-  },
-  {
-    id: 2,
-    title: 'Filmflicks',
-    description: 'Modern streaming service with personalized recommendations',
-    image: '/projects/filmflicks.png',
-    category: 'Web App',
-    year: '2022',
-  },
-  {
-    id: 3,
-    title: 'CogniLearn',
-    description: 'Adaptive learning platform for students',
-    image: '/projects/cognilearn.png',
-    category: 'EdTech',
-    year: '2023',
-  },
-  {
-    id: 4,
-    title: 'FinTrack',
-    description: 'Personal finance tracking and investment dashboard',
-    image: '/projects/fintrack.png',
-    category: 'Finance',
-    year: '2022',
-  },
-  {
-    id: 5,
-    title: 'EcoHome',
-    description: 'Smart home system for energy optimization',
-    image: '/projects/ecohome.png',
-    category: 'IoT',
-    year: '2023',
-  },
-  {
-    id: 6,
-    title: 'TaskFlow',
-    description: 'Productivity tool for team collaboration',
-    image: '/projects/taskflow.png',
-    category: 'Productivity',
-    year: '2022',
-  },
-];
+const workSans = Work_Sans({ 
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  display: 'swap'
+});
 
 export default function WorkContent() {
   const [loaded, setLoaded] = useState(false);
@@ -90,17 +41,17 @@ export default function WorkContent() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-16">
+    <div className="py-16">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: loaded ? 1 : 0, y: loaded ? 0 : -20 }}
         transition={{ duration: 0.6 }}
         className="mb-12 text-center"
       >
-        <h1 className={`${spaceGrotesk.className} text-4xl md:text-5xl font-bold mb-4`}>
+        <h1 className={`${louize.className} text-4xl md:text-5xl font-bold mb-4`}>
           My Work
         </h1>
-        <p className={`${inter.className} text-lg text-gray-600 max-w-2xl mx-auto`}>
+        <p className={`${workSans.className} text-lg text-gray-600 max-w-2xl mx-auto`}>
           A collection of projects I&apos;ve led and contributed to over the years.
         </p>
       </motion.div>
@@ -111,40 +62,63 @@ export default function WorkContent() {
             variants={container}
             initial="hidden"
             animate="show"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="flex flex-col md:flex-row md:gap-[32px]"
           >
-            {projects.map((project) => (
+            {/* Left Column */}
+            <div className="md:w-[544px]">
               <motion.div
-                key={project.id}
                 variants={item}
-                className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+                className="bg-white rounded-lg overflow-hidden shadow-lg h-[500px] flex flex-col"
               >
-                <div className="relative h-48 w-full">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover"
-                  />
-                </div>
-                <div className="p-6">
+                <div className="bg-gray-200 h-48 w-full"></div>
+                <div className="p-6 flex-1 flex flex-col">
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className={`${spaceGrotesk.className} text-xl font-bold`}>{project.title}</h3>
+                    <h3 className={`${louize.className} text-xl font-bold`}>Left Column Card</h3>
                     <span className="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
-                      {project.year}
+                      2023
                     </span>
                   </div>
-                  <p className={`${inter.className} text-gray-600 mb-4`}>{project.description}</p>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-500">{project.category}</span>
-                    <button className="text-indigo-600 hover:text-indigo-800 text-sm font-medium transition-colors">
+                  <p className={`${workSans.className} text-gray-600 mb-4 flex-1`}>
+                    This is a dummy card in the left column. All existing project cards have been removed as requested.
+                    This card has equal height to the one in the right column.
+                  </p>
+                  <div className="flex justify-between items-center mt-auto">
+                    <span className={`${workSans.className} text-sm text-gray-500`}>Dummy Category</span>
+                    <button className={`${workSans.className} text-indigo-600 hover:text-indigo-800 text-sm font-medium transition-colors`}>
                       View Details →
                     </button>
                   </div>
                 </div>
               </motion.div>
-            ))}
+            </div>
+
+            {/* Right Column */}
+            <div className="md:w-[544px] mt-8 md:mt-0">
+              <motion.div
+                variants={item}
+                className="bg-white rounded-lg overflow-hidden shadow-lg h-[500px] flex flex-col"
+              >
+                <div className="bg-gray-200 h-48 w-full"></div>
+                <div className="p-6 flex-1 flex flex-col">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className={`${louize.className} text-xl font-bold`}>Right Column Card</h3>
+                    <span className="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
+                      2023
+                    </span>
+                  </div>
+                  <p className={`${workSans.className} text-gray-600 mb-4 flex-1`}>
+                    This is a dummy card in the right column. All existing project cards have been removed as requested.
+                    This card has equal height to the one in the left column.
+                  </p>
+                  <div className="flex justify-between items-center mt-auto">
+                    <span className={`${workSans.className} text-sm text-gray-500`}>Dummy Category</span>
+                    <button className={`${workSans.className} text-indigo-600 hover:text-indigo-800 text-sm font-medium transition-colors`}>
+                      View Details →
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
