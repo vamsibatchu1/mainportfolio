@@ -6,6 +6,9 @@ import { louize } from '@/app/fonts';
 import { Work_Sans } from 'next/font/google';
 import ClientOnly from '../components/ClientOnly';
 
+// Force dynamic rendering for this page
+export const dynamic = 'force-dynamic';
+
 const workSans = Work_Sans({ 
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],

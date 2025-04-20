@@ -1,11 +1,14 @@
 "use client";
 
 import { Suspense } from 'react';
-import dynamic from 'next/dynamic';
+import nextDynamic from 'next/dynamic';
 import ClientOnly from '../components/ClientOnly';
 
-// Import WorkContent dynamically with no SSR
-const WorkContent = dynamic(() => import('./components/WorkContent'), {
+// Force dynamic rendering for this page
+export const dynamic = 'force-dynamic';
+
+// Import WorkContent dynamically with no SSR using renamed import
+const WorkContent = nextDynamic(() => import('./components/WorkContent'), {
   ssr: false,
 });
 

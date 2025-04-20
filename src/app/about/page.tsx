@@ -1,8 +1,11 @@
 "use client";
 
 import React from 'react';
-import dynamic from 'next/dynamic';
+import nextDynamic from 'next/dynamic';
 import ClientOnly from '../components/ClientOnly';
+
+// Force dynamic rendering for this page
+export const dynamic = 'force-dynamic';
 
 // Define LoadingComponent or use null
 const LoadingComponent = () => (
@@ -11,8 +14,8 @@ const LoadingComponent = () => (
   </div>
 );
 
-// Dynamically import AboutContent only when needed
-const DynamicallyLoadedAboutContent = dynamic(() => import('./components/AboutContent'), {
+// Dynamically import AboutContent only when needed using the renamed import
+const DynamicallyLoadedAboutContent = nextDynamic(() => import('./components/AboutContent'), {
   ssr: false,
   loading: () => <LoadingComponent />, // Optional: show loading component during import
 });

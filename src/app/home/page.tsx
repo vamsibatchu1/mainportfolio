@@ -9,6 +9,9 @@ import styles from './components/styles.module.css';
 import UnifiedActionBar from './components/UnifiedActionBar';
 import ClientOnly from '../components/ClientOnly';
 
+// Force dynamic rendering for this page
+export const dynamic = 'force-dynamic';
+
 // Initialize IBM Plex Mono font
 const ibmPlexMono = IBM_Plex_Mono({
   weight: ['400', '500'],

@@ -5,6 +5,9 @@ import { useRouter } from 'next/navigation';
 import Current from './current';
 import StatusCard from './components/StatusCard';
 
+// Force dynamic rendering for this page
+export const dynamic = 'force-dynamic';
+
 export default function HomePage() {
   const router = useRouter();
 
