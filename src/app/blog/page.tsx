@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { doto } from '@/app/fonts';
 import { IBM_Plex_Mono } from 'next/font/google';
-import { newake } from '../fonts';
 import Link from 'next/link';
 
 const ibmPlexMono = IBM_Plex_Mono({
@@ -89,7 +88,7 @@ export default function BlogPage() {
                 >
                   {/* Title Column */}
                   <div className="w-1/3 p-8">
-                    <h2 className={`${newake.className} font-bold text-[40px] leading-[100%] tracking-[0.02em]`}>{post.title}</h2>
+                    <h2 className={`font-bold text-[40px] leading-[100%] tracking-[0.02em]`}>{post.title}</h2>
                   </div>
                   
                   {/* Content Column */}

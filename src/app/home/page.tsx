@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { louize, doto, ppNeueMontrealBook } from '../fonts';
+import { louize, doto } from '../fonts';
 import { IBM_Plex_Mono } from 'next/font/google';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TextScramble } from '@/components/ui/text-scramble';
@@ -359,7 +359,7 @@ export default function NewHomePage() {
   return (
     <div className="w-full h-screen overflow-hidden flex items-center justify-center" 
       style={{ 
-        backgroundImage: 'url(/backgrounds/pinkgradient.svg)',
+        backgroundImage: 'url("/images/background-gradient.jpg")',
         backgroundSize: 'cover',
         backgroundPosition: 'center'
       }}
@@ -369,7 +369,7 @@ export default function NewHomePage() {
         {/* Centered Content Container - Using flex layout (auto layout) */}
         <div className="flex flex-col items-start">
           {/* Two Cards Container - Fixed width container for both cards */}
-          <div className="flex flex-row w-[1086px]"> {/* 412px + 35px + 639px = 1086px */}
+          <div className="flex flex-row w-[1075px]"> {/* Updated width: 412px + 24px + 639px = 1075px */}
             
             {/* Left Card Container - Bio and intro */}
             <AnimatePresence>
@@ -380,9 +380,9 @@ export default function NewHomePage() {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 1, ease: "easeOut" }}
                 >
-                  {/* Left Card Content - White background with slide-up animation */}
+                  {/* Left Card Content - White background with rounded left corners only */}
                   <motion.div 
-                    className="bg-[#fff] w-full h-full p-[40px] flex flex-col justify-between"
+                    className="bg-[#fff] w-full h-full p-[40px] flex flex-col justify-between rounded-tl-[20px] rounded-bl-[20px]"
                     initial={{ y: 50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -441,7 +441,7 @@ export default function NewHomePage() {
                               
                               {/* Bottom Subtitle */}
                               <motion.div 
-                                className={`${ppNeueMontrealBook.className} text-[#6f6f6f] text-[18px] font-normal leading-[22px] tracking-[0px]`}
+                                className={`font-sans text-[#6f6f6f] text-[18px] font-normal leading-[22px] tracking-[0px]`}
                                 initial={{ opacity: 0, y: 15 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6, delay: 1.5, ease: [0.22, 1, 0.36, 1] }}
@@ -459,7 +459,7 @@ export default function NewHomePage() {
             </AnimatePresence>
             
             {/* Spacer */}
-            <div className="w-[35px]"></div>
+            <div className="w-[24px]"></div>
             
             {/* Right Card Container - Portfolio showcase */}
             <AnimatePresence>
@@ -470,9 +470,9 @@ export default function NewHomePage() {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 1, ease: "easeOut" }}
                 >
-                  {/* Right Card Content - White background with slide-up animation */}
+                  {/* Right Card Content - Translucent dark background with rounded right corners only */}
                   <motion.div 
-                    className="bg-[#fff] w-full h-full p-[40px] flex flex-col justify-between"
+                    className="bg-[rgba(0,0,0,0.19)] w-full h-full p-[40px] flex flex-col justify-between rounded-tr-[20px] rounded-br-[20px] text-white"
                     initial={{ y: 50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -512,7 +512,7 @@ export default function NewHomePage() {
                                 alt="Shape icon" 
                                 className="w-[32px] h-[32px] object-contain" 
                               />
-                              <div className={`${louize.className} w-[491px] text-[#191919] text-[21.7px] font-normal leading-[26.1px] tracking-[-0.65px]`}>
+                              <div className={`${louize.className} w-[491px] text-white text-[21.7px] font-normal leading-[26.1px] tracking-[-0.65px]`}>
                                 {carouselContent[currentPair].text}
                               </div>
                             </motion.div>
@@ -556,7 +556,7 @@ export default function NewHomePage() {
         <AnimatePresence>
           {firstCardVisible && (
             <motion.div 
-              className="relative w-full max-w-md mx-auto bg-[#fff] p-8 rounded-xl"
+              className="relative w-full max-w-md mx-auto bg-[#fff] p-8 rounded-[20px]"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, ease: "easeOut" }}
@@ -611,7 +611,7 @@ export default function NewHomePage() {
                     
                     {/* Bottom Subtitle */}
                     <motion.div 
-                      className={`${ppNeueMontrealBook.className} text-[#6f6f6f] text-[16px] font-normal leading-[22px] tracking-[0px] mb-6`}
+                      className={`font-sans text-[#6f6f6f] text-[16px] font-normal leading-[22px] tracking-[0px] mb-6`}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}

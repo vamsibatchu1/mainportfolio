@@ -21,6 +21,7 @@ body {
     --popover-foreground: 222.2 84% 4.9%;
     --primary: 221.2 83.2% 53.3%;
     --primary-foreground: 210 40% 98%;
+    --primary-orange: 14 100% 55%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
@@ -36,6 +37,14 @@ body {
     --offset: 10px;
     --slide-up-fade: slide-up-fade 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     --fade-in: fade-in 0.2s ease-in-out forwards;
+    
+    /* New card component system variables */
+    --card-white-width: 500px;
+    --card-translucent-width: 180px;
+    --card-small-height: 108px;
+    --card-regular-height: 180px;
+    --card-gap: 12px;
+    --card-corner-radius: 20px;
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -70,7 +79,7 @@ body {
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
@@ -164,11 +173,38 @@ body {
   animation: scroll-x 20s linear infinite;
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+/* Custom class for orange background */
+.orange-bg {
+  background-color: #FF531A !important;
+}
+
+/* New Card Component System */
+.card-container {
+  display: flex;
+  gap: var(--card-gap);
+}
+
+.card-white {
+  width: var(--card-white-width);
+  background-color: white;
+  border-radius: 0;
+  border-top-left-radius: var(--card-corner-radius);
+  border-bottom-left-radius: var(--card-corner-radius);
+}
+
+.card-translucent {
+  width: var(--card-translucent-width);
+  background-color: rgba(0, 0, 0, 0.19);
+  backdrop-filter: blur(8px);
+  border-radius: 0;
+  border-top-right-radius: var(--card-corner-radius);
+  border-bottom-right-radius: var(--card-corner-radius);
+}
+
+.card-small {
+  height: var(--card-small-height);
+}
+
+.card-regular {
+  height: var(--card-regular-height);
 }

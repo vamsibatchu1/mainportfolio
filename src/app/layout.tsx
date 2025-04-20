@@ -2,6 +2,7 @@
 import "./globals.css";
 import { CalendarIcon, FolderOpen, HomeIcon, MailIcon, PencilIcon, UserIcon } from "lucide-react";
 import React from "react";
+import { usePathname } from "next/navigation";
 
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { buttonVariants } from "@/components/ui/button";
@@ -64,12 +65,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  const isHomePage = pathname === '/home' || pathname === '/';
+
   return (
     <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable} ${redditSans.variable}`}>
       <head>
         {/* Add any additional head elements if needed */}
       </head>
-      <body>
+      <body style={isHomePage ? { backgroundColor: '#FF531A' } : {}}>
         <div className="min-h-screen flex flex-col">
           {/* Navigation on the right */}
        

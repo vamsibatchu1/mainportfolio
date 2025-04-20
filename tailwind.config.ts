@@ -14,6 +14,7 @@ export default {
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
+  			'primary-orange': '#CA2625',
   			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'
@@ -56,8 +57,20 @@ export default {
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
+  			sm: 'calc(var(--radius) - 4px)',
+        'card': 'var(--card-corner-radius)'
   		},
+      width: {
+        'card-white': 'var(--card-white-width)',
+        'card-translucent': 'var(--card-translucent-width)',
+      },
+      height: {
+        'card-small': 'var(--card-small-height)',
+        'card-regular': 'var(--card-regular-height)',
+      },
+      gap: {
+        'card': 'var(--card-gap)',
+      },
   		animation: {
   			grid: 'grid 15s linear infinite',
   			'play-once': 'playOnce 1s steps(1) forwards'

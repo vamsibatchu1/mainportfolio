@@ -1,6 +1,4 @@
 import { motion } from "framer-motion";
-import { digital } from "@/app/fonts";
-import { Sigmar } from "next/font/google";
 
 interface CardProps {
   color: string;
@@ -9,10 +7,10 @@ interface CardProps {
 }
 
 interface MobileCardsGridProps {
-  cards: CardProps[];
+  cards?: CardProps[];
 }
 
-export function MobileCardsGrid({ cards }: MobileCardsGridProps) {
+export function MobileCardsGrid({ cards = [] }: MobileCardsGridProps) {
   return (
     <div className="md:hidden w-full space-y-6 pb-0">
       {/* First row - 2 cards */}
