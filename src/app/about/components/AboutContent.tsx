@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { IBM_Plex_Mono } from 'next/font/google';
 import { doto } from '../../fonts';
@@ -20,6 +20,18 @@ const cards = [
 ];
 
 export default function AboutContent() {
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) {
+    // Render nothing or a loading indicator until mounted
+    return null; 
+  }
+
+  // Render content only after mounting
   return (
     <div className="w-full max-w-[1100px] mx-auto pt-52">
       {/* Floating Cards */}
