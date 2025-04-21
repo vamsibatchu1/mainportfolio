@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 // import { IBM_Plex_Mono, Work_Sans } from 'next/font/google'; // Commented out fonts
 // import { motion, AnimatePresence } from 'framer-motion'; // Commented out motion
 import { AnimatePresence } from 'framer-motion'; // Keep AnimatePresence if used separately
-import { TextScramble } from '@/components/ui/text-scramble';
+// import { TextScramble } from '@/components/ui/text-scramble'; // Remove unused import
 import styles from './components/styles.module.css';
 import UnifiedActionBar from './components/UnifiedActionBar';
 import ClientOnly from '../components/ClientOnly';
@@ -417,7 +417,7 @@ function HomeContent() {
                     <AnimatePresence>
                       {nameVisible && (
                         <div className="text-black text-[64px] font-bold leading-[60px] tracking-[-3.47px] mb-[44px]">
-                          <TextScramble
+                          {/* <TextScramble
                             duration={1.0}
                             speed={0.04}
                             characterSet="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -434,7 +434,10 @@ function HomeContent() {
                             trigger={scrambleSecond}
                           >
                             {nameBatchu}
-                          </TextScramble>
+                          </TextScramble> */}
+                          {/* Placeholder text while commented out */}
+                          <span className="block">{nameVamsi}</span>
+                          <span className="block">{nameBatchu}</span>
                         </div>
                       )}
                     </AnimatePresence>
@@ -551,7 +554,7 @@ function HomeContent() {
               <AnimatePresence>
                 {nameVisible && (
                   <div className="text-black text-[60px] font-bold leading-[60px] tracking-[-2px] mb-12">
-                    <TextScramble
+                    {/* <TextScramble
                       duration={1.0}
                       speed={0.04}
                       characterSet="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -568,7 +571,10 @@ function HomeContent() {
                       trigger={scrambleSecond}
                     >
                       {nameBatchu}
-                    </TextScramble>
+                    </TextScramble> */}
+                    {/* Placeholder text while commented out */}
+                    <span className="block">{mobileNameVamsi}</span>
+                    <span className="block">{nameBatchu}</span>
                   </div>
                 )}
               </AnimatePresence>
