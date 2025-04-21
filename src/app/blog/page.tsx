@@ -52,7 +52,7 @@ export default function BlogPage() {
           Blog &amp; Thoughts
         </h1>
         <p className={`${workSans.className} text-lg text-gray-600 max-w-2xl mx-auto`}>
-          I write about design, technology, and everything in between.
+          I write about design, technology, and everything in between regularly.
         </p>
       </motion.div>
 
