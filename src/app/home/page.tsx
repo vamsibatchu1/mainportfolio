@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 // import { louize, doto } from '../fonts'; // Commented out fonts
 // import { IBM_Plex_Mono, Work_Sans } from 'next/font/google'; // Commented out fonts
-import { motion, AnimatePresence } from 'framer-motion';
+// import { motion, AnimatePresence } from 'framer-motion'; // Commented out motion
+import { AnimatePresence } from 'framer-motion'; // Keep AnimatePresence if used separately
 import { TextScramble } from '@/components/ui/text-scramble';
 import styles from './components/styles.module.css';
 import UnifiedActionBar from './components/UnifiedActionBar';
@@ -54,41 +55,47 @@ const carouselContent = [
   }
 ];
 
-// Add ImageCard component from current.tsx
+// Add ImageCard component from current.tsx - REMOVE motion
 function ImageCard({ delay }: { delay: number }) {
+  // State to control visibility after delay
+  const [isVisible, setIsVisible] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => setIsVisible(true), delay * 1000);
+    return () => clearTimeout(timer);
+  }, [delay]);
+
+  if (!isVisible) return null; // Don't render until delay passes
+
   return (
-    <motion.div 
-      className="bg-[#f1f1f1] rounded-2xl w-full h-full"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{
-        delay,
-        duration: 0.4,
-        ease: "easeOut"
-      }}
+    <div 
+      className="bg-[#f1f1f1] rounded-2xl w-full h-full opacity-100 transition-opacity duration-400 ease-out"
+      // Removed motion props
     />
   );
 }
 
-// Add a new ImgCard component for cards with images
+// Add a new ImgCard component for cards with images - REMOVE motion
 function ImgCard({ delay, imageSrc }: { delay: number; imageSrc: string }) {
+  // State to control visibility after delay
+  const [isVisible, setIsVisible] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => setIsVisible(true), delay * 1000);
+    return () => clearTimeout(timer);
+  }, [delay]);
+
+  if (!isVisible) return null; // Don't render until delay passes
+
   return (
-    <motion.div 
-      className="bg-[#f1f1f1] rounded-2xl w-full h-full relative flex items-center justify-center"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{
-        delay,
-        duration: 0.4,
-        ease: "easeOut"
-      }}
+    <div 
+      className="bg-[#f1f1f1] rounded-2xl w-full h-full relative flex items-center justify-center opacity-100 transition-opacity duration-400 ease-out"
+      // Removed motion props
     >
       <img 
         src={imageSrc} 
         alt="Carousel image" 
         className="w-auto h-auto max-w-[90%] max-h-[90%] object-contain absolute bottom-0 left-1/2 transform -translate-x-1/2"
       />
-    </motion.div>
+    </div>
   );
 }
 
@@ -400,18 +407,12 @@ function HomeContent() {
             {/* Left Card Container - Bio and intro */}
             <AnimatePresence>
               {firstCardVisible && (
-          <motion.div
-                  className="w-[412px] h-[628px]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-                  transition={{ duration: 1, ease: "easeOut" }}
+                <div 
+                  className="w-[412px] h-[628px] opacity-100 transition-opacity duration-1000 ease-out"
                 >
                   {/* Left Card Content - White background with rounded left corners only */}
-                  <motion.div 
-                    className="bg-[#fff] w-full h-full p-[40px] flex flex-col justify-between rounded-tl-[20px] rounded-bl-[20px]"
-                    initial={{ y: 50, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  <div 
+                    className="bg-[#fff] w-full h-full p-[40px] flex flex-col justify-between rounded-tl-[20px] rounded-bl-[20px] opacity-100 transition-opacity duration-800 ease-out"
                   >
                     <AnimatePresence>
                       {nameVisible && (
@@ -445,41 +446,31 @@ function HomeContent() {
                             {/* Bottom container with consistent 32px spacing */}
                             <div className="mt-auto flex flex-col">
                               {/* Bio Text */}
-                              <motion.div 
-                                className="text-black text-[26px] font-normal leading-[32px] tracking-[-1.1px]"
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                              <div 
+                                className="text-black text-[26px] font-normal leading-[32px] tracking-[-1.1px] opacity-100 transition-opacity delay-300 duration-800 ease-out"
                               >
                                 Hands on product design leader with 11+ years of experience in designing & leading teams developing highly impactful products at scale.
-                              </motion.div>
+                              </div>
                               
                               {/* Divider Line - 32px margin */}
-                              <motion.div 
-                                className="w-full h-[1px] bg-black my-[32px]"
-                                initial={{ opacity: 0, scaleX: 0 }}
-                                animate={{ opacity: 1, scaleX: 1 }}
-                                transition={{ duration: 0.6, delay: 1.1, ease: "easeOut" }}
-                                style={{ transformOrigin: "left" }}
+                              <div 
+                                className="w-full h-[1px] bg-black my-[32px] opacity-100 transition-opacity scale-x-100 delay-[1100ms] duration-600 ease-out origin-left"
                               />
                               
                               {/* Bottom Subtitle */}
-                              <motion.div 
-                                className="text-[#6f6f6f] text-[18px] font-normal leading-[22px] tracking-[0px]"
-                                initial={{ opacity: 0, y: 15 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: 1.5, ease: [0.22, 1, 0.36, 1] }}
+                              <div 
+                                className="text-[#6f6f6f] text-[18px] font-normal leading-[22px] tracking-[0px] opacity-100 transition-opacity delay-[1500ms] duration-600 ease-out"
                               >
                                 Currently leading the enterprise AI design teams at Rocket
-                              </motion.div>
+                              </div>
                             </div>
                           </>
                         )}
                       </AnimatePresence>
                     </div>
-                  </motion.div>
-          </motion.div>
-        )}
+                  </div>
+                </div>
+              )}
             </AnimatePresence>
             
             {/* Spacer */}
@@ -488,33 +479,23 @@ function HomeContent() {
             {/* Right Card Container - Portfolio showcase */}
             <AnimatePresence>
               {secondCardVisible && (
-          <motion.div
-                  className="w-[639px] h-[628px]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-                  transition={{ duration: 1, ease: "easeOut" }}
+                <div 
+                  className="w-[639px] h-[628px] opacity-100 transition-opacity duration-1000 ease-out"
                 >
                   {/* Right Card Content - Translucent dark background with rounded right corners only */}
-                  <motion.div 
-                    className="bg-[rgba(0,0,0,0.19)] w-full h-full p-[40px] flex flex-col justify-between rounded-tr-[20px] rounded-br-[20px] text-white"
-                    initial={{ y: 50, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  <div 
+                    className="bg-[rgba(0,0,0,0.19)] w-full h-full p-[40px] flex flex-col justify-between rounded-tr-[20px] rounded-br-[20px] text-white opacity-100 transition-opacity duration-800 ease-out"
                   >
                     {/* Larger image grid - Now dynamically changes based on carousel item */}
                     <AnimatePresence mode="wait">
                       {imageVisible && (
-                        <motion.div 
+                        <div 
                           key={currentPair}
-                          className="w-full h-[488px] overflow-hidden"
-                          initial={{ opacity: 0, y: 30 }}
-                          animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-                          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                          className="w-full h-[488px] overflow-hidden opacity-100 transition-opacity duration-800 ease-out"
                         >
                           {/* Dynamically render the current grid layout based on carousel index */}
                           {React.createElement(gridLayouts[currentPair], { delay: 0 })}
-                        </motion.div>
+                        </div>
                       )}
                     </AnimatePresence>
                     
@@ -523,13 +504,8 @@ function HomeContent() {
                       {iconTextVisible && (
                         <div className="flex items-center">
                           <AnimatePresence mode="wait">
-                            <motion.div 
-                              key={currentPair}
-                              className="inline-flex items-center gap-[20px]"
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: 20 }}
-                              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                            <div 
+                              className="inline-flex items-center gap-[20px] opacity-100 transition-opacity duration-500 ease-out"
                             >
                               <img 
                                 src={carouselContent[currentPair].imageUrl} 
@@ -539,38 +515,27 @@ function HomeContent() {
                               <div className="w-[491px] text-white text-[21.7px] font-normal leading-[26.1px] tracking-[-0.65px]">
                                 {carouselContent[currentPair].text}
                               </div>
-                            </motion.div>
+                            </div>
                           </AnimatePresence>
                         </div>
                       )}
                     </AnimatePresence>
-                  </motion.div>
-                </motion.div>
+                  </div>
+                </div>
               )}
             </AnimatePresence>
           </div>
           
           {/* Navigation Hint Container - Below cards */}
-          <motion.div 
-            className={`${styles.navigationHint}`}
-            style={{ 
-              marginTop: '16px'
-            }}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ 
-              delay: 5.0, 
-              duration: 0.8,
-              type: "spring",
-              stiffness: 100,
-              damping: 20
-            }}
+          <div 
+            className={`${styles.navigationHint} opacity-100 transition-opacity delay-[5000ms] duration-800`}
+            style={{ marginTop: '16px' }}
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M7 9.49958L2 11.9996L11.6422 16.8207C11.7734 16.8863 11.839 16.9191 11.9078 16.932C11.9687 16.9434 12.0313 16.9434 12.0922 16.932C12.161 16.9191 12.2266 16.8863 12.3578 16.8207L22 11.9996L17 9.49958M7 14.4996L2 16.9996L11.6422 21.8207C11.7734 21.8863 11.839 21.9191 11.9078 21.932C11.9687 21.9434 12.0313 21.9434 12.0922 21.932C12.161 21.9191 12.2266 21.8863 12.3578 21.8207L22 16.9996L17 14.4996M2 6.99958L11.6422 2.17846C11.7734 2.11287 11.839 2.08008 11.9078 2.06717C11.9687 2.05574 12.0313 2.05574 12.0922 2.06717C12.161 2.08008 12.2266 2.11287 12.3578 2.17846L22 6.99958L12.3578 11.8207C12.2266 11.8863 12.161 11.9191 12.0922 11.932C12.0313 11.9434 11.9687 11.9434 11.9078 11.932C11.839 11.9191 11.7734 11.8863 11.6422 11.8207L2 6.99958Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
             TAP SPACEBAR TO NAVIGATE
-          </motion.div>
+          </div>
         </div>
       </div>
       
@@ -579,11 +544,8 @@ function HomeContent() {
         {/* Mobile Card Container - Combined content */}
         <AnimatePresence>
           {firstCardVisible && (
-          <motion.div
-              className="relative w-full max-w-md mx-auto bg-[#fff] p-8 rounded-[20px]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-              transition={{ duration: 1, ease: "easeOut" }}
+          <div
+              className="relative w-full max-w-md mx-auto bg-[#fff] p-8 rounded-[20px] opacity-100 transition-opacity duration-1000 ease-out"
             >
               {/* Name - Smaller for mobile */}
               <AnimatePresence>
@@ -615,33 +577,23 @@ function HomeContent() {
               <AnimatePresence>
                 {contentVisible && (
                   <>
-                    <motion.div 
-                      className="text-black text-[22px] font-normal leading-[28px] tracking-[-0.8px] mb-10"
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    <div 
+                      className="text-black text-[22px] font-normal leading-[28px] tracking-[-0.8px] mb-10 opacity-100 transition-opacity delay-300 duration-500 ease-out"
                     >
                       Hands on product design leader with 11+ years of experience in designing & leading teams developing highly impactful products at scale.
-                    </motion.div>
+                    </div>
                     
                     {/* Divider Line */}
-                    <motion.div 
-                      className="w-full h-[1px] bg-black mb-4"
-                      initial={{ opacity: 0, scaleX: 0 }}
-                      animate={{ opacity: 1, scaleX: 1 }}
-                      transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
-                      style={{ transformOrigin: "left" }}
+                    <div 
+                      className="w-full h-[1px] bg-black mb-4 opacity-100 transition-opacity scale-x-100 delay-600 duration-600 ease-out origin-left"
                     />
                     
                     {/* Bottom Subtitle */}
-                    <motion.div 
-                      className="text-[#6f6f6f] text-[16px] font-normal leading-[22px] tracking-[0px] mb-6"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
+                    <div 
+                      className="text-[#6f6f6f] text-[16px] font-normal leading-[22px] tracking-[0px] mb-6 opacity-100 transition-opacity delay-[1000ms] duration-500 ease-out"
                     >
                       Currently leading the enterprise AI design teams at Rocket
-                    </motion.div>
+                    </div>
                   </>
                 )}
               </AnimatePresence>
@@ -653,13 +605,9 @@ function HomeContent() {
                     {/* Profile Image Placeholder - with equal spacing */}
                     <AnimatePresence mode="wait">
                       {imageVisible && (
-                        <motion.div 
+                        <div 
                           key={currentPair}
-                          className="w-full h-[500px] overflow-hidden"
-                          initial={{ opacity: 0, y: 15 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                          className="w-full h-[500px] overflow-hidden opacity-100 transition-opacity duration-500 ease-out"
                         >
                           {/* Create simplified versions of the grid layouts for mobile */}
                           {currentPair === 0 && (
@@ -744,7 +692,7 @@ function HomeContent() {
                               </div>
                             </div>
                           )}
-                        </motion.div>
+                        </div>
                       )}
                     </AnimatePresence>
                   </>
@@ -766,7 +714,7 @@ function HomeContent() {
                   </div>
                 )}
               </AnimatePresence>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
       </div>
