@@ -8,9 +8,10 @@ import { useRouter } from 'next/navigation';
 import { MENU_CONTENT_MAP } from './menu-content';
 import type { LottieRefCurrentProps } from "lottie-react";
 import styles from './styles.module.css';
+import dynamic from 'next/dynamic';
 
-// Import Lottie directly without dynamic loading to avoid delay
-import Lottie from "lottie-react";
+// Dynamically import Lottie with SSR turned off
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 // Preload all animation files
 import homeAnimation from '@/animations/home.json';
@@ -229,6 +230,8 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
     {
       icon: (lottieRef, animation) => (
         <div className="h-6 w-6">
+          {/* Wrap Lottie in Suspense if needed, though dynamic import might suffice */}
+          {/* <Suspense fallback={<div className="h-6 w-6 bg-gray-200 rounded" />}> */}
           {animation && (
             <Lottie
               lottieRef={lottieRef}
@@ -243,6 +246,7 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
               }}
             />
           )}
+          {/* </Suspense> */}
         </div>
       ),
       label: 'Home',
@@ -251,6 +255,7 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
     {
       icon: (lottieRef, animation) => (
         <div className="h-6 w-6">
+          {/* <Suspense fallback={<div className="h-6 w-6 bg-gray-200 rounded" />}> */}
           {animation && (
             <Lottie
               lottieRef={lottieRef}
@@ -265,6 +270,7 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
               }}
             />
           )}
+          {/* </Suspense> */}
         </div>
       ),
       label: 'Work',
@@ -273,6 +279,7 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
     {
       icon: (lottieRef, animation) => (
         <div className="h-6 w-6">
+          {/* <Suspense fallback={<div className="h-6 w-6 bg-gray-200 rounded" />}> */}
           {animation && (
             <Lottie
               lottieRef={lottieRef}
@@ -287,6 +294,7 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
               }}
             />
           )}
+          {/* </Suspense> */}
         </div>
       ),
       label: 'Blog',
@@ -295,6 +303,7 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
     {
       icon: (lottieRef, animation) => (
         <div className="h-6 w-6">
+          {/* <Suspense fallback={<div className="h-6 w-6 bg-gray-200 rounded" />}> */}
           {animation && (
             <Lottie
               lottieRef={lottieRef}
@@ -309,6 +318,7 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
               }}
             />
           )}
+          {/* </Suspense> */}
         </div>
       ),
       label: 'Experiments',
@@ -317,6 +327,7 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
     {
       icon: (lottieRef, animation) => (
         <div className="h-6 w-6">
+          {/* <Suspense fallback={<div className="h-6 w-6 bg-gray-200 rounded" />}> */}
           {animation && (
             <Lottie
               lottieRef={lottieRef}
@@ -331,6 +342,7 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
               }}
             />
           )}
+          {/* </Suspense> */}
         </div>
       ),
       label: 'About',
@@ -339,6 +351,7 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
     {
       icon: (lottieRef, animation) => (
         <div className="h-6 w-6">
+          {/* <Suspense fallback={<div className="h-6 w-6 bg-gray-200 rounded" />}> */}
           {animation && (
             <Lottie
               lottieRef={lottieRef}
@@ -353,6 +366,7 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
               }}
             />
           )}
+          {/* </Suspense> */}
         </div>
       ),
       label: 'Ask',
