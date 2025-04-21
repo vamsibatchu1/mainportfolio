@@ -1,6 +1,22 @@
 import localFont from 'next/font/local';
+import { Work_Sans, Inter } from 'next/font/google';
 
 // ... other fonts ...
+
+// Configure Inter
+export const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter'
+});
+
+// Configure Work Sans
+export const workSans = Work_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
+  variable: '--font-work-sans'
+});
 
 // Commenting out missing fonts
 // export const digital = localFont({

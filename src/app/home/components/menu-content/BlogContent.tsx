@@ -1,58 +1,58 @@
 "use client";
 
-import { Link } from 'lucide-react';
-import { IBM_Plex_Mono } from 'next/font/google';
-import { MenuContentProps } from './types';
+import React from 'react';
+import type { MenuContentProps } from './types';
+import { louize, inter } from '@/app/fonts';
 
-const ibmPlexMono = IBM_Plex_Mono({
-  weight: ['400', '500', '600'],
-  subsets: ['latin'],
-  display: 'swap',
-});
-
-export function BlogContent({ isActive }: MenuContentProps) {
-  const items = [
-    {
-      title: 'Design Systems',
-      tag: 'Process',
-      date: 'Jun 2024',
-      icon: <Link size={20} />,
+// NOTE: Content copied from AboutContent.tsx as requested.
+// Renamed function to BlogContent.
+export function BlogContent({ /* isActive, onClose */ }: MenuContentProps) {
+  /* const items = [
+   // {
+      title: 'Experience',
+      description: '10+ years of design and development',
+      date: '10+ years',
     },
     {
-      title: 'Product Strategy',
-      tag: 'Leadership',
-      date: 'May 2024',
-      icon: <Link size={20} />,
+      title: 'Leadership',
+      description: 'Leading design teams and initiatives',
+      date: '5+ years',
     }
-  ];
+  ]; */ // Removed unused variable
 
   return (
-    <div className="flex w-full flex-col items-center p-4">
-      {items.map((item, idx) => (
-        <div
-          key={idx}
-          className="flex w-[95%] cursor-pointer items-center gap-1.5 py-3 duration-300 hover:bg-black/5 hover:px-3"
-          style={{ borderRadius: 16 }}
-        >
-          {item.icon && <div className="mr-1.5">{item.icon}</div>}
-          <div className="flex w-full flex-col items-start">
-            <p className="font-medium">{item.title}</p>
+    <div className="p-6 h-full flex">
+      {/* First column - Text content */}
+      <div className="w-[40%] pr-4 flex flex-col justify-center"> 
+        <h4 className={`${louize.className} font-medium mb-3 text-xl`}>From the Blog</h4>
+        <p className={`${inter.className} text-sm leading-relaxed text-gray-600`}>
+          Thoughts on design, code, and product. Explore articles on UI/UX, front-end techniques, design systems, and more. Read on!
+        </p>
+         <a href="/blog" className={`${inter.className} text-sm text-gray-600 hover:text-black mt-4 inline-block`}>
+            View all posts →
+        </a>
+      </div>
+      
+      {/* Two image columns - representing blog posts or categories */}
+      <div className="flex w-[60%] gap-4">
+        {/* Image column 1 - Represents latest/featured post */}
+        <div className="w-1/2">
+          <div className="bg-gray-200 h-full rounded-md group relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
+             <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-200"></div>
+             <span className="absolute bottom-2 left-2 text-white text-xs bg-black/50 px-1.5 py-0.5 rounded">Latest Post</span>
           </div>
-          {item.tag && (
-            <span
-              className="block shrink-0 border border-black/50 px-2 py-1 text-sm opacity-80"
-              style={{ borderRadius: 8 }}
-            >
-              {item.tag}
-            </span>
-          )}
-          {item.date && (
-            <span className="text-md block shrink-0 px-2 py-1 opacity-80">
-              {item.date}
-            </span>
-          )}
         </div>
-      ))}
+        
+        {/* Image column 2 - Represents another post/category */}
+        <div className="w-1/2">
+          <div className="bg-gray-300 h-full rounded-md group relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
+            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-200"></div>
+            <span className="absolute bottom-2 left-2 text-white text-xs bg-black/50 px-1.5 py-0.5 rounded">Design Thinking</span>
+          </div>
+        </div>
+        
+        {/* Removed third image column */}
+      </div>
     </div>
   );
 } 

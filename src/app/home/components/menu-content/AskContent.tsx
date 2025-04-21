@@ -2,14 +2,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Send, Paperclip, Mic } from 'lucide-react';
-import { IBM_Plex_Mono } from 'next/font/google';
 import type { MenuContentProps } from './types';
-
-const ibmPlexMono = IBM_Plex_Mono({
-  weight: ['400', '500', '600'],
-  subsets: ['latin'],
-  display: 'swap',
-});
+import { inter } from '@/app/fonts';
 
 type Message = {
   id: number;
@@ -18,7 +12,7 @@ type Message = {
   timestamp: Date;
 };
 
-export function AskContent({ isActive, onClose }: MenuContentProps) {
+export function AskContent({ /* isActive, onClose */ }: MenuContentProps) {
   const [inputValue, setInputValue] = useState('');
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -30,7 +24,6 @@ export function AskContent({ isActive, onClose }: MenuContentProps) {
   ]);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const chatContainerRef = useRef<HTMLDivElement>(null);
   
   // Scroll to bottom whenever messages change
   useEffect(() => {
@@ -90,10 +83,10 @@ export function AskContent({ isActive, onClose }: MenuContentProps) {
               className={`max-w-[70%] p-3 rounded-lg ${
                 message.sender === 'user' 
                   ? 'bg-black text-white rounded-tr-none ml-2' 
-                  : 'bg-gray-100 rounded-tl-none'
+                  : 'bg-gray-100 text-gray-700 rounded-tl-none'
               }`}
             >
-              <p className={`${ibmPlexMono.className} text-sm`}>{message.text}</p>
+              <p className={`${inter.className} text-sm`}>{message.text}</p>
             </div>
             {message.sender === 'user' && (
               <div className="w-8 h-8 rounded-full bg-gray-200 ml-2 overflow-hidden flex-shrink-0">
@@ -121,7 +114,7 @@ export function AskContent({ isActive, onClose }: MenuContentProps) {
             <input
               type="text"
               placeholder="Type your message..."
-              className={`${ibmPlexMono.className} w-full p-3 pr-10 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200`}
+              className={`${inter.className} text-sm text-gray-700 w-full p-3 pr-10 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200`}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
             />
@@ -140,7 +133,7 @@ export function AskContent({ isActive, onClose }: MenuContentProps) {
             disabled={!inputValue.trim()}
           >
             <div className="flex items-center">
-              <span className="mr-1">Send Message</span>
+              <span className={`${inter.className} text-sm mr-1`}>Send Message</span>
               <Send size={16} />
             </div>
           </button>

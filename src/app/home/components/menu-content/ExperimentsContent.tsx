@@ -1,64 +1,47 @@
 "use client";
 
 import React from 'react';
-import { IBM_Plex_Mono } from 'next/font/google';
 import type { MenuContentProps } from './types';
+import { louize, inter } from '@/app/fonts';
 
-const ibmPlexMono = IBM_Plex_Mono({
-  weight: ['400', '500', '600'],
-  subsets: ['latin'],
-  display: 'swap',
-});
+// Removed sample experiment data - not needed for new layout
+// const experiments = [...];
 
-// Sample experiment data
-const experiments = [
-  {
-    id: 1,
-    title: 'Goodflicks',
-    description: 'An AI powered movie recommendation and social media app',
-    image: '/images/experiments/goodflicks.jpg',
-    link: '/home/experiments/goodflicks'
-  },
-  {
-    id: 2,
-    title: 'Soundscape',
-    description: 'Interactive audio visualization experiment with Three.js',
-    image: '/images/experiments/soundscape.jpg',
-    link: '/home/experiments/soundscape'
-  },
-  {
-    id: 3,
-    title: 'Old Home',
-    description: 'Archive of the previous home page design and components',
-    image: '/images/experiments/old-home.jpg',
-    link: '/experiments/old-home'
-  }
-];
-
-export function ExperimentsContent({ isActive, onClose }: MenuContentProps) {
+export function ExperimentsContent({ /* isActive, onClose */ }: MenuContentProps) { // Removed unused props
   return (
-    <div className="p-6 h-full">  
-      <div className="grid grid-cols-2 gap-4">
-        {experiments.map((experiment) => (
-          <a 
-            key={experiment.id}
-            href={experiment.link}
-            className="block group"
-          >
-            <div className="bg-gray-100 rounded-lg overflow-hidden transition-all duration-300">
-              <div className="p-4">
-                <h4 className="font-medium mb-1">{experiment.title}</h4>
-                <p className={`${ibmPlexMono.className} text-sm text-gray-600`}>
-                  {experiment.description}
-                </p>
-              </div>
-              <div className="bg-gray-200 h-32 w-full">
-                {/* Image placeholder - in production, use next/image */}
-                {/* <Image src={experiment.image} alt={experiment.title} width={300} height={128} /> */}
-              </div>
-            </div>
-          </a>
-        ))}
+    <div className="p-6 h-full flex">
+      {/* First column - Text content */}
+      <div className="w-[40%] pr-4 flex flex-col justify-center">
+        <h4 className={`${louize.className} font-medium mb-3 text-xl`}>Experiments</h4>
+        <p className={`${inter.className} text-sm leading-relaxed text-gray-600`}>
+          I love experimenting with new technologies and building fun apps. Take a look!
+        </p>
+         <a href="/experiments" className={`${inter.className} text-sm text-gray-600 hover:text-black mt-4 inline-block`}>
+            View all experiments →
+        </a>
+      </div>
+      
+      {/* Two image columns for animations */}
+      <div className="flex w-[60%] gap-4">
+        {/* Image column 1 */}
+        <div className="w-1/2">
+          <div className="bg-gradient-to-br from-purple-100 to-indigo-100 h-full rounded-md group relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
+             {/* Placeholder for Animation 1 */}
+             <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-indigo-400 text-xs font-medium opacity-70 group-hover:opacity-100 transition-opacity">Animation Preview 1</span>
+             </div>
+          </div>
+        </div>
+        
+        {/* Image column 2 */}
+        <div className="w-1/2">
+           <div className="bg-gradient-to-br from-pink-100 to-rose-100 h-full rounded-md group relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
+             {/* Placeholder for Animation 2 */}
+             <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-rose-400 text-xs font-medium opacity-70 group-hover:opacity-100 transition-opacity">Animation Preview 2</span>
+             </div>
+          </div>
+        </div>
       </div>
     </div>
   );

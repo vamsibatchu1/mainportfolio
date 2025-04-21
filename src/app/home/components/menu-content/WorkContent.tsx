@@ -1,52 +1,25 @@
 "use client";
 
-import { IBM_Plex_Mono } from 'next/font/google';
-import { MenuContentProps } from './types';
+import React from 'react';
+import type { MenuContentProps } from './types';
+// Removed font imports (louize, inter)
 
-const ibmPlexMono = IBM_Plex_Mono({
-  weight: ['400', '500', '600'],
-  subsets: ['latin'],
-  display: 'swap',
-});
+// Removed workItems array
 
-export function WorkContent({ isActive }: MenuContentProps) {
-  const items = [
-    {
-      title: 'Home Buying Plan',
-      description: 'Led design for a 0-1 nurturing product to help first time home buyers',
-      image: '/images/project_rocket.png'
-    },
-    {
-      title: 'Billpay Redesign',
-      description: 'Redesigned a billpay system for 6 million users of a major bank',
-      image: '/images/project_truist.png'
-    }
-  ];
-
+export function WorkContent({ /* isActive, onClose */ }: MenuContentProps) { 
   return (
-    <div className="flex w-full flex-col items-center p-4">
-      {items.map((item, idx) => (
-        <div
-          key={idx}
-          className="flex w-[95%] cursor-pointer items-center gap-1.5 py-3 duration-300 hover:bg-black/5 hover:px-3"
-          style={{ borderRadius: 16 }}
-        >
-          {item.image && (
-            <img
-              src={item.image}
-              alt={item.title}
-              className="mr-1.5 h-16 w-16 shrink-0 object-cover"
-              style={{ borderRadius: 12 }}
-            />
-          )}
-          <div className="flex w-full flex-col items-start">
-            <p className="font-medium">{item.title}</p>
-            {item.description && (
-              <p className={`${ibmPlexMono.className} text-sm opacity-80`}>{item.description}</p>
-            )}
-          </div>
-        </div>
-      ))}
+    <div className="p-6 h-full flex items-center justify-center"> 
+      {/* Horizontal row of 4 Project Placeholders */}
+      <div className="flex w-full justify-center items-center gap-4 h-full max-h-[150px]"> {/* Adjust max-h as needed */} 
+        {/* Placeholder 1 */}
+        <div className="w-1/4 aspect-square bg-gray-200 rounded-lg transition-all duration-300 hover:bg-gray-300"></div>
+        {/* Placeholder 2 */}
+        <div className="w-1/4 aspect-square bg-gray-200 rounded-lg transition-all duration-300 hover:bg-gray-300"></div>
+        {/* Placeholder 3 */}
+        <div className="w-1/4 aspect-square bg-gray-200 rounded-lg transition-all duration-300 hover:bg-gray-300"></div>
+        {/* Placeholder 4 */}
+        <div className="w-1/4 aspect-square bg-gray-200 rounded-lg transition-all duration-300 hover:bg-gray-300"></div>
+      </div>
     </div>
   );
 } 

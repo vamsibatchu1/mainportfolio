@@ -410,7 +410,7 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
             animate={{
               width: activeIndex !== null ? ['730px', '730px', '730px', '730px', '730px', '730px'][activeIndex] : '720px',
               height: activeIndex !== null 
-                ? ['280px', '320px', '240px', '380px', '300px', '400px'][activeIndex]
+                ? ['280px', '310px', '330px', '300px', '300px', '400px'][activeIndex]
                 : '48px',
               y: activeIndex !== null ? 17 : 0,
             }}
