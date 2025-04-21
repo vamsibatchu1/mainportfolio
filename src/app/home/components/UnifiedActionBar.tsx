@@ -116,50 +116,51 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
 
   // Check for duplicate instances on mount
   useEffect(() => {
-    // Get current pathname
-    const currentPath = window.location.pathname;
-    
-    // If this is a new page, reset the tracker
-    if (globalInstanceTracker.pathname !== currentPath) {
-      globalInstanceTracker.instances.clear();
-      globalInstanceTracker.activeInstance = null;
-      globalInstanceTracker.pathname = currentPath;
+    // Ensure this runs only on the client
+    if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+      // Get current pathname
+      const currentPath = window.location.pathname;
+      
+      // If this is a new page, reset the tracker
+      if (globalInstanceTracker.pathname !== currentPath) {
+        globalInstanceTracker.instances.clear();
+        globalInstanceTracker.activeInstance = null;
+        globalInstanceTracker.pathname = currentPath;
+      }
+      
+      // Register this instance
+      globalInstanceTracker.instances.add(instanceId.current);
+      
+      // Enhanced detection: Check if we already have a visible ActionBar in the DOM
+      const existingActionBar = document.querySelector('.unified-action-bar-container');
+      
+      // If no active instance is set and no DOM element exists, make this one active
+      if (!globalInstanceTracker.activeInstance && !existingActionBar) {
+        globalInstanceTracker.activeInstance = instanceId.current;
+        setShouldRender(true);
+      } else if (globalInstanceTracker.activeInstance === instanceId.current) {
+        setShouldRender(true);
+      } else {
+        setShouldRender(false);
+        console.warn('Multiple UnifiedActionBar instances detected. Only rendering one.');
+      }
     }
     
-    // Register this instance
-    globalInstanceTracker.instances.add(instanceId.current);
-    
-    // Enhanced detection: Check if we already have a visible ActionBar in the DOM
-    // This helps in cases where multiple instances are mounted almost simultaneously
-    const existingActionBar = document.querySelector('.unified-action-bar-container');
-    
-    // If no active instance is set and no DOM element exists, make this one active
-    if (!globalInstanceTracker.activeInstance && !existingActionBar) {
-      globalInstanceTracker.activeInstance = instanceId.current;
-      setShouldRender(true);
-    } else if (globalInstanceTracker.activeInstance === instanceId.current) {
-      setShouldRender(true);
-    } else {
-      setShouldRender(false);
-      console.warn('Multiple UnifiedActionBar instances detected. Only rendering one.');
-    }
-    
-    // Cleanup on unmount
+    // Cleanup on unmount (this part is safe as it only manipulates the tracker object)
     return () => {
       globalInstanceTracker.instances.delete(instanceId.current);
-      // If this was the active instance, clear it so another can take over
       if (globalInstanceTracker.activeInstance === instanceId.current) {
         globalInstanceTracker.activeInstance = null;
-        // Pick another instance to be active if any exist
         if (globalInstanceTracker.instances.size > 0) {
           globalInstanceTracker.activeInstance = Array.from(globalInstanceTracker.instances)[0];
         }
       }
     };
-  }, []);
+  }, []); // Empty dependency array means this runs once on mount
   
   // Function to handle keyboard events
   useEffect(() => {
+    // Define the event handler function outside the conditional block
     function onKeyDown(event: KeyboardEvent) {
       // Toggle ActionBar visibility on spacebar press (only if not alwaysVisible)
       if (!alwaysVisible && (event.key === " " || event.code === "Space")) {
@@ -177,10 +178,22 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
         setShowInfo(false);
       }
     }
-
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [alwaysVisible]);
+    
+    // Ensure this runs only on the client before adding the listener
+    if (typeof window !== 'undefined') {
+      window.addEventListener('keydown', onKeyDown);
+      
+      // Return cleanup function that also checks for window existence
+      return () => {
+        if (typeof window !== 'undefined') {
+          window.removeEventListener('keydown', onKeyDown);
+        }
+      };
+    }
+    
+    // If not on client, return undefined or an empty function for cleanup
+    return undefined;
+  }, [alwaysVisible]); // Dependency array includes alwaysVisible
 
   const handleMouseEnter = (index: number) => {
     setActiveIndex(index);
@@ -488,7 +501,7 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
     </div>
   );
 
-  // Only render if shouldRender is true
+  // Render null if this instance shouldn't be active
   if (!shouldRender) {
     return null;
   }
