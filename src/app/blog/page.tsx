@@ -2,18 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { louize } from '@/app/fonts';
-import { Work_Sans } from 'next/font/google';
+// import { louize } from '@/app/fonts'; // Commented out font
+// import { Work_Sans } from 'next/font/google'; // Commented out font
 import ClientOnly from '../components/ClientOnly';
 
 // Force dynamic rendering for this page
 export const dynamic = 'force-dynamic';
 
-const workSans = Work_Sans({ 
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap'
-});
+// const workSans = Work_Sans({ 
+//   subsets: ['latin'],
+//   weight: ['400', '500', '600', '700'],
+//   display: 'swap'
+// });
 
 export default function BlogPage() {
   return (
@@ -44,10 +44,10 @@ function BlogContent() {
         transition={{ duration: 0.6 }}
         className="mb-12"
       >
-        <h1 className={`${louize.className} text-4xl md:text-5xl font-bold mb-4`}>
+        <h1 className="text-4xl md:text-5xl font-bold mb-4">
           Blog
         </h1>
-        <p className={`${workSans.className} text-lg text-gray-600 max-w-2xl`}>
+        <p className="text-lg text-gray-600 max-w-2xl">
           Thoughts on design, technology, and product development.
         </p>
       </motion.div>
@@ -60,9 +60,9 @@ function BlogContent() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="bg-white p-6 rounded-lg shadow-md"
         >
-          <h2 className={`${louize.className} text-2xl font-bold mb-2`}>Design Systems at Scale</h2>
-          <p className={`${workSans.className} text-sm text-gray-500 mb-4`}>April 12, 2023</p>
-          <p className={`${workSans.className} text-gray-600`}>
+          <h2 className="text-2xl font-bold mb-2">Design Systems at Scale</h2>
+          <p className="text-sm text-gray-500 mb-4">April 12, 2023</p>
+          <p className="text-gray-600">
             Building and maintaining design systems for enterprise products: lessons learned and best practices.
           </p>
         </motion.div>
@@ -74,9 +74,9 @@ function BlogContent() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="bg-white p-6 rounded-lg shadow-md"
         >
-          <h2 className={`${louize.className} text-2xl font-bold mb-2`}>The Future of AI in Design</h2>
-          <p className={`${workSans.className} text-sm text-gray-500 mb-4`}>March 5, 2023</p>
-          <p className={`${workSans.className} text-gray-600`}>
+          <h2 className="text-2xl font-bold mb-2">The Future of AI in Design</h2>
+          <p className="text-sm text-gray-500 mb-4">March 5, 2023</p>
+          <p className="text-gray-600">
             How AI tools are changing the landscape of product design and what designers should know.
           </p>
         </motion.div>
@@ -88,9 +88,9 @@ function BlogContent() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="bg-white p-6 rounded-lg shadow-md"
         >
-          <h2 className={`${louize.className} text-2xl font-bold mb-2`}>Designing for Accessibility</h2>
-          <p className={`${workSans.className} text-sm text-gray-500 mb-4`}>February 18, 2023</p>
-          <p className={`${workSans.className} text-gray-600`}>
+          <h2 className="text-2xl font-bold mb-2">Designing for Accessibility</h2>
+          <p className="text-sm text-gray-500 mb-4">February 18, 2023</p>
+          <p className="text-gray-600">
             Practical strategies for making products more accessible without compromising on aesthetics.
           </p>
         </motion.div>

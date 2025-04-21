@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { doto, louize } from '@/app/fonts';
+// import { doto, louize } from '@/app/fonts'; // Commented out fonts
 
 /**
  * Base interfaces for the DualCard components
@@ -214,7 +214,7 @@ export function CardTitle({ children, className, size = 'regular' }: {
   return (
     <h3 
       className={cn(
-        `${louize.className}`, 
+        // `${louize.className}`, // Removed font className
         size === 'regular' ? 'text-[40px] mb-2 leading-tight' : 'text-[36px] mb-2',
         className
       )}
@@ -233,7 +233,8 @@ export function CardSubtitle({ children, className, size = 'regular' }: {
   return (
     <p 
       className={cn(
-        `${doto.className} font-bold`, 
+        // `${doto.className} font-bold`, // Removed font className
+        'font-bold', // Keep font-bold if needed
         size === 'small' 
           ? 'text-[24px] text-left text-[#797979] absolute left-[40px] top-[37px]' 
           : 'text-[24px] text-[#797979]',

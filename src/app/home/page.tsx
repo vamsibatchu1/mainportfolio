@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { louize, doto } from '../fonts';
-import { IBM_Plex_Mono, Work_Sans } from 'next/font/google';
+// import { louize, doto } from '../fonts'; // Commented out fonts
+// import { IBM_Plex_Mono, Work_Sans } from 'next/font/google'; // Commented out fonts
 import { motion, AnimatePresence } from 'framer-motion';
 import { TextScramble } from '@/components/ui/text-scramble';
 import styles from './components/styles.module.css';
@@ -12,19 +12,19 @@ import ClientOnly from '../components/ClientOnly';
 // Force dynamic rendering for this page
 export const dynamic = 'force-dynamic';
 
-// Initialize IBM Plex Mono font
-const ibmPlexMono = IBM_Plex_Mono({
-  weight: ['400', '500'],
-  subsets: ['latin'],
-  display: 'swap',
-});
+// Initialize IBM Plex Mono font - Commented out
+// const ibmPlexMono = IBM_Plex_Mono({
+//   weight: ['400', '500'],
+//   subsets: ['latin'],
+//   display: 'swap',
+// });
 
-// Initialize Work Sans font
-const workSans = Work_Sans({ 
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap'
-});
+// Initialize Work Sans font - Commented out
+// const workSans = Work_Sans({ 
+//   subsets: ['latin'],
+//   weight: ['400', '500', '600', '700'],
+//   display: 'swap'
+// });
 
 // Define the carousel content
 const carouselContent = [
@@ -415,9 +415,7 @@ function HomeContent() {
                   >
                     <AnimatePresence>
                       {nameVisible && (
-                        <div 
-                          className={`${doto.className} text-black text-[64px] font-bold leading-[60px] tracking-[-3.47px] mb-[44px]`}
-                        >
+                        <div className="text-black text-[64px] font-bold leading-[60px] tracking-[-3.47px] mb-[44px]">
                           <TextScramble
                             duration={1.0}
                             speed={0.04}
@@ -448,7 +446,7 @@ function HomeContent() {
                             <div className="mt-auto flex flex-col">
                               {/* Bio Text */}
                               <motion.div 
-                                className={`${louize.className} text-black text-[26px] font-normal leading-[32px] tracking-[-1.1px]`}
+                                className="text-black text-[26px] font-normal leading-[32px] tracking-[-1.1px]"
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
@@ -467,7 +465,7 @@ function HomeContent() {
                               
                               {/* Bottom Subtitle */}
                               <motion.div 
-                                className={`${workSans.className} text-[#6f6f6f] text-[18px] font-normal leading-[22px] tracking-[0px]`}
+                                className="text-[#6f6f6f] text-[18px] font-normal leading-[22px] tracking-[0px]"
                                 initial={{ opacity: 0, y: 15 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6, delay: 1.5, ease: [0.22, 1, 0.36, 1] }}
@@ -538,7 +536,7 @@ function HomeContent() {
                                 alt="Shape icon" 
                                 className="w-[32px] h-[32px] object-contain" 
                               />
-                              <div className={`${louize.className} w-[491px] text-white text-[21.7px] font-normal leading-[26.1px] tracking-[-0.65px]`}>
+                              <div className="w-[491px] text-white text-[21.7px] font-normal leading-[26.1px] tracking-[-0.65px]">
                                 {carouselContent[currentPair].text}
                               </div>
                             </motion.div>
@@ -554,7 +552,7 @@ function HomeContent() {
           
           {/* Navigation Hint Container - Below cards */}
           <motion.div 
-            className={`${styles.navigationHint} ${ibmPlexMono.className}`}
+            className={`${styles.navigationHint}`}
             style={{ 
               marginTop: '16px'
             }}
@@ -590,7 +588,7 @@ function HomeContent() {
               {/* Name - Smaller for mobile */}
               <AnimatePresence>
                 {nameVisible && (
-                  <div className={`${doto.className} text-black text-[60px] font-bold leading-[60px] tracking-[-2px] mb-12`}>
+                  <div className="text-black text-[60px] font-bold leading-[60px] tracking-[-2px] mb-12">
                     <TextScramble
                       duration={1.0}
                       speed={0.04}
@@ -618,7 +616,7 @@ function HomeContent() {
                 {contentVisible && (
                   <>
                     <motion.div 
-                      className={`${louize.className} text-black text-[22px] font-normal leading-[28px] tracking-[-0.8px] mb-10`}
+                      className="text-black text-[22px] font-normal leading-[28px] tracking-[-0.8px] mb-10"
                       initial={{ opacity: 0, y: 15 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
@@ -637,7 +635,7 @@ function HomeContent() {
                     
                     {/* Bottom Subtitle */}
                     <motion.div 
-                      className={`${workSans.className} text-[#6f6f6f] text-[16px] font-normal leading-[22px] tracking-[0px] mb-6`}
+                      className="text-[#6f6f6f] text-[16px] font-normal leading-[22px] tracking-[0px] mb-6"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
@@ -756,26 +754,15 @@ function HomeContent() {
               {/* Right Side Content with rotating Icon/Text pairs for mobile - consistent padding */}
               <AnimatePresence>
                 {iconTextVisible && (
-                  <div className="flex items-center h-[60px]">
-                    <AnimatePresence mode="wait">
-                      <motion.div 
-                        key={currentPair}
-                        className="flex items-center gap-4"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 20 }}
-                        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                      >
-                        <img 
-                          src={carouselContent[currentPair].imageUrl} 
-                          alt="Shape icon" 
-                          className="w-8 h-8 object-contain" 
-                        />
-                        <div className={`${louize.className} text-[#191919] text-[18px] font-normal leading-[24px] tracking-[-0.5px]`}>
-                          {carouselContent[currentPair].text}
-                        </div>
-                      </motion.div>
-                    </AnimatePresence>
+                  <div className="flex items-center gap-4 mt-6">
+                    <img 
+                      src={carouselContent[currentPair].imageUrl} 
+                      alt="Shape icon" 
+                      className="w-8 h-8 object-contain" 
+                    />
+                    <div className="flex-1 text-white text-lg leading-snug">
+                      {carouselContent[currentPair].text}
+                    </div>
                   </div>
                 )}
               </AnimatePresence>

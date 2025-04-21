@@ -2,16 +2,31 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { louize } from '@/app/fonts';
-import { Work_Sans } from 'next/font/google';
+// import { louize } from '@/app/fonts'; // Commented out font
+// import { Work_Sans } from 'next/font/google'; // Commented out font
+import ClientOnly from '../components/ClientOnly';
 
-const workSans = Work_Sans({ 
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap'
-});
+// const workSans = Work_Sans({ 
+//   subsets: ['latin'],
+//   weight: ['400', '500', '600', '700'],
+//   display: 'swap'
+// });
 
 export default function ContactPage() {
+  return (
+    <ClientOnly
+      fallback={
+        <div className="w-full h-screen flex items-center justify-center">
+          <div className="animate-pulse text-xl text-gray-600">Loading...</div>
+        </div>
+      }
+    >
+      <ContactContent /> 
+    </ClientOnly>
+  );
+}
+
+function ContactContent() {
   const [loaded, setLoaded] = useState(false);
   const [formState, setFormState] = useState({
     name: '',
@@ -44,10 +59,10 @@ export default function ContactPage() {
         transition={{ duration: 0.6 }}
         className="mb-12 text-center"
       >
-        <h1 className={`${louize.className} text-4xl md:text-5xl font-bold mb-4`}>
+        <h1 className="text-4xl md:text-5xl font-bold mb-4">
           Get in Touch
         </h1>
-        <p className={`${workSans.className} text-lg text-gray-600 max-w-2xl mx-auto`}>
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
           Have a project in mind or just want to chat? Feel free to reach out.
         </p>
       </motion.div>
@@ -60,22 +75,22 @@ export default function ContactPage() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="md:w-1/3"
         >
-          <h2 className={`${louize.className} text-2xl font-bold mb-6`}>Contact Information</h2>
+          <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
           <div className="space-y-6">
             <div>
-              <h3 className={`${louize.className} text-lg font-semibold mb-1`}>Email</h3>
-              <p className={`${workSans.className} text-gray-600`}>hello@vamsibatchu.com</p>
+              <h3 className="text-lg font-semibold mb-1">Email</h3>
+              <p className="text-gray-600">hello@vamsibatchu.com</p>
             </div>
             <div>
-              <h3 className={`${louize.className} text-lg font-semibold mb-1`}>Based in</h3>
-              <p className={`${workSans.className} text-gray-600`}>San Francisco, California</p>
+              <h3 className="text-lg font-semibold mb-1">Based in</h3>
+              <p className="text-gray-600">San Francisco, California</p>
             </div>
             <div>
-              <h3 className={`${louize.className} text-lg font-semibold mb-1`}>Social</h3>
+              <h3 className="text-lg font-semibold mb-1">Social</h3>
               <div className="flex space-x-4">
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className={`${workSans.className} text-gray-600 hover:text-indigo-600 transition-colors`}>Twitter</a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className={`${workSans.className} text-gray-600 hover:text-indigo-600 transition-colors`}>LinkedIn</a>
-                <a href="https://dribbble.com" target="_blank" rel="noopener noreferrer" className={`${workSans.className} text-gray-600 hover:text-indigo-600 transition-colors`}>Dribbble</a>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-indigo-600 transition-colors">Twitter</a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-indigo-600 transition-colors">LinkedIn</a>
+                <a href="https://dribbble.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-indigo-600 transition-colors">Dribbble</a>
               </div>
             </div>
           </div>
@@ -89,10 +104,10 @@ export default function ContactPage() {
           className="md:w-2/3"
         >
           <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md">
-            <h2 className={`${louize.className} text-2xl font-bold mb-6`}>Send a Message</h2>
+            <h2 className="text-2xl font-bold mb-6">Send a Message</h2>
             
             <div className="mb-6">
-              <label htmlFor="name" className={`${workSans.className} block mb-2 text-sm font-medium text-gray-700`}>
+              <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-700">
                 Name
               </label>
               <input
@@ -102,12 +117,12 @@ export default function ContactPage() {
                 value={formState.name}
                 onChange={handleInputChange}
                 required
-                className={`${workSans.className} w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
             
             <div className="mb-6">
-              <label htmlFor="email" className={`${workSans.className} block mb-2 text-sm font-medium text-gray-700`}>
+              <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700">
                 Email
               </label>
               <input
@@ -117,12 +132,12 @@ export default function ContactPage() {
                 value={formState.email}
                 onChange={handleInputChange}
                 required
-                className={`${workSans.className} w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
             
             <div className="mb-6">
-              <label htmlFor="message" className={`${workSans.className} block mb-2 text-sm font-medium text-gray-700`}>
+              <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-700">
                 Message
               </label>
               <textarea
@@ -132,13 +147,13 @@ export default function ContactPage() {
                 onChange={handleInputChange}
                 rows={5}
                 required
-                className={`${workSans.className} w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               ></textarea>
             </div>
             
             <button
               type="submit"
-              className={`${workSans.className} w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-md transition-colors`}
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-md transition-colors"
             >
               Send Message
             </button>

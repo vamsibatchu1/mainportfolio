@@ -1,15 +1,15 @@
 "use client";
 
 import React from 'react';
-// import { motion } from 'framer-motion'; // Temporarily commented out
-import { IBM_Plex_Mono } from 'next/font/google';
-import { doto } from '../../fonts';
+// import { motion } from 'framer-motion'; // Keep commented out for now
+// import { IBM_Plex_Mono } from 'next/font/google'; // Commented out font
+// import { doto } from '../../fonts'; // Commented out font
 
-const ibmPlexMono = IBM_Plex_Mono({
-  weight: ['400', '500', '600'],
-  subsets: ['latin'],
-  display: 'swap',
-});
+// const ibmPlexMono = IBM_Plex_Mono({
+//   weight: ['400', '500', '600'],
+//   subsets: ['latin'],
+//   display: 'swap',
+// });
 
 const cards = [
   { color: 'bg-[#7FB3D5]', title: 'Nike X\nCorteiz', textColor: 'text-[#FFE59D]', image: '/images/card1.png' },
@@ -64,22 +64,20 @@ export default function AboutContent() {
         >
           <div className="flex flex-col gap-12">
             {/* Header */}
-            <h1
-              className={`${doto.className} text-[44px] tracking-[2px] text-left`}
-            >
+            <h1 className="text-[44px] tracking-[2px] text-left">
               VAMSI BATCHU
             </h1>
 
             {/* Content */}
             <div className="grid grid-cols-2 gap-12">
               <div>
-                <p className={`${ibmPlexMono.className} text-[14px] leading-[1.8] text-[#333]`}>
+                <p className="text-[14px] leading-[1.8] text-[#333]">
                   I guide teams while staying deeply involved in the process—designing intuitive interactions, building scalable systems, and refining user flows. By blending strategic vision with attention to detail, I ensure every product reflects thoughtfulness, usability, and high-quality execution.
                 </p>
               </div>
 
               <div>
-                <p className={`${ibmPlexMono.className} text-[14px] leading-[1.8] text-[#333]`}>
+                <p className="text-[14px] leading-[1.8] text-[#333]">
                   I specialize in turning ambiguity into clarity, transforming big ideas into impactful solutions. Whether crafting zero-to-one products or refining existing systems, I bring vision, strategy, and alignment to help teams navigate complexity.
                   <br /><br />
                   My focus is on building meaningful, scalable experiences that solve real problems while empowering teams to deliver their best work. With a strong ability to connect design, product, and engineering, I foster collaboration and alignment across disciplines. My technical fluency and strategic approach ensure every decision is rooted in both creative and practical feasibility. By combining innovation, quality, and user value, I aim to leave a lasting impact on every product I help bring to life.
@@ -102,10 +100,10 @@ export default function AboutContent() {
                 className="w-full h-full"
               />
             </div>
-            <h2 className={`${doto.className} text-[24px] tracking-[0.02em] leading-tight`}>
+            <h2 className="text-[24px] tracking-[0.02em] leading-tight">
               MY THOUGHTS ON DESIGN
             </h2>
-            <p className={`${ibmPlexMono.className} text-[14px] leading-[1.8] text-[#333]`}>
+            <p className="text-[14px] leading-[1.8] text-[#333]">
               I guide teams while staying deeply involved in the process—designing intuitive interactions, building scalable systems, and refining user flows. By blending strategic vision with attention to detail, I ensure every product reflects thoughtfulness, usability, and high-quality execution.
             </p>
           </div>
@@ -121,10 +119,10 @@ export default function AboutContent() {
                 className="w-full h-full"
               />
             </div>
-            <h2 className={`${doto.className} text-[24px] tracking-[0.02em] leading-tight`}>
+            <h2 className="text-[24px] tracking-[0.02em] leading-tight">
               WHAT DO I SPECIALIZE IN?
             </h2>
-            <p className={`${ibmPlexMono.className} text-[14px] leading-[1.8] text-[#333]`}>
+            <p className="text-[14px] leading-[1.8] text-[#333]">
               I guide teams while staying deeply involved in the process—designing intuitive interactions, building scalable systems, and refining user flows. By blending strategic vision with attention to detail, I ensure every product reflects thoughtfulness, usability, and high-quality execution.
             </p>
           </div>
@@ -140,10 +138,10 @@ export default function AboutContent() {
                 className="w-full h-full"
               />
             </div>
-            <h2 className={`${doto.className} text-[24px] tracking-[0.02em] leading-tight`}>
+            <h2 className="text-[24px] tracking-[0.02em] leading-tight">
               WHAT DO I CURRENTLY DO?
             </h2>
-            <p className={`${ibmPlexMono.className} text-[14px] leading-[1.8] text-[#333]`}>
+            <p className="text-[14px] leading-[1.8] text-[#333]">
               I guide teams while staying deeply involved in the process—designing intuitive interactions, building scalable systems, and refining user flows. By blending strategic vision with attention to detail, I ensure every product reflects thoughtfulness, usability, and high-quality execution.
             </p>
           </div>
