@@ -5,12 +5,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { useOnClickOutside } from 'usehooks-ts';
 import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import { MENU_CONTENT_MAP } from './menu-content';
 import type { LottieRefCurrentProps } from "lottie-react";
 import styles from './styles.module.css';
 
-// Import Lottie directly without dynamic loading to avoid delay
-import Lottie from "lottie-react";
+// Dynamically import Lottie with SSR disabled
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 // Preload all animation files
 import homeAnimation from '@/animations/home.json';
