@@ -149,7 +149,7 @@ const cardVariants: Record<string, CardConfiguration> = {
     
     // Spacing
     primaryPadding: '32px',
-    secondaryPadding: '24px',
+    secondaryPadding: '0px',
     primaryGap: '10px',
     
     // Typography - Title
@@ -178,8 +178,8 @@ const cardVariants: Record<string, CardConfiguration> = {
     cardWidth: '640px',
     primaryWidth: 'flex-grow',
     primaryHeight: '160px',
-    secondaryWidth: 'auto',
-    secondaryHeight: '100%',
+    secondaryWidth: '160px',
+    secondaryHeight: '160px',
     
     // Colors
     primaryBgColor: '#000000',
@@ -187,7 +187,7 @@ const cardVariants: Record<string, CardConfiguration> = {
     
     // Spacing
     primaryPadding: '48px',
-    secondaryPadding: '48px',
+    secondaryPadding: '0px',
     primaryGap: '10px',
     
     // Typography - Title
@@ -342,14 +342,14 @@ export const DualCard: React.FC<DualCardProps> = ({
 
   const defaultSecondaryContent = {
     'xs': <PixelGrid colors={['#F7F6F4']} gridSize={5} pixelSize={16} />,
-    'sm': <Rectangle className="rectangle-rectangle-6" color={mergedConfig.rectangleColor} width={mergedConfig.rectangleSize} height={mergedConfig.rectangleSize} />,
+    'sm': <PixelGrid colors={['#F7F6F4']} gridSize={10} pixelSize={16} />,
     'md': <Rectangle className="rectangle-rectangle-6" color={mergedConfig.rectangleColor} width={mergedConfig.rectangleSize} height={mergedConfig.rectangleSize} />
   };
 
   // Check if secondaryContent is a PixelGrid (or using the default PixelGrid)
   const isUsingPixelGrid = React.isValidElement(secondaryContent) && 
     secondaryContent.type === PixelGrid || 
-    (!secondaryContent && variant === 'xs');
+    (!secondaryContent && (variant === 'xs' || variant === 'sm'));
 
   return (
     <div 
