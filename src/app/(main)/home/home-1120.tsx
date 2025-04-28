@@ -382,7 +382,7 @@ export default function Home1120() {
                 >
                   {/* Left Card Content - White background with rounded left corners only */}
                   <motion.div 
-                    className="bg-[#fff] w-full h-full p-[40px] flex flex-col justify-between rounded-tl-[20px] rounded-bl-[20px]"
+                    className="bg-[#fff] w-full h-full p-[40px] flex flex-col justify-between"
                     initial={{ y: 50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -472,7 +472,7 @@ export default function Home1120() {
                 >
                   {/* Right Card Content - Translucent dark background with rounded right corners only */}
                   <motion.div 
-                    className="bg-[rgba(0,0,0,0.19)] w-full h-full p-[40px] flex flex-col justify-between rounded-tr-[20px] rounded-br-[20px] text-white"
+                    className="bg-[rgba(0,0,0,0.19)] w-full h-full p-[40px] flex flex-col justify-between text-white"
                     initial={{ y: 50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}

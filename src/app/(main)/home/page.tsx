@@ -364,12 +364,7 @@ export default function NewHomePage() {
   }, []);
 
   return (
-    <div className="w-full h-screen overflow-hidden flex items-center justify-center" 
-      style={{ 
-        backgroundImage: 'url("/images/background-gradient.jpg")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center'
-      }}
+    <div className="w-full h-screen overflow-hidden flex items-center justify-center bg-black" 
     >
       {/* === DESKTOP LAYOUT === */}
       <div className="hidden lg:flex items-center justify-center w-full h-full">
@@ -389,7 +384,7 @@ export default function NewHomePage() {
                 >
                   {/* Left Card Content - White background with rounded left corners only */}
                   <motion.div 
-                    className="bg-[#fff] w-full h-full p-[40px] flex flex-col justify-between rounded-tl-[20px] rounded-bl-[20px]"
+                    className="bg-[#fff] w-full h-full p-[40px] flex flex-col justify-between"
                     initial={{ y: 50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -465,8 +460,7 @@ export default function NewHomePage() {
         )}
             </AnimatePresence>
             
-            {/* Spacer */}
-            <div className="w-[24px]"></div>
+         
             
             {/* Right Card Container - Portfolio showcase */}
             <AnimatePresence>
@@ -479,7 +473,7 @@ export default function NewHomePage() {
                 >
                   {/* Right Card Content - Translucent dark background with rounded right corners only */}
                   <motion.div 
-                    className="bg-[rgba(0,0,0,0.19)] w-full h-full p-[40px] flex flex-col justify-between rounded-tr-[20px] rounded-br-[20px] text-white"
+                    className="bg-gray-400 w-full h-full p-[40px] flex flex-col justify-between text-white"
                     initial={{ y: 50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
