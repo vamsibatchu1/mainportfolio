@@ -2,101 +2,219 @@
 
 import React from 'react';
 import { 
-  colors, 
   typography, 
   spacing, 
   borderRadius, 
 } from '@/lib/design-system';
-import { DualCard, WhiteCard, TranslucentCard, TailwindDualCard } from '@/components/ui/dual-card';
+import { priFont, secFont, triFont } from '@/lib/config/fonts';
+
+// Define types for font examples
+type FontSizeExample = {
+  size: string;
+  text: string;
+};
+
+type FontWeightExample = {
+  weight: string;
+  text: string;
+};
+
+type FontDisplayItem = {
+  name: string;
+  variable: string;
+  fontClass: string;
+  description: string;
+  weights: string[];
+  examples: FontSizeExample[] | FontWeightExample[];
+};
 
 export default function DesignSystemPage() {
+  // New color definitions
+  const brandColors = {
+    black: {
+      hex: "#000000",
+      description: "Primary black color used for text and backgrounds"
+    },
+    white: {
+      hex: "#FFFFFF",
+      description: "Primary white color used for text and backgrounds"
+    },
+    zenith: {
+      hex: "#FBAF1D",
+      description: "Vibrant yellow-orange accent color"
+    },
+    nebula: {
+      hex: "#E29FC8",
+      description: "Soft pink accent color"
+    },
+    juniper: {
+      hex: "#4F7834",
+      description: "Deep green accent color"
+    },
+    breeze: {
+      hex: "#90D9E0",
+      description: "Light blue accent color"
+    },
+    paprika: {
+      hex: "#F25A3F",
+      description: "Bright red-orange accent color"
+    }
+  };
+
+  // Font showcase data
+  const fontDisplay: FontDisplayItem[] = [
+    {
+      name: "Primary Font (W95FA)",
+      variable: priFont.variable,
+      fontClass: "font-pri",
+      description: "Used for headings, titles, and UI elements",
+      weights: ["Regular"],
+      examples: [
+        { size: "text-xl", text: "The quick brown fox jumps over the lazy dog" },
+        { size: "text-2xl", text: "Primary Header Example" },
+        { size: "text-4xl", text: "LARGE HEADER" },
+      ] as FontSizeExample[]
+    },
+    {
+      name: "Secondary Font (Louize)",
+      variable: secFont.variable,
+      fontClass: "font-sec",
+      description: "Used for body text, paragraphs, and longer content",
+      weights: ["Regular"],
+      examples: [
+        { size: "text-base", text: "The quick brown fox jumps over the lazy dog" },
+        { size: "text-lg", text: "Secondary text example with Louize" },
+        { size: "text-xl", text: "Larger paragraph text" },
+      ] as FontSizeExample[]
+    },
+    {
+      name: "Tertiary Font (Poppins)",
+      variable: triFont.variable,
+      fontClass: "font-tri",
+      description: "Used for UI components, buttons, and smaller elements",
+      weights: ["Light", "Regular", "Medium", "SemiBold", "Bold"],
+      examples: [
+        { weight: "light", text: "Poppins Light (300)" },
+        { weight: "normal", text: "Poppins Regular (400)" },
+        { weight: "medium", text: "Poppins Medium (500)" },
+        { weight: "semibold", text: "Poppins SemiBold (600)" },
+        { weight: "bold", text: "Poppins Bold (700)" },
+      ] as FontWeightExample[]
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-black p-8 md:p-12 text-white">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8">Design System</h1>
+        <h1 className="text-4xl font-bold mb-8 font-pri">Design System</h1>
         
         {/* Colors */}
         <section className="mb-16">
-          <h2 className="text-2xl font-semibold mb-6">Colors</h2>
+          <h2 className="text-2xl font-semibold mb-6 font-pri">Colors</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <ColorCard 
-              name="Primary Orange" 
-              hex={colors.primaryOrange.hex} 
-              description={colors.primaryOrange.description}
-            />
-            <ColorCard 
-              name="Background (Light)" 
-              hex="#FFFFFF" 
-              description={colors.background.description}
-            />
-            <ColorCard 
-              name="Background (Dark)" 
-              hex="#0F0F13" 
-              description={colors.background.description}
+              name="Black" 
+              hex={brandColors.black.hex} 
+              description={brandColors.black.description}
               textColor="white"
             />
             <ColorCard 
-              name="Accent" 
-              hex="#F5F7FA" 
-              description={colors.accent.description}
+              name="White" 
+              hex={brandColors.white.hex} 
+              description={brandColors.white.description}
             />
             <ColorCard 
-              name="Destructive" 
-              hex="#EF4444" 
-              description={colors.destructive.description}
+              name="Zenith" 
+              hex={brandColors.zenith.hex} 
+              description={brandColors.zenith.description}
+            />
+            <ColorCard 
+              name="Nebula" 
+              hex={brandColors.nebula.hex} 
+              description={brandColors.nebula.description}
+            />
+            <ColorCard 
+              name="Juniper" 
+              hex={brandColors.juniper.hex} 
+              description={brandColors.juniper.description}
               textColor="white"
             />
             <ColorCard 
-              name="Muted" 
-              hex="#F5F7FA" 
-              description={colors.muted.description}
+              name="Breeze" 
+              hex={brandColors.breeze.hex} 
+              description={brandColors.breeze.description}
+            />
+            <ColorCard 
+              name="Paprika" 
+              hex={brandColors.paprika.hex} 
+              description={brandColors.paprika.description}
+              textColor="white"
             />
           </div>
         </section>
         
         {/* Typography */}
         <section className="mb-16">
-          <h2 className="text-2xl font-semibold mb-6">Typography</h2>
+          <h2 className="text-2xl font-semibold mb-6 font-pri">Typography</h2>
           
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-xl font-medium mb-4">Font Sizes</h3>
-              <div className="space-y-4">
-                {Object.entries(typography.fontSizes).map(([key, value]) => (
-                  <div key={key} className="flex items-center">
-                    <div className="w-24 text-sm font-mono">{key}</div>
-                    <div className="w-24 text-sm font-mono">{value}</div>
-                    <div style={{ fontSize: value }}>The quick brown fox jumps over the lazy dog</div>
-                  </div>
-                ))}
+          <div className="space-y-12">
+            {fontDisplay.map((font) => (
+              <div key={font.name} className="bg-white/10 p-6 rounded-lg">
+                <h3 className="text-xl font-medium mb-2 text-white font-pri">{font.name}</h3>
+                <p className="text-sm text-gray-300 mb-6 font-sec">{font.description}</p>
+                
+                <div className="space-y-6">
+                  {font.name === "Tertiary Font (Poppins)" ? (
+                    <div className="space-y-4">
+                      {(font.examples as FontWeightExample[]).map((example, i) => (
+                        <div key={i} className="text-xl">
+                          <span
+                            className={`${font.fontClass} font-${example.weight}`}
+                            style={{ fontWeight: example.weight === 'normal' ? 400 : undefined }}
+                          >
+                            {example.text}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {(font.examples as FontSizeExample[]).map((example, i) => (
+                        <div key={i} className={`${example.size} ${font.fontClass}`}>
+                          {example.text}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-            
-            <div>
-              <h3 className="text-xl font-medium mb-4">Font Weights</h3>
-              <div className="space-y-4">
-                {Object.entries(typography.fontWeights).map(([key, value]) => (
-                  <div key={key} className="flex items-center">
-                    <div className="w-24 text-sm font-mono">{key}</div>
-                    <div className="w-24 text-sm font-mono">{value}</div>
-                    <div style={{ fontWeight: value }}>The quick brown fox jumps over the lazy dog</div>
-                  </div>
-                ))}
-              </div>
+            ))}
+          </div>
+
+          <div className="mt-12">
+            <h3 className="text-xl font-medium mb-4 font-pri">Font Sizes</h3>
+            <div className="space-y-4">
+              {Object.entries(typography.fontSizes).map(([key, value]) => (
+                <div key={key} className="flex items-center">
+                  <div className="w-24 text-sm font-mono">{key}</div>
+                  <div className="w-24 text-sm font-mono">{value}</div>
+                  <div style={{ fontSize: value }} className="font-sec">The quick brown fox jumps over the lazy dog</div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
         
         {/* Spacing */}
         <section className="mb-16">
-          <h2 className="text-2xl font-semibold mb-6">Spacing</h2>
+          <h2 className="text-2xl font-semibold mb-6 font-pri">Spacing</h2>
           
           <div className="flex flex-wrap gap-4">
             {[0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20].map((size) => (
               <div key={size} className="flex flex-col items-center">
                 <div 
-                  className="bg-primary-orange" 
+                  className="bg-[#FBAF1D]" 
                   style={{ 
                     width: spacing[size as keyof typeof spacing], 
                     height: spacing[size as keyof typeof spacing],
@@ -111,88 +229,6 @@ export default function DesignSystemPage() {
           </div>
         </section>
         
-        {/* Dual Card Component */}
-        <section className="mb-16">
-          <h2 className="text-2xl font-semibold mb-6">Dual Card Component</h2>
-          
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-xl font-medium mb-4">Small Size</h3>
-              <DualCard 
-                size="small"
-                whiteCardContent={
-                  <div className="p-8">
-                    <h4 className="text-xl font-bold">Analyzing your data</h4>
-                  </div>
-                }
-                translucentCardContent={
-                  <div className="flex items-center justify-center">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M12 2V12L18 15" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                }
-              />
-            </div>
-            
-            <div>
-              <h3 className="text-xl font-medium mb-4">Regular Size</h3>
-              <DualCard 
-                whiteCardContent={
-                  <div className="p-8 flex flex-col h-full justify-center">
-                    <h4 className="text-2xl font-bold mb-2">Vamsi Batchu</h4>
-                    <p className="text-gray-600">Product design leader</p>
-                  </div>
-                }
-                translucentCardContent={
-                  <div className="flex items-center justify-center">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="6" y="6" width="12" height="12" rx="2" stroke="white" strokeWidth="2"/>
-                    </svg>
-                  </div>
-                }
-              />
-            </div>
-            
-            <div>
-              <h3 className="text-xl font-medium mb-4">Using Tailwind Classes</h3>
-              <TailwindDualCard 
-                whiteCardContent={
-                  <div className="p-8 flex flex-col h-full justify-center">
-                    <h4 className="text-2xl font-bold mb-2">Small</h4>
-                    <p className="text-gray-600">regular</p>
-                  </div>
-                }
-                translucentCardContent={
-                  <div className="flex items-center justify-center">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M9.09 9C9.3251 8.33167 9.78915 7.76811 10.4 7.40913C11.0108 7.05016 11.7289 6.91894 12.4272 7.03871C13.1255 7.15849 13.7588 7.52152 14.2151 8.06353C14.6713 8.60553 14.9211 9.29152 14.92 10C14.92 12 11.92 13 11.92 13" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M12 17H12.01" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                }
-              />
-            </div>
-            
-            <div>
-              <h3 className="text-xl font-medium mb-4">Individual Components</h3>
-              <div className="flex gap-3">
-                <WhiteCard size="small">
-                  <p className="font-medium">White Card Component</p>
-                </WhiteCard>
-                
-                <TranslucentCard size="small">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M12 6V12L16 14" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </TranslucentCard>
-              </div>
-            </div>
-          </div>
-        </section>
         
         {/* Border Radius */}
         <section className="mb-16">
@@ -202,7 +238,7 @@ export default function DesignSystemPage() {
             {Object.entries(borderRadius).filter(([key]) => key !== 'cardDescription').map(([key, value]) => (
               <div key={key} className="flex flex-col items-center">
                 <div 
-                  className="bg-primary-orange w-20 h-20" 
+                  className="bg-[#FBAF1D] w-20 h-20" 
                   style={{ 
                     borderRadius: typeof value === 'string' ? value : undefined,
                   }}

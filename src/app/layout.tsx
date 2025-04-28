@@ -1,26 +1,17 @@
-'use client';
 import "./globals.css";
 import { CalendarIcon, FolderOpen, HomeIcon, MailIcon, PencilIcon, UserIcon } from "lucide-react";
-import React from "react";
-import { usePathname } from "next/navigation";
+import { Metadata } from 'next';
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
+import { priFont, secFont, triFont } from '@/lib/config/fonts';
 
-import { ModeToggle } from "@/components/ui/mode-toggle";
-import { buttonVariants } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
-import { Dock, DockIcon } from "@/components/ui/dock";
-import { GeistSans } from "geist/font/sans"
-import { GeistMono } from "geist/font/mono"
-import { redditSans } from './fonts';
+// Export metadata for SEO
+export const metadata: Metadata = {
+  title: 'Vamsi Batchu | Product Design Leader',
+  description: 'Hands on product design leader with 11+ years of experience in designing & leading teams developing highly impactful products at scale.',
+};
 
 export type IconProps = React.HTMLAttributes<SVGElement>;
-
 
 const Icons = {
   calendar: (props: IconProps) => <CalendarIcon {...props} />,
@@ -34,7 +25,6 @@ const Icons = {
       />
     </svg>
   ),
-
 };
 
 const DATA = {
@@ -65,19 +55,16 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
-  const isHomePage = pathname === '/home' || pathname === '/';
-
   return (
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable} ${redditSans.variable}`}>
+    <html 
+      lang="en" 
+      className={`${GeistSans.variable} ${GeistMono.variable} ${priFont.variable} ${secFont.variable} ${triFont.variable}`}
+    >
       <head>
         {/* Add any additional head elements if needed */}
       </head>
-      <body style={isHomePage ? { backgroundColor: '#FF531A' } : {}}>
+      <body>
         <div className="min-h-screen flex flex-col">
-          {/* Navigation on the right */}
-       
-
           {/* Main content */}
           <main className="flex-1">
             {children}

@@ -3,14 +3,14 @@ import {Poppins } from 'next/font/google';
 
 // Primary Font: W95FA (Windows 95 Font)
 export const priFont = localFont({
-  src: '../../public/fonts/W95FA.otf',
+  src: '../../../public/fonts/W95FA.otf',
   variable: '--font-pri',
   display: 'swap',
 });
 
 // Secondary Font: Louize
 export const secFont = localFont({
-  src: '../../public/fonts/Louize.ttf',
+  src: '../../../public/fonts/Louize.ttf',
   variable: '--font-sec',
   display: 'swap',
 });

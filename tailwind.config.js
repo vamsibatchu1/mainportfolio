@@ -11,6 +11,9 @@ module.exports = {
     extend: {
       fontFamily: {
         'jetbrains-mono': ['var(--font-jetbrains-mono)'],
+        'pri': ['var(--font-pri)'],
+        'sec': ['var(--font-sec)'],
+        'tri': ['var(--font-tri)'],
       },
       colors: {
         border: "hsl(var(--border))",

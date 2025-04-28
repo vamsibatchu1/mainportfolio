@@ -98,7 +98,9 @@ export const typography = {
     sansSerif: 'var(--font-sans, Arial, sans-serif)',
     serif: 'var(--font-serif)',
     mono: 'var(--font-mono, "IBM Plex Mono", monospace)',
-    doto: 'var(--font-doto)',
+    pri: 'var(--font-pri)',  // W95FA (Windows 95 Font)
+    sec: 'var(--font-sec)',  // secFont
+    tri: 'var(--font-tri)',  // Poppins
     louize: 'var(--font-louize)',
     ppNeueMontrealBook: 'var(--font-ppNeueMontrealBook)',
   },

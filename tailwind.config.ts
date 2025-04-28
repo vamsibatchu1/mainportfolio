@@ -11,9 +11,21 @@ export default {
   ],
   theme: {
   	extend: {
+  		fontFamily: {
+  		  'pri': ['var(--font-pri)'],
+  		  'sec': ['var(--font-sec)'],
+  		  'tri': ['var(--font-tri)'],
+  		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
+  			black: '#000000',
+  			white: '#FFFFFF',
+  			zenith: '#FBAF1D',
+  			nebula: '#E29FC8',
+  			juniper: '#4F7834',
+  			breeze: '#90D9E0',
+  			paprika: '#F25A3F',
   			'primary-orange': '#CA2625',
   			card: {
   				DEFAULT: 'hsl(var(--card))',
