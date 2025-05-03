@@ -1,8 +1,8 @@
 "use client";
 
 import { Suspense } from 'react';
-import dynamic from 'next/dynamic';
 import { Work_Sans } from 'next/font/google';
+import WorkCard from './components/WorkCard';
 
 const workSans = Work_Sans({ 
   subsets: ['latin'],
@@ -10,17 +10,24 @@ const workSans = Work_Sans({
   display: 'swap'
 });
 
-// Import WorkContent dynamically with no SSR
-const WorkContent = dynamic(() => import('./components/WorkContent'), {
-  ssr: false,
-});
+// Example data for the card
+const exampleWork = {
+  title: "Project Alpha",
+  subtitle: "Leading the design for a new enterprise platform.",
+  gridColor: "#FBAF1D" // Example color (Zenith)
+};
 
 export default function WorkPage() {
   return (
-    <main className={`min-h-screen ${workSans.className}`}>
-      <div className="max-w-[1120px] mx-auto px-8">
-        <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
-          <WorkContent />
+    <main className={`min-h-screen bg-gray-100 dark:bg-gray-900 p-8 ${workSans.className}`}>
+      {/* Centering the single card */}
+      <div className="flex justify-center items-start pt-16">
+        <Suspense fallback={<div className="text-center text-lg">Loading Card...</div>}>
+          <WorkCard 
+            title={exampleWork.title}
+            subtitle={exampleWork.subtitle}
+            gridColor={exampleWork.gridColor}
+          />
         </Suspense>
       </div>
     </main>

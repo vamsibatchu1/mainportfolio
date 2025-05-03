@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { secFont, priFont } from '@/lib/config/fonts';
 import { IBM_Plex_Mono, Work_Sans } from 'next/font/google';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -21,6 +21,17 @@ const workSans = Work_Sans({
   weight: ['400', '500', '600', '700'],
   display: 'swap'
 });
+
+// --- Define Brand Colors Locally ---
+const brandColors = {
+  white: "#FFFFFF",
+  black: "#000000",
+  zenith: "#FBAF1D",
+  nebula: "#E29FC8",
+  juniper: "#4F7834",
+  breeze: "#90D9E0",
+  paprika: "#F25A3F"
+};
 
 // Define the carousel content
 const carouselContent = [
@@ -50,11 +61,52 @@ const carouselContent = [
   }
 ];
 
+// --- Carousel Pixel Grid Config ---
+const CAROUSEL_GRID_SIZE = 10;
+const CAROUSEL_PIXEL_SIZE = 8;
+const CAROUSEL_TOTAL_PIXELS = CAROUSEL_GRID_SIZE * CAROUSEL_GRID_SIZE; // 100
+const WHITE_PIXEL_COUNT = 20; // Number of white pixels per grid
+
+// Accent colors for the base grid
+const accentColors = [
+  brandColors.zenith,
+  brandColors.nebula,
+  brandColors.juniper,
+  brandColors.breeze,
+  brandColors.paprika
+];
+
+// Sequence of base colors for each carousel item
+const carouselBaseColors = carouselContent.map((_, index) => accentColors[index % accentColors.length]);
+
+// Helper to generate a grid with a base color and N random white pixels
+const generateBaseGridWithWhiteAccents = (
+  baseColor: string, 
+  totalPixels: number, 
+  whitePixelCount: number, 
+  whiteColor: string
+): string[] => {
+  const grid = Array(totalPixels).fill(baseColor);
+  const whiteIndices = new Set<number>();
+  
+  // Ensure exactly whitePixelCount unique indices are selected
+  while (whiteIndices.size < whitePixelCount && whiteIndices.size < totalPixels) {
+    const randomIndex = Math.floor(Math.random() * totalPixels);
+    whiteIndices.add(randomIndex);
+  }
+  
+  whiteIndices.forEach(index => {
+    grid[index] = whiteColor;
+  });
+  
+  return grid;
+};
+
 // Add ImageCard component from current.tsx
 function ImageCard({ delay }: { delay: number }) {
   return (
     <motion.div 
-      className="bg-[#f1f1f1] rounded-2xl w-full h-full"
+      className="bg-[#1F1F1F] rounded-2xl w-full h-full"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{
@@ -70,7 +122,7 @@ function ImageCard({ delay }: { delay: number }) {
 function ImgCard({ delay, imageSrc }: { delay: number; imageSrc: string }) {
   return (
     <motion.div 
-      className="bg-[#f1f1f1] rounded-2xl w-full h-full relative flex items-center justify-center"
+      className="bg-[#1F1F1F] rounded-2xl w-full h-full relative overflow-hidden flex items-center justify-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{
@@ -82,7 +134,7 @@ function ImgCard({ delay, imageSrc }: { delay: number; imageSrc: string }) {
       <img 
         src={imageSrc} 
         alt="Carousel image" 
-        className="w-auto h-auto max-w-[90%] max-h-[90%] object-contain absolute bottom-0 left-1/2 transform -translate-x-1/2"
+        className="block w-auto h-auto max-w-full max-h-full object-contain"
       />
     </motion.div>
   );
@@ -90,94 +142,82 @@ function ImgCard({ delay, imageSrc }: { delay: number; imageSrc: string }) {
 
 // Define different image grid layouts that correspond to each carousel item
 const GridLayout1 = ({ delay = 0 }: { delay?: number }) => (
-  <div className="relative h-full w-full">
-    {/* Updated layout: 1 large card on top, 2 equal cards on bottom */}
-    <div className="absolute left-0 top-0 w-full h-[320px]">
-      <ImgCard delay={delay + 0.2} imageSrc="/productshots/carousel-A1.svg" />
+  <div className="grid grid-cols-2 gap-6 h-full w-full">
+    <div className="col-span-2 h-[347px]">
+       <ImgCard delay={delay + 0.2} imageSrc="/productshots/carousel-A1.svg" />
     </div>
-    <div className="absolute left-0 bottom-0 w-[48%] h-[148px]">
+    <div className="h-[161px]">
       <ImgCard delay={delay + 0.4} imageSrc="/productshots/carousel-A2.svg" />
     </div>
-    <div className="absolute right-0 bottom-0 w-[48%] h-[148px]">
+    <div className="h-[161px]">
       <ImgCard delay={delay + 0.6} imageSrc="/productshots/carousel-A3.svg" />
     </div>
   </div>
 );
 
 const GridLayout2 = ({ delay = 0 }: { delay?: number }) => (
-  <div className="relative h-full w-full">
-    {/* 2-card layout: side by side equal width */}
-    <div className="absolute left-0 top-0 w-[270px] h-[488px]">
+  <div className="flex flex-row gap-6 h-full w-full">
+    <div className="w-[calc((100%-24px)/2)] h-full">
       <ImageCard delay={delay + 0.2} />
     </div>
-    <div className="absolute right-0 top-0 w-[270px] h-[488px]">
+    <div className="w-[calc((100%-24px)/2)] h-full">
       <ImageCard delay={delay + 0.4} />
     </div>
   </div>
 );
 
 const GridLayout3 = ({ delay = 0 }: { delay?: number }) => (
-  <div className="relative h-full w-full">
-    {/* 4-card grid layout */}
-    <div className="absolute left-0 top-0 w-[270px] h-[234px]">
-      <ImageCard delay={delay + 0.2} />
-    </div>
-    <div className="absolute right-0 top-0 w-[270px] h-[234px]">
-      <ImageCard delay={delay + 0.3} />
-    </div>
-    <div className="absolute left-0 bottom-0 w-[270px] h-[234px]">
-      <ImageCard delay={delay + 0.4} />
-    </div>
-    <div className="absolute right-0 bottom-0 w-[270px] h-[234px]">
-      <ImageCard delay={delay + 0.5} />
-    </div>
+  <div className="grid grid-cols-2 grid-rows-2 gap-6 h-full w-full">
+    <ImageCard delay={delay + 0.2} />
+    <ImageCard delay={delay + 0.3} />
+    <ImageCard delay={delay + 0.4} />
+    <ImageCard delay={delay + 0.5} />
   </div>
 );
 
 const GridLayout4 = ({ delay = 0 }: { delay?: number }) => (
-  <div className="relative h-full w-full">
-    {/* 1 large card centered - adjusted to maintain consistent margins */}
-    <div className="absolute left-0 top-0 w-full h-full">
-      <ImageCard delay={delay + 0.2} />
-    </div>
+  <div className="h-full w-full">
+    <ImageCard delay={delay + 0.2} />
   </div>
 );
 
 const GridLayout5 = ({ delay = 0 }: { delay?: number }) => (
-  <div className="relative h-full w-full">
-    {/* 4-card layout - adjusted for consistent margins */}
-    <div className="absolute left-0 top-0 w-[343px] h-[234px]">
-      <ImageCard delay={delay + 0.2} />
-    </div>
-    <div className="absolute right-0 top-0 w-[188px] h-[234px]">
-      <ImageCard delay={delay + 0.3} />
-    </div>
-    <div className="absolute left-0 bottom-0 w-[188px] h-[234px]">
-      <ImageCard delay={delay + 0.4} />
-    </div>
-    <div className="absolute right-0 bottom-0 w-[343px] h-[234px]">
-      <ImageCard delay={delay + 0.5} />
-    </div>
+  // Refactored using CSS Grid with specific column/row templates
+  <div 
+    className="grid grid-cols-2 grid-rows-2 gap-6 h-full w-full"
+    style={{
+      gridTemplateColumns: '388px 212px', // Define unequal column widths
+      gridTemplateRows: '254px 254px'     // Define equal row heights
+    }}
+  >
+    {/* Top Left */}
+    <ImageCard delay={delay + 0.2} /> 
+    {/* Top Right */}
+    <ImageCard delay={delay + 0.3} />
+    {/* Bottom Left */}
+    <ImageCard delay={delay + 0.4} />
+    {/* Bottom Right */}
+    <ImageCard delay={delay + 0.5} />
   </div>
 );
 
 const GridLayout6 = ({ delay = 0 }: { delay?: number }) => (
-  <div className="relative h-full w-full">
-    {/* 5-card mosaic - adjusted for consistent margins */}
-    <div className="absolute left-0 top-0 w-[343px] h-[234px]">
+  // Refactored to 2 columns: 1 card left, 2 cards stacked right
+  <div className="flex flex-row gap-6 h-full w-full">
+    {/* Column 1 (Single Card) */}
+    <div className="w-[300px] h-full">
       <ImageCard delay={delay + 0.1} />
     </div>
-    <div className="absolute right-0 top-0 w-[188px] h-[110px]">
-      <ImageCard delay={delay + 0.2} />
-    </div>
-    <div className="absolute right-0 top-[120px] w-[188px] h-[110px]">
-      <ImageCard delay={delay + 0.3} />
-    </div>
-    <div className="absolute left-0 bottom-0 w-[160px] h-[234px]">
-      <ImageCard delay={delay + 0.4} />
-    </div>
-    <div className="absolute left-[170px] bottom-0 w-[361px] h-[234px]">
-      <ImageCard delay={delay + 0.5} />
+    {/* Column 2 (Stacked Cards) */}
+    <div className="w-[300px] h-full flex flex-col gap-6">
+      {/* Top card in Column 2 */}
+      <div className="h-[254px]">
+        <ImageCard delay={delay + 0.2} />
+      </div>
+      {/* Bottom card in Column 2 */}
+      <div className="h-[254px]">
+        <ImageCard delay={delay + 0.3} />
+      </div>
     </div>
   </div>
 );
@@ -191,6 +231,50 @@ const gridLayouts = [
   GridLayout5, // Setting high bar for for product design craft
   GridLayout6  // Leading major redesign overhaul of product interfaces
 ];
+
+// --- PixelGrid Component (for Carousel) ---
+interface PixelGridProps {
+  id?: string;
+  pixelColors: string[];
+  gridSize: number;
+  pixelSize: number;
+  className?: string;
+}
+
+const PixelGrid: React.FC<PixelGridProps> = ({ 
+  id,
+  pixelColors,
+  gridSize,
+  pixelSize,
+  className = ''
+}) => {
+  return (
+    <div 
+      id={id} // Pass the id prop
+      className={`grid ${className}`}
+      style={{
+        gridTemplateColumns: `repeat(${gridSize}, ${pixelSize}px)`,
+        gridTemplateRows: `repeat(${gridSize}, ${pixelSize}px)`,
+        width: `${gridSize * pixelSize}px`,
+        height: `${gridSize * pixelSize}px`,
+        gap: 0, 
+      }}
+    >
+      {pixelColors.map((color, index) => (
+        <div
+          key={index}
+          style={{
+            backgroundColor: color,
+            width: `${pixelSize}px`,
+            height: `${pixelSize}px`
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+const PIXEL_TRANSITION_STAGGER_DELAY = 5; // ms between each pixel color change
 
 export default function NewHomePage() {
   // Card visibility states
@@ -206,9 +290,11 @@ export default function NewHomePage() {
   // Second card content states
   const [imageVisible, setImageVisible] = useState(false);
   const [iconTextVisible, setIconTextVisible] = useState(false);
+  const [carouselElementsVisible, setCarouselElementsVisible] = useState(false);
   
   // Carousel state
   const [currentPair, setCurrentPair] = useState(0);
+  const previousPairRef = useRef(currentPair); // Ref to store previous pair index
   
   // Letter-by-letter scramble states
   const [nameVamsi, setNameVamsi] = useState("vamsi");
@@ -282,33 +368,73 @@ export default function NewHomePage() {
     }
   }, [scrambleFirst, scrambleSecond, contentVisible, nameVamsi, nameBatchu, mobileNameVamsi]);
   
-  // Handle carousel rotation
+  // --- Generate Carousel Grid Data (Memoized) ---
+  const carouselGridData = React.useMemo(() => {
+    return carouselBaseColors.map(baseColor => 
+      generateBaseGridWithWhiteAccents(
+        baseColor,
+        CAROUSEL_TOTAL_PIXELS, 
+        WHITE_PIXEL_COUNT, 
+        brandColors.white
+      )
+    );
+  // Ensure dependency includes the base colors array if it were dynamic
+  // Since it's derived from static content, empty array is okay here.
+  }, []); 
+
+  // State for the grid colors actually displayed (for transition)
+  const [displayedGridColors, setDisplayedGridColors] = useState<string[]>(() => carouselGridData[0]);
+
+  // Ref to store pixel transition timers
+  const pixelTransitionTimers = useRef<NodeJS.Timeout[]>([]);
+
+  // Effect to handle carousel rotation
   useEffect(() => {
     if (iconTextVisible) {
       const carouselTimer = setInterval(() => {
-        // First fade out the current content
-        setImageVisible(false);
-        setIconTextVisible(false);
-        
-        // Wait for fade out, then change content
         setTimeout(() => {
+          previousPairRef.current = currentPair; 
           setCurrentPair((prev) => (prev + 1) % carouselContent.length);
-          
-          // First show the image grid only
-          setImageVisible(true);
-          
-          // Wait for images to fully load (including their internal delays)
-          // The grid layouts have delays of 0.2-0.6 seconds for individual cards
-          setTimeout(() => {
-            setIconTextVisible(true);
-          }, 800); // Increased delay to ensure all images are visible first
-        }, 300); // Time for fade out
+        }, 300);
       }, 4000);
-      
       return () => clearInterval(carouselTimer);
     }
-  }, [iconTextVisible]);
-  
+  }, [iconTextVisible, currentPair]);
+
+  // Effect to handle the pixel grid color transition
+  useEffect(() => {
+    // Clear any ongoing pixel transition timers
+    pixelTransitionTimers.current.forEach(clearTimeout);
+    pixelTransitionTimers.current = [];
+
+    const oldGridColors = carouselGridData[previousPairRef.current];
+    const newGridColors = carouselGridData[currentPair];
+
+    // Animate if the grid data has actually changed
+    if (JSON.stringify(oldGridColors) !== JSON.stringify(newGridColors)) {
+      for (let i = 0; i < CAROUSEL_TOTAL_PIXELS; i++) {
+        const timer = setTimeout(() => {
+          setDisplayedGridColors(prevColors => {
+            const nextColors = [...prevColors];
+            nextColors[i] = newGridColors[i];
+            return nextColors;
+          });
+        }, i * PIXEL_TRANSITION_STAGGER_DELAY);
+        pixelTransitionTimers.current.push(timer);
+      }
+    }
+    // Update previous pair ref *after* using it to get oldGridColors
+    // Note: This update is slightly redundant due to the other useEffect, but safe.
+    previousPairRef.current = currentPair; 
+
+    // Cleanup timers on unmount or if currentPair changes again
+    return () => {
+      pixelTransitionTimers.current.forEach(clearTimeout);
+      pixelTransitionTimers.current = [];
+    };
+  // Dependency: Run whenever the target grid data changes (identified by currentPair)
+  }, [currentPair, carouselGridData]); 
+
   // Trigger animations with proper timing
   useEffect(() => {
     // First show the first card
@@ -345,10 +471,11 @@ export default function NewHomePage() {
       setImageVisible(true);
     }, 5100);
     
-    // Only show icon+text after image grid has fully loaded with its internal delays
+    // Only show icon+text after image grid has fully loaded 
     const iconTextTimer = setTimeout(() => {
       setIconTextVisible(true);
-    }, 5900); // Increased delay to ensure all grid images are visible first
+      setCarouselElementsVisible(true);
+    }, 5900); 
     
     return () => {
       // Cleanup all timers
@@ -364,97 +491,104 @@ export default function NewHomePage() {
   }, []);
 
   return (
-    <div className="w-full h-screen overflow-hidden flex items-center justify-center bg-black" 
+    <div className="w-full h-screen overflow-hidden flex items-center justify-center bg-white"
     >
       {/* === DESKTOP LAYOUT === */}
       <div className="hidden lg:flex items-center justify-center w-full h-full">
         {/* Centered Content Container - Using flex layout (auto layout) */}
         <div className="flex flex-col items-start">
-          {/* Two Cards Container - Fixed width container for both cards */}
-          <div className="flex flex-row w-[1075px]"> {/* Updated width: 412px + 24px + 639px = 1075px */}
+          {/* Two Cards Container - Updated total width */}
+          <div className="flex flex-row w-[1120px]"> {/* Updated width: 400px + 720px = 1120px */}
             
-            {/* Left Card Container - Bio and intro */}
+            {/* Left Card Container - Updated width */}
             <AnimatePresence>
               {firstCardVisible && (
           <motion.div
-                  className="w-[412px] h-[628px]"
+                  className="w-[400px] h-[628px]" // Updated width
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
                   transition={{ duration: 1, ease: "easeOut" }}
                 >
-                  {/* Left Card Content - White background with rounded left corners only */}
+                  {/* Left Card Content - Restructured */}
                   <motion.div 
-                    className="bg-[#fff] w-full h-full p-[40px] flex flex-col justify-between"
+                    className="bg-black w-full h-full p-12 flex flex-col" // Removed justify-between
                     initial={{ y: 50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    <AnimatePresence>
-                      {nameVisible && (
-                        <div 
-                          className={`${priFont.className} text-black text-[64px] font-bold leading-[60px] tracking-[-3.47px] mb-[44px]`}
-                        >
-                          <TextScramble
-                            duration={1.0}
-                            speed={0.04}
-                            characterSet="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                            className="block"
-                            trigger={scrambleFirst}
-                          >
-                            {nameVamsi}
-                          </TextScramble>
-                          <TextScramble
-                            duration={1.0}
-                            speed={0.04}
-                            characterSet="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                            className="block"
-                            trigger={scrambleSecond}
-                          >
-                            {nameBatchu}
-                          </TextScramble>
-                        </div>
-                      )}
-                    </AnimatePresence>
-                    
-                    <div className="flex flex-col justify-between h-full">
+                    {/* Group 1: Title and Subtitle */}
+                    <div className="flex flex-col gap-8"> {/* Added gap */} 
                       <AnimatePresence>
-                        {contentVisible && (
-                          <>
-                            {/* Bottom container with consistent 32px spacing */}
-                            <div className="mt-auto flex flex-col">
-                              {/* Bio Text */}
-                              <motion.div 
-                                className={`${secFont.className} text-black text-[26px] font-normal leading-[32px] tracking-[-1.1px]`}
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                              >
-                                Hands on product design leader with 11+ years of experience in designing & leading teams developing highly impactful products at scale.
-                              </motion.div>
-                              
-                              {/* Divider Line - 32px margin */}
-                              <motion.div 
-                                className="w-full h-[1px] bg-black my-[32px]"
-                                initial={{ opacity: 0, scaleX: 0 }}
-                                animate={{ opacity: 1, scaleX: 1 }}
-                                transition={{ duration: 0.6, delay: 1.1, ease: "easeOut" }}
-                                style={{ transformOrigin: "left" }}
-                              />
-                              
-                              {/* Bottom Subtitle */}
-                              <motion.div 
-                                className={`${workSans.className} text-[#6f6f6f] text-[18px] font-normal leading-[22px] tracking-[0px]`}
-                                initial={{ opacity: 0, y: 15 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: 1.5, ease: [0.22, 1, 0.36, 1] }}
-                              >
-                                Currently leading the enterprise AI design teams at Rocket
-                              </motion.div>
-                            </div>
-                          </>
+                        {nameVisible && (
+                          <div 
+                            id="title" // Added ID for title
+                            className={`${priFont.className} text-white text-[80px] font-bold leading-[80px] tracking-[-2%] `} // Removed mb-44
+                          >
+                            <TextScramble
+                              duration={1.0}
+                              speed={0.04}
+                              characterSet="abcdefghijklmnopqrstuvwxyz"
+                              className="block"
+                              trigger={scrambleFirst}
+                            >
+                              {nameVamsi}
+                            </TextScramble>
+                            <TextScramble
+                              duration={1.0}
+                              speed={0.04}
+                              characterSet="abcdefghijklmnopqrstuvwxyz"
+                              className="block"
+                              trigger={scrambleSecond}
+                            >
+                              {nameBatchu}
+                            </TextScramble>
+                          </div>
                         )}
                       </AnimatePresence>
+
+                      {/* Moved Subtitle into this group */} 
+                      <AnimatePresence>
+                        {contentVisible && (
+                          <motion.div 
+                            id="subtitle" // Added ID for subtitle
+                            className={`${secFont.className} text-[#A9A9A9] text-[26px] font-normal leading-[32px] tracking-[-1.1px]`}
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                          >
+                            Hands on product design leader with 11+ years of experience in designing & leading teams developing highly impactful products at scale.
+                          </motion.div>
+                        )}
+                       </AnimatePresence>
                     </div>
+
+                    {/* Group 2: Carousel Pixel Grid / Text */}
+                    <div className="mt-auto"> 
+                      {/* Wrapper div for layout */}
+                      <div className="flex items-center gap-[20px]">
+                        {/* Pixel Grid - Rendered based on persistent state */}
+                        {carouselElementsVisible && (
+                           <PixelGrid
+                            id="carousel-pixelgrid"
+                            pixelColors={displayedGridColors}
+                            gridSize={CAROUSEL_GRID_SIZE}
+                            pixelSize={CAROUSEL_PIXEL_SIZE}
+                          />
+                        )}
+
+                        {/* Text - Renders based on persistent state, content updates */}
+                        <div className="w-auto"> 
+                          {carouselElementsVisible && (
+                            <div 
+                              id="carousel-text" 
+                              className={`${secFont.className} text-white text-[21.7px] font-normal leading-[26.1px] tracking-[-0.65px]`}>
+                              {carouselContent[currentPair].text}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    
                   </motion.div>
           </motion.div>
         )}
@@ -462,18 +596,18 @@ export default function NewHomePage() {
             
          
             
-            {/* Right Card Container - Portfolio showcase */}
+            {/* Right Card Container - Updated width */}
             <AnimatePresence>
               {secondCardVisible && (
           <motion.div
-                  className="w-[639px] h-[628px]"
+                  className="w-[720px] h-[628px]" // Updated width
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
                   transition={{ duration: 1, ease: "easeOut" }}
                 >
-                  {/* Right Card Content - Translucent dark background with rounded right corners only */}
+                  {/* Right Card Content - Updated padding */}
                   <motion.div 
-                    className="bg-gray-400 w-full h-full p-[40px] flex flex-col justify-between text-white"
+                    className="bg-black w-full h-full p-12 flex flex-col justify-between text-white" // Updated background to black, default text to white
                     initial={{ y: 50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -482,43 +616,17 @@ export default function NewHomePage() {
                     <AnimatePresence mode="wait">
                       {imageVisible && (
                         <motion.div 
+                          id="carousel-image-grid"
                           key={currentPair}
-                          className="w-full h-[488px] overflow-hidden"
+                          className="w-full h-full overflow-hidden"
                           initial={{ opacity: 0, y: 30 }}
                           animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
+                          exit={{ opacity: 0 }}
                           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                         >
                           {/* Dynamically render the current grid layout based on carousel index */}
                           {React.createElement(gridLayouts[currentPair], { delay: 0 })}
                         </motion.div>
-                      )}
-                    </AnimatePresence>
-                    
-                    {/* Right Side Content with rotating Icon/Text pairs */}
-                    <AnimatePresence>
-                      {iconTextVisible && (
-                        <div className="flex items-center">
-                          <AnimatePresence mode="wait">
-                            <motion.div 
-                              key={currentPair}
-                              className="inline-flex items-center gap-[20px]"
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: 20 }}
-                              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                            >
-                              <img 
-                                src={carouselContent[currentPair].imageUrl} 
-                                alt="Shape icon" 
-                                className="w-[32px] h-[32px] object-contain" 
-                              />
-                              <div className={`${priFont.className} w-[491px] text-white text-[21.7px] font-normal leading-[26.1px] tracking-[-0.65px]`}>
-                                {carouselContent[currentPair].text}
-                              </div>
-                            </motion.div>
-                          </AnimatePresence>
-                        </div>
                       )}
                     </AnimatePresence>
                   </motion.div>
@@ -557,7 +665,7 @@ export default function NewHomePage() {
         <AnimatePresence>
           {firstCardVisible && (
           <motion.div
-              className="relative w-full max-w-md mx-auto bg-[#fff] p-8 rounded-[20px]"
+              className="relative w-full max-w-md mx-auto bg-black p-8 rounded-[20px]" // Updated background to black
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
               transition={{ duration: 1, ease: "easeOut" }}
@@ -565,7 +673,7 @@ export default function NewHomePage() {
               {/* Name - Smaller for mobile */}
               <AnimatePresence>
                 {nameVisible && (
-                  <div className={`${priFont.className} text-black text-[60px] font-bold leading-[60px] tracking-[-2px] mb-12`}>
+                  <div className={`${priFont.className} text-white text-[120px] font-bold leading-[120px] tracking-[-2%] mb-12`}>
                     <TextScramble
                       duration={1.0}
                       speed={0.04}
@@ -593,7 +701,7 @@ export default function NewHomePage() {
                 {contentVisible && (
                   <>
                     <motion.div 
-                      className={`${secFont.className} text-black text-[22px] font-normal leading-[28px] tracking-[-0.8px] mb-10`}
+                      className={`${secFont.className} text-white text-[22px] font-normal leading-[28px] tracking-[-0.8px] mb-10`}
                       initial={{ opacity: 0, y: 15 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
@@ -601,18 +709,9 @@ export default function NewHomePage() {
                       Hands on product design leader with 11+ years of experience in designing & leading teams developing highly impactful products at scale.
                     </motion.div>
                     
-                    {/* Divider Line */}
-                    <motion.div 
-                      className="w-full h-[1px] bg-black mb-4"
-                      initial={{ opacity: 0, scaleX: 0 }}
-                      animate={{ opacity: 1, scaleX: 1 }}
-                      transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
-                      style={{ transformOrigin: "left" }}
-                    />
-                    
                     {/* Bottom Subtitle */}
                     <motion.div 
-                      className={`${workSans.className} text-[#6f6f6f] text-[16px] font-normal leading-[22px] tracking-[0px] mb-6`}
+                      className={`${workSans.className} text-[#9FC486] text-[16px] font-normal leading-[22px] tracking-[0px] mb-6`}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
@@ -746,7 +845,7 @@ export default function NewHomePage() {
                           alt="Shape icon" 
                           className="w-8 h-8 object-contain" 
                         />
-                        <div className={`${priFont.className} text-[#191919] text-[18px] font-normal leading-[24px] tracking-[-0.5px]`}>
+                        <div className={`${priFont.className} text-white text-[18px] font-normal leading-[24px] tracking-[-0.5px]`}>
                           {carouselContent[currentPair].text}
                         </div>
                       </motion.div>

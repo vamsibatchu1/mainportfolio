@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { CardXs } from '@/app/design-system/dualcard/dualcard';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { priFont } from '@/lib/config/fonts';
 
 // --- Configuration ---
@@ -23,27 +23,78 @@ const brandColors = {
   paprika: "#F25A3F"
 };
 
-// Sequence: Nebula -> Juniper -> Breeze -> Paprika -> Zenith -> back to Nebula
+// Sequence: Extended to 20 steps, repeating colors 4 times
 const colorSequence = [
-  brandColors.nebula,
-  brandColors.juniper,
-  brandColors.breeze,
-  brandColors.paprika,
-  brandColors.zenith
+  // Cycle 1
+  brandColors.nebula,  // 0
+  brandColors.juniper, // 1
+  brandColors.breeze,  // 2
+  brandColors.paprika, // 3
+  brandColors.zenith,  // 4
+  // Cycle 2
+  brandColors.nebula,  // 5
+  brandColors.juniper, // 6
+  brandColors.breeze,  // 7
+  brandColors.paprika, // 8
+  brandColors.zenith,   // 9
+  // Cycle 3
+  brandColors.nebula,  // 10
+  brandColors.juniper, // 11
+  brandColors.breeze,  // 12
+  brandColors.paprika, // 13
+  brandColors.zenith,  // 14
+   // Cycle 4
+  brandColors.nebula,  // 15
+  brandColors.juniper, // 16
+  brandColors.breeze,  // 17
+  brandColors.paprika, // 18
+  brandColors.zenith   // 19
 ];
 
-// Shapes aligned with the color sequence - NEW CREATIVE SHAPES
+// Shapes aligned with the color sequence - 20 shapes total
 const shapes = [
-  // Nebula (Pink): Swirl
-  [1, 2, 8, 13, 18, 17, 16, 10, 6],       // 9 pixels
-  // Juniper (Green): Sprout
-  [2, 7, 11, 12, 13, 17, 22],              // 7 pixels
-  // Breeze (Blue): Ripple
-  [1, 3, 6, 8, 11, 13, 16, 18, 21, 23],   // 10 pixels
-  // Paprika (Red-Orange): Bolt
-  [4, 8, 7, 11, 15, 16],                   // 6 pixels
-  // Zenith (Yellow-Orange): Burst
-  [2, 6, 7, 8, 10, 12, 14, 16, 17, 18, 22] // 11 pixels
+  // --- Original 10 ---
+  // Step 0: Nebula (Pink): Swirl
+  [1, 2, 8, 13, 18, 17, 16, 10, 6],
+  // Step 1: Juniper (Green): Sprout
+  [2, 7, 11, 12, 13, 17, 22],
+  // Step 2: Breeze (Blue): Ripple
+  [1, 3, 6, 8, 11, 13, 16, 18, 21, 23],
+  // Step 3: Paprika (Red-Orange): Bolt
+  [4, 8, 7, 11, 15, 16],
+  // Step 4: Zenith (Yellow-Orange): Burst
+  [2, 6, 7, 8, 10, 12, 14, 16, 17, 18, 22],
+  // Step 5: Nebula (Pink): Small Box (3x3 centered)
+  [6, 7, 8, 11, 12, 13, 16, 17, 18],
+  // Step 6: Juniper (Green): Letter 'V'
+  [0, 4, 6, 8, 12],
+  // Step 7: Breeze (Blue): Smiley Eyes
+  [6, 8],
+  // Step 8: Paprika (Red-Orange): Diamond
+  [2, 6, 8, 10, 14, 16, 18, 22],
+  // Step 9: Zenith (Yellow-Orange): Ghost Eyes
+  [6, 8, 11, 13],
+  // --- Added Shapes (10-19) ---
+  // Step 10: Nebula (Pink): Solid Square (3x3)
+  [6, 7, 8, 11, 12, 13, 16, 17, 18],
+  // Step 11: Juniper (Green): Inverted V
+  [10, 14, 16, 18, 22],
+  // Step 12: Breeze (Blue): Question Mark
+  [1, 2, 3, 8, 12, 17],
+  // Step 13: Paprika (Red-Orange): Heart
+  [1, 3, 5, 7, 9, 12, 16, 18],
+  // Step 14: Zenith (Yellow-Orange): Hourglass
+  [0, 1, 2, 3, 4, 7, 12, 17, 20, 21, 22, 23, 24],
+  // Step 15: Nebula (Pink): Letter 'Z'
+  [0, 1, 2, 3, 4, 8, 12, 16, 20, 21, 22, 23, 24],
+  // Step 16: Juniper (Green): Four Corners
+  [0, 4, 20, 24],
+  // Step 17: Breeze (Blue): Hash/Pound Sign
+  [6, 8, 10, 11, 12, 13, 14, 16, 18],
+  // Step 18: Paprika (Red-Orange): Check Mark
+  [8, 12, 16, 17, 20],
+  // Step 19: Zenith (Yellow-Orange): Small Cross
+  [2, 7, 10, 11, 12, 13, 14, 17, 22],
 ];
 
 // Calculate the time needed for a shape to fully form
@@ -92,11 +143,19 @@ const PixelGrid: React.FC<PixelGridProps> = ({
   );
 };
 
+// --- New Rotating Text --- 
+const rotatingTexts = [
+  "loading frames",
+  "adjusting pixels",
+  "creating journeys",
+  "setting up prototypes"
+];
+const TEXT_ROTATION_INTERVAL = 1800; // ms (e.g., 2s display + 0.5s transition)
+
 // --- IntroAnimation Component ---
 export function IntroAnimation() {
-  const [loadingProgress, setLoadingProgress] = useState(0);
-  const [titleVisible, setTitleVisible] = useState(false);
-  const [subtitleVisible, setSubtitleVisible] = useState(false);
+  const [canStartPixelAnimation, setCanStartPixelAnimation] = useState(false);
+  const [currentTextIndex, setCurrentTextIndex] = useState(0); // State for rotating text index
   
   // Pixel Grid Animation State
   const [currentStep, setCurrentStep] = useState(0); // Starts at Nebula/Star
@@ -119,24 +178,23 @@ export function IntroAnimation() {
   // Clear timers on unmount
   useEffect(() => cleanupTimers, []);
 
-  // Effect to handle animation steps
+  // Effect to handle pixel grid animation steps (conditionally run)
   useEffect(() => {
-    cleanupTimers(); // Clear previous timers before starting new step
+    if (!canStartPixelAnimation) return; 
+    
+    cleanupTimers(); 
 
     const currentBgColor = colorSequence[currentStep];
     const currentShapeIndices = shapes[currentStep];
     const formationDuration = calculateFormationDuration(currentShapeIndices);
 
-    // 1. Instantly set background color for the *current* step
     const backgroundGrid = Array(TOTAL_PIXELS).fill(currentBgColor);
     setGridState(backgroundGrid);
 
-    // 2. Schedule gradual shape formation for the *current* step
     if (currentShapeIndices) {
       currentShapeIndices.forEach((pixelIndex, i) => {
         const timer = setTimeout(() => {
           setGridState(prevGrid => {
-            // Check if the grid still has the expected background color
             if (prevGrid[pixelIndex] === currentBgColor) {
               const newGrid = [...prevGrid];
               newGrid[pixelIndex] = brandColors.white;
@@ -151,72 +209,94 @@ export function IntroAnimation() {
       console.warn(`No shape defined for step ${currentStep}`);
     }
 
-    // 3. Schedule the transition to the *next* step after current shape forms
     nextStepTimeout.current = setTimeout(() => {
       setCurrentStep(prevStep => (prevStep + 1) % colorSequence.length);
-    }, formationDuration + 50 + 400); // Add 200ms pause
+    }, formationDuration + 50 + 400); 
 
-    // Return the cleanup function for this effect instance
     return cleanupTimers;
 
-  }, [currentStep]); // Rerun this whole effect when currentStep changes
+  }, [currentStep, canStartPixelAnimation]); 
 
-  // --- Original Loading & Text Animation Logic --- 
+  // --- Text Rotation and Initial Animation Trigger --- 
   useEffect(() => {
-    if (loadingProgress < 100 && subtitleVisible) {
-      const timer = setTimeout(() => {
-        setLoadingProgress(prev => Math.min(prev + 1, 100));
-      }, 30);
-      return () => clearTimeout(timer);
+    // Timer to allow card animation before starting text/pixel animations
+    const startTimer = setTimeout(() => {
+        setCanStartPixelAnimation(true);
+    }, 800); // Start text/pixel animation slightly after card reveal
+
+    let textInterval: NodeJS.Timeout | null = null;
+
+    if (canStartPixelAnimation) {
+        // Start text rotation interval ONLY after the initial delay
+        textInterval = setInterval(() => {
+            setCurrentTextIndex(prevIndex => (prevIndex + 1) % rotatingTexts.length);
+        }, TEXT_ROTATION_INTERVAL);
     }
-  }, [loadingProgress, subtitleVisible]);
-  
-  useEffect(() => {
-    const titleTimer = setTimeout(() => setTitleVisible(true), 800);
-    const subtitleTimer = setTimeout(() => setSubtitleVisible(true), 1600);
-    return () => { clearTimeout(titleTimer); clearTimeout(subtitleTimer); };
-  }, []);
-  // --- End Original Logic ---
+
+    return () => { 
+        clearTimeout(startTimer); 
+        if (textInterval) clearInterval(textInterval); // Clear interval on cleanup
+    }; 
+    // Add canStartPixelAnimation as dependency to re-run when it turns true
+  }, [canStartPixelAnimation]);
   
   return (
     <motion.div
-      initial={{ opacity: 0, y: 100 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1, ease: "easeOut" }}
-      className="w-full max-w-2xl"
+      className="min-h-screen w-full flex items-center justify-center"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
     >
-      <CardXs 
-        primaryContent={
-           <>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: titleVisible ? 1 : 0, y: titleVisible ? 0 : 20 }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className={priFont.className} style={{
-                color: '#f7f6f4',
-                fontSize: '40px',
-                fontWeight: '400',
-                letterSpacing: '-0.8px',
-                lineHeight: 'normal',
-                whiteSpace: 'nowrap',
-                width: 'fit-content'
-              }}>
-                Welcome to my portfolio
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
+        className="w-auto"
+      >
+        <CardXs 
+          primaryContent={
+             // Container to ensure AnimatePresence has consistent size and text is centered
+             <div style={{
+                 height: '48px',
+                 display: 'flex',
+                 alignItems: 'center',
+                 justifyContent: 'center', // Center the text horizontally
+                 minWidth: '450px' // Set a minimum width
+                }}>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentTextIndex} // Important for AnimatePresence
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: canStartPixelAnimation ? 1 : 0, y: canStartPixelAnimation ? 0 : 10 }} // Fade in only when allowed
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.4 }}
+                    className={`${priFont.className}`}
+                    style={{
+                        color: '#f7f6f4',
+                        fontSize: '36px', // Adjusted size slightly
+                        fontWeight: '400',
+                        letterSpacing: '-0.8px',
+                        lineHeight: 'normal',
+                        whiteSpace: 'nowrap',
+                        width: 'fit-content'
+                    }}
+                  >
+                    {rotatingTexts[currentTextIndex]}
+                  </motion.div>
+                </AnimatePresence>
               </div>
-            </motion.div>
-          </>
-        }
-        secondaryContent={
-          <div className="flex items-center justify-center w-full h-full">
-            <PixelGrid 
-              pixelColors={gridState}
-              gridSize={GRID_SIZE}
-              pixelSize={PIXEL_SIZE}
-            />
-          </div>
-        }
-      />
+          }
+          secondaryContent={
+            <div className="flex items-center justify-center w-full h-full">
+              <PixelGrid 
+                pixelColors={gridState}
+                gridSize={GRID_SIZE}
+                pixelSize={PIXEL_SIZE}
+              />
+            </div>
+          }
+        />
+      </motion.div>
     </motion.div>
   );
 }
