@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { TextScramble } from '@/components/ui/text-scramble';
 import styles from './components/styles.module.css';
 import UnifiedActionBar from './components/UnifiedActionBar';
+import { GalleryHorizontalEnd } from 'lucide-react'; // Import GalleryHorizontalEnd icon
 
 // Initialize IBM Plex Mono font
 const ibmPlexMono = IBM_Plex_Mono({
@@ -37,7 +38,7 @@ const brandColors = {
 const carouselContent = [
   {
     imageUrl: "/images/homepage-shape1.svg",
-    text: "Crafting large scale enterprise products"
+    text: "Crafting large scale enterprise products for 1000+ users"
   },
   {
     imageUrl: "/images/homepage-shape2.svg",
@@ -49,11 +50,11 @@ const carouselContent = [
   },
   {
     imageUrl: "/images/homepage-shape4.svg",
-    text: "Defining product vision and strategy"
+    text: "Defining product vision and strategy for large scale products"
   },
   {
     imageUrl: "/images/homepage-shape5.svg",
-    text: "Setting high bar for for product design craft"
+    text: "Setting high bar for for product design craft for 1000+ users"
   },
   {
     imageUrl: "/images/homepage-shape6.svg",
@@ -142,15 +143,19 @@ function ImgCard({ delay, imageSrc }: { delay: number; imageSrc: string }) {
 
 // Define different image grid layouts that correspond to each carousel item
 const GridLayout1 = ({ delay = 0 }: { delay?: number }) => (
-  <div className="grid grid-cols-2 gap-6 h-full w-full">
+  // Refactored using CSS Grid
+  <div className="grid grid-cols-2 gap-6 h-full w-full"> 
+    {/* Top large card - Replaced ImgCard with ImageCard */}
     <div className="col-span-2 h-[347px]">
-       <ImgCard delay={delay + 0.2} imageSrc="/productshots/carousel-A1.svg" />
+       <ImageCard delay={delay + 0.2} />
     </div>
+    {/* Bottom left card - Replaced ImgCard with ImageCard */}
     <div className="h-[161px]">
-      <ImgCard delay={delay + 0.4} imageSrc="/productshots/carousel-A2.svg" />
+      <ImageCard delay={delay + 0.4} />
     </div>
+    {/* Bottom right card - Replaced ImgCard with ImageCard */}
     <div className="h-[161px]">
-      <ImgCard delay={delay + 0.6} imageSrc="/productshots/carousel-A3.svg" />
+      <ImageCard delay={delay + 0.6} />
     </div>
   </div>
 );
@@ -257,7 +262,7 @@ const PixelGrid: React.FC<PixelGridProps> = ({
         gridTemplateRows: `repeat(${gridSize}, ${pixelSize}px)`,
         width: `${gridSize * pixelSize}px`,
         height: `${gridSize * pixelSize}px`,
-        gap: 0, 
+        gap: '2px', // Updated gap to 2px
       }}
     >
       {pixelColors.map((color, index) => (
@@ -287,14 +292,14 @@ export default function NewHomePage() {
   const [scrambleSecond, setScrambleSecond] = useState(false);
   const [contentVisible, setContentVisible] = useState(false);
   
-  // Second card content states
-  const [imageVisible, setImageVisible] = useState(false);
-  const [iconTextVisible, setIconTextVisible] = useState(false);
+  // Second card content states & persistent states
+  const [rightCardGridVisible, setRightCardGridVisible] = useState(false);
   const [carouselElementsVisible, setCarouselElementsVisible] = useState(false);
+  const [carouselTextAndImagesVisible, setCarouselTextAndImagesVisible] = useState(false);
   
   // Carousel state
   const [currentPair, setCurrentPair] = useState(0);
-  const previousPairRef = useRef(currentPair); // Ref to store previous pair index
+  const previousPairRef = useRef(currentPair);
   
   // Letter-by-letter scramble states
   const [nameVamsi, setNameVamsi] = useState("vamsi");
@@ -382,49 +387,60 @@ export default function NewHomePage() {
   // Since it's derived from static content, empty array is okay here.
   }, []); 
 
-  // State for the grid colors actually displayed (for transition)
-  const [displayedGridColors, setDisplayedGridColors] = useState<string[]>(() => carouselGridData[0]);
-
-  // Ref to store pixel transition timers
+  const [displayedGridColors, setDisplayedGridColors] = useState<string[]>(() => 
+    // Start with black background before initial fill
+    Array(CAROUSEL_TOTAL_PIXELS).fill(brandColors.black) 
+  );
   const pixelTransitionTimers = useRef<NodeJS.Timeout[]>([]);
 
   // Effect to handle carousel rotation
   useEffect(() => {
-    if (iconTextVisible) {
+    // Start rotation only after text and images are visible
+    if (carouselTextAndImagesVisible) { 
       const carouselTimer = setInterval(() => {
         setTimeout(() => {
-          previousPairRef.current = currentPair; 
+          previousPairRef.current = currentPair; // Update previous ref before changing currentPair
           setCurrentPair((prev) => (prev + 1) % carouselContent.length);
-        }, 300);
+        }, 300); // Keep a small delay before content switch
       }, 4000);
       return () => clearInterval(carouselTimer);
     }
-  }, [iconTextVisible, currentPair]);
+  }, [carouselTextAndImagesVisible, currentPair]);
 
-  // Effect to handle the pixel grid color transition
+  // Effect to handle SUBSEQUENT pixel grid color transitions (shuffled)
   useEffect(() => {
-    // Clear any ongoing pixel transition timers
+    // Don't run on initial load (when previous pair is still 0)
+    // Also don't run if the carousel isn't even visible yet
+    if (!carouselElementsVisible || (previousPairRef.current === currentPair && currentPair === 0)) return; 
+
     pixelTransitionTimers.current.forEach(clearTimeout);
     pixelTransitionTimers.current = [];
 
-    const oldGridColors = carouselGridData[previousPairRef.current];
+    // Note: No need for oldGridColors comparison, as we always animate towards the new target
     const newGridColors = carouselGridData[currentPair];
 
-    // Animate if the grid data has actually changed
-    if (JSON.stringify(oldGridColors) !== JSON.stringify(newGridColors)) {
-      for (let i = 0; i < CAROUSEL_TOTAL_PIXELS; i++) {
-        const timer = setTimeout(() => {
-          setDisplayedGridColors(prevColors => {
-            const nextColors = [...prevColors];
-            nextColors[i] = newGridColors[i];
-            return nextColors;
-          });
-        }, i * PIXEL_TRANSITION_STAGGER_DELAY);
-        pixelTransitionTimers.current.push(timer);
-      }
+    const indices = Array.from({ length: CAROUSEL_TOTAL_PIXELS }, (_, k) => k);
+    // Shuffle the indices array (Fisher-Yates shuffle algorithm)
+    for (let j = indices.length - 1; j > 0; j--) {
+        const randIndex = Math.floor(Math.random() * (j + 1));
+        [indices[j], indices[randIndex]] = [indices[randIndex], indices[j]]; // Swap elements
     }
-    // Update previous pair ref *after* using it to get oldGridColors
-    // Note: This update is slightly redundant due to the other useEffect, but safe.
+
+    // Iterate through the *shuffled* indices to transition colors
+    indices.forEach((pixelIndex, i) => {
+      const timer = setTimeout(() => {
+        setDisplayedGridColors(prevColors => {
+          const nextColors = [...prevColors];
+          // Update the pixel at the shuffled index to the new target color
+          nextColors[pixelIndex] = newGridColors[pixelIndex]; 
+          return nextColors;
+        });
+      // Stagger delay is based on the iteration order 'i'
+      }, i * PIXEL_TRANSITION_STAGGER_DELAY);
+      pixelTransitionTimers.current.push(timer);
+    });
+      
+    // Update previous pair ref *after* triggering the transition
     previousPairRef.current = currentPair; 
 
     // Cleanup timers on unmount or if currentPair changes again
@@ -433,60 +449,71 @@ export default function NewHomePage() {
       pixelTransitionTimers.current = [];
     };
   // Dependency: Run whenever the target grid data changes (identified by currentPair)
-  }, [currentPair, carouselGridData]); 
+  }, [currentPair, carouselGridData, carouselElementsVisible]); // Added carouselElementsVisible dependency
 
-  // Trigger animations with proper timing
+  // Effect for INITIAL pixel grid fill animation (now uses random fill)
   useEffect(() => {
-    // First show the first card
-    const firstCardTimer = setTimeout(() => {
-      setFirstCardVisible(true);
-    }, 100);
+    if (carouselElementsVisible) {
+      pixelTransitionTimers.current.forEach(clearTimeout);
+      pixelTransitionTimers.current = [];
+
+      const initialGridData = carouselGridData[0]; 
+      const indices = Array.from({ length: CAROUSEL_TOTAL_PIXELS }, (_, k) => k);
+      // Shuffle the indices for a random fill effect
+      for (let j = indices.length - 1; j > 0; j--) {
+          const randIndex = Math.floor(Math.random() * (j + 1));
+          [indices[j], indices[randIndex]] = [indices[randIndex], indices[j]];
+      }
+
+      // Iterate through shuffled indices to fill the grid randomly
+      indices.forEach((pixelIndex, i) => {
+        const timer = setTimeout(() => {
+          setDisplayedGridColors(prevColors => {
+            // Directly set the target color from the initial pattern
+             const nextColors = [...prevColors];
+             nextColors[pixelIndex] = initialGridData[pixelIndex];
+             return nextColors;
+          });
+        }, i * PIXEL_TRANSITION_STAGGER_DELAY); // Stagger based on random order
+        pixelTransitionTimers.current.push(timer);
+      });
+      
+      return () => {
+         pixelTransitionTimers.current.forEach(clearTimeout);
+         pixelTransitionTimers.current = [];
+      };
+    }
+  }, [carouselElementsVisible, carouselGridData]);
+
+  // Trigger initial animations with updated timing
+  useEffect(() => {
+    const firstCardTimer = setTimeout(() => setFirstCardVisible(true), 100);
+    const secondCardTimer = setTimeout(() => setSecondCardVisible(true), 100); 
+    const nameTimer = setTimeout(() => setNameVisible(true), 700);
+    const firstTimer = setTimeout(() => setScrambleFirst(true), 1000);
+    const secondTimer = setTimeout(() => setScrambleSecond(true), 1500);
+    const contentTimer = setTimeout(() => setContentVisible(true), 2200); // Subtitle appears (ends ~3000ms)
     
-    // Then start first card content animations after the card is in place
-    const nameTimer = setTimeout(() => {
-      setNameVisible(true);
-    }, 700);
-    
-    // Start text scramble animations
-    const firstTimer = setTimeout(() => {
-      setScrambleFirst(true);
-    }, 1000);
-    
-    const secondTimer = setTimeout(() => {
-      setScrambleSecond(true);
-    }, 1500);
-    
-    // Show the rest of the content after the name scrambles
-    const contentTimer = setTimeout(() => {
-      setContentVisible(true);
-    }, 2200);
-    
-    // Then show the second card after first card's content animations are complete
-    const secondCardTimer = setTimeout(() => {
-      setSecondCardVisible(true);
-    }, 4300);
-    
-    // Show image grid first
-    const imageTimer = setTimeout(() => {
-      setImageVisible(true);
-    }, 5100);
-    
-    // Only show icon+text after image grid has fully loaded 
-    const iconTextTimer = setTimeout(() => {
-      setIconTextVisible(true);
-      setCarouselElementsVisible(true);
-    }, 5900); 
+    // Pixel Grid appears and starts *randomly filling* after subtitle
+    const pixelGridTimer = setTimeout(() => {
+      setCarouselElementsVisible(true); 
+    }, 3100); // Updated timing
+
+    // Text and Right Images appear after initial pixel grid fill completes
+    const textImageTimer = setTimeout(() => {
+        setRightCardGridVisible(true);
+        setCarouselTextAndImagesVisible(true);
+    }, 3700); // Updated timing (3100ms start + ~500ms fill + 100ms buffer)
     
     return () => {
-      // Cleanup all timers
       clearTimeout(firstCardTimer);
       clearTimeout(secondCardTimer);
       clearTimeout(nameTimer);
       clearTimeout(contentTimer);
       clearTimeout(firstTimer);
       clearTimeout(secondTimer);
-      clearTimeout(imageTimer);
-      clearTimeout(iconTextTimer);
+      clearTimeout(pixelGridTimer);
+      clearTimeout(textImageTimer);
     };
   }, []);
 
@@ -509,88 +536,82 @@ export default function NewHomePage() {
             animate={{ opacity: 1 }}
                   transition={{ duration: 1, ease: "easeOut" }}
                 >
-                  {/* Left Card Content - Restructured */}
+                  {/* Left Card Content - Simplified Structure */}
                   <motion.div 
-                    className="bg-black w-full h-full p-12 flex flex-col" // Removed justify-between
+                    className="bg-black w-full h-full p-12 flex flex-col justify-between" // Added justify-between
                     initial={{ y: 50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    {/* Group 1: Title and Subtitle */}
-                    <div className="flex flex-col gap-8"> {/* Added gap */} 
-                      <AnimatePresence>
-                        {nameVisible && (
-                          <div 
-                            id="title" // Added ID for title
-                            className={`${priFont.className} text-white text-[80px] font-bold leading-[80px] tracking-[-2%] `} // Removed mb-44
+                    {/* Row 1: Title */}
+                    <AnimatePresence>
+                      {nameVisible && (
+                        <div 
+                          id="title" 
+                          className={`${priFont.className} text-white text-[80px] font-bold leading-[80px] tracking-[-2%]`}
+                        >
+                          <TextScramble
+                            duration={1.0}
+                            speed={0.04}
+                            characterSet="abcdefghijklmnopqrstuvwxyz"
+                            className="block"
+                            trigger={scrambleFirst}
                           >
-                            <TextScramble
-                              duration={1.0}
-                              speed={0.04}
-                              characterSet="abcdefghijklmnopqrstuvwxyz"
-                              className="block"
-                              trigger={scrambleFirst}
-                            >
-                              {nameVamsi}
-                            </TextScramble>
-                            <TextScramble
-                              duration={1.0}
-                              speed={0.04}
-                              characterSet="abcdefghijklmnopqrstuvwxyz"
-                              className="block"
-                              trigger={scrambleSecond}
-                            >
-                              {nameBatchu}
-                            </TextScramble>
-                          </div>
-                        )}
-                      </AnimatePresence>
-
-                      {/* Moved Subtitle into this group */} 
-                      <AnimatePresence>
-                        {contentVisible && (
-                          <motion.div 
-                            id="subtitle" // Added ID for subtitle
-                            className={`${secFont.className} text-[#A9A9A9] text-[26px] font-normal leading-[32px] tracking-[-1.1px]`}
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                            {nameVamsi}
+                          </TextScramble>
+                          <TextScramble
+                            duration={1.0}
+                            speed={0.04}
+                            characterSet="abcdefghijklmnopqrstuvwxyz"
+                            className="block"
+                            trigger={scrambleSecond}
                           >
-                            Hands on product design leader with 11+ years of experience in designing & leading teams developing highly impactful products at scale.
-                          </motion.div>
-                        )}
-                       </AnimatePresence>
-                    </div>
+                            {nameBatchu}
+                          </TextScramble>
+                        </div>
+                      )}
+                    </AnimatePresence>
 
-                    {/* Group 2: Carousel Pixel Grid / Text */}
-                    <div className="mt-auto"> 
-                      {/* Wrapper div for layout */}
-                      <div className="flex items-center gap-[20px]">
-                        {/* Pixel Grid - Rendered based on persistent state */}
-                        {carouselElementsVisible && (
+                    {/* Row 2: Subtitle */} 
+                    <AnimatePresence>
+                      {contentVisible && (
+                        <motion.div 
+                          id="subtitle" 
+                          className={`${secFont.className} text-[#A9A9A9] text-[26px] font-normal leading-[32px] tracking-[-1.1px]`}
+                          initial={{ opacity: 0, y: 30 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                        >
+                          Hands on product design leader with 11+ years of experience in designing & leading teams developing highly impactful products at scale.
+                        </motion.div>
+                      )}
+                     </AnimatePresence>
+
+                    {/* Row 3: Carousel Pixel Grid */}
+                    <div className="min-h-[98px]"> {/* Added min-height for grid */} 
+                        {carouselElementsVisible && ( 
                            <PixelGrid
                             id="carousel-pixelgrid"
-                            pixelColors={displayedGridColors}
+                            pixelColors={displayedGridColors} 
                             gridSize={CAROUSEL_GRID_SIZE}
                             pixelSize={CAROUSEL_PIXEL_SIZE}
                           />
                         )}
+                    </div>
 
-                        {/* Text - Renders based on persistent state, content updates */}
-                        <div className="w-auto"> 
-                          {carouselElementsVisible && (
-                            <div 
-                              id="carousel-text" 
-                              className={`${secFont.className} text-white text-[21.7px] font-normal leading-[26.1px] tracking-[-0.65px]`}>
-                              {carouselContent[currentPair].text}
-                            </div>
-                          )}
+                    {/* Row 4: Carousel Text */} 
+                    <div className="min-h-[52px]"> {/* Added min-height for text */} 
+                      {carouselTextAndImagesVisible && (
+                        <div 
+                          id="carousel-text" 
+                          className={`${secFont.className} text-white text-[21.7px] font-normal leading-[26.1px] tracking-[-0.65px]`}>
+                          {carouselContent[currentPair].text} 
                         </div>
-                      </div>
+                      )}
                     </div>
                     
                   </motion.div>
-          </motion.div>
+            </motion.div>
         )}
             </AnimatePresence>
             
@@ -614,7 +635,7 @@ export default function NewHomePage() {
                   >
                     {/* Larger image grid - Now dynamically changes based on carousel item */}
                     <AnimatePresence mode="wait">
-                      {imageVisible && (
+                      {rightCardGridVisible && (
                         <motion.div 
                           id="carousel-image-grid"
                           key={currentPair}
@@ -637,7 +658,7 @@ export default function NewHomePage() {
           
           {/* Navigation Hint Container - Below cards */}
           <motion.div 
-            className={`${styles.navigationHint} ${ibmPlexMono.className}`}
+            className={`${styles.navigationHint} ${ibmPlexMono.className} text-black w-[1120px] justify-end`}
             style={{ 
               marginTop: '16px'
             }}
@@ -651,9 +672,7 @@ export default function NewHomePage() {
               damping: 20
             }}
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M7 9.49958L2 11.9996L11.6422 16.8207C11.7734 16.8863 11.839 16.9191 11.9078 16.932C11.9687 16.9434 12.0313 16.9434 12.0922 16.932C12.161 16.9191 12.2266 16.8863 12.3578 16.8207L22 11.9996L17 9.49958M7 14.4996L2 16.9996L11.6422 21.8207C11.7734 21.8863 11.839 21.9191 11.9078 21.932C11.9687 21.9434 12.0313 21.9434 12.0922 21.932C12.161 21.9191 12.2266 21.8863 12.3578 21.8207L22 16.9996L17 14.4996M2 6.99958L11.6422 2.17846C11.7734 2.11287 11.839 2.08008 11.9078 2.06717C11.9687 2.05574 12.0313 2.05574 12.0922 2.06717C12.161 2.08008 12.2266 2.11287 12.3578 2.17846L22 6.99958L12.3578 11.8207C12.2266 11.8863 12.161 11.9191 12.0922 11.932C12.0313 11.9434 11.9687 11.9434 11.9078 11.932C11.839 11.9191 11.7734 11.8863 11.6422 11.8207L2 6.99958Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+            <GalleryHorizontalEnd size={24} strokeWidth={2} color="black" />
             TAP SPACEBAR TO NAVIGATE
           </motion.div>
         </div>
@@ -728,7 +747,7 @@ export default function NewHomePage() {
                   <>
                     {/* Profile Image Placeholder - with equal spacing */}
                     <AnimatePresence mode="wait">
-                      {imageVisible && (
+                      {rightCardGridVisible && (
                         <motion.div 
                           key={currentPair}
                           className="w-full h-[500px] overflow-hidden"
@@ -829,7 +848,7 @@ export default function NewHomePage() {
               
               {/* Right Side Content with rotating Icon/Text pairs for mobile - consistent padding */}
               <AnimatePresence>
-                {iconTextVisible && (
+                {carouselElementsVisible && (
                   <div className="flex items-center h-[60px]">
                     <AnimatePresence mode="wait">
                       <motion.div 
