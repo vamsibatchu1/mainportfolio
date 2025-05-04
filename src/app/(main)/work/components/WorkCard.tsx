@@ -143,27 +143,27 @@ export function WorkCard({
   );
 
   return (
-    // Overall Container: 3 columns, 1248px wide, 600px high
+    // Overall Container: Apply responsive classes
     <div 
-      className={`flex flex-row w-[1248px] h-[600px] gap-6 ${className}`}
+      className={`flex flex-col lg:flex-row w-full h-auto lg:w-[1248px] lg:h-[600px] gap-6 ${className}`}
     >
-      {/* Card 1 */}
+      {/* Card 1: Apply responsive classes */}
       <div 
-        className="bg-[#F9FFF3] w-[400px] h-[600px] p-8 flex flex-col justify-between"
+        className="bg-[#F9FFF3] w-full h-auto lg:w-[400px] lg:h-[600px] p-8 flex flex-col justify-between"
       >
-        {/* Row 1: Title - Use title prop */}
+        {/* Row 1: Title */}
         <h2 className={`${secFont.className} text-5xl text-neutral-800`}> 
           {title} 
         </h2>
         
         {/* Nested Group for Subtitle and Grid */}
-        <div className="flex flex-col gap-6"> {/* New grouping div with gap */} 
-          {/* Row 2: Subtitle - Use subtitle prop */}
+        <div className="flex flex-col gap-6">
+          {/* Row 2: Subtitle */}
           <p className={`${triFont.className} text-lg text-neutral-600`}>
             {subtitle}
           </p>
           
-          {/* Row 3: Pixel Grid - Removed self-center */}
+          {/* Row 3: Pixel Grid */}
           <div> 
              <PixelGrid
               id="card1-pixelgrid"
@@ -174,14 +174,14 @@ export function WorkCard({
               gap={CARD1_PIXEL_GAP}
             />
           </div>
-        </div> {/* End of nested group */} 
+        </div>
       </div>
 
-      {/* Card 2 */}
+      {/* Card 2: Apply responsive classes */}
       <div 
-        className="bg-[#F9FFF3] w-[400px] h-[600px] p-8 flex flex-col justify-start gap-6"
+        className="bg-[#F9FFF3] w-full h-auto lg:w-[400px] lg:h-[600px] p-8 flex flex-col justify-start gap-6"
       >
-        {/* Row 1: Image - Use Image component and card2ImageSrc */}
+        {/* Row 1: Image */}
         <div 
           className="w-full h-[250px] rounded-lg flex items-center justify-center text-neutral-500 relative overflow-hidden bg-[#E8EDE3]"
         >
@@ -193,7 +193,7 @@ export function WorkCard({
           />
         </div>
 
-        {/* Rows 2-4: Metrics - Map over card2Metrics */}
+        {/* Rows 2-4: Metrics */}
         {card2Metrics.map((metric, index) => (
           <div key={index} className="flex flex-row items-start gap-0">
             <div className="w-1/3 text-neutral-800 text-3xl font-semibold">{metric.value}</div>
@@ -202,12 +202,12 @@ export function WorkCard({
         ))}
       </div>
 
-      {/* Card 3 - New Structure */}
+      {/* Card 3: Apply responsive classes */}
       <div 
-        className="w-[400px] h-[600px] flex flex-col gap-6" 
+        className="w-full h-auto lg:w-[400px] lg:h-[600px] flex flex-col gap-6" 
       >
-        {/* Primary Row 1 (Height 460px) - Added Juniper background */}
-        <div className="h-[460px] p-8 flex flex-col justify-between bg-[#4F7834]"> 
+        {/* Primary Row 1: Apply responsive height */}
+        <div className="h-auto lg:h-[460px] p-8 flex flex-col justify-between bg-[#4F7834]">
           {/* Content for Row 1 (e.g., Title, Subtitle) */}
           <h1 className={`${priFont.className} text-4xl text-white`}> 
             {card3Title}
@@ -217,8 +217,8 @@ export function WorkCard({
            </p>
         </div>
 
-        {/* Primary Row 2 (Height 116px) - Re-added black background */}
-        <div className="h-[116px] p-8 flex flex-col justify-center bg-black"> 
+        {/* Primary Row 2: Apply responsive height */}
+        <div className="h-auto lg:h-[116px] p-8 flex flex-col justify-center bg-black">
           <Link href={card3LinkHref} passHref legacyBehavior>
             <a className={`${triFont.className} text-white text-3xl cursor-pointer hover:opacity-80 transition-opacity`}> 
               {card3LinkText} &gt;

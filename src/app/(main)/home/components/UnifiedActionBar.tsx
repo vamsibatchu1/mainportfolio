@@ -363,7 +363,7 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
         }}
       >
         <motion.div
-          className="relative z-[2] flex w-[720px] items-center justify-center gap-2 bg-white rounded-xl py-2"
+          className="relative z-[2] flex w-[720px] items-center justify-center gap-2 bg-white rounded-xl p-2"
           style={{ borderRadius: 16 }}
         >
           {menuItems.map((item, index) => (

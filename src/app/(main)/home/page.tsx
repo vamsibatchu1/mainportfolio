@@ -2,25 +2,19 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { secFont, priFont } from '@/lib/config/fonts';
-import { IBM_Plex_Mono, Work_Sans } from 'next/font/google';
+import { IBM_Plex_Mono } from 'next/font/google';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TextScramble } from '@/components/ui/text-scramble';
 import styles from './components/styles.module.css';
 import UnifiedActionBar from './components/UnifiedActionBar';
 import { GalleryHorizontalEnd } from 'lucide-react'; // Import GalleryHorizontalEnd icon
+import { triFont } from '@/app/fonts';
 
 // Initialize IBM Plex Mono font
 const ibmPlexMono = IBM_Plex_Mono({
   weight: ['400', '500'],
   subsets: ['latin'],
   display: 'swap',
-});
-
-// Initialize Work Sans font
-const workSans = Work_Sans({ 
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap'
 });
 
 // --- Define Brand Colors Locally ---
@@ -116,28 +110,6 @@ function ImageCard({ delay }: { delay: number }) {
         ease: "easeOut"
       }}
     />
-  );
-}
-
-// Add a new ImgCard component for cards with images
-function ImgCard({ delay, imageSrc }: { delay: number; imageSrc: string }) {
-  return (
-    <motion.div 
-      className="bg-[#1F1F1F] rounded-2xl w-full h-full relative overflow-hidden flex items-center justify-center"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{
-        delay,
-        duration: 0.4,
-        ease: "easeOut"
-      }}
-    >
-      <img 
-        src={imageSrc} 
-        alt="Carousel image" 
-        className="block w-auto h-auto max-w-full max-h-full object-contain"
-      />
-    </motion.div>
   );
 }
 
@@ -265,7 +237,8 @@ const PixelGrid: React.FC<PixelGridProps> = ({
         gap: '2px', // Updated gap to 2px
       }}
     >
-      {pixelColors.map((color, index) => (
+      {/* Slice the array to only map over the required number of pixels */}
+      {pixelColors.slice(0, gridSize * gridSize).map((color, index) => (
         <div
           key={index}
           style={{
@@ -518,16 +491,15 @@ export default function NewHomePage() {
   }, []);
 
   return (
-    <div className="w-full h-screen overflow-hidden flex items-center justify-center bg-white"
-    >
+    <div className="w-full min-h-screen overflow-hidden flex items-center justify-center bg-black lg:bg-white">
       {/* === DESKTOP LAYOUT === */}
-      <div className="hidden lg:flex items-center justify-center w-full h-full">
-        {/* Centered Content Container - Using flex layout (auto layout) */}
+      <div className="hidden lg:flex flex-col items-center justify-center w-full h-full">
+        {/* Centered Content Container */}
         <div className="flex flex-col items-start">
-          {/* Two Cards Container - Updated total width */}
-          <div className="flex flex-row w-[1120px]"> {/* Updated width: 400px + 720px = 1120px */}
+          {/* Two Cards Container - Responsive width */}
+          <div className="flex flex-row w-full lg:w-[1120px]">
             
-            {/* Left Card Container - Updated width */}
+            {/* Left Card Container */}
             <AnimatePresence>
               {firstCardVisible && (
           <motion.div
@@ -538,7 +510,7 @@ export default function NewHomePage() {
                 >
                   {/* Left Card Content - Simplified Structure */}
                   <motion.div 
-                    className="bg-black w-full h-full p-12 pr-0 flex flex-col justify-between" // Added justify-between
+                    className="bg-black w-full h-full p-12 pr-0 flex flex-col justify-between" 
                     initial={{ y: 50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -579,7 +551,7 @@ export default function NewHomePage() {
                         {contentVisible && (
                           <motion.div 
                             id="subtitle" 
-                            className={`${secFont.className} text-[#A9A9A9] text-[26px] font-normal leading-[32px] tracking-[-1.1px]`}
+                            className={`${secFont.className} text-[#A9A9A9] text-[30px] font-light leading-[40px] tracking-[-1.1px]`}
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -609,7 +581,7 @@ export default function NewHomePage() {
                         {carouselTextAndImagesVisible && (
                           <div 
                             id="carousel-text" 
-                            className={`${secFont.className} text-white text-[21.7px] font-normal leading-[26.1px] tracking-[-0.65px]`}>
+                            className={`${triFont.className} text-white text-[18px] font-light leading-[26.1px] tracking-[-0.65px]`}>
                             {carouselContent[currentPair].text} 
                           </div>
                         )}
@@ -662,11 +634,11 @@ export default function NewHomePage() {
             </AnimatePresence>
           </div>
           
-          {/* Navigation Hint Container - Below cards */}
+          {/* Navigation Hint Container - Responsive width and margin */}
           <motion.div 
-            className={`${styles.navigationHint} ${ibmPlexMono.className} text-black w-[1120px] justify-end`}
+            className={`${styles.navigationHint} ${ibmPlexMono.className} text-black w-full lg:w-[1120px] justify-end`}
             style={{ 
-              marginTop: '16px'
+              marginTop: '8px' // Changed from 16px for mobile, applies lg:mt-4 effectively? No, need explicit lg
             }}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -685,200 +657,103 @@ export default function NewHomePage() {
       </div>
       
       {/* === MOBILE & TABLET LAYOUT === */}
-      <div className="lg:hidden flex flex-col items-center justify-center w-full h-full px-6">
-        {/* Mobile Card Container - Combined content */}
+      <div className="lg:hidden flex flex-col items-center justify-center w-full h-auto py-10 px-4">
+        {/* Mobile Card Container - Combined content, adjusted padding */}
         <AnimatePresence>
           {firstCardVisible && (
-          <motion.div
-              className="relative w-full max-w-md mx-auto bg-black p-8 rounded-[20px]" // Updated background to black
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-              transition={{ duration: 1, ease: "easeOut" }}
+          <div
+              className="relative w-full max-w-md mx-auto bg-black p-2 flex flex-col gap-8 min-h-[800px]" 
             >
-              {/* Name - Smaller for mobile */}
+              {/* Section 1: Title (From Desktop Left Card) - Keeps its animation */}
               <AnimatePresence>
                 {nameVisible && (
-                  <div className={`${priFont.className} text-white text-[120px] font-bold leading-[120px] tracking-[-2%] mb-12`}>
+                    <motion.div // Keep motion here
+                      className={`${priFont.className} text-white text-[60px] font-bold leading-[60px] tracking-[-1.5px]`}
+                      initial={{ opacity: 0 }} // Keep internal animations
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.5 }} // Example internal transition
+                    >
                     <TextScramble
                       duration={1.0}
                       speed={0.04}
-                      characterSet="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                      characterSet="abcdefghijklmnopqrstuvwxyz"
                       className="block"
                       trigger={scrambleFirst}
                     >
-                      {mobileNameVamsi}
+                      {nameVamsi} 
                     </TextScramble>
                     <TextScramble
                       duration={1.0}
                       speed={0.04}
-                      characterSet="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                      characterSet="abcdefghijklmnopqrstuvwxyz"
                       className="block"
                       trigger={scrambleSecond}
                     >
                       {nameBatchu}
                     </TextScramble>
-                  </div>
+                  </motion.div>
                 )}
               </AnimatePresence>
               
-              {/* Bio Text - Condensed for mobile */}
+              {/* Section 2: Subtitle (From Desktop Left Card) */}
               <AnimatePresence>
                 {contentVisible && (
-                  <>
                     <motion.div 
-                      className={`${secFont.className} text-white text-[22px] font-normal leading-[28px] tracking-[-0.8px] mb-10`}
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
+                      className={`${secFont.className} text-[#A9A9A9] text-[26px] font-normal leading-[32px] tracking-[-0.8px]`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
                       transition={{ duration: 0.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
                     >
                       Hands on product design leader with 11+ years of experience in designing & leading teams developing highly impactful products at scale.
                     </motion.div>
-                    
-                    {/* Bottom Subtitle */}
-                    <motion.div 
-                      className={`${workSans.className} text-[#9FC486] text-[16px] font-normal leading-[22px] tracking-[0px] mb-6`}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
-                    >
-                      Currently leading the enterprise AI design teams at Rocket
-                    </motion.div>
-                  </>
                 )}
               </AnimatePresence>
               
-              {/* Mobile second card content - sequential animation */}
-              <AnimatePresence>
-                {secondCardVisible && (
-                  <>
-                    {/* Profile Image Placeholder - with equal spacing */}
-                    <AnimatePresence mode="wait">
-                      {rightCardGridVisible && (
-                        <motion.div 
-                          key={currentPair}
-                          className="w-full h-[500px] overflow-hidden"
-                          initial={{ opacity: 0, y: 15 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                        >
-                          {/* Create simplified versions of the grid layouts for mobile */}
-                          {currentPair === 0 && (
-                            <div className="relative h-full w-full">
-                              {/* Updated mobile layout to match desktop */}
-                              <div className="absolute left-0 top-0 w-full h-[65%]">
-                                <ImgCard delay={0.2} imageSrc="/productshots/carousel-A1.svg" />
-                              </div>
-                              <div className="absolute left-0 bottom-0 w-[48%] h-[30%]">
-                                <ImgCard delay={0.4} imageSrc="/productshots/carousel-A2.svg" />
-                              </div>
-                              <div className="absolute right-0 bottom-0 w-[48%] h-[30%]">
-                                <ImgCard delay={0.6} imageSrc="/productshots/carousel-A3.svg" />
-                              </div>
-                            </div>
-                          )}
-                          {currentPair === 1 && (
-                            <div className="relative h-full w-full">
-                              <div className="absolute left-0 top-0 w-[48%] h-full">
-                                <ImageCard delay={0.2} />
-                              </div>
-                              <div className="absolute right-0 top-0 w-[48%] h-full">
-                                <ImageCard delay={0.4} />
-                              </div>
-                            </div>
-                          )}
-                          {currentPair === 2 && (
-                            <div className="relative h-full w-full">
-                              <div className="absolute left-0 top-0 w-[48%] h-[48%]">
-                                <ImageCard delay={0.2} />
-                              </div>
-                              <div className="absolute right-0 top-0 w-[48%] h-[48%]">
-                                <ImageCard delay={0.3} />
-                              </div>
-                              <div className="absolute left-0 bottom-0 w-[48%] h-[48%]">
-                                <ImageCard delay={0.4} />
-                              </div>
-                              <div className="absolute right-0 bottom-0 w-[48%] h-[48%]">
-                                <ImageCard delay={0.5} />
-                              </div>
-                            </div>
-                          )}
-                          {currentPair === 3 && (
-                            <div className="relative h-full w-full">
-                              <div className="absolute left-0 top-0 w-full h-full">
-                                <ImageCard delay={0.2} />
-                              </div>
-                            </div>
-                          )}
-                          {currentPair === 4 && (
-                            <div className="relative h-full w-full">
-                              <div className="absolute left-0 top-0 w-[61%] h-[48%]">
-                                <ImageCard delay={0.2} />
-                              </div>
-                              <div className="absolute right-0 top-0 w-[35%] h-[48%]">
-                                <ImageCard delay={0.3} />
-                              </div>
-                              <div className="absolute left-0 bottom-0 w-[35%] h-[48%]">
-                                <ImageCard delay={0.4} />
-                              </div>
-                              <div className="absolute right-0 bottom-0 w-[61%] h-[48%]">
-                                <ImageCard delay={0.5} />
-                              </div>
-                            </div>
-                          )}
-                          {currentPair === 5 && (
-                            <div className="relative h-full w-full">
-                              <div className="absolute left-0 top-0 w-[61%] h-[48%]">
-                                <ImageCard delay={0.1} />
-                              </div>
-                              <div className="absolute right-0 top-0 w-[35%] h-[22%]">
-                                <ImageCard delay={0.2} />
-                              </div>
-                              <div className="absolute right-0 top-[26%] w-[35%] h-[22%]">
-                                <ImageCard delay={0.3} />
-                              </div>
-                              <div className="absolute left-0 bottom-0 w-[29%] h-[48%]">
-                                <ImageCard delay={0.4} />
-                              </div>
-                              <div className="absolute left-[33%] bottom-0 w-[67%] h-[48%]">
-                                <ImageCard delay={0.5} />
-                              </div>
-                            </div>
-                          )}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </>
-                )}
-              </AnimatePresence>
-              
-              {/* Right Side Content with rotating Icon/Text pairs for mobile - consistent padding */}
-              <AnimatePresence>
-                {carouselElementsVisible && (
-                  <div className="flex items-center h-[60px]">
-                    <AnimatePresence mode="wait">
-                      <motion.div 
-                        key={currentPair}
-                        className="flex items-center gap-4"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 20 }}
-                        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                      >
-                        <img 
-                          src={carouselContent[currentPair].imageUrl} 
-                          alt="Shape icon" 
-                          className="w-8 h-8 object-contain" 
-                        />
-                        <div className={`${priFont.className} text-white text-[18px] font-normal leading-[24px] tracking-[-0.5px]`}>
-                          {carouselContent[currentPair].text}
-                        </div>
-                      </motion.div>
-                    </AnimatePresence>
+              {/* Section 3: Pixel Grid & Carousel Text (From Desktop Left Card) */}
+              {carouselElementsVisible && (
+                <div className="flex flex-row items-start gap-8">
+                  {/* Pixel Grid (Mobile) - Adjust min-height */}
+                  <div className="min-h-[58px]"> {/* Changed from min-h-[78px] for 6x6 grid */}
+                     <PixelGrid
+                      id="carousel-pixelgrid-mobile"
+                      pixelColors={displayedGridColors} 
+                      gridSize={6} // Changed from CAROUSEL_GRID_SIZE to 6
+                      pixelSize={CAROUSEL_PIXEL_SIZE} // Keep pixel size 8px
+                    />
                   </div>
-                )}
-              </AnimatePresence>
-          </motion.div>
+                  {/* Carousel Text (Mobile) */}
+                  <div className="flex-1 min-h-[52px]">
+                    {carouselTextAndImagesVisible && (
+                      <div 
+                        className={`${triFont.className} text-white text-[14px] font-normal leading-[20px] tracking-[-0.8px]`}> {/* Adjusted text size */} 
+                        {carouselContent[currentPair].text} 
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+              
+              {/* Section 4: Image Grid (From Desktop Right Card - Simplified Container) */}
+              {secondCardVisible && rightCardGridVisible && (
+                 <AnimatePresence mode="wait">
+                    <motion.div 
+                      key={currentPair} // Key for transition
+                      className="w-full h-[300px] overflow-hidden relative" // Adjusted height for mobile
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      {/* Render the same dynamic grid layout component as desktop */} 
+                      {React.createElement(gridLayouts[currentPair], { delay: 0 })}
+                    </motion.div>
+                </AnimatePresence>
+              )}
+
+              {/* REMOVED old mobile-specific bottom subtitle */}
+              {/* REMOVED old mobile-specific icon/text carousel */}
+              
+          </div>
         )}
       </AnimatePresence>
       </div>

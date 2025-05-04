@@ -13,7 +13,7 @@ export default function HomeNewLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`${secFont.variable} min-h-screen overflow-hidden`}>
+    <div className={`${secFont.variable} min-h-screen overflow-hidden px-4 lg:px-12 bg-black lg:bg-white`}>
       {children}
     </div>
   );

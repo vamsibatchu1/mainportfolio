@@ -11,7 +11,7 @@ export default function WorkLayout({
   const pathname = usePathname();
   
   return (
-    <div className="min-h-[100svh] px-12 flex flex-col items-center bg-[#C7DCD5]">
+    <div className="min-h-[100svh] px-4 lg:px-12 flex flex-col items-center bg-[#C7DCD5] overflow-hidden">
       <AnimatePresence mode="wait">
         <motion.div
           key={pathname}

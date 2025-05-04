@@ -106,17 +106,17 @@ export default function WorkPage() {
   const currentCaseStudy = caseStudiesData[currentCaseStudyIndex];
 
   return (
-    <main className={`min-h-screen ${workSans.className} flex flex-col items-center justify-center bg-[#C7DCD5]`}>
-      {/* New Header Row */}
+    <main className={`h-screen overflow-hidden ${workSans.className} flex flex-col items-center justify-center bg-[#C7DCD5]`}>
+      {/* New Header Row - Responsive width, margin */}
       <div 
-        className="flex items-center justify-between w-[1248px] mb-8 rounded"
+        className="flex items-center justify-between w-full lg:w-[1248px] mb-4 lg:mb-8 rounded"
       >
-        {/* Left Column: Text */}
-        <p className={`${priFont.className} text-black text-2xl`}>
+        {/* Left Column: Text - Responsive size */}
+        <p className={`${priFont.className} text-black text-2xl lg:text-2xl`}>
           A list of work case studies diving into the details
         </p>
         {/* Right Column: Arrows */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4 lg:gap-2">
           <div 
             className="p-2 bg-[#F9FFF3] rounded cursor-pointer hover:bg-opacity-80 transition-opacity"
             onClick={handlePrevious}
