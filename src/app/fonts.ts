@@ -1,5 +1,5 @@
 import localFont from 'next/font/local';
-import {Poppins } from 'next/font/google';
+import {Poppins, IBM_Plex_Mono } from 'next/font/google';
 
 // Primary Font: W95FA (Windows 95 Font)
 export const priFont = localFont({
@@ -20,5 +20,13 @@ export const triFont = Poppins({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-tri',
+  display: 'swap',
+});
+
+// Fourth Font: IBM Plex Mono from Google
+export const fourFont = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-four',
   display: 'swap',
 });

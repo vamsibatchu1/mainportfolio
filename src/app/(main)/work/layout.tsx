@@ -15,7 +15,7 @@ export default function WorkLayout({
   const isMainPage = pathname === '/work';
 
   return (
-    <div className="min-h-[100svh] px-12 pt-4 flex flex-col items-center gap-4 bg-[#F5F4F0]">
+    <div className="min-h-[100svh] px-12 pt-4 flex flex-col items-center gap-4 bg-[#C7DCD5]">
       <AnimatePresence mode="wait">
         <motion.div
           key={pathname}

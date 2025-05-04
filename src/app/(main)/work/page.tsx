@@ -19,7 +19,7 @@ const exampleWork = {
 
 export default function WorkPage() {
   return (
-    <main className={`min-h-screen bg-gray-100 dark:bg-gray-900 p-8 ${workSans.className}`}>
+    <main className={`min-h-screen bg-[#C7DCD5] p-8 ${workSans.className}`}>
       {/* Centering the single card */}
       <div className="flex justify-center items-start pt-16">
         <Suspense fallback={<div className="text-center text-lg">Loading Card...</div>}>
