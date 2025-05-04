@@ -98,16 +98,24 @@ const PixelGrid: React.FC<PixelGridProps> = ({
 // --- WorkCard Component --- 
 interface WorkCardProps {
   className?: string;
+  title: string;
+  subtitle: string;
+  gridColor: string;
 }
 
-export function WorkCard({ className = '' }: WorkCardProps) {
+export function WorkCard({ 
+  className = '',
+  title,
+  subtitle,
+  gridColor 
+}: WorkCardProps) {
 
   // Removed old state, refs, effects, and handlers
 
-  // State for Card 1's pixel grid colors - uses reverted TOTAL_PIXELS
+  // State for Card 1's pixel grid colors - uses gridColor prop
   const [card1GridColors] = useState<string[]>(() => 
     generateBaseGridWithWhiteAccents(
-      brandColors.juniper, 
+      gridColor,
       CARD1_TOTAL_PIXELS, 
       CARD1_WHITE_PIXEL_COUNT, 
       brandColors.white
@@ -123,16 +131,16 @@ export function WorkCard({ className = '' }: WorkCardProps) {
       <div 
         className="bg-[#F9FFF3] w-[400px] h-[600px] p-8 flex flex-col justify-between"
       >
-        {/* Row 1: Title */}
+        {/* Row 1: Title - Use title prop */}
         <h2 className={`${secFont.className} text-5xl text-neutral-800`}> 
-          Redesigning a billpay system for 2.3 million users
+          {title} 
         </h2>
         
         {/* Nested Group for Subtitle and Grid */}
         <div className="flex flex-col gap-6"> {/* New grouping div with gap */} 
-          {/* Row 2: Subtitle */}
+          {/* Row 2: Subtitle - Use subtitle prop */}
           <p className={`${triFont.className} text-lg text-neutral-600`}>
-            With more types of work happening on Slack, teams becoming larger, and new features like Canvas expanding what Slack can do, our UI was becoming congested.
+            {subtitle}
           </p>
           
           {/* Row 3: Pixel Grid - Removed self-center */}
