@@ -29,7 +29,7 @@ export default function WorkLayout({
         </motion.div>
       </AnimatePresence>
       {isMainPage && (
-        <div className="relative w-full h-[200px] mt-8">
+        <div className="relative w-full">
           <UnifiedActionBar alwaysVisible={true} />
         </div>
       )}

@@ -38,11 +38,11 @@ const brandColors = {
 const carouselContent = [
   {
     imageUrl: "/images/homepage-shape1.svg",
-    text: "Crafting large scale enterprise products for 1000+ users"
+    text: "Crafting large scale enterprise products and highly scalable systems"
   },
   {
     imageUrl: "/images/homepage-shape2.svg",
-    text: "Developing 0-1 product vision & MVPs of new products"
+    text: "Developing 0-1 product vision & MVPs of new product verticals"
   },
   {
     imageUrl: "/images/homepage-shape3.svg",
@@ -50,23 +50,23 @@ const carouselContent = [
   },
   {
     imageUrl: "/images/homepage-shape4.svg",
-    text: "Defining product vision and strategy for large scale products"
+    text: "Defining product vision and strategy for company wide initiatives"
   },
   {
     imageUrl: "/images/homepage-shape5.svg",
-    text: "Setting high bar for for product design craft for 1000+ users"
+    text: "Setting high bar for for product design craft and user experience"
   },
   {
     imageUrl: "/images/homepage-shape6.svg",
-    text: "Leading major redesign overhaul of product interfaces"
+    text: "Leading major redesign efforts of strugglingp roduct experiences"
   }
 ];
 
-// --- Carousel Pixel Grid Config ---
-const CAROUSEL_GRID_SIZE = 10;
+// --- Carousel Pixel Grid Config --- Adjusted for 8x8
+const CAROUSEL_GRID_SIZE = 8; // Changed from 10 to 8
 const CAROUSEL_PIXEL_SIZE = 8;
-const CAROUSEL_TOTAL_PIXELS = CAROUSEL_GRID_SIZE * CAROUSEL_GRID_SIZE; // 100
-const WHITE_PIXEL_COUNT = 20; // Number of white pixels per grid
+const CAROUSEL_TOTAL_PIXELS = CAROUSEL_GRID_SIZE * CAROUSEL_GRID_SIZE; // Now 64
+const WHITE_PIXEL_COUNT = 13; // Adjusted from 20 (approx 20% of 64)
 
 // Accent colors for the base grid
 const accentColors = [
@@ -538,77 +538,83 @@ export default function NewHomePage() {
                 >
                   {/* Left Card Content - Simplified Structure */}
                   <motion.div 
-                    className="bg-black w-full h-full p-12 flex flex-col justify-between" // Added justify-between
+                    className="bg-black w-full h-full p-12 pr-0 flex flex-col justify-between" // Added justify-between
                     initial={{ y: 50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    {/* Row 1: Title */}
-                    <AnimatePresence>
-                      {nameVisible && (
-                        <div 
-                          id="title" 
-                          className={`${priFont.className} text-white text-[80px] font-bold leading-[80px] tracking-[-2%]`}
-                        >
-                          <TextScramble
-                            duration={1.0}
-                            speed={0.04}
-                            characterSet="abcdefghijklmnopqrstuvwxyz"
-                            className="block"
-                            trigger={scrambleFirst}
+                    {/* New Flex Container for Row 1 and Row 2 */}
+                    <div className="flex flex-col gap-6"> 
+                      {/* Row 1: Title */}
+                      <AnimatePresence>
+                        {nameVisible && (
+                          <div 
+                            id="title" 
+                            className={`${priFont.className} text-white text-[80px] font-bold leading-[80px] tracking-[-2%]`}
                           >
-                            {nameVamsi}
-                          </TextScramble>
-                          <TextScramble
-                            duration={1.0}
-                            speed={0.04}
-                            characterSet="abcdefghijklmnopqrstuvwxyz"
-                            className="block"
-                            trigger={scrambleSecond}
-                          >
-                            {nameBatchu}
-                          </TextScramble>
-                        </div>
-                      )}
-                    </AnimatePresence>
-
-                    {/* Row 2: Subtitle */} 
-                    <AnimatePresence>
-                      {contentVisible && (
-                        <motion.div 
-                          id="subtitle" 
-                          className={`${secFont.className} text-[#A9A9A9] text-[26px] font-normal leading-[32px] tracking-[-1.1px]`}
-                          initial={{ opacity: 0, y: 30 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                        >
-                          Hands on product design leader with 11+ years of experience in designing & leading teams developing highly impactful products at scale.
-                        </motion.div>
-                      )}
-                     </AnimatePresence>
-
-                    {/* Row 3: Carousel Pixel Grid */}
-                    <div className="min-h-[98px]"> {/* Added min-height for grid */} 
-                        {carouselElementsVisible && ( 
-                           <PixelGrid
-                            id="carousel-pixelgrid"
-                            pixelColors={displayedGridColors} 
-                            gridSize={CAROUSEL_GRID_SIZE}
-                            pixelSize={CAROUSEL_PIXEL_SIZE}
-                          />
+                            <TextScramble
+                              duration={1.0}
+                              speed={0.04}
+                              characterSet="abcdefghijklmnopqrstuvwxyz"
+                              className="block"
+                              trigger={scrambleFirst}
+                            >
+                              {nameVamsi}
+                            </TextScramble>
+                            <TextScramble
+                              duration={1.0}
+                              speed={0.04}
+                              characterSet="abcdefghijklmnopqrstuvwxyz"
+                              className="block"
+                              trigger={scrambleSecond}
+                            >
+                              {nameBatchu}
+                            </TextScramble>
+                          </div>
                         )}
-                    </div>
+                      </AnimatePresence>
 
-                    {/* Row 4: Carousel Text */} 
-                    <div className="min-h-[52px]"> {/* Added min-height for text */} 
-                      {carouselTextAndImagesVisible && (
-                        <div 
-                          id="carousel-text" 
-                          className={`${secFont.className} text-white text-[21.7px] font-normal leading-[26.1px] tracking-[-0.65px]`}>
-                          {carouselContent[currentPair].text} 
-                        </div>
-                      )}
-                    </div>
+                      {/* Row 2: Subtitle */}
+                      <AnimatePresence>
+                        {contentVisible && (
+                          <motion.div 
+                            id="subtitle" 
+                            className={`${secFont.className} text-[#A9A9A9] text-[26px] font-normal leading-[32px] tracking-[-1.1px]`}
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                          >
+                            Hands on product design leader with 11+ years of experience in designing & leading teams developing highly impactful products at scale.
+                          </motion.div>
+                        )}
+                       </AnimatePresence>
+                    </div> {/* End of new flex container for Row 1 & 2 */}
+
+                    {/* Flex Container for Row 3 and Row 4 */}
+                    <div className="flex flex-row items-end justify-between">
+                      {/* Row 3: Carousel Pixel Grid */}
+                      <div className="min-h-[78px]">
+                          {carouselElementsVisible && ( 
+                             <PixelGrid
+                              id="carousel-pixelgrid"
+                              pixelColors={displayedGridColors} 
+                              gridSize={CAROUSEL_GRID_SIZE}
+                              pixelSize={CAROUSEL_PIXEL_SIZE}
+                            />
+                          )}
+                      </div>
+
+                      {/* Row 4: Carousel Text */}
+                      <div className="min-h-[52px] w-[240px]"> {/* Removed flex-1, added w-[240px] */} 
+                        {carouselTextAndImagesVisible && (
+                          <div 
+                            id="carousel-text" 
+                            className={`${secFont.className} text-white text-[21.7px] font-normal leading-[26.1px] tracking-[-0.65px]`}>
+                            {carouselContent[currentPair].text} 
+                          </div>
+                        )}
+                      </div>
+                    </div> { /* End of new flex container */ }
                     
                   </motion.div>
             </motion.div>

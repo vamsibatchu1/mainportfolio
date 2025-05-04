@@ -9,6 +9,7 @@ import dynamic from 'next/dynamic';
 import { MENU_CONTENT_MAP } from './actionbar-content';
 import type { LottieRefCurrentProps } from "lottie-react";
 import styles from './styles.module.css';
+import { fourFont } from '@/app/fonts';
 
 // Dynamically import Lottie with SSR disabled
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
@@ -397,7 +398,7 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
               >
                 {item.icon(lottieRefs[index], animations[index])}
               </motion.div>
-              <span className="font-medium text-[#2D1D2C]">{item.label}</span>
+              <span className={`font-[8px] text-[#2D1D2C] ${fourFont.className}`}>{item.label}</span>
             </motion.button>
           ))}
         </motion.div>
