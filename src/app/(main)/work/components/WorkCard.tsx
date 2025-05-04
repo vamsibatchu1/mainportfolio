@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { secFont, triFont, priFont } from '@/lib/config/fonts';
+import Link from 'next/link';
+import Image from 'next/image';
 
 // Removed unused imports: useEffect, useRef, priFont, fourFont
 
@@ -95,19 +97,37 @@ const PixelGrid: React.FC<PixelGridProps> = ({
   );
 };
 
-// --- WorkCard Component --- 
+// --- WorkCard Component ---
 interface WorkCardProps {
   className?: string;
+  // Card 1
   title: string;
   subtitle: string;
   gridColor: string;
+  // Card 2
+  card2ImageSrc: string;
+  card2Metrics: { value: string; description: string }[];
+  // Card 3
+  card3Title: string;
+  card3Subtitle: string;
+  card3LinkText: string;
+  card3LinkHref: string;
 }
 
 export function WorkCard({ 
   className = '',
+  // Card 1 props
   title,
   subtitle,
-  gridColor 
+  gridColor, 
+  // Card 2 props
+  card2ImageSrc,
+  card2Metrics,
+  // Card 3 props
+  card3Title,
+  card3Subtitle,
+  card3LinkText,
+  card3LinkHref
 }: WorkCardProps) {
 
   // Removed old state, refs, effects, and handlers
@@ -161,30 +181,25 @@ export function WorkCard({
       <div 
         className="bg-[#F9FFF3] w-[400px] h-[600px] p-8 flex flex-col justify-start gap-6"
       >
-        {/* Row 1: Image Placeholder - Updated background color */}
+        {/* Row 1: Image - Use Image component and card2ImageSrc */}
         <div 
-          className="w-full h-[250px] rounded-lg flex items-center justify-center text-neutral-500"
-          style={{ backgroundColor: '#E8EDE3' }} // Use inline style for custom color
+          className="w-full h-[250px] rounded-lg flex items-center justify-center text-neutral-500 relative overflow-hidden bg-[#E8EDE3]"
         >
+          <Image 
+            src={card2ImageSrc}
+            alt={title || 'Case study image'}
+            fill
+            style={{ objectFit: 'cover' }}
+          />
         </div>
 
-        {/* Row 2: Flex Row with 2 Columns */}
-        <div className="flex flex-row items-top gap-0">
-          <div className="w-1/3 text-neutral-800 text-3xl font-semibold">22%</div>
-          <div className="w-2/3 text-neutral-600 text-sm">The increase in user satisfaction after the new billpay system was launched.</div>
-        </div>
-
-        {/* Row 3: Flex Row with 2 Columns */}
-        <div className="flex flex-row items-top gap-0">
-          <div className="w-1/3 text-neutral-800 text-3xl font-semibold">10x</div>
-          <div className="w-2/3 text-neutral-600 text-sm">The increase in user satisfaction after the new billpay system was launched.</div>
-        </div>
-
-        {/* Row 4: Flex Row with 2 Columns */}
-        <div className="flex flex-row items-top gap-0">
-          <div className="w-1/3 text-neutral-800 text-3xl font-semibold">4.8</div>
-          <div className="w-2/3 text-neutral-600 text-sm">The rating of the new billpay system app in the App Store.</div>
-        </div>
+        {/* Rows 2-4: Metrics - Map over card2Metrics */}
+        {card2Metrics.map((metric, index) => (
+          <div key={index} className="flex flex-row items-start gap-0">
+            <div className="w-1/3 text-neutral-800 text-3xl font-semibold">{metric.value}</div>
+            <div className="w-2/3 text-neutral-600 text-sm">{metric.description}</div>
+          </div>
+        ))}
       </div>
 
       {/* Card 3 - New Structure */}
@@ -194,18 +209,21 @@ export function WorkCard({
         {/* Primary Row 1 (Height 460px) - Added Juniper background */}
         <div className="h-[460px] p-8 flex flex-col justify-between bg-[#4F7834]"> 
           {/* Content for Row 1 (e.g., Title, Subtitle) */}
-          <h1 className={`${priFont.className} text-4xl text-white`}> {/* Changed text back to white */} 
-The new billpay system is blazingly fast and secure making payments effortless.          </h1>
-           <p className={`${triFont.className} text-lg text-white opacity-80`}> {/* Changed text back to light */} 
-86% of the users have reported a better experience.           </p>
+          <h1 className={`${priFont.className} text-4xl text-white`}> 
+            {card3Title}
+          </h1>
+           <p className={`${triFont.className} text-lg text-white opacity-80`}> 
+            {card3Subtitle}
+           </p>
         </div>
 
         {/* Primary Row 2 (Height 116px) - Re-added black background */}
         <div className="h-[116px] p-8 flex flex-col justify-center bg-black"> 
-          {/* Replaced button with styled paragraph */}
-          <p className={`${triFont.className} text-white text-3xl cursor-pointer hover:opacity-80 transition-opacity`}> 
-            Go to Casestudy &gt;
-          </p>
+          <Link href={card3LinkHref} passHref legacyBehavior>
+            <a className={`${triFont.className} text-white text-3xl cursor-pointer hover:opacity-80 transition-opacity`}> 
+              {card3LinkText} &gt;
+            </a>
+          </Link>
         </div>
       </div>
 

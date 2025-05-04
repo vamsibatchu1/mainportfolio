@@ -2,7 +2,6 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-import UnifiedActionBar from '../home/components/UnifiedActionBar';
 
 export default function WorkLayout({
   children,
@@ -11,11 +10,8 @@ export default function WorkLayout({
 }) {
   const pathname = usePathname();
   
-  // Use exact path matching
-  const isMainPage = pathname === '/work';
-
   return (
-    <div className="min-h-[100svh] px-12 pt-4 flex flex-col items-center gap-4 bg-[#C7DCD5]">
+    <div className="min-h-[100svh] px-12 flex flex-col items-center bg-[#C7DCD5]">
       <AnimatePresence mode="wait">
         <motion.div
           key={pathname}
@@ -28,11 +24,6 @@ export default function WorkLayout({
           {children}
         </motion.div>
       </AnimatePresence>
-      {isMainPage && (
-        <div className="relative w-full">
-          <UnifiedActionBar alwaysVisible={true} />
-        </div>
-      )}
     </div>
   );
 } 
