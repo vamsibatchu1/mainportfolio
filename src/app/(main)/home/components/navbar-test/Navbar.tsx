@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useOnClickOutside } from 'usehooks-ts';
 import styles from '../styles.module.css';
 import { useRouter } from 'next/navigation';
+import { fourFont } from '@/app/fonts';
 
 // Import the new content components
 import NavHomeContent from './NavHomeContent';
@@ -249,12 +250,14 @@ export default function Navbar() {
                     <PixelGrid
                       baseColor={item.baseColor}
                       whitePixelCount={item.whitePixelCount}
-                      gridSize={4}
-                      pixelSize={8}
+                      gridSize={5}
+                      pixelSize={6}
                       gap="2px"
                       isHovered={hoveredIndex === index} 
                     />
-                    <span className="text-lg font-medium">
+                    <span className={`text-lg font-medium transition-colors duration-200 ${fourFont.className} ${ 
+                      hoveredIndex === index ? 'text-white' : 'text-[#808080]' 
+                    }`}> 
                       {item.label}
                     </span>
                   </div>
