@@ -6,9 +6,9 @@ import { IBM_Plex_Mono } from 'next/font/google';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TextScramble } from '@/components/ui/text-scramble';
 import styles from './components/styles.module.css';
-import UnifiedActionBar from './components/UnifiedActionBar';
 import { GalleryHorizontalEnd } from 'lucide-react'; // Import GalleryHorizontalEnd icon
 import { triFont } from '@/app/fonts';
+import Navbar from './components/navbar-test/Navbar';
 
 // Initialize IBM Plex Mono font
 const ibmPlexMono = IBM_Plex_Mono({
@@ -159,13 +159,9 @@ const GridLayout4 = ({ delay = 0 }: { delay?: number }) => (
 );
 
 const GridLayout5 = ({ delay = 0 }: { delay?: number }) => (
-  // Refactored using CSS Grid with specific column/row templates
+  // Changed from inline style to flexible Tailwind grid
   <div 
     className="grid grid-cols-2 grid-rows-2 gap-6 h-full w-full"
-    style={{
-      gridTemplateColumns: '388px 212px', // Define unequal column widths
-      gridTemplateRows: '254px 254px'     // Define equal row heights
-    }}
   >
     {/* Top Left */}
     <ImageCard delay={delay + 0.2} /> 
@@ -179,14 +175,14 @@ const GridLayout5 = ({ delay = 0 }: { delay?: number }) => (
 );
 
 const GridLayout6 = ({ delay = 0 }: { delay?: number }) => (
-  // Refactored to 2 columns: 1 card left, 2 cards stacked right
-  <div className="flex flex-row gap-6 h-full w-full">
+  // Changed from fixed-width flex to flexible grid
+  <div className="grid grid-cols-2 gap-6 h-full w-full">
     {/* Column 1 (Single Card) */}
-    <div className="w-[300px] h-full">
+    <div className="h-full">
       <ImageCard delay={delay + 0.1} />
     </div>
-    {/* Column 2 (Stacked Cards) */}
-    <div className="w-[300px] h-full flex flex-col gap-6">
+    {/* Column 2 (Stacked Cards) - Removed fixed width */}
+    <div className="h-full flex flex-col gap-6">
       {/* Top card in Column 2 */}
       <div className="h-[254px]">
         <ImageCard delay={delay + 0.2} />
@@ -496,16 +492,16 @@ export default function NewHomePage() {
       <div className="hidden lg:flex flex-col items-center justify-center w-full h-full">
         {/* Centered Content Container */}
         <div className="flex flex-col items-start">
-          {/* Two Cards Container - Responsive width */}
-          <div className="flex flex-row w-full lg:w-[1120px]">
+          {/* Two Cards Container - Updated total width to 1248px */}
+          <div className="flex flex-row w-full lg:w-[1248px]">
             
-            {/* Left Card Container */}
+            {/* Left Card Container (Remains 400px) */}
             <AnimatePresence>
               {firstCardVisible && (
-          <motion.div
-                  className="w-[400px] h-[628px]" // Updated width
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+                <motion.div
+                  className="w-[400px] h-[628px]" 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   transition={{ duration: 1, ease: "easeOut" }}
                 >
                   {/* Left Card Content - Simplified Structure */}
@@ -589,19 +585,17 @@ export default function NewHomePage() {
                     </div> { /* End of new flex container */ }
                     
                   </motion.div>
-            </motion.div>
-        )}
+                </motion.div>
+              )}
             </AnimatePresence>
             
-         
-            
-            {/* Right Card Container - Updated width */}
+            {/* Right Card Container - Updated width to 848px */}
             <AnimatePresence>
               {secondCardVisible && (
-          <motion.div
-                  className="w-[720px] h-[628px]" // Updated width
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+                <motion.div
+                  className="w-[848px] h-[628px]" // Updated width
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   transition={{ duration: 1, ease: "easeOut" }}
                 >
                   {/* Right Card Content - Updated padding */}
@@ -634,9 +628,9 @@ export default function NewHomePage() {
             </AnimatePresence>
           </div>
           
-          {/* Navigation Hint Container - Responsive width and margin */}
+          {/* Navigation Hint Container - Updated width */}
           <motion.div 
-            className={`${styles.navigationHint} ${ibmPlexMono.className} text-black w-full lg:w-[1120px] justify-end`}
+            className={`${styles.navigationHint} ${ibmPlexMono.className} text-black w-full lg:w-[1248px] justify-end`}
             style={{ 
               marginTop: '8px' // Changed from 16px for mobile, applies lg:mt-4 effectively? No, need explicit lg
             }}
@@ -699,7 +693,7 @@ export default function NewHomePage() {
               <AnimatePresence>
                 {contentVisible && (
                     <motion.div 
-                      className={`${secFont.className} text-[#A9A9A9] text-[26px] font-normal leading-[32px] tracking-[-0.8px]`}
+                      className={`${secFont.className} text-[#A9A9A9] text-[26px] font-normal leading-[3px] tracking-[-0.8px]`}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
@@ -758,8 +752,8 @@ export default function NewHomePage() {
       </AnimatePresence>
       </div>
       
-      {/* Space-triggered Navigation Bar */}
-      <UnifiedActionBar />
+      {/* Replace UnifiedActionBar with Navbar */}
+      <Navbar />
     </div>
   );
 }

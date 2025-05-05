@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { secFont, triFont } from '@/lib/config/fonts';
-
+import Navbar from '../home/components/navbar-test/Navbar';
 
 export default function BlogPage() {
   const [loaded, setLoaded] = useState(false);
@@ -35,7 +35,7 @@ export default function BlogPage() {
   };
 
   return (
-    <div className="py-16">
+    <div className="py-16 relative min-h-screen">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: loaded ? 1 : 0, y: loaded ? 0 : -20 }}
@@ -119,6 +119,8 @@ export default function BlogPage() {
           )}
         </AnimatePresence>
       </div>
+
+      <Navbar />
     </div>
   );
 } 

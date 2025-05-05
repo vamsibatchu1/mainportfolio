@@ -5,8 +5,8 @@ import { Work_Sans } from 'next/font/google';
 import WorkCard from './components/WorkCard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { priFont } from '@/app/fonts';
-import UnifiedActionBar from '../home/components/UnifiedActionBar';
 import { motion, AnimatePresence } from 'framer-motion';
+import Navbar from '../home/components/navbar-test/Navbar';
 
 const workSans = Work_Sans({ 
   subsets: ['latin'],
@@ -158,8 +158,8 @@ export default function WorkPage() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Add the Unified Action Bar */}
-      <UnifiedActionBar />
+      {/* Replace UnifiedActionBar with Navbar */}
+      <Navbar />
     </main>
   );
 } 

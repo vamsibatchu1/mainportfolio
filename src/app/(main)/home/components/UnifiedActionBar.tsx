@@ -22,18 +22,6 @@ import experimentsAnimation from '@/animations/experiments.json';
 import aboutAnimation from '@/animations/about.json';
 import askAnimation from '@/animations/ask.json';
 
-// Global variable to track if an instance is already rendered
-const globalInstanceTracker = {
-  instances: new Set<string>(),
-  pathname: '',
-  activeInstance: null as string | null
-};
-
-// Generate a unique ID
-function generateUniqueId() {
-  return Math.random().toString(36).substring(2, 9);
-}
-
 type MenuItem = {
   icon: (lottieRef: React.RefObject<LottieRefCurrentProps>, animation: AnimationData | null) => React.ReactNode;
   label: string;
@@ -88,10 +76,6 @@ interface UnifiedActionBarProps {
 }
 
 export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActionBarProps) {
-  const instanceId = useRef(generateUniqueId());
-  // State to track if this instance should render
-  const [shouldRender, setShouldRender] = useState(false);
-  
   // For toggling visibility with spacebar (from CustomActionBar)
   const [isVisible, setIsVisible] = useState(alwaysVisible);
   
@@ -116,50 +100,6 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
 
   useOnClickOutside(ref, () => setShowInfo(false));
 
-  // Check for duplicate instances on mount
-  useEffect(() => {
-    // Get current pathname
-    const currentPath = window.location.pathname;
-    
-    // If this is a new page, reset the tracker
-    if (globalInstanceTracker.pathname !== currentPath) {
-      globalInstanceTracker.instances.clear();
-      globalInstanceTracker.activeInstance = null;
-      globalInstanceTracker.pathname = currentPath;
-    }
-    
-    // Register this instance
-    globalInstanceTracker.instances.add(instanceId.current);
-    
-    // Enhanced detection: Check if we already have a visible ActionBar in the DOM
-    // This helps in cases where multiple instances are mounted almost simultaneously
-    const existingActionBar = document.querySelector('.unified-action-bar-container');
-    
-    // If no active instance is set and no DOM element exists, make this one active
-    if (!globalInstanceTracker.activeInstance && !existingActionBar) {
-      globalInstanceTracker.activeInstance = instanceId.current;
-      setShouldRender(true);
-    } else if (globalInstanceTracker.activeInstance === instanceId.current) {
-      setShouldRender(true);
-    } else {
-      setShouldRender(false);
-      console.warn('Multiple UnifiedActionBar instances detected. Only rendering one.');
-    }
-    
-    // Cleanup on unmount
-    return () => {
-      globalInstanceTracker.instances.delete(instanceId.current);
-      // If this was the active instance, clear it so another can take over
-      if (globalInstanceTracker.activeInstance === instanceId.current) {
-        globalInstanceTracker.activeInstance = null;
-        // Pick another instance to be active if any exist
-        if (globalInstanceTracker.instances.size > 0) {
-          globalInstanceTracker.activeInstance = Array.from(globalInstanceTracker.instances)[0];
-        }
-      }
-    };
-  }, []);
-  
   // Function to handle keyboard events
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -363,7 +303,8 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
         }}
       >
         <motion.div
-          className="relative z-[2] flex w-[720px] items-center justify-center gap-2 bg-white rounded-xl p-2"
+          id="action-bar-button-container"
+          className="relative z-[2] flex w-[750px] items-center justify-center gap-2 bg-white rounded-xl py-2"
           style={{ borderRadius: 16 }}
         >
           {menuItems.map((item, index) => (
@@ -405,11 +346,12 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
 
         <div className="absolute left-1/2 -translate-x-1/2">
           <motion.div
+            id="action-bar-expanding-content-container"
             ref={menuRef}
             className="overflow-hidden bg-white backdrop-blur-xl border border-[#D7D3D0]"
             style={{ borderRadius: 16 }}
             animate={{
-              width: activeIndex !== null ? ['730px', '730px', '730px', '730px', '730px', '730px'][activeIndex] : '720px',
+              width: activeIndex !== null ? '750px' : '740px',
               height: activeIndex !== null 
                 ? ['280px', '309px', '330px', '300px', '300px', '400px'][activeIndex]
                 : '48px',
@@ -489,11 +431,6 @@ export default function UnifiedActionBar({ alwaysVisible = false }: UnifiedActio
       </AnimatePresence>
     </div>
   );
-
-  // Only render if shouldRender is true
-  if (!shouldRender) {
-    return null;
-  }
 
   return (
     <>

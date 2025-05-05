@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { priFont, triFont } from '@/lib/config/fonts';
+import Navbar from '../../home/components/navbar-test/Navbar';
 
 const cards = [
   { color: 'bg-[#7FB3D5]', title: 'Nike X\nCorteiz', textColor: 'text-[#FFE59D]', image: '/images/card1.png' },
@@ -14,7 +15,7 @@ const cards = [
 
 export default function AboutContent() {
   return (
-    <div className="w-full max-w-[1100px] mx-auto pt-52">
+    <div className="relative w-full max-w-[1100px] mx-auto pt-52">
       {/* Floating Cards */}
       <div className="relative h-[200px] overflow-visible">
         <div className="absolute w-[1400px] left-1/2 -translate-x-1/2 flex justify-center items-center">
@@ -183,6 +184,9 @@ export default function AboutContent() {
           </motion.div>
         </div>
       </div>
+
+      {/* Add the Navbar */}
+      <Navbar />
     </div>
   );
 } 
