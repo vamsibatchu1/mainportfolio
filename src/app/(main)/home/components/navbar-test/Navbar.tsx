@@ -18,7 +18,7 @@ import NavAskContent from './NavAskContent';
 // --- PixelGrid Component ---
 interface PixelGridProps {
   baseColor: string;
-  whitePixelCount: number;
+  blackPixelCount: number;
   gridSize: number;
   pixelSize: number;
   gap: string;
@@ -26,22 +26,23 @@ interface PixelGridProps {
   isHovered?: boolean;
 }
 
-// Helper function to generate one random grid state
-const generateRandomGridState = (gridSize: number, baseColor: string, whitePixelCount: number): string[] => {
+// Helper function to generate one random grid state with BLACK pixels
+const generateRandomGridState = (gridSize: number, baseColor: string, blackPixelCount: number): string[] => {
   const totalPixels = gridSize * gridSize;
   const grid = Array(totalPixels).fill(baseColor);
-  const whiteIndices = new Set<number>();
-  while (whiteIndices.size < whitePixelCount && whiteIndices.size < totalPixels) {
+  const blackIndices = new Set<number>();
+  while (blackIndices.size < blackPixelCount && blackIndices.size < totalPixels) {
     const randomIndex = Math.floor(Math.random() * totalPixels);
-    whiteIndices.add(randomIndex);
+    blackIndices.add(randomIndex);
   }
-  whiteIndices.forEach(index => { grid[index] = brandColors.white; });
+  // Set random indices to BLACK
+  blackIndices.forEach(index => { grid[index] = brandColors.black; }); 
   return grid;
 };
 
 const PixelGrid: React.FC<PixelGridProps> = ({
   baseColor,
-  whitePixelCount,
+  blackPixelCount,
   gridSize,
   pixelSize,
   gap,
@@ -49,7 +50,7 @@ const PixelGrid: React.FC<PixelGridProps> = ({
   isHovered = false
 }) => {
   const [displayedColors, setDisplayedColors] = useState<string[]>(() => 
-    generateRandomGridState(gridSize, baseColor, whitePixelCount)
+    generateRandomGridState(gridSize, baseColor, blackPixelCount)
   );
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -64,14 +65,14 @@ const PixelGrid: React.FC<PixelGridProps> = ({
       // Start interval when hovered
       intervalRef.current = setInterval(() => {
         setDisplayedColors(
-          generateRandomGridState(gridSize, baseColor, whitePixelCount)
+          generateRandomGridState(gridSize, baseColor, blackPixelCount)
         );
       }, 300); // Adjust interval speed (e.g., 300ms)
     } else {
       // Reset to initial state when not hovered
       // Generate a new random initial state to avoid static look on unhover
       setDisplayedColors(
-        generateRandomGridState(gridSize, baseColor, whitePixelCount)
+        generateRandomGridState(gridSize, baseColor, blackPixelCount)
       ); 
     }
 
@@ -81,7 +82,7 @@ const PixelGrid: React.FC<PixelGridProps> = ({
         clearInterval(intervalRef.current);
       }
     };
-  }, [isHovered, gridSize, baseColor, whitePixelCount]); // Dependencies for effect
+  }, [isHovered, gridSize, baseColor, blackPixelCount]); // Updated dependency
 
   const gapValue = parseInt(gap) || 0;
   const totalSize = gridSize * pixelSize + Math.max(0, gridSize - 1) * gapValue;
@@ -101,12 +102,11 @@ const PixelGrid: React.FC<PixelGridProps> = ({
       {displayedColors.map((color, index) => (
         <div
           key={index}
-          // Removed animate-pulse class
           style={{
             backgroundColor: color,
             width: `${pixelSize}px`,
             height: `${pixelSize}px`,
-            transition: 'background-color 0.1s ease-in-out' // Optional: smooth color transition
+            transition: 'background-color 0.1s ease-in-out'
           }}
         />
       ))}
@@ -125,16 +125,16 @@ const brandColors = {
   paprika: "#F25A3F"  // Example Color 5
 };
 
-// Define base colors and white count
-const WHITE_PIXEL_COUNT = 3;
+// Rename constant
+const BLACK_PIXEL_COUNT = 3;
 
-// Add path property to menuItemsData
+// Update menuItemsData property name
 const menuItemsData = [
-  { label: 'Home', path: '/home', baseColor: brandColors.juniper, whitePixelCount: WHITE_PIXEL_COUNT, contentComponent: NavHomeContent },
-  { label: 'Work', path: '/work', baseColor: brandColors.nebula, whitePixelCount: WHITE_PIXEL_COUNT, contentComponent: NavWorkContent },
-  { label: 'Blog', path: '/blog', baseColor: brandColors.zenith, whitePixelCount: WHITE_PIXEL_COUNT, contentComponent: NavBlogContent },
-  { label: 'Experiments', path: '/experiments', baseColor: brandColors.paprika, whitePixelCount: WHITE_PIXEL_COUNT, contentComponent: NavExperimentsContent },
-  { label: 'Ask', path: '/ask', baseColor: brandColors.breeze, whitePixelCount: WHITE_PIXEL_COUNT, contentComponent: NavAskContent },
+  { label: 'Home', path: '/home', baseColor: brandColors.juniper, blackPixelCount: BLACK_PIXEL_COUNT, contentComponent: NavHomeContent },
+  { label: 'Work', path: '/work', baseColor: brandColors.nebula, blackPixelCount: BLACK_PIXEL_COUNT, contentComponent: NavWorkContent },
+  { label: 'Blog', path: '/blog', baseColor: brandColors.zenith, blackPixelCount: BLACK_PIXEL_COUNT, contentComponent: NavBlogContent },
+  { label: 'Experiments', path: '/experiments', baseColor: brandColors.paprika, blackPixelCount: BLACK_PIXEL_COUNT, contentComponent: NavExperimentsContent },
+  { label: 'Ask', path: '/ask', baseColor: brandColors.breeze, blackPixelCount: BLACK_PIXEL_COUNT, contentComponent: NavAskContent },
 ];
 
 // --- Navbar Component ---
@@ -249,7 +249,7 @@ export default function Navbar() {
                   >
                     <PixelGrid
                       baseColor={item.baseColor}
-                      whitePixelCount={item.whitePixelCount}
+                      blackPixelCount={item.blackPixelCount}
                       gridSize={5}
                       pixelSize={6}
                       gap="2px"
