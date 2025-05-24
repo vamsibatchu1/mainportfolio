@@ -38,3 +38,10 @@ export const fiveFont = Instrument_Serif({
   variable: '--font-five',
   display: 'swap',
 });
+
+// Sixth Font: Devanagari
+export const sixFont = localFont({
+  src: '../../public/fonts/Devanagari.otf',
+  variable: '--font-six',
+  display: 'swap',
+});
