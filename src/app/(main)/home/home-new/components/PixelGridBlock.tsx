@@ -164,7 +164,14 @@ export const PixelGridBlock: React.FC<PixelGridBlockProps> = ({
   // Conditional rendering logic
   if (animationPhase === 'continuousRandom' && !isContinuouslyActive && svgSrc) {
     return (
-      <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ 
+          width: '100%', 
+          height: '100%', 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          backgroundColor: baseColor // Ensure baseColor is the background for the SVG container
+      }}>
         <Image src={svgSrc} alt="Symbol" width={48} height={48} />
       </div>
     );
