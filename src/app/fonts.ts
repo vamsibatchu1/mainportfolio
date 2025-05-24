@@ -1,5 +1,5 @@
 import localFont from 'next/font/local';
-import {Poppins, IBM_Plex_Mono } from 'next/font/google';
+import {Poppins, IBM_Plex_Mono, Instrument_Serif } from 'next/font/google';
 
 // Primary Font: W95FA (Windows 95 Font)
 export const priFont = localFont({
@@ -28,5 +28,13 @@ export const fourFont = IBM_Plex_Mono({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-four',
+  display: 'swap',
+});
+
+// Fifth Font: Instrument Serif from Google
+export const fiveFont = Instrument_Serif({
+  subsets: ['latin'],
+  weight: ['400'], // Instrument Serif only has a regular 400 weight
+  variable: '--font-five',
   display: 'swap',
 });

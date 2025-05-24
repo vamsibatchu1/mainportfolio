@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { priFont, triFont } from '@/app/fonts';
+import { priFont, fiveFont } from '@/app/fonts';
 
 // Brand colors (ensure these match your design system)
 const brandColors = {
@@ -15,7 +15,7 @@ const brandColors = {
   breeze: "#90D9E0",      // Light Blue for Triangle (symbol5)
   paprika: "#F25A3F",     // Red-Orange for EllipseEllipse6 (symbol4)
   lavenderBlush: "#C2B8FF", // Purple-ish for Rectangle (symbol2)
-  darkGray: "#3A3A3A",   // Dark gray for empty blocks, matching image
+  darkGray: "#000000",   // Dark gray for empty blocks, matching image
 };
 
 // Icon Components (assuming these are already defined to use Image and are 64x64)
@@ -35,7 +35,7 @@ const Triangle: React.FC<{ className?: string }> = ({ className }) => (
   <Image src="/images/symbol5.svg" alt="Triangle Symbol" width={48} height={48} className={className} />
 );
 const Vector: React.FC<{ className?: string }> = ({ className }) => (
-  <Image src="/images/symbol6.svg" alt="Vector Symbol" width={48} height={48} className={className} />
+  <Image src="/images/symbol6.svg" alt="Vector Symbol" width={80} height={80} className={className} />
 );
 
 interface UnitBlockProps {
@@ -117,22 +117,22 @@ const LeftCard: React.FC = () => {
     >
       {/* Row 1 */}
       <motion.div key="r1c1-v" variants={blockAnimationVariants} initial="hidden" animate={blockVisibility['r1c1-v'] ? "visible" : "hidden"}>
-        <UnitBlock content={<div className={`${priFont.className} text-6xl text-black`} style={{ lineHeight: '1' }}>v</div>} />
+        <UnitBlock content={<div className={`${priFont.className} text-[80px] leading-[64px] text-black`} style={{ lineHeight: '1' }}>v</div>} />
       </motion.div>
       <motion.div key="r1c2-a" variants={blockAnimationVariants} initial="hidden" animate={blockVisibility['r1c2-a'] ? "visible" : "hidden"}>
-        <UnitBlock content={<div className={`${priFont.className} text-6xl text-black`} style={{ lineHeight: '1' }}>a</div>} />
+        <UnitBlock content={<div className={`${priFont.className} text-[80px] leading-[64px] text-black`} style={{ lineHeight: '1' }}>a</div>} />
       </motion.div>
       <motion.div key="r1c3-m" variants={blockAnimationVariants} initial="hidden" animate={blockVisibility['r1c3-m'] ? "visible" : "hidden"}>
-        <UnitBlock content={<div className={`${priFont.className} text-6xl text-black`} style={{ lineHeight: '1' }}>m</div>} />
-      </motion.div>
-      <motion.div key="r1c4-s" variants={blockAnimationVariants} initial="hidden" animate={blockVisibility['r1c4-s'] ? "visible" : "hidden"}>
-        <UnitBlock content={<div className={`${priFont.className} text-6xl text-black`} style={{ lineHeight: '1' }}>s</div>} />
+        <UnitBlock content={<div className={`${priFont.className} text-[80px] leading-[64px] text-black`} style={{ lineHeight: '1' }}>m</div>} />
       </motion.div>
       <motion.div key="r1c5-icon" variants={blockAnimationVariants} initial="hidden" animate={blockVisibility['r1c5-icon'] ? "visible" : "hidden"}>
         <UnitBlock bgColor={brandColors.zenith} content={<MiscMisc6 />} />
       </motion.div>
-      <motion.div key="r1c6-i" variants={blockAnimationVariants} initial="hidden" animate={blockVisibility['r1c6-i'] ? "visible" : "hidden"}>
-        <UnitBlock content={<div className={`${priFont.className} text-6xl text-black`} style={{ lineHeight: '1' }}>i</div>} />
+      <motion.div key="r1c4-s" variants={blockAnimationVariants} initial="hidden" animate={blockVisibility['r1c4-s'] ? "visible" : "hidden"}>
+        <UnitBlock content={<div className={`${priFont.className} text-[80px] leading-[64px] text-black`} style={{ lineHeight: '1' }}>s</div>} />
+      </motion.div>
+      <motion.div key="r2c5-ellipse" variants={blockAnimationVariants} initial="hidden" animate={blockVisibility['r2c5-ellipse'] ? "visible" : "hidden"}>
+        <UnitBlock bgColor={brandColors.paprika} content={<EllipseEllipse6 />} />
       </motion.div>
       <motion.div key="r1c7-dark" variants={blockAnimationVariants} initial="hidden" animate={blockVisibility['r1c7-dark'] ? "visible" : "hidden"}>
         <UnitBlock bgColor={brandColors.darkGray} />
@@ -151,16 +151,17 @@ const LeftCard: React.FC = () => {
       <motion.div key="r2c2-text" style={{ gridColumn: 'span 3 / span 3' }} variants={blockAnimationVariants} initial="hidden" animate={blockVisibility['r2c2-text'] ? "visible" : "hidden"}>
         <UnitBlock 
           bgColor={brandColors.black}
-          className={`${triFont.className} text-[#dedede] text-sm p-3 items-start justify-start`}
+          className={`${fiveFont.className} text-[#dedede] text-[20px] leading-[24px] p-3 text-right items-start justify-end`}
           content="hands on product design leader with 10+ years of experience in designing & leading teams developing highly impactful products at scale."
         />
-      </motion.div>
-      <motion.div key="r2c5-ellipse" variants={blockAnimationVariants} initial="hidden" animate={blockVisibility['r2c5-ellipse'] ? "visible" : "hidden"}>
-        <UnitBlock bgColor={brandColors.paprika} content={<EllipseEllipse6 />} />
       </motion.div>
       <motion.div key="r2c6-rectangle" variants={blockAnimationVariants} initial="hidden" animate={blockVisibility['r2c6-rectangle'] ? "visible" : "hidden"}>
         <UnitBlock bgColor={brandColors.lavenderBlush} content={<Rectangle />} />
       </motion.div>
+      <motion.div key="r1c6-i" variants={blockAnimationVariants} initial="hidden" animate={blockVisibility['r1c6-i'] ? "visible" : "hidden"}>
+        <UnitBlock content={<div className={`${priFont.className} text-[72px] leading-[64px] text-black`} style={{ lineHeight: '1' }}>i</div>} />
+      </motion.div>
+      
       <motion.div key="r2c7-dark" variants={blockAnimationVariants} initial="hidden" animate={blockVisibility['r2c7-dark'] ? "visible" : "hidden"}>
         <UnitBlock bgColor={brandColors.darkGray} />
       </motion.div>
@@ -176,16 +177,16 @@ const LeftCard: React.FC = () => {
         <UnitBlock bgColor={brandColors.darkGray} />
       </motion.div>
       <motion.div key="r3c4-flower" variants={blockAnimationVariants} initial="hidden" animate={blockVisibility['r3c4-flower'] ? "visible" : "hidden"}>
-        <UnitBlock bgColor={brandColors.nebula} content={<Flower />} />
+        <UnitBlock bgColor={brandColors.darkGray} />
       </motion.div>
       <motion.div key="r3c5-batchu" variants={blockAnimationVariants} initial="hidden" animate={blockVisibility['r3c5-batchu'] ? "visible" : "hidden"}>
-        <UnitBlock content={<div className={`${priFont.className} text-2xl leading-tight text-center text-black`}><p>bat</p><p>chu</p></div>} />
+        <UnitBlock bgColor={brandColors.nebula} content={<Flower />} />
       </motion.div>
       <motion.div key="r3c6-triangle" variants={blockAnimationVariants} initial="hidden" animate={blockVisibility['r3c6-triangle'] ? "visible" : "hidden"}>
-        <UnitBlock bgColor={brandColors.breeze} content={<Triangle />} />
+        <UnitBlock content={<div className={`${priFont.className} text-[32px] leading-[32px] text-center text-black`}><p>bat</p><p>chu</p></div>} />
       </motion.div>
       <motion.div key="r3c7-dark" variants={blockAnimationVariants} initial="hidden" animate={blockVisibility['r3c7-dark'] ? "visible" : "hidden"}>
-        <UnitBlock bgColor={brandColors.darkGray} />
+        <UnitBlock bgColor={brandColors.breeze} content={<Triangle />} />
       </motion.div>
       
       {/* Large 2x2 Square */}
