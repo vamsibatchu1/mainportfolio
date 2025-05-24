@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { TextScramble } from '@/components/ui/text-scramble';
 import { motion, AnimationDefinition } from 'framer-motion';
 import { priFont, fiveFont } from '@/app/fonts';
+import { PixelGridBlock } from './PixelGridBlock';
 
 // Brand colors (ensure these match your design system)
 const brandColors = {
@@ -19,22 +20,7 @@ const brandColors = {
   darkGray: "#000000",   // Dark gray for empty blocks, matching image
 };
 
-// Icon Components (assuming these are already defined to use Image and are 64x64)
-const MiscMisc6: React.FC<{ className?: string }> = ({ className }) => (
-  <Image src="/images/symbol1.svg" alt="Misc Symbol" width={48} height={48} className={className} />
-);
-const Rectangle: React.FC<{ className?: string }> = ({ className }) => (
-  <Image src="/images/symbol2.svg" alt="Rectangle Symbol" width={48} height={48} className={className} />
-);
-const Flower: React.FC<{ className?: string }> = ({ className }) => (
-  <Image src="/images/symbol3.svg" alt="Flower Symbol" width={48} height={48} className={className} />
-);
-const EllipseEllipse6: React.FC<{ className?: string }> = ({ className }) => (
-  <Image src="/images/symbol4.svg" alt="Ellipse Symbol" width={48} height={48} className={className} />
-);
-const Triangle: React.FC<{ className?: string }> = ({ className }) => (
-  <Image src="/images/symbol5.svg" alt="Triangle Symbol" width={48} height={48} className={className} />
-);
+// Icon component for the large square (Vector) is still needed.
 const Vector: React.FC<{ className?: string }> = ({ className }) => (
   <Image src="/images/symbol6.svg" alt="Vector Symbol" width={80} height={80} className={className} />
 );
@@ -85,25 +71,48 @@ const blockAnimationVariants = {
 
 const INITIAL_DELAY = 1500; // 1.5 seconds
 const STAGGER_DELAY = 75; // ms
-const CONTINUOUS_SCRAMBLE_DURATION = 60000; // 60 seconds, effectively continuous until stopped
+// const CONTINUOUS_SCRAMBLE_DURATION = 60000; // No longer used here, TextScramble has its own default
+
+// New constant for PixelGridBlock switching
+const CONTINUOUS_BLOCK_SWITCH_INTERVAL = 5000; // ms (5 seconds)
+
+// Placeholder Shapes for 6x6 PixelGridBlock (36 pixels, indices 0-35)
+// const shapeForZenith: number[] = [8, 14, 13, 15, 20]; // Small Plus - REMOVED
+// const shapeForPaprika: number[] = [8, 10, 14, 18, 20]; // Small X - REMOVED
+// const shapeForLavenderBlush: number[] = [7, 8, 9, 13, 15, 19, 20, 21]; // Hollow Square 3x3 - REMOVED
+// const shapeForNebula: number[] = [2, 8, 14, 20, 10, 16]; // Small Diamond - REMOVED
+// const shapeForBreeze: number[] = [13, 14, 15, 16]; // Horizontal Line - REMOVED
 
 // Define unique IDs for all 22 blocks
 const allBlockIds = [
   'r1c1-v', 'r1c2-a', 'r1c3-m', 'r1c4-s', 'r1c5-icon', 'r1c6-i', 'r1c7-dark', 'r1c8-dark', 'r1c9-dark',
   'r2c1-dark', 'r2c2-text', 'r2c5-ellipse', 'r2c6-rectangle', 'r2c7-dark',
-  'r3c1-dark', 'r3c2-dark', 'r3c3-dark', 'r3c4-flower', 'r3c5-batchu', 'r3c6-triangle', 'r3c7-dark',
+  'r3c1-dark', 'r3c2-dark', 'r3c3-dark', 'r3c4-flower', 'r3c5-batchu', 'r3c6-triangle', 'r3c7-breeze',
   'large-square'
 ];
 
-const textScrambleBlockIds = ['r1c1-v', 'r1c2-a', 'r1c3-m', 'r1c4-s', 'r1c6-i', 'r3c6-triangle'];
-const batChuBlockId = 'r3c6-triangle';
+const textScrambleBlockIds = ['r1c1-v', 'r1c2-a', 'r1c3-m', 'r1c4-s', 'r1c6-i'];
+const pixelGridBlockIds = ['r1c5-icon', 'r2c5-ellipse', 'r2c6-rectangle', 'r3c5-batchu', 'r3c7-breeze'];
+
+// SVG path mapping for PixelGridBlocks
+const pixelGridSVGs: Record<string, string> = {
+  'r1c5-icon': "/images/symbol1.svg",
+  'r2c5-ellipse': "/images/symbol4.svg",
+  'r2c6-rectangle': "/images/symbol2.svg",
+  'r3c5-batchu': "/images/symbol3.svg",
+  'r3c7-breeze': "/images/symbol5.svg",
+};
 
 const LeftCard: React.FC = () => {
   const [blockVisibility, setBlockVisibility] = useState<Record<string, boolean>>({});
   const [isScramblingActive, setIsScramblingActive] = useState<Record<string, boolean>>({});
-  const [allBlocksFadedIn, setAllBlocksFadedIn] = useState(false);
+  const [pixelGridTrigger, setPixelGridTrigger] = useState<Record<string, boolean>>({});
   const lastBlockIdRef = useRef<string | null>(null);
-  const batChuTimeoutRef = useRef<NodeJS.Timeout | null>(null); 
+  const scrambleTimeoutsRef = useRef<Record<string, NodeJS.Timeout>>({});
+
+  // New state for managing active PixelGridBlock
+  const [readyForContinuousAnimIds, setReadyForContinuousAnimIds] = useState<Set<string>>(new Set());
+  const [activeContinuousPixelBlockId, setActiveContinuousPixelBlockId] = useState<string | null>(null);
 
   useEffect(() => {
     const shuffledIds = [...allBlockIds].sort(() => Math.random() - 0.5);
@@ -117,42 +126,72 @@ const LeftCard: React.FC = () => {
       }, INITIAL_DELAY + index * STAGGER_DELAY);
     });
     
-    // Cleanup timeout on unmount
+    // Cleanup timeouts on unmount
     return () => {
-      if (batChuTimeoutRef.current) {
-        clearTimeout(batChuTimeoutRef.current);
-      }
+      // Clear all scramble timeouts
+      Object.values(scrambleTimeoutsRef.current).forEach(clearTimeout);
     };
   }, []);
 
+  // New useEffect to manage switching the active PixelGridBlock
   useEffect(() => {
-    if (allBlocksFadedIn) {
-      const newScrambleState: Record<string, boolean> = {};
-      textScrambleBlockIds.forEach(id => {
-        // For batChuBlockId, its specific timeout would have already set it to false.
-        // This ensures any other continuously scrambling blocks are stopped.
-        if (id !== batChuBlockId) { 
-            newScrambleState[id] = false;
+    let switchInterval: NodeJS.Timeout | undefined;
+
+    if (readyForContinuousAnimIds.size > 0) {
+      switchInterval = setInterval(() => {
+        const readyIdsArray = Array.from(readyForContinuousAnimIds);
+        if (readyIdsArray.length > 0) {
+          // If there's an active block, try not to pick it again immediately
+          let newActiveId = activeContinuousPixelBlockId;
+          if (readyIdsArray.length === 1) {
+            newActiveId = readyIdsArray[0];
+          } else {
+            const availableIds = readyIdsArray.filter(id => id !== activeContinuousPixelBlockId);
+            newActiveId = availableIds[Math.floor(Math.random() * availableIds.length)];
+            // Fallback if filter results in empty (e.g. only one was active and it's still the only one ready)
+            if (!newActiveId && readyIdsArray.length > 0) {
+                newActiveId = readyIdsArray[Math.floor(Math.random() * readyIdsArray.length)];
+            }
+          }
+          setActiveContinuousPixelBlockId(newActiveId);
+        } else {
+          setActiveContinuousPixelBlockId(null);
         }
-      });
-      setIsScramblingActive(prev => ({...prev, ...newScrambleState}));
+      }, CONTINUOUS_BLOCK_SWITCH_INTERVAL);
+    } else {
+      setActiveContinuousPixelBlockId(null); // No blocks ready, so no active block
     }
-  }, [allBlocksFadedIn]);
+
+    return () => {
+      if (switchInterval) {
+        clearInterval(switchInterval);
+      }
+    };
+  }, [readyForContinuousAnimIds, activeContinuousPixelBlockId]); // Re-run if ready set changes or active block changes
+
+  const handlePixelGridReadyForContinuous = (id: string) => {
+    setReadyForContinuousAnimIds(prev => new Set(prev).add(id));
+  };
 
   const handleAnimationComplete = (id: string) => (definition: AnimationDefinition) => {
     if (definition === "visible") {
       if (textScrambleBlockIds.includes(id)) {
         setIsScramblingActive(prev => ({ ...prev, [id]: true })); // Start this block's scramble
 
-        if (id === batChuBlockId) {
-          if (batChuTimeoutRef.current) clearTimeout(batChuTimeoutRef.current); // Clear previous timeout if any
-          batChuTimeoutRef.current = setTimeout(() => {
-            setIsScramblingActive(prev => ({ ...prev, [batChuBlockId]: false }));
-          }, 2000); // Stop 'bat chu' after 2 seconds
+        // Clear any existing timeout for this block before setting a new one
+        if (scrambleTimeoutsRef.current[id]) {
+          clearTimeout(scrambleTimeoutsRef.current[id]);
         }
+        // Set a 5-second timeout to stop scrambling for this block
+        scrambleTimeoutsRef.current[id] = setTimeout(() => {
+          setIsScramblingActive(prev => ({ ...prev, [id]: false }));
+        }, 5000); 
+      }
+      if (pixelGridBlockIds.includes(id)) {
+        setPixelGridTrigger(prev => ({ ...prev, [id]: true }));
       }
       if (id === lastBlockIdRef.current) {
-        setAllBlocksFadedIn(true); // All blocks are now visible
+        // setAllBlocksFadedIn(true); // This line is removed as allBlocksFadedIn state is removed
       }
     }
   };
@@ -177,7 +216,7 @@ const LeftCard: React.FC = () => {
       >
         <UnitBlock content={ 
           <div className={`${priFont.className} text-[80px] leading-[64px] text-black`} style={{ lineHeight: '1' }}>
-            <TextScramble duration={CONTINUOUS_SCRAMBLE_DURATION} speed={0.08} characterSet="abcdefghijklmnopqrstuvwxyz" trigger={isScramblingActive['r1c1-v'] || false}>
+            <TextScramble speed={0.08} characterSet="abcdefghijklmnopqrstuvwxyz" trigger={isScramblingActive['r1c1-v'] || false}>
               v
             </TextScramble>
           </div>} 
@@ -192,7 +231,7 @@ const LeftCard: React.FC = () => {
       >
         <UnitBlock content={ 
           <div className={`${priFont.className} text-[80px] leading-[64px] text-black`} style={{ lineHeight: '1' }}>
-            <TextScramble duration={CONTINUOUS_SCRAMBLE_DURATION} speed={0.08} characterSet="abcdefghijklmnopqrstuvwxyz" trigger={isScramblingActive['r1c2-a'] || false}>
+            <TextScramble speed={0.08} characterSet="abcdefghijklmnopqrstuvwxyz" trigger={isScramblingActive['r1c2-a'] || false}>
               a
             </TextScramble>
           </div>} 
@@ -207,7 +246,7 @@ const LeftCard: React.FC = () => {
       >
         <UnitBlock content={ 
           <div className={`${priFont.className} text-[80px] leading-[64px] text-black`} style={{ lineHeight: '1' }}>
-            <TextScramble duration={CONTINUOUS_SCRAMBLE_DURATION} speed={0.08} characterSet="abcdefghijklmnopqrstuvwxyz" trigger={isScramblingActive['r1c3-m'] || false}>
+            <TextScramble speed={0.08} characterSet="abcdefghijklmnopqrstuvwxyz" trigger={isScramblingActive['r1c3-m'] || false}>
               m
             </TextScramble>
           </div>} 
@@ -220,7 +259,7 @@ const LeftCard: React.FC = () => {
         animate={blockVisibility['r1c5-icon'] ? "visible" : "hidden"}
         onAnimationComplete={handleAnimationComplete('r1c5-icon')}
       >
-        <UnitBlock bgColor={brandColors.zenith} content={<MiscMisc6 />} />
+        <UnitBlock bgColor={brandColors.black} content={<PixelGridBlock id="r1c5-icon" baseColor={brandColors.zenith} trigger={pixelGridTrigger['r1c5-icon'] || false} onReadyForContinuous={handlePixelGridReadyForContinuous} isContinuouslyActive={activeContinuousPixelBlockId === 'r1c5-icon'} svgSrc={pixelGridSVGs['r1c5-icon']} />} />
       </motion.div>
       <motion.div 
         key="r1c4-s" 
@@ -231,7 +270,7 @@ const LeftCard: React.FC = () => {
       >
         <UnitBlock content={ 
           <div className={`${priFont.className} text-[80px] leading-[64px] text-black`} style={{ lineHeight: '1' }}>
-            <TextScramble duration={CONTINUOUS_SCRAMBLE_DURATION} speed={0.08} characterSet="abcdefghijklmnopqrstuvwxyz" trigger={isScramblingActive['r1c4-s'] || false}>
+            <TextScramble speed={0.08} characterSet="abcdefghijklmnopqrstuvwxyz" trigger={isScramblingActive['r1c4-s'] || false}>
               s
             </TextScramble>
           </div>} 
@@ -244,7 +283,7 @@ const LeftCard: React.FC = () => {
         animate={blockVisibility['r2c5-ellipse'] ? "visible" : "hidden"}
         onAnimationComplete={handleAnimationComplete('r2c5-ellipse')}
       >
-        <UnitBlock bgColor={brandColors.paprika} content={<EllipseEllipse6 />} />
+        <UnitBlock bgColor={brandColors.black} content={<PixelGridBlock id="r2c5-ellipse" baseColor={brandColors.paprika} trigger={pixelGridTrigger['r2c5-ellipse'] || false} onReadyForContinuous={handlePixelGridReadyForContinuous} isContinuouslyActive={activeContinuousPixelBlockId === 'r2c5-ellipse'} svgSrc={pixelGridSVGs['r2c5-ellipse']} />} />
       </motion.div>
       <motion.div 
         key="r1c7-dark" 
@@ -305,7 +344,7 @@ const LeftCard: React.FC = () => {
         animate={blockVisibility['r2c6-rectangle'] ? "visible" : "hidden"}
         onAnimationComplete={handleAnimationComplete('r2c6-rectangle')}
       >
-        <UnitBlock bgColor={brandColors.lavenderBlush} content={<Rectangle />} />
+        <UnitBlock bgColor={brandColors.black} content={<PixelGridBlock id="r2c6-rectangle" baseColor={brandColors.lavenderBlush} trigger={pixelGridTrigger['r2c6-rectangle'] || false} onReadyForContinuous={handlePixelGridReadyForContinuous} isContinuouslyActive={activeContinuousPixelBlockId === 'r2c6-rectangle'} svgSrc={pixelGridSVGs['r2c6-rectangle']} />} />
       </motion.div>
       <motion.div 
         key="r1c6-i" 
@@ -316,7 +355,7 @@ const LeftCard: React.FC = () => {
       >
         <UnitBlock content={ 
           <div className={`${priFont.className} text-[72px] leading-[64px] text-black`} style={{ lineHeight: '1' }}>
-            <TextScramble duration={CONTINUOUS_SCRAMBLE_DURATION} speed={0.08} characterSet="abcdefghijklmnopqrstuvwxyz" trigger={isScramblingActive['r1c6-i'] || false}>
+            <TextScramble speed={0.08} characterSet="abcdefghijklmnopqrstuvwxyz" trigger={isScramblingActive['r1c6-i'] || false}>
               i
             </TextScramble>
           </div>} 
@@ -377,7 +416,7 @@ const LeftCard: React.FC = () => {
         animate={blockVisibility['r3c5-batchu'] ? "visible" : "hidden"}
         onAnimationComplete={handleAnimationComplete('r3c5-batchu')}
       >
-        <UnitBlock bgColor={brandColors.nebula} content={<Flower />} />
+        <UnitBlock bgColor={brandColors.black} content={<PixelGridBlock id="r3c5-batchu" baseColor={brandColors.nebula} trigger={pixelGridTrigger['r3c5-batchu'] || false} onReadyForContinuous={handlePixelGridReadyForContinuous} isContinuouslyActive={activeContinuousPixelBlockId === 'r3c5-batchu'} svgSrc={pixelGridSVGs['r3c5-batchu']} />} />
       </motion.div>
       <motion.div 
         key="r3c6-triangle" 
@@ -389,26 +428,22 @@ const LeftCard: React.FC = () => {
         <UnitBlock content={ 
           <div className={`${priFont.className} text-[32px] leading-[32px] text-center text-black`}>
             <div>
-              <TextScramble duration={CONTINUOUS_SCRAMBLE_DURATION} speed={0.05} characterSet="abcdefghijklmnopqrstuvwxyz" trigger={isScramblingActive['r3c6-triangle'] || false}>
-                bat
-              </TextScramble>
+              bat
             </div>
             <div>
-              <TextScramble duration={CONTINUOUS_SCRAMBLE_DURATION} speed={0.05} characterSet="abcdefghijklmnopqrstuvwxyz" trigger={isScramblingActive['r3c6-triangle'] || false}>
-                chu
-              </TextScramble>
+              chu
             </div>
           </div>} 
         />
       </motion.div>
       <motion.div 
-        key="r3c7-dark" 
+        key="r3c7-breeze" 
         variants={blockAnimationVariants} 
         initial="hidden" 
-        animate={blockVisibility['r3c7-dark'] ? "visible" : "hidden"}
-        onAnimationComplete={handleAnimationComplete('r3c7-dark')}
+        animate={blockVisibility['r3c7-breeze'] ? "visible" : "hidden"}
+        onAnimationComplete={handleAnimationComplete('r3c7-breeze')}
       >
-        <UnitBlock bgColor={brandColors.breeze} content={<Triangle />} />
+        <UnitBlock bgColor={brandColors.black} content={<PixelGridBlock id="r3c7-breeze" baseColor={brandColors.breeze} trigger={pixelGridTrigger['r3c7-breeze'] || false} onReadyForContinuous={handlePixelGridReadyForContinuous} isContinuouslyActive={activeContinuousPixelBlockId === 'r3c7-breeze'} svgSrc={pixelGridSVGs['r3c7-breeze']} />} />
       </motion.div>
       
       {/* Large 2x2 Square */}
