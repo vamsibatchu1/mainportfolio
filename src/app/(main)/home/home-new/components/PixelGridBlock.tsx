@@ -162,7 +162,7 @@ export const PixelGridBlock: React.FC<PixelGridBlockProps> = ({
   }, [animationPhase, isContinuouslyActive, numPixels, baseColor]);
 
   // Conditional rendering logic
-  if (animationPhase === 'continuousRandom' && !isContinuouslyActive && svgSrc) {
+  if ((animationPhase === 'initialFill' || animationPhase === 'continuousRandom') && !isContinuouslyActive && svgSrc) {
     return (
       <div style={{ 
           width: '100%', 

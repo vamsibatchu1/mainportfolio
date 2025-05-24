@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { TextScramble } from '@/components/ui/text-scramble';
+// import { TextScramble } from '@/components/ui/text-scramble'; // REMOVED
 import { motion, AnimationDefinition } from 'framer-motion';
 import { priFont, fiveFont } from '@/app/fonts';
 import { PixelGridBlock } from './PixelGridBlock';
@@ -69,29 +69,37 @@ const blockAnimationVariants = {
   },
 };
 
-const INITIAL_DELAY = 1500; // 1.5 seconds
-const STAGGER_DELAY = 75; // ms
-// const CONTINUOUS_SCRAMBLE_DURATION = 60000; // No longer used here, TextScramble has its own default
-
-// New constant for PixelGridBlock switching
+const INITIAL_DELAY = 750; // User updated
+const STAGGER_DELAY = 80;  // User updated
 const CONTINUOUS_BLOCK_SWITCH_INTERVAL = 5000; // ms (5 seconds)
 
-// Placeholder Shapes for 6x6 PixelGridBlock (36 pixels, indices 0-35)
-// const shapeForZenith: number[] = [8, 14, 13, 15, 20]; // Small Plus - REMOVED
-// const shapeForPaprika: number[] = [8, 10, 14, 18, 20]; // Small X - REMOVED
-// const shapeForLavenderBlush: number[] = [7, 8, 9, 13, 15, 19, 20, 21]; // Hollow Square 3x3 - REMOVED
-// const shapeForNebula: number[] = [2, 8, 14, 20, 10, 16]; // Small Diamond - REMOVED
-// const shapeForBreeze: number[] = [13, 14, 15, 16]; // Horizontal Line - REMOVED
-
-// Define unique IDs for all 22 blocks
-const allBlockIds = [
-  'r1c1-v', 'r1c2-a', 'r1c3-m', 'r1c4-s', 'r1c5-icon', 'r1c6-i', 'r1c7-dark', 'r1c8-dark', 'r1c9-dark',
-  'r2c1-dark', 'r2c2-text', 'r2c5-ellipse', 'r2c6-rectangle', 'r2c7-dark',
-  'r3c1-dark', 'r3c2-dark', 'r3c3-dark', 'r3c4-flower', 'r3c5-batchu', 'r3c6-triangle', 'r3c7-breeze',
-  'large-square'
+// New defined block loading order
+const definedBlockLoadOrder = [
+  'r2c2-text',
+  'r2c5-ellipse',
+  'r1c5-icon',
+  'r1c1-v',
+  'r1c3-m',
+  'r2c6-rectangle',
+  'r1c2-a',
+  'r3c5-batchu',
+  'r3c6-triangle',
+  'r3c7-breeze',
+  'r1c4-s',
+  'r1c6-i',
+  'large-square',
+  'r3c4-flower',
+  'r3c3-dark',
+  'r3c2-dark',
+  'r3c1-dark',
+  'r2c7-dark',
+  'r2c1-dark',
+  'r1c9-dark',
+  'r1c8-dark',
+  'r1c7-dark'
 ];
 
-const textScrambleBlockIds = ['r1c1-v', 'r1c2-a', 'r1c3-m', 'r1c4-s', 'r1c6-i'];
+// const textScrambleBlockIds = ['r1c1-v', 'r1c2-a', 'r1c3-m', 'r1c4-s', 'r1c6-i']; // REMOVED
 const pixelGridBlockIds = ['r1c5-icon', 'r2c5-ellipse', 'r2c6-rectangle', 'r3c5-batchu', 'r3c7-breeze'];
 
 // SVG path mapping for PixelGridBlocks
@@ -105,31 +113,28 @@ const pixelGridSVGs: Record<string, string> = {
 
 const LeftCard: React.FC = () => {
   const [blockVisibility, setBlockVisibility] = useState<Record<string, boolean>>({});
-  const [isScramblingActive, setIsScramblingActive] = useState<Record<string, boolean>>({});
+  // const [isScramblingActive, setIsScramblingActive] = useState<Record<string, boolean>>({}); // REMOVED
   const [pixelGridTrigger, setPixelGridTrigger] = useState<Record<string, boolean>>({});
   const lastBlockIdRef = useRef<string | null>(null);
-  const scrambleTimeoutsRef = useRef<Record<string, NodeJS.Timeout>>({});
+  // const scrambleTimeoutsRef = useRef<Record<string, NodeJS.Timeout>>({}); // REMOVED
 
   // New state for managing active PixelGridBlock
   const [readyForContinuousAnimIds, setReadyForContinuousAnimIds] = useState<Set<string>>(new Set());
   const [activeContinuousPixelBlockId, setActiveContinuousPixelBlockId] = useState<string | null>(null);
 
   useEffect(() => {
-    const shuffledIds = [...allBlockIds].sort(() => Math.random() - 0.5);
-    if (shuffledIds.length > 0) {
-      lastBlockIdRef.current = shuffledIds[shuffledIds.length - 1];
+    const orderedIdsToLoad = definedBlockLoadOrder;
+    if (orderedIdsToLoad.length > 0) {
+      lastBlockIdRef.current = orderedIdsToLoad[orderedIdsToLoad.length - 1];
     }
-
-    shuffledIds.forEach((id, index) => {
+    orderedIdsToLoad.forEach((id, index) => {
       setTimeout(() => {
         setBlockVisibility(prev => ({ ...prev, [id]: true }));
       }, INITIAL_DELAY + index * STAGGER_DELAY);
     });
     
-    // Cleanup timeouts on unmount
     return () => {
-      // Clear all scramble timeouts
-      Object.values(scrambleTimeoutsRef.current).forEach(clearTimeout);
+      // Object.values(scrambleTimeoutsRef.current).forEach(clearTimeout); // REMOVED - scrambleTimeoutsRef removed
     };
   }, []);
 
@@ -175,24 +180,13 @@ const LeftCard: React.FC = () => {
 
   const handleAnimationComplete = (id: string) => (definition: AnimationDefinition) => {
     if (definition === "visible") {
-      if (textScrambleBlockIds.includes(id)) {
-        setIsScramblingActive(prev => ({ ...prev, [id]: true })); // Start this block's scramble
+      // Scramble logic removed
+      // if (textScrambleBlockIds.includes(id)) { ... }
 
-        // Clear any existing timeout for this block before setting a new one
-        if (scrambleTimeoutsRef.current[id]) {
-          clearTimeout(scrambleTimeoutsRef.current[id]);
-        }
-        // Set a 5-second timeout to stop scrambling for this block
-        scrambleTimeoutsRef.current[id] = setTimeout(() => {
-          setIsScramblingActive(prev => ({ ...prev, [id]: false }));
-        }, 5000); 
-      }
       if (pixelGridBlockIds.includes(id)) {
         setPixelGridTrigger(prev => ({ ...prev, [id]: true }));
       }
-      if (id === lastBlockIdRef.current) {
-        // setAllBlocksFadedIn(true); // This line is removed as allBlocksFadedIn state is removed
-      }
+      // Logic for allBlocksFadedIn (if any was remaining) is also effectively removed or inert without scrambles
     }
   };
 
@@ -216,9 +210,7 @@ const LeftCard: React.FC = () => {
       >
         <UnitBlock content={ 
           <div className={`${priFont.className} text-[80px] leading-[64px] text-black`} style={{ lineHeight: '1' }}>
-            <TextScramble speed={0.08} characterSet="abcdefghijklmnopqrstuvwxyz" trigger={isScramblingActive['r1c1-v'] || false}>
-              v
-            </TextScramble>
+            v
           </div>} 
         />
       </motion.div>
@@ -231,9 +223,7 @@ const LeftCard: React.FC = () => {
       >
         <UnitBlock content={ 
           <div className={`${priFont.className} text-[80px] leading-[64px] text-black`} style={{ lineHeight: '1' }}>
-            <TextScramble speed={0.08} characterSet="abcdefghijklmnopqrstuvwxyz" trigger={isScramblingActive['r1c2-a'] || false}>
-              a
-            </TextScramble>
+            a
           </div>} 
         />
       </motion.div>
@@ -246,9 +236,7 @@ const LeftCard: React.FC = () => {
       >
         <UnitBlock content={ 
           <div className={`${priFont.className} text-[80px] leading-[64px] text-black`} style={{ lineHeight: '1' }}>
-            <TextScramble speed={0.08} characterSet="abcdefghijklmnopqrstuvwxyz" trigger={isScramblingActive['r1c3-m'] || false}>
-              m
-            </TextScramble>
+            m
           </div>} 
         />
       </motion.div>
@@ -270,9 +258,7 @@ const LeftCard: React.FC = () => {
       >
         <UnitBlock content={ 
           <div className={`${priFont.className} text-[80px] leading-[64px] text-black`} style={{ lineHeight: '1' }}>
-            <TextScramble speed={0.08} characterSet="abcdefghijklmnopqrstuvwxyz" trigger={isScramblingActive['r1c4-s'] || false}>
-              s
-            </TextScramble>
+            s
           </div>} 
         />
       </motion.div>
@@ -355,9 +341,7 @@ const LeftCard: React.FC = () => {
       >
         <UnitBlock content={ 
           <div className={`${priFont.className} text-[72px] leading-[64px] text-black`} style={{ lineHeight: '1' }}>
-            <TextScramble speed={0.08} characterSet="abcdefghijklmnopqrstuvwxyz" trigger={isScramblingActive['r1c6-i'] || false}>
-              i
-            </TextScramble>
+            i
           </div>} 
         />
       </motion.div>
@@ -427,12 +411,8 @@ const LeftCard: React.FC = () => {
       >
         <UnitBlock content={ 
           <div className={`${priFont.className} text-[32px] leading-[32px] text-center text-black`}>
-            <div>
-              bat
-            </div>
-            <div>
-              chu
-            </div>
+            <div>bat</div>
+            <div>chu</div>
           </div>} 
         />
       </motion.div>
