@@ -70,7 +70,7 @@ const blockAnimationVariants = {
 };
 
 const INITIAL_DELAY = 750; // User updated
-const STAGGER_DELAY = 80;  // User updated
+const STAGGER_DELAY = 200;  // User updated
 const CONTINUOUS_BLOCK_SWITCH_INTERVAL = 5000; // ms (5 seconds)
 
 // New defined block loading order
