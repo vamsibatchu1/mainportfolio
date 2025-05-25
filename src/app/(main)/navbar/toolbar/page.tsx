@@ -20,9 +20,15 @@ import {
   UserCircle2,
 } from 'lucide-react'
 
+// Import new content components
+import DesignContent from './views/design_content';
+import DrawContent from './views/draw_content';
+import DevContent from './views/dev_content';
+import AboutContent from './views/about_content';
+
 type Mode = 'dev' | 'draw' | 'design' | 'about'
 
-type IconComponent = React.ComponentType<{ className?: string, style?: React.CSSProperties }>
+type IconComponent = React.ComponentType<{ className?: string, style?: React.CSSProperties, size?: string | number }>
 
 interface ToolbarButtonProps {
   icon: IconComponent
@@ -36,6 +42,10 @@ interface ToolbarModeProps {
   mode: Mode
   selected: number
   setSelected: (value: number) => void
+}
+
+interface AboutToolbarProps {
+  selected: number;
 }
 
 interface ToggleModeProps {
@@ -269,7 +279,7 @@ const DevToolbar = ({
 
 const AboutToolbar = ({
   selected,
-}: Pick<ToolbarModeProps, 'selected'>) => (
+}: AboutToolbarProps) => (
   <motion.div
     className="flex h-full items-center justify-center gap-4 p-2 text-slate-700"
     initial={{ filter: 'blur(10px)', y: -48 }}
@@ -417,12 +427,49 @@ const ToggleMode = ({ mode, setMode, setSelected }: ToggleModeProps) => {
   )
 }
 
+interface ContentCardProps {
+  mode: Mode;
+  setMode: (value: Mode) => void;
+  setSelected: (value: number) => void;
+}
+
+const ContentCard = ({ mode, setMode, setSelected }: ContentCardProps) => {
+  const renderContent = () => {
+    switch (mode) {
+      case 'design':
+        return <DesignContent />;
+      case 'draw':
+        return <DrawContent />;
+      case 'dev':
+        return <DevContent />;
+      case 'about':
+        return <AboutContent />;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="shadow-box flex flex-col items-start gap-1.5 overflow-hidden w-[640px] h-auto p-4 rounded-xl bg-white">
+      <ToggleMode mode={mode} setMode={setMode} setSelected={setSelected} />
+      <motion.div
+        className="shadow-box flex items-center gap-1.5 overflow-hidden rounded-xl bg-white"
+        transition={spring}
+      >
+      <AnimatePresence mode="wait">
+        {renderContent()}
+        </AnimatePresence>
+      </motion.div>
+    </div>
+  );
+};
+
 const Page = () => {
   const [mode, setMode] = useState<Mode>('design')
   const [selected, setSelected] = useState(1)
 
   return (
-    <main className="relative flex min-h-screen w-full items-center justify-center bg-[#f5f5f5] px-4 py-10">
+    <main className="relative flex min-h-screen w-full flex-col items-center justify-end px-4 py-10 gap-4">
       <motion.div
         className="shadow-box flex items-center gap-1.5 overflow-hidden rounded-xl bg-white"
         transition={spring}
@@ -431,6 +478,7 @@ const Page = () => {
         <div className="w-[1px] self-stretch bg-[#E6E6E6]" />
         <ToggleMode mode={mode} setMode={setMode} setSelected={setSelected} />
       </motion.div>
+      <ContentCard mode={mode} setMode={setMode} setSelected={setSelected} />
     </main>
   )
 }
