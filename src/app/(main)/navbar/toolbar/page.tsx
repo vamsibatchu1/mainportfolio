@@ -86,7 +86,7 @@ const ContentCard = ({ mode }: { mode: Mode }) => {
   return (
     <div className="shadow-box flex flex-col items-start gap-1.5 overflow-hidden w-[640px] h-auto p-4 rounded-xl bg-white">
       <motion.div
-        className="shadow-box flex items-center gap-1.5 overflow-hidden rounded-xl bg-white"
+        className="shadow-box flex items-center gap-1.5 overflow-hidden bg-white"
         transition={spring}
       >
       <AnimatePresence mode="wait">

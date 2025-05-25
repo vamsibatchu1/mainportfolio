@@ -40,8 +40,8 @@ const DragElementsDemo: React.FC = () => {
               initial={{ opacity: 0, scale: 0.8, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ 
-                delay: index * 0.1,
-                duration: 0.6,
+                delay: index * 0.3,
+                duration: 3,
                 type: "spring",
                 stiffness: 100,
                 damping: 15
@@ -88,15 +88,10 @@ const AboutContent = () => {
       transition={contentSpring}
       className="flex items-start gap-2 w-full h-[320px]"
     >
-      <div id="about-content-1" className="flex flex-col rounded-sm items-start justify-start gap-2 w-[30%] h-full">
-        <div id="about-text" className="flex flex bg-gray-100 p-[20px] rounded-sm items-center justify-center gap-1.5 w-full h-full overflow-hidden">
+      <div id="about-content-1" className="flex flex-col items-start justify-start gap-4 w-[30%] h-full">
+        <div id="about-text" className="flex items-end justify-center gap-1.5 w-full h-full overflow-hidden">
           <p className={`${priFont.className} text-[18px] font-bold leading-[20px]`}>
             Based in Atlanta, I have been designing for 11+ years in the digital design industry.
-          </p>
-        </div>
-        <div id="about-map" className="flex flex bg-gray-100 p-[20px] rounded-sm items-center justify-center gap-1.5 w-full h-full overflow-hidden">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
           </p>
         </div>
       </div>
