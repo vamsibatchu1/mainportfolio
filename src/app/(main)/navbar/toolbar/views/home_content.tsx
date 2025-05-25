@@ -3,19 +3,19 @@ import { motion } from 'framer-motion';
 
 const contentSpring = { type: "spring", stiffness: 150, damping: 25 };
 
-const DrawContent = () => {
+const HomeContent = () => {
   return (
     <motion.div
-      key="draw-content"
+      key="home-content"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={contentSpring}
       className="p-4"
     >
-      Content for Draw Mode
+      Content for Home Mode
     </motion.div>
   );
 };
 
-export default DrawContent; 
+export default HomeContent; 

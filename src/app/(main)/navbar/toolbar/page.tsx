@@ -3,56 +3,22 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  ChevronDown,
-  MousePointer2,
-  Frame as LucideFrame,
-  Square,
-  PenTool,
-  Type,
-  MessageSquare,
-  Wand2,
   Code2,
-  Ruler,
   Palette,
-  SquarePen,
-  Pipette,
-  Paintbrush,
   UserCircle2,
+  FlaskConical,
+  Home
 } from 'lucide-react'
 
 // Import new content components
-import DesignContent from './views/design_content';
-import DrawContent from './views/draw_content';
-import DevContent from './views/dev_content';
+import WorkContent from './views/work_content';
+import HomeContent from './views/home_content';
+import WritingContent from './views/writing_content';
 import AboutContent from './views/about_content';
+import ExperimentsContent from './views/experiments_content';
+import { ExpandableTabs } from './components/expandable-tabs';
 
-type Mode = 'dev' | 'draw' | 'design' | 'about'
-
-type IconComponent = React.ComponentType<{ className?: string, style?: React.CSSProperties, size?: string | number }>
-
-interface ToolbarButtonProps {
-  icon: IconComponent
-  selected: boolean
-  onClick: () => void
-  showChevron?: boolean
-  mode?: Mode
-}
-
-interface ToolbarModeProps {
-  mode: Mode
-  selected: number
-  setSelected: (value: number) => void
-}
-
-interface AboutToolbarProps {
-  selected: number;
-}
-
-interface ToggleModeProps {
-  mode: Mode
-  setMode: (value: Mode) => void
-  setSelected: (value: number) => void
-}
+type Mode = 'home' | 'work' | 'writing' | 'about' | 'experiments'
 
 const spring = {
   type: 'spring' as const,
@@ -61,389 +27,57 @@ const spring = {
   duration: 0.3,
 }
 
-const ToolbarButton = ({
-  icon: Icon,
-  selected,
-  onClick,
-  showChevron = false,
-  mode = 'design',
-}: ToolbarButtonProps) => (
-  <button
-    className={`flex items-center justify-center ${
-      showChevron ? 'gap-1' : ''
-    } h-full`}
-    onClick={onClick}
-  >
-    <div
-      className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-md p-1.5 transition-colors duration-300"
-      style={{
-        color: selected ? '#FFF' : '#1A1A1A',
-      }}
-    >
-      <Icon className="relative z-[2]" />
-      {selected && (
-        <motion.div
-          className={`absolute inset-0 ${
-            mode === 'dev'
-              ? 'bg-[#00B75F]'
-              : mode === 'draw'
-                ? 'bg-[#00a2c2]'
-                : mode === 'about'
-                  ? 'bg-[#A78BFA]'
-                  : 'bg-[#0092FF]'
-          } rounded-md`}
-          layoutId={`indicator-${mode}`}
-        />
-      )}
-    </div>
-    {showChevron && <ChevronDown size={12} strokeWidth={1.5} />}
-  </button>
-)
+function DefaultDemo({ onTabChange }: { onTabChange: (mode: Mode) => void }) {
+  const tabs = [
+    { title: "Home", icon: Home },
+    { title: "Work", icon: Palette },
+    { type: "separator" as const },
+    { title: "Writing", icon: Code2 },
+    { title: "About", icon: UserCircle2 },
+    { title: "Experiments", icon: FlaskConical },
+  ];
 
-const DesignToolbar = ({
-  selected,
-  setSelected,
-}: Pick<ToolbarModeProps, 'selected' | 'setSelected'>) => (
-  <motion.div
-    className="flex h-full items-center justify-center gap-4 p-2"
-    initial={{ filter: 'blur(10px)', y: -48 }}
-    animate={{ filter: 'blur(0px)', y: 0 }}
-    exit={{ filter: 'blur(10px)', y: -48 }}
-    transition={{ delay: 0.15, ...spring }}
-    key="design"
-  >
-    <ToolbarButton
-      icon={MousePointer2}
-      selected={selected === 1}
-      onClick={() => setSelected(1)}
-      showChevron
-      mode="design"
-    />
-    <ToolbarButton
-      icon={LucideFrame}
-      selected={selected === 2}
-      onClick={() => setSelected(2)}
-      showChevron
-      mode="design"
-    />
-    <ToolbarButton
-      icon={Square}
-      selected={selected === 3}
-      onClick={() => setSelected(3)}
-      showChevron
-      mode="design"
-    />
-    <ToolbarButton
-      icon={PenTool}
-      selected={selected === 4}
-      onClick={() => setSelected(4)}
-      showChevron
-      mode="design"
-    />
-    <ToolbarButton
-      icon={Type}
-      selected={selected === 5}
-      onClick={() => setSelected(5)}
-      mode="design"
-    />
-    <ToolbarButton
-      icon={MessageSquare}
-      selected={selected === 6}
-      onClick={() => setSelected(6)}
-      mode="design"
-    />
-    <ToolbarButton
-      icon={Wand2}
-      selected={selected === 7}
-      onClick={() => setSelected(7)}
-      mode="design"
-    />
-  </motion.div>
-)
+  const handleTabSelection = (index: number | null) => {
+    if (index === null) return;
+    
+    // Map actual tab clicks to modes, accounting for separator
+    let mode: Mode;
+    switch (index) {
+      case 0: mode = 'home'; break;
+      case 1: mode = 'work'; break;
+      case 3: mode = 'writing'; break;  // Skip separator at index 2
+      case 4: mode = 'about'; break;
+      case 5: mode = 'experiments'; break;
+      default: return;
+    }
+    
+    onTabChange(mode);
+  };
 
-const DrawToolbar = ({
-  selected,
-  setSelected,
-}: Pick<ToolbarModeProps, 'selected' | 'setSelected'>) => (
-  <motion.div
-    className="flex h-full items-center justify-center gap-4"
-    initial={{ filter: 'blur(10px)', y: 48 }}
-    animate={{ filter: 'blur(0px)', y: 0 }}
-    exit={{ filter: 'blur(10px)', y: 48 }}
-    transition={{ delay: 0.15, ...spring }}
-    key="draw"
-  >
-    <ToolbarButton
-      icon={MousePointer2}
-      selected={selected === 1}
-      onClick={() => setSelected(1)}
-      showChevron
-      mode="draw"
-    />
-    <div className="w-[1px] shrink-0 self-stretch bg-[#E6E6E6]" />
-    <img
-      className="pt-8 transition-all duration-300 hover:pt-5"
-      src="/pen.svg"
-      alt="Pen"
-    />
-    <img
-      className="pt-8 transition-all duration-300 hover:pt-5"
-      src="/brush.svg"
-      alt="Brush"
-    />
-    <img
-      className="pt-8 transition-all duration-300 hover:pt-5"
-      src="/pencil.svg"
-      alt="Pencil"
-    />
-    <div className="w-[1px] shrink-0 self-stretch bg-[#E6E6E6]" />
-    <ToolbarButton
-      icon={LucideFrame}
-      selected={selected === 2}
-      onClick={() => setSelected(2)}
-      showChevron
-      mode="draw"
-    />
-    <ToolbarButton
-      icon={Square}
-      selected={selected === 3}
-      onClick={() => setSelected(3)}
-      showChevron
-      mode="draw"
-    />
-    <ToolbarButton
-      icon={Type}
-      selected={selected === 4}
-      onClick={() => setSelected(4)}
-      mode="draw"
-    />
-    <ToolbarButton
-      icon={MessageSquare}
-      selected={selected === 5}
-      onClick={() => setSelected(5)}
-      mode="draw"
-    />
-    <ToolbarButton
-      icon={Wand2}
-      selected={selected === 6}
-      onClick={() => setSelected(6)}
-      mode="draw"
-    />
-  </motion.div>
-)
-
-const DevToolbar = ({
-  selected,
-  setSelected,
-}: Pick<ToolbarModeProps, 'selected' | 'setSelected'>) => (
-  <motion.div
-    className="flex h-full items-center justify-center gap-4"
-    initial={{ filter: 'blur(10px)', y: -48 }}
-    animate={{ filter: 'blur(0px)', y: 0 }}
-    exit={{ filter: 'blur(10px)', y: -48 }}
-    transition={{ delay: 0.15, ...spring }}
-    key="dev"
-  >
-    <ToolbarButton
-      icon={MousePointer2}
-      selected={selected === 1}
-      onClick={() => setSelected(1)}
-      mode="dev"
-    />
-    <ToolbarButton
-      icon={Pipette}
-      selected={selected === 2}
-      onClick={() => setSelected(2)}
-      mode="dev"
-    />
-    <ToolbarButton
-      icon={Ruler}
-      selected={selected === 3}
-      onClick={() => setSelected(3)}
-      mode="dev"
-    />
-    <ToolbarButton
-      icon={SquarePen}
-      selected={selected === 4}
-      onClick={() => setSelected(4)}
-      mode="dev"
-    />
-    <ToolbarButton
-      icon={MessageSquare}
-      selected={selected === 5}
-      onClick={() => setSelected(5)}
-      mode="dev"
-    />
-  </motion.div>
-)
-
-const AboutToolbar = ({
-  selected,
-}: AboutToolbarProps) => (
-  <motion.div
-    className="flex h-full items-center justify-center gap-4 p-2 text-slate-700"
-    initial={{ filter: 'blur(10px)', y: -48 }}
-    animate={{ filter: 'blur(0px)', y: 0 }}
-    exit={{ filter: 'blur(10px)', y: -48 }}
-    transition={{ delay: 0.15, ...spring }}
-    key="about"
-  >
-    <p>About Toolbar Content (Selected: {selected})</p>
-  </motion.div>
-)
-
-const Toolbar = ({ mode, selected, setSelected }: ToolbarModeProps) => {
-  let width
-  switch (mode) {
-    case 'dev':
-      width = 240
-      break
-    case 'draw':
-      width = 520
-      break
-    case 'design':
-      width = 400
-      break
-    case 'about':
-      width = 300
-      break
-  }
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        className="h-12"
-        initial={{ width }}
-        animate={{ width }}
-        exit={{ width }}
-        transition={{ delay: 0.1, ...spring }}
-      >
-        {mode === 'dev' && (
-          <DevToolbar selected={selected} setSelected={setSelected} />
-        )}
-        {mode === 'design' && (
-          <DesignToolbar selected={selected} setSelected={setSelected} />
-        )}
-        {mode === 'draw' && (
-          <DrawToolbar selected={selected} setSelected={setSelected} />
-        )}
-        {mode === 'about' && (
-          <AboutToolbar selected={selected} />
-        )}
-      </motion.div>
-    </AnimatePresence>
-  )
-}
-
-const ToggleMode = ({ mode, setMode, setSelected }: ToggleModeProps) => {
-  return (
-    <div className="flex h-12 py-2 pr-2">
-      <div className="flex items-center gap-3 rounded-lg bg-slate-100 p-0.5">
-        <button
-          className="relative flex h-full w-7 shrink-0 items-center justify-center gap-1 rounded-md p-0.5"
-          onClick={() => {
-            setMode('draw')
-            setSelected(1)
-          }}
-        >
-          <Paintbrush
-            size={20}
-            style={{
-              color: mode === 'draw' ? '#00a2c2' : '',
-            }}
-            className="z-[2] transition-colors duration-300"
-          />
-          {mode === 'draw' && (
-            <motion.div
-              layoutId="toggle-indicator"
-              className="absolute inset-0 rounded-md bg-white shadow"
-            />
-          )}
-        </button>
-        <button
-          className="relative flex h-full w-7 shrink-0 items-center justify-center gap-1 rounded-md p-0.5"
-          onClick={() => {
-            setMode('design')
-            setSelected(1)
-          }}
-        >
-          <Palette
-            size={20}
-            style={{
-              color: mode === 'design' ? '#0092FF' : '',
-            }}
-            className="z-[2] transition-colors duration-300"
-          />
-          {mode === 'design' && (
-            <motion.div
-              layoutId="toggle-indicator"
-              className="absolute inset-0 rounded-md bg-white shadow"
-            />
-          )}
-        </button>
-        <button
-          className="relative flex h-full w-7 shrink-0 items-center justify-center gap-1 rounded-md p-0.5"
-          onClick={() => {
-            setMode('dev')
-            setSelected(1)
-          }}
-        >
-          <Code2
-            size={20}
-            style={{
-              color: mode === 'dev' ? '#00B75F' : '',
-            }}
-            className="z-[2] transition-colors duration-300"
-          />
-          {mode === 'dev' && (
-            <motion.div
-              layoutId="toggle-indicator"
-              className="absolute inset-0 rounded-md bg-white shadow"
-            />
-          )}
-        </button>
-        <button
-          className="relative flex h-full w-7 shrink-0 items-center justify-center gap-1 rounded-md p-0.5"
-          onClick={() => {
-            setMode('about')
-            setSelected(1)
-          }}
-        >
-          <UserCircle2
-            size={20}
-            style={{
-              color: mode === 'about' ? '#6D28D9' : '',
-            }}
-            className="z-[2] transition-colors duration-300"
-          />
-          {mode === 'about' && (
-            <motion.div
-              layoutId="toggle-indicator"
-              className="absolute inset-0 rounded-md bg-white shadow"
-            />
-          )}
-        </button>
-      </div>
+    <div className="flex flex-col gap-4">
+      <ExpandableTabs 
+        tabs={tabs} 
+        activeColor="text-black" 
+        onChange={handleTabSelection}
+      />
     </div>
-  )
+  );
 }
 
-interface ContentCardProps {
-  mode: Mode;
-  setMode: (value: Mode) => void;
-  setSelected: (value: number) => void;
-}
-
-const ContentCard = ({ mode, setMode, setSelected }: ContentCardProps) => {
+const ContentCard = ({ mode }: { mode: Mode }) => {
   const renderContent = () => {
     switch (mode) {
-      case 'design':
-        return <DesignContent />;
-      case 'draw':
-        return <DrawContent />;
-      case 'dev':
-        return <DevContent />;
+      case 'work':
+        return <WorkContent />;
+      case 'home':
+        return <HomeContent />;
+      case 'writing':
+        return <WritingContent />;
       case 'about':
         return <AboutContent />;
+      case 'experiments':
+        return <ExperimentsContent />;
       default:
         return null;
     }
@@ -459,26 +93,21 @@ const ContentCard = ({ mode, setMode, setSelected }: ContentCardProps) => {
         {renderContent()}
         </AnimatePresence>
       </motion.div>
-      <ToggleMode mode={mode} setMode={setMode} setSelected={setSelected} />
     </div>
   );
 };
 
 const Page = () => {
-  const [mode, setMode] = useState<Mode>('design')
-  const [selected, setSelected] = useState(1)
+  const [mode, setMode] = useState<Mode>('work')
+
+  const handleTabChange = (newMode: Mode) => {
+    setMode(newMode);
+  };
 
   return (
-    <main className="relative flex min-h-screen w-full flex-col items-center justify-end px-4 py-10 gap-4">
-      {/*<motion.div
-        className="shadow-box flex items-center gap-1.5 overflow-hidden rounded-xl bg-white"
-        transition={spring}
-      >
-        <Toolbar mode={mode} selected={selected} setSelected={setSelected} />
-        <div className="w-[1px] self-stretch bg-[#E6E6E6]" />
-        <ToggleMode mode={mode} setMode={setMode} setSelected={setSelected} />
-      </motion.div>*/}
-      <ContentCard mode={mode} setMode={setMode} setSelected={setSelected} />
+    <main className="relative flex min-h-screen w-full flex-col items-center justify-end px-4 py-10 gap-8"> 
+      <ContentCard mode={mode} />
+      <DefaultDemo onTabChange={handleTabChange} />
     </main>
   )
 }
