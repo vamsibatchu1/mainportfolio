@@ -30,7 +30,7 @@ export default function HomeNewPage() {
           <LeftCard />
           <motion.div 
               style={{ 
-                marginTop: '16px',
+                marginTop: '20px',
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'end',
@@ -67,16 +67,16 @@ export default function HomeNewPage() {
               onClick={() => setShowOverlay(false)}
             >
               <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                initial={{ opacity: 0, scale: 0.95, y: 100 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                exit={{ opacity: 0, scale: 0.95, y: 100 }}
                 transition={{ duration: 0.3, type: "spring", stiffness: 200, damping: 20 }}
                 className="relative max-w-6xl w-full mx-4"
                 onClick={(e) => e.stopPropagation()}
               >
                 <ToolbarPage />
               </motion.div>
-            </motion.div>
+            </motion.div> 
           )}
         </AnimatePresence>
     </>
