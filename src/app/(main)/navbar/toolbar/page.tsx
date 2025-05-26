@@ -21,6 +21,8 @@ import { ExpandableTabs } from './components/expandable-tabs';
 type Mode = 'home' | 'work' | 'writing' | 'about' | 'experiments'
 
 function DefaultDemo({ onTabChange }: { onTabChange: (mode: Mode) => void }) {
+  const [activeIndex, setActiveIndex] = useState<number | null>(0); // Start with Home selected
+
   const tabs = [
     { title: "Home", icon: Home },
     { title: "Work", icon: Palette },
@@ -32,6 +34,8 @@ function DefaultDemo({ onTabChange }: { onTabChange: (mode: Mode) => void }) {
 
   const handleTabSelection = (index: number | null) => {
     if (index === null) return;
+    
+    setActiveIndex(index);
     
     // Map actual tab clicks to modes, accounting for separator
     let mode: Mode;
@@ -53,6 +57,7 @@ function DefaultDemo({ onTabChange }: { onTabChange: (mode: Mode) => void }) {
         tabs={tabs} 
         activeColor="text-black" 
         onChange={handleTabSelection}
+        selectedIndex={activeIndex}
       />
     </div>
   );
@@ -86,14 +91,14 @@ const ContentCard = ({ mode }: { mode: Mode }) => {
 };
 
 const Page = () => {
-  const [mode, setMode] = useState<Mode>('work')
+  const [mode, setMode] = useState<Mode>('home')
 
   const handleTabChange = (newMode: Mode) => {
     setMode(newMode);
   };
 
   return (
-    <main className="relative flex min-h-screen w-full flex-col items-center justify-end px-4 py-10 gap-8"> 
+    <main className="relative flex min-h-screen w-full flex-col items-center justify-end px-4 py-10 gap-4"> 
       <ContentCard mode={mode} />
       <DefaultDemo onTabChange={handleTabChange} />
     </main>

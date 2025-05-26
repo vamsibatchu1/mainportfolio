@@ -13,7 +13,8 @@ const nextConfig = {
       'images.unsplash.com',
       'assets.dub.co',
       'blog-interaction.vercel.app',
-      'placehold.co'
+      'placehold.co',
+      'images.pexels.com'
     ],
   },
   async rewrites() {

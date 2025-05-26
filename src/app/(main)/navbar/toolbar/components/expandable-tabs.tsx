@@ -28,6 +28,7 @@ interface ExpandableTabsProps {
   className?: string;
   activeColor?: string;
   onChange?: (index: number | null) => void;
+  selectedIndex?: number | null;
 }
 
 const buttonVariants = {
@@ -56,9 +57,15 @@ export function ExpandableTabs({
   className,
   activeColor = "text-primary",
   onChange,
+  selectedIndex = null,
 }: ExpandableTabsProps) {
-  const [selected, setSelected] = React.useState<number | null>(null);
+  const [selected, setSelected] = React.useState<number | null>(selectedIndex);
   const outsideClickRef = React.useRef(null);
+
+  // Sync external selectedIndex with internal state
+  React.useEffect(() => {
+    setSelected(selectedIndex);
+  }, [selectedIndex]);
 
   useOnClickOutside(outsideClickRef, () => {
     setSelected(null);
@@ -101,7 +108,7 @@ export function ExpandableTabs({
             className={cn(
               "relative flex items-center rounded-xl px-4 py-2 text-sm font-medium transition-colors duration-300",
               selected === index
-                ? cn("bg-muted", activeColor)
+                ? cn("bg-gray-100 shadow-sm ring-1 ring-gray-300/50", activeColor)
                 : "text-muted-foreground hover:bg-muted hover:text-foreground"
             )}
           >
