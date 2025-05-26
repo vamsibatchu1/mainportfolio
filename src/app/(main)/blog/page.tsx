@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { secFont, triFont } from '@/lib/config/fonts';
-import Navbar from '../home/components/navbar-test/Navbar';
 
 export default function BlogPage() {
   const [loaded, setLoaded] = useState(false);
@@ -120,7 +119,6 @@ export default function BlogPage() {
         </AnimatePresence>
       </div>
 
-      <Navbar />
     </div>
   );
 } 

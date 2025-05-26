@@ -29,10 +29,25 @@ const styles = `
   }
 `;
 
-// Inject styles into document
-const styleSheet = document.createElement("style");
-styleSheet.innerText = styles;
-document.head.appendChild(styleSheet);
+// StyleInjector component to handle styles injection
+const StyleInjector: React.FC = () => {
+  React.useEffect(() => {
+    if (typeof document !== 'undefined') {
+      const styleSheet = document.createElement("style");
+      styleSheet.innerText = styles;
+      document.head.appendChild(styleSheet);
+      
+      return () => {
+        // Cleanup on unmount
+        if (document.head.contains(styleSheet)) {
+          document.head.removeChild(styleSheet);
+        }
+      };
+    }
+  }, []);
+  
+  return null;
+};
 
 // Textarea Component
 interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -527,8 +542,10 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
   }, []);
 
   React.useEffect(() => {
-    document.addEventListener("paste", handlePaste);
-    return () => document.removeEventListener("paste", handlePaste);
+    if (typeof document !== 'undefined') {
+      document.addEventListener("paste", handlePaste);
+      return () => document.removeEventListener("paste", handlePaste);
+    }
   }, [handlePaste]);
 
   const handleSubmit = () => {
@@ -557,6 +574,7 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
 
   return (
     <>
+      <StyleInjector />
       <PromptInput
         value={input}
         onValueChange={setInput}
