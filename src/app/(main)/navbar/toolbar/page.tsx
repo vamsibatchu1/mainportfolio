@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 import {
   Code2,
   Palette,
@@ -19,13 +19,6 @@ import ExperimentsContent from './views/experiments_content';
 import { ExpandableTabs } from './components/expandable-tabs';
 
 type Mode = 'home' | 'work' | 'writing' | 'about' | 'experiments'
-
-const spring = {
-  type: 'spring' as const,
-  stiffness: 200,
-  damping: 20,
-  duration: 0.3,
-}
 
 function DefaultDemo({ onTabChange }: { onTabChange: (mode: Mode) => void }) {
   const tabs = [
@@ -85,14 +78,9 @@ const ContentCard = ({ mode }: { mode: Mode }) => {
 
   return (
     <div className="shadow-box flex flex-col items-start gap-1.5 overflow-hidden w-[640px] h-auto p-4 rounded-xl bg-white">
-      <motion.div
-        className="shadow-box flex items-center gap-1.5 overflow-hidden bg-white"
-        transition={spring}
-      >
       <AnimatePresence mode="wait">
         {renderContent()}
-        </AnimatePresence>
-      </motion.div>
+      </AnimatePresence>
     </div>
   );
 };

@@ -4,7 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Image from "next/image";
 import useScreenSize from "../../../../../hooks/use-screen-size";
-import { priFont } from '@/app/fonts';
+import {loraFont } from '@/app/fonts';
 import DragElements from "../components/dragelements";
 
 const urls = [
@@ -90,7 +90,7 @@ const AboutContent = () => {
     >
       <div id="about-content-1" className="flex flex-col items-start justify-start gap-4 w-[30%] h-full">
         <div id="about-text" className="flex items-end justify-center gap-1.5 w-full h-full overflow-hidden">
-          <p className={`${priFont.className} text-[18px] font-bold leading-[20px]`}>
+          <p className={`${loraFont.className} text-[16px] leading-[18px]`}>
             Based in Atlanta, I have been designing for 11+ years in the digital design industry.
           </p>
         </div>
