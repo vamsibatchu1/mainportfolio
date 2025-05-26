@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import LeftCard from './components/LeftCard';
 import { motion, AnimatePresence } from 'framer-motion';
 import { fourFont } from '@/app/fonts';
-import ToolbarPage from '../../navbar/toolbar/page';
+import ToolbarPage from '../navbar/toolbar/page';
 
 export default function HomeNewPage() {
   const [showOverlay, setShowOverlay] = useState(false);
