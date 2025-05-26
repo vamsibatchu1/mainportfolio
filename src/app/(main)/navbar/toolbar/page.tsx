@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
   Code2,
   Palette,
@@ -82,11 +82,25 @@ const ContentCard = ({ mode }: { mode: Mode }) => {
   };
 
   return (
-    <div className="shadow-box flex flex-col items-start gap-1.5 overflow-hidden w-[640px] h-auto p-4 rounded-xl bg-white">
-      <AnimatePresence mode="wait">
-        {renderContent()}
-      </AnimatePresence>
-    </div>
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={mode}
+        initial={{ y: 60, opacity: 0, scale: 0.95 }}
+        animate={{ y: 0, opacity: 1, scale: 1 }}
+        exit={{ y: -60, opacity: 0, scale: 0.95 }}
+        transition={{
+          type: "spring",
+          stiffness: 300,
+          damping: 30,
+          duration: 0.4
+        }}
+        className="shadow-box flex flex-col items-start gap-1.5 overflow-hidden w-[640px] h-auto p-4 rounded-xl bg-white"
+      >
+        <AnimatePresence mode="wait">
+          {renderContent()}
+        </AnimatePresence>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 
