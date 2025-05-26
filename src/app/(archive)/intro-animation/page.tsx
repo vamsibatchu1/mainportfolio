@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { IntroAnimation } from '@/app/(main)/home/components/intro-animation';
+import { IntroAnimation } from '@/app/(archive)/intro-animation';
 
 export default function IntroAnimationPage() {
   return (

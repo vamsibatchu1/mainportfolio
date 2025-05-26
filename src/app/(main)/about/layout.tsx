@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-import UnifiedActionBar from '../home/components/UnifiedActionBar';
+import UnifiedActionBar from '../../(archive)/UnifiedActionBar';
 
 export default function AboutLayout({
   children,

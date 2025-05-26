@@ -8,7 +8,6 @@ import { TextScramble } from '@/components/ui/text-scramble';
 import styles from './components/styles.module.css';
 import { GalleryHorizontalEnd } from 'lucide-react'; // Import GalleryHorizontalEnd icon
 import { triFont } from '@/app/fonts';
-import Navbar from './components/navbar-test/Navbar';
 
 // Initialize IBM Plex Mono font
 const ibmPlexMono = IBM_Plex_Mono({
@@ -751,9 +750,6 @@ export default function NewHomePage() {
         )}
       </AnimatePresence>
       </div>
-      
-      {/* Replace UnifiedActionBar with Navbar */}
-      <Navbar />
-    </div>
+      </div>
   );
 }
