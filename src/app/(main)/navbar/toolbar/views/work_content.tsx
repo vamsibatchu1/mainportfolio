@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GooeyFilter } from "../components/gooeyfilter";
 import { useScreenSize } from "@/components/hooks/use-screen-size";
-import { Button } from "@/components/ui/button";
+
 
 const contentSpring = { type: "spring", stiffness: 200, damping: 25 };
 
@@ -47,7 +47,7 @@ const TAB_CONTENT = [
 
 function GooeyDemo() {
   const [activeTab, setActiveTab] = useState(0)
-  const [isGooeyEnabled, setIsGooeyEnabled] = useState(true)
+  const isGooeyEnabled = true
   const screenSize = useScreenSize()
 
   return (

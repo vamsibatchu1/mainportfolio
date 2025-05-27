@@ -29,39 +29,29 @@ const LoadingDots = () => (
   </div>
 );
 
-// Typewriter component
-const TypewriterText = ({ text, onComplete }: { text: string; onComplete?: () => void }) => {
-  const [displayedText, setDisplayedText] = React.useState('');
-  const [currentIndex, setCurrentIndex] = React.useState(0);
-
-  React.useEffect(() => {
-    if (currentIndex < text.length) {
-      const timer = setTimeout(() => {
-        setDisplayedText(prev => prev + text[currentIndex]);
-        setCurrentIndex(prev => prev + 1);
-      }, 30); // 30ms delay between characters
-      return () => clearTimeout(timer);
-    } else if (onComplete) {
-      onComplete();
-    }
-  }, [currentIndex, text, onComplete]);
-
-  React.useEffect(() => {
-    setDisplayedText('');
-    setCurrentIndex(0);
-  }, [text]);
-
+// Chat bubble response component
+const ChatBubbleResponse = ({ text }: { text: string }) => {
   return (
-    <div className={`${interFont.className} text-black text-sm leading-relaxed`}>
-      {displayedText}
-      {currentIndex < text.length && (
-        <motion.span
-          className="inline-block w-0.5 h-4 bg-gray-400 ml-0.5"
-          animate={{ opacity: [0, 1, 0] }}
-          transition={{ duration: 0.8, repeat: Infinity }}
-        />
-      )}
-    </div>
+    <motion.div
+      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      className="flex items-start gap-3 w-full"
+    >
+      {/* Avatar */}
+      <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
+        <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+          <path fillRule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 8a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+        </svg>
+      </div>
+      
+      {/* Message bubble */}
+      <div className="bg-gray-100 dark:bg-gray-800 rounded-2xl rounded-tl-md px-4 py-3 max-w-[85%]">
+        <div className={`${interFont.className} text-gray-900 dark:text-gray-100 text-sm leading-relaxed`}>
+          {text}
+        </div>
+      </div>
+    </motion.div>
   );
 };
 
@@ -153,7 +143,7 @@ const ExperimentsContent = () => {
   const [aiResponse, setAiResponse] = React.useState('');
   const [showResponse, setShowResponse] = React.useState(false);
 
-  const demoResponse = "Hello! I'm an AI assistant. This is a demo response showing the typewriter effect, similar to how ChatGPT displays responses. Each character appears with a smooth animation, creating an engaging user experience.";
+  const demoResponse = "Hello! I'm an AI assistant. This is a demo response showing the chat bubble style. I can help answer questions about Vamsi Batchu and provide information in a clean, modern chat interface.";
 
   const handleSend = (message: string, files?: File[]) => {
     console.log('Message received:', message, files);
@@ -163,12 +153,12 @@ const ExperimentsContent = () => {
     setShowResponse(false);
     setAiResponse('');
     
-    // Show loading for 2 seconds, then start typewriter
+    // Show loading for 1.5 seconds, then show full response immediately
     setTimeout(() => {
       setIsLoading(false);
       setAiResponse(demoResponse);
       setShowResponse(true);
-    }, 2000);
+    }, 1500);
   };
 
   return (
@@ -205,11 +195,11 @@ const ExperimentsContent = () => {
           {showResponse && aiResponse && (
             <motion.div
               key="response"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               className="w-full"
             >
-              <TypewriterText text={aiResponse} />
+              <ChatBubbleResponse text={aiResponse} />
             </motion.div>
           )}
         </AnimatePresence>

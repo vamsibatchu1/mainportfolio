@@ -93,7 +93,7 @@ const ContentCard = ({ mode }: { mode: Mode }) => {
           damping: 30,
           duration: 0.4
         }}
-        className="shadow-box flex flex-col items-start gap-1.5 overflow-hidden w-[640px] h-auto p-4 rounded-xl"
+        className="shadow-box flex flex-col items-start gap-1.5 overflow-hidden w-[640px] h-auto p-2 rounded-xl"
       >
         <AnimatePresence mode="wait">
           {renderContent()}
