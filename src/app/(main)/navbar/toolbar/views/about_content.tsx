@@ -113,7 +113,7 @@ const AboutContent = () => {
       className="flex items-start gap-2 w-full h-[320px]"
     >
       <div id="about-content-1" className="flex flex-col items-start justify-start gap-4 w-[30%] h-full">
-        <div id="about-text" className="flex items-start justify-center gap-1.5 w-full h-full overflow-hidden">
+        <div id="about-text" className="flex items-start justify-center gap-1.5 text-white w-full h-full overflow-hidden">
           <AnimatedText 
             text="Based in Atlanta, I have been designing for 11+ years in the digital design industry."
             className={`${loraFont.className} text-[16px] leading-[18px]`}

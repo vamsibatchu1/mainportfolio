@@ -11,18 +11,32 @@ export default function HomeNewPage() {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement;
+      // Check if the event target is an input, textarea, or contenteditable element
+      const isInputFocused = target.tagName === 'INPUT' || 
+                             target.tagName === 'TEXTAREA' || 
+                             target.isContentEditable;
+
       if (event.code === 'Space') {
-        event.preventDefault();
-        setShowOverlay(prev => !prev);
+        // Only preventDefault and show overlay if not focused on an input field
+        if (!isInputFocused) {
+          event.preventDefault();
+          if (!showOverlay) {
+            setShowOverlay(true);
+          }
+        }
+        // If an input is focused, do nothing here, let the space be typed
       }
+      
       if (event.code === 'Escape') {
+        // Escape should always work to close the overlay
         setShowOverlay(false);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [showOverlay]);
 
   return (
     <>
@@ -62,9 +76,8 @@ export default function HomeNewPage() {
               animate={{ opacity: 1 }} 
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="fixed inset-0 z-50 flex items-center justify-center"
+              className="fixed inset-0 z-50 flex items-end justify-center"
               style={{ backdropFilter: 'blur(80px)' }}
-              onClick={() => setShowOverlay(false)}
             >
               <motion.div
                 initial={{ opacity: 0, scale: 0.95, y: 100 }}
@@ -74,7 +87,7 @@ export default function HomeNewPage() {
                 className="relative max-w-6xl w-full mx-4"
                 onClick={(e) => e.stopPropagation()}
               >
-                <ToolbarPage />
+                <ToolbarPage onDismiss={() => setShowOverlay(false)} />
               </motion.div>
             </motion.div> 
           )}

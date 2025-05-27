@@ -85,11 +85,16 @@ export function ExpandableTabs({
     <div
       ref={outsideClickRef}
       className={cn(
-        "flex flex-wrap items-center gap-2 rounded-2xl border bg-background p-1 shadow-sm",
+        "relative flex flex-wrap items-center gap-2 rounded-2xl border border-[#27272A] bg-[#18181B] p-1 shadow-sm",
         inter.className,
         className
       )}
     >
+      {/* Dot pattern overlay */}
+      <div className="absolute inset-0 opacity-100 transition-opacity duration-300">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.02)_1px,transparent_1px)] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[length:4px_4px] rounded-2xl" />
+      </div>
+      
       {tabs.map((tab, index) => {
         if (tab.type === "separator") {
           return <Separator key={`separator-${index}`} />;
@@ -109,7 +114,7 @@ export function ExpandableTabs({
               "relative flex items-center rounded-xl px-4 py-2 text-sm font-medium transition-colors duration-300",
               selected === index
                 ? cn("bg-gray-100 shadow-sm ring-1 ring-gray-300/50", activeColor)
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                : "text-gray-400 hover:bg-gray-800 hover:text-white"
             )}
           >
             <Icon size={20} />

@@ -7,7 +7,8 @@ import {
   Palette,
   UserCircle2,
   FlaskConical,
-  Home
+  Home,
+  X
 } from 'lucide-react'
 
 // Import new content components
@@ -103,7 +104,7 @@ const ContentCard = ({ mode }: { mode: Mode }) => {
   );
 };
 
-const Page = () => {
+const Page = ({ onDismiss }: { onDismiss: () => void }) => {
   const [mode, setMode] = useState<Mode>('home')
 
   const handleTabChange = (newMode: Mode) => {
@@ -111,10 +112,19 @@ const Page = () => {
   };
 
   return (
-    <main className="relative bg flex min-h-screen w-full flex-col items-center justify-end px-4 py-10 gap-4"> 
+    <div className="relative flex flex-col items-center justify-end gap-4 w-full px-4 pb-10"> 
       <ContentCard mode={mode} />
-      <DefaultDemo onTabChange={handleTabChange} />
-    </main>
+      <div className="flex items-end gap-2">
+        <DefaultDemo onTabChange={handleTabChange} />
+        <button
+          onClick={onDismiss}
+          className="p-2.5 bg-[#27272A] rounded-full text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+          aria-label="Close toolbar"
+        >
+          <X size={20} />
+        </button>
+      </div>
+    </div>
   )
 }
 

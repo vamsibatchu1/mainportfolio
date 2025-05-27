@@ -39,15 +39,10 @@ const ChatBubbleResponse = ({ text }: { text: string }) => {
       className="flex items-start gap-3 w-full"
     >
       {/* Avatar */}
-      <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
-        <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-          <path fillRule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 8a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-        </svg>
-      </div>
       
       {/* Message bubble */}
-      <div className="bg-gray-100 dark:bg-gray-800 rounded-2xl rounded-tl-md px-4 py-3 max-w-[85%]">
-        <div className={`${interFont.className} text-gray-900 dark:text-gray-100 text-sm leading-relaxed`}>
+      <div className="rounded-[10px] rounded-tl-[4px] px-4 py-3 max-w-[85%] bg-gradient-to-r from-[#0D74CE] to-[#5EB1EF]">
+        <div className={`${interFont.className} text-sm leading-relaxed`} style={{ color: '#fff' }}>
           {text}
         </div>
       </div>

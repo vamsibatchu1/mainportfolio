@@ -107,13 +107,34 @@ function GooeyDemo() {
               >
                 <div className="space-y-2 mt-4 sm:mt-8 md:mt-8">
                   <ul className="">
-                    {TAB_CONTENT[activeTab].files.map((file) => (
-                      <li
+                    {TAB_CONTENT[activeTab].files.map((file, index) => (
+                      <motion.li
                         key={file}
                         className="border-b border-muted-foreground/50 pt-2 pb-1 text-black"
+                        initial={{ 
+                          opacity: 0, 
+                          y: 20,
+                          scale: 0.95
+                        }}
+                        animate={{ 
+                          opacity: 1, 
+                          y: 0,
+                          scale: 1
+                        }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 25,
+                          delay: index * 0.1 + 0.15,
+                          duration: 0.5
+                        }}
+                        whileHover={{
+                          y: -2,
+                          transition: { type: "spring", stiffness: 400, damping: 25 }
+                        }}
                       >
                         {file}
-                      </li>
+                      </motion.li>
                     ))}
                   </ul>
                 </div>
