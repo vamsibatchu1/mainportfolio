@@ -26,7 +26,6 @@ function DefaultDemo({ onTabChange }: { onTabChange: (mode: Mode) => void }) {
   const tabs = [
     { title: "Home", icon: Home },
     { title: "Work", icon: Palette },
-    { type: "separator" as const },
     { title: "Writing", icon: Code2 },
     { title: "About", icon: UserCircle2 },
     { title: "Experiments", icon: FlaskConical },
@@ -37,14 +36,14 @@ function DefaultDemo({ onTabChange }: { onTabChange: (mode: Mode) => void }) {
     
     setActiveIndex(index);
     
-    // Map actual tab clicks to modes, accounting for separator
+    // Map actual tab clicks to modes
     let mode: Mode;
     switch (index) {
       case 0: mode = 'home'; break;
       case 1: mode = 'work'; break;
-      case 3: mode = 'writing'; break;  // Skip separator at index 2
-      case 4: mode = 'about'; break;
-      case 5: mode = 'experiments'; break;
+      case 2: mode = 'writing'; break;
+      case 3: mode = 'about'; break;
+      case 4: mode = 'experiments'; break;
       default: return;
     }
     
@@ -94,7 +93,7 @@ const ContentCard = ({ mode }: { mode: Mode }) => {
           damping: 30,
           duration: 0.4
         }}
-        className="shadow-box flex flex-col items-start gap-1.5 overflow-hidden w-[640px] h-auto p-4 rounded-xl bg-white"
+        className="shadow-box flex flex-col items-start gap-1.5 overflow-hidden w-[640px] h-auto p-4 rounded-xl"
       >
         <AnimatePresence mode="wait">
           {renderContent()}
@@ -112,7 +111,7 @@ const Page = () => {
   };
 
   return (
-    <main className="relative flex min-h-screen w-full flex-col items-center justify-end px-4 py-10 gap-4"> 
+    <main className="relative bg flex min-h-screen w-full flex-col items-center justify-end px-4 py-10 gap-4"> 
       <ContentCard mode={mode} />
       <DefaultDemo onTabChange={handleTabChange} />
     </main>

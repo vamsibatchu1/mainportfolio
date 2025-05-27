@@ -1,22 +1,176 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { PromptInputBox } from '../components/ai-prompt-box';
+import { TextShimmerWave } from '../components/text-shimmer-wave';
+import { interFont } from '@/app/fonts';
 
 const contentSpring = { type: "spring", stiffness: 150, damping: 25 };
 
-const DemoOne = () => {
+// Loading animation component
+const LoadingDots = () => (
+  <div className="flex items-center gap-1 py-2">
+    {[0, 1, 2].map((i) => (
+      <motion.div
+        key={i}
+        className="w-2 h-2 bg-gray-400 rounded-full"
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.5, 1, 0.5]
+        }}
+        transition={{
+          duration: 1.5,
+          repeat: Infinity,
+          delay: i * 0.2
+        }}
+      />
+    ))}
+  </div>
+);
+
+// Typewriter component
+const TypewriterText = ({ text, onComplete }: { text: string; onComplete?: () => void }) => {
+  const [displayedText, setDisplayedText] = React.useState('');
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    if (currentIndex < text.length) {
+      const timer = setTimeout(() => {
+        setDisplayedText(prev => prev + text[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }, 30); // 30ms delay between characters
+      return () => clearTimeout(timer);
+    } else if (onComplete) {
+      onComplete();
+    }
+  }, [currentIndex, text, onComplete]);
+
+  React.useEffect(() => {
+    setDisplayedText('');
+    setCurrentIndex(0);
+  }, [text]);
+
   return (
-    <div className="flex w-full h-screen justify-center items-start">
-      <div className="p-4 w-[500px]">
-        <PromptInputBox onSend={(message, files) => console.log(message, files)} />
-      </div>
+    <div className={`${interFont.className} text-black text-sm leading-relaxed`}>
+      {displayedText}
+      {currentIndex < text.length && (
+        <motion.span
+          className="inline-block w-0.5 h-4 bg-gray-400 ml-0.5"
+          animate={{ opacity: [0, 1, 0] }}
+          transition={{ duration: 0.8, repeat: Infinity }}
+        />
+      )}
+    </div>
+  );
+};
+
+const DemoOne = ({ onSend }: { onSend: (message: string, files?: File[]) => void }) => {
+  const [hasStartedTyping, setHasStartedTyping] = React.useState(false);
+  const [showInputBox, setShowInputBox] = React.useState(false);
+  const [showHint, setShowHint] = React.useState(false);
+
+  // Choreographed animation sequence
+  React.useEffect(() => {
+    // Start input box animation after content loads
+    const inputTimer = setTimeout(() => {
+      setShowInputBox(true);
+    }, 400);
+
+    // Start hint animation after input box
+    const hintTimer = setTimeout(() => {
+      setShowHint(true);
+    }, 800);
+
+    return () => {
+      clearTimeout(inputTimer);
+      clearTimeout(hintTimer);
+    };
+  }, []);
+
+  const handleSend = (message: string, files?: File[]) => {
+    onSend(message, files);
+    // Don't reset hasStartedTyping - hint should never come back
+  };
+
+  // Track when user starts typing by listening to focus events
+  React.useEffect(() => {
+    const handleInputFocus = () => setHasStartedTyping(true);
+    const handleInputBlur = (e: FocusEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'TEXTAREA' && (target as HTMLTextAreaElement).value.trim() === '') {
+        setHasStartedTyping(false);
+      }
+    };
+
+    if (typeof document !== 'undefined') {
+      document.addEventListener('focusin', handleInputFocus);
+      document.addEventListener('focusout', handleInputBlur);
+      
+      return () => {
+        document.removeEventListener('focusin', handleInputFocus);
+        document.removeEventListener('focusout', handleInputBlur);
+      };
+    }
+  }, []);
+
+  return (
+    <div className="flex flex-col w-full justify-center items-center gap-3 p-2">
+      <AnimatePresence>
+        {!hasStartedTyping && showHint && (
+          <motion.div 
+            className="w-full text-start"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.6 }}
+            style={{ fontFamily: interFont.style.fontFamily }}
+          >
+            <TextShimmerWave 
+              className='[--base-color:#0D74CE] [--base-gradient-color:#5EB1EF]'
+              duration={2}
+              spread={0.8}
+            >
+              Ask me anything that you want to know about Vamsi Batchu            
+            </TextShimmerWave>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <motion.div 
+        className="w-full"
+        initial={{ opacity: 0, y: 60 }}
+        animate={showInputBox ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
+        transition={{ type: "spring", stiffness: 200, damping: 25 }}
+      >
+        <PromptInputBox onSend={handleSend} />
+      </motion.div>
     </div>
   );
 };
 
 const ExperimentsContent = () => {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [aiResponse, setAiResponse] = React.useState('');
+  const [showResponse, setShowResponse] = React.useState(false);
+
+  const demoResponse = "Hello! I'm an AI assistant. This is a demo response showing the typewriter effect, similar to how ChatGPT displays responses. Each character appears with a smooth animation, creating an engaging user experience.";
+
+  const handleSend = (message: string, files?: File[]) => {
+    console.log('Message received:', message, files);
+    
+    // Always show loading and response for any message
+    setIsLoading(true);
+    setShowResponse(false);
+    setAiResponse('');
+    
+    // Show loading for 2 seconds, then start typewriter
+    setTimeout(() => {
+      setIsLoading(false);
+      setAiResponse(demoResponse);
+      setShowResponse(true);
+    }, 2000);
+  };
+
   return (
     <motion.div
       key="experiments-content"
@@ -24,9 +178,43 @@ const ExperimentsContent = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={contentSpring}
-      className="flex items-start gap-1.5 w-full h-[320px]"
+      className="flex flex-col items-start justify-between w-full h-[320px]"
     >
-      <DemoOne />
+      <div id="ai-response-container" className="w-full min-h-[60px] p-2">
+        <AnimatePresence mode="wait">
+          {isLoading && (
+            <motion.div
+              key="loading"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              style={{ fontFamily: interFont.style.fontFamily }}
+              className="flex items-start gap-2"
+            >
+              <TextShimmerWave 
+                className='[--base-color:#0D74CE] [--base-gradient-color:#5EB1EF]'
+                duration={1.5}
+                spread={0.6}
+              >
+                Thinking
+              </TextShimmerWave>
+              <LoadingDots />
+            </motion.div>
+          )}
+          
+          {showResponse && aiResponse && (
+            <motion.div
+              key="response"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="w-full"
+            >
+              <TypewriterText text={aiResponse} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+      <DemoOne onSend={handleSend} />
     </motion.div>
   );
 };

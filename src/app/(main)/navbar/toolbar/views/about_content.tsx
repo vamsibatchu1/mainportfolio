@@ -20,6 +20,30 @@ const randomInt = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+// Text reveal animation component
+const AnimatedText = ({ text, className }: { text: string; className: string }) => {
+  const characters = text.split('');
+  
+  return (
+    <p className={className}>
+      {characters.map((char, index) => (
+        <motion.span
+          key={index}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            delay: 0.8 + (index * 0.02), // Wait for content card animation + character stagger
+            duration: 0.3,
+            ease: "easeOut"
+          }}
+        >
+          {char}
+        </motion.span>
+      ))}
+    </p>
+  );
+};
+
 const DragElementsDemo: React.FC = () => {
   const screenSize = useScreenSize();
   return (
@@ -40,7 +64,7 @@ const DragElementsDemo: React.FC = () => {
               initial={{ opacity: 0, scale: 0.8, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ 
-                delay: index * 0.3,
+                delay: 3.6 + (index * 0.3), // Wait for content card + text + gray box + stagger
                 duration: 3,
                 type: "spring",
                 stiffness: 100,
@@ -89,16 +113,29 @@ const AboutContent = () => {
       className="flex items-start gap-2 w-full h-[320px]"
     >
       <div id="about-content-1" className="flex flex-col items-start justify-start gap-4 w-[30%] h-full">
-        <div id="about-text" className="flex items-end justify-center gap-1.5 w-full h-full overflow-hidden">
-          <p className={`${loraFont.className} text-[16px] leading-[18px]`}>
-            Based in Atlanta, I have been designing for 11+ years in the digital design industry.
-          </p>
+        <div id="about-text" className="flex items-start justify-center gap-1.5 w-full h-full overflow-hidden">
+          <AnimatedText 
+            text="Based in Atlanta, I have been designing for 11+ years in the digital design industry."
+            className={`${loraFont.className} text-[16px] leading-[18px]`}
+          />
         </div>
       </div>
 
-      <div id="about-dragelements" className="flex flex-col bg-gray-100 rounded-sm items-center justify-center gap-1.5 w-[70%] h-full overflow-hidden">
+      <motion.div 
+        id="about-dragelements" 
+        className="flex flex-col bg-gray-100 rounded-sm items-center justify-center gap-1.5 w-[70%] h-full overflow-hidden"
+        initial={{ opacity: 0, y: 120, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{
+          delay: 2.6, // Wait for content card (0.8s) + text animation (1.6s) + buffer (0.2s)
+          type: "spring",
+          stiffness: 80,
+          damping: 12,
+          mass: 1.2
+        }}
+      >
         <DragElementsDemo />
-      </div>
+      </motion.div>
     </motion.div>
   );
 };

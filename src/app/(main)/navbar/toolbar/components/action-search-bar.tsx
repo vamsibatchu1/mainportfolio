@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
+import { interFont } from '@/app/fonts';
 import {
     Search,
     Send,
@@ -167,7 +168,7 @@ function ActionSearchBar({ actions = allActions }: { actions?: Action[] }) {
     };
 
     return (
-        <div className="w-full max-w-xl mx-auto">
+        <div className={`w-full max-w-xl mx-auto ${interFont.className}`}>
             <div className="relative flex flex-col justify-start items-center min-h-[300px]">
                 <div className="w-full max-w-sm sticky top-0 bg-background z-10 pt-4 pb-1">
                     <label
