@@ -4,8 +4,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Image from "next/image";
 import useScreenSize from "../../../../../hooks/use-screen-size";
-import {loraFont } from '@/app/fonts';
+import {loraFont, interFont } from '@/app/fonts';
 import DragElements from "../components/dragelements";
+import { FilesystemItem } from "../components/filesystem-item";
 
 const urls = [
   "https://images.unsplash.com/photo-1683746531526-3bca2bc901b8?q=80&w=1820&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -103,6 +104,44 @@ const DragElementsDemo: React.FC = () => {
 const contentSpring = { type: "spring", stiffness: 150, damping: 25 };
 
 const AboutContent = () => {
+  // Filesystem data structure
+  const filesystemData = {
+    name: "Root",
+    nodes: [
+      {
+        name: "Applications",
+        nodes: [
+          { name: "Safari.app" },
+          { name: "Visual Studio Code.app" },
+        ],
+      },
+      {
+        name: "System",
+        nodes: [
+          {
+            name: "Library",
+            nodes: [
+              { name: "Fonts" },
+              { name: "Frameworks" },
+              { name: "Extensions" },
+            ],
+          },
+        ],
+      },
+      {
+        name: "Users",
+        nodes: [
+          {
+            name: "Shared",
+            nodes: [{ name: "Adobe" }],
+          },
+        ],
+      },
+      { name: "README.md" },
+      { name: "LICENSE" },
+    ],
+  };
+
   return (
     <motion.div
       key="about-content"
@@ -110,15 +149,36 @@ const AboutContent = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={contentSpring}
-      className="flex items-start gap-2 w-full h-[320px]"
+      className="flex items-start gap-4 w-full h-[320px]"
     >
-      <div id="about-content-1" className="flex flex-col items-start justify-start gap-4 w-[30%] h-full">
-        <div id="about-text" className="flex items-start justify-center gap-1.5 text-white w-full h-full overflow-hidden">
+      <div id="about-content-1" className="flex flex-col items-start justify-start gap-4 w-[30%] h-full flex-shrink-0">
+        <div id="about-text" className="flex items-start justify-center gap-1.5 text-white w-full">
           <AnimatedText 
-            text="Based in Atlanta, I have been designing for 11+ years in the digital design industry."
+            text="Creative at heart, designing products with a focus on craft and code."
             className={`${loraFont.className} text-[16px] leading-[18px]`}
           />
         </div>
+        <motion.div
+          id="colored-box-wrapper"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{
+            delay: 5.4,
+            duration: 0.5,
+            ease: "easeInOut"
+          }}
+          className="flex flex-col flex-grow w-full overflow-hidden rounded-lg no-scrollbar"
+        >
+          <div 
+            id="colored-box" 
+            className={`flex flex-col flex-grow items-start justify-start gap-1.5 text-white w-full h-full overflow-hidden p-4 rounded-lg no-scrollbar ${interFont.className}`}
+            style={{ backgroundColor: '#90D9E0' }}
+          >
+            <ul className="w-full text-sm text-black no-scrollbar overflow-y-auto overflow-x-auto">
+              <FilesystemItem node={filesystemData} animated />
+            </ul>
+          </div>
+        </motion.div>
       </div>
 
       <motion.div 
@@ -127,7 +187,7 @@ const AboutContent = () => {
         initial={{ opacity: 0, y: 120, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{
-          delay: 2.6, // Wait for content card (0.8s) + text animation (1.6s) + buffer (0.2s)
+          delay: 2.5, // Wait for content card (0.8s) + text animation (1.6s) + buffer (0.2s)
           type: "spring",
           stiffness: 80,
           damping: 12,
