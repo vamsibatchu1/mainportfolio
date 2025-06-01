@@ -50,51 +50,108 @@ const ChatBubbleResponse = ({ text }: { text: string }) => {
   );
 };
 
+// Suggestion chip component
+const SuggestionChip = ({ 
+  text, 
+  onClick 
+}: { 
+  text: string; 
+  onClick: () => void; 
+}) => {
+  return (
+    <button
+      onClick={onClick}
+      className={`${interFont.className} px-3 py-2 text-xs rounded-md border border-gray-600 bg-black backdrop-blur-sm hover:bg-[#0D74CE]/10 hover:border-[#0D74CE]/50 transition-all duration-200 text-[#fff] whitespace-nowrap`}
+    >
+      {text}
+    </button>
+  );
+};
+
+// Custom shimmer placeholder component
+const ShimmerPlaceholder = ({ 
+  text, 
+  show 
+}: { 
+  text: string; 
+  show: boolean; 
+}) => {
+  if (!show) return null;
+  
+  return (
+    <motion.div 
+      className="absolute inset-0 flex items-start pl-4 py-4 pointer-events-none"
+      style={{ fontFamily: interFont.style.fontFamily }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <TextShimmerWave 
+        className='[--base-color:#0D74CE] [--base-gradient-color:#5EB1EF]'
+        duration={2}
+        spread={0.8}
+      >
+        {text}
+      </TextShimmerWave>
+    </motion.div>
+  );
+};
+
 const DemoOne = ({ onSend }: { onSend: (message: string, files?: File[]) => void }) => {
   const [hasStartedTyping, setHasStartedTyping] = React.useState(false);
   const [showInputBox, setShowInputBox] = React.useState(false);
+  const [showChips, setShowChips] = React.useState(false);
   const [showHint, setShowHint] = React.useState(false);
+
+  const suggestionQuestions = [
+    "What are you currently working on?",
+    "What are your colleagues saying about you?"  ];
 
   // Choreographed animation sequence
   React.useEffect(() => {
-    // Start input box animation after content loads
+    // Start input box animation first
     const inputTimer = setTimeout(() => {
       setShowInputBox(true);
     }, 400);
 
-    // Start hint animation after input box
+    // Start chips animation after input box
+    const chipsTimer = setTimeout(() => {
+      setShowChips(true);
+    }, 800);
+
+    // Show hint last - after everything else is in place
     const hintTimer = setTimeout(() => {
       setShowHint(true);
-    }, 800);
+    }, 1200);
 
     return () => {
       clearTimeout(inputTimer);
+      clearTimeout(chipsTimer);
       clearTimeout(hintTimer);
     };
   }, []);
 
   const handleSend = (message: string, files?: File[]) => {
     onSend(message, files);
-    // Don't reset hasStartedTyping - hint should never come back
+  };
+
+  const handleChipClick = (question: string) => {
+    setHasStartedTyping(true); // Hide hint
+    setShowChips(false); // Hide chips when one is clicked
+    handleSend(question);
   };
 
   // Track when user starts typing by listening to focus events
   React.useEffect(() => {
-    const handleInputFocus = () => setHasStartedTyping(true);
-    const handleInputBlur = (e: FocusEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.tagName === 'TEXTAREA' && (target as HTMLTextAreaElement).value.trim() === '') {
-        setHasStartedTyping(false);
-      }
+    const handleInputFocus = () => {
+      setHasStartedTyping(true); // Only hide the hint, not the chips
     };
 
     if (typeof document !== 'undefined') {
       document.addEventListener('focusin', handleInputFocus);
-      document.addEventListener('focusout', handleInputBlur);
       
       return () => {
         document.removeEventListener('focusin', handleInputFocus);
-        document.removeEventListener('focusout', handleInputBlur);
       };
     }
   }, []);
@@ -102,32 +159,39 @@ const DemoOne = ({ onSend }: { onSend: (message: string, files?: File[]) => void
   return (
     <div className="flex flex-col w-full justify-center items-center gap-3 p-2">
       <AnimatePresence>
-        {!hasStartedTyping && showHint && (
-          <motion.div 
-            className="w-full text-start"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+        {showChips && (
+          <motion.div
+            className="flex flex-wrap gap-2 w-full justify-start"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.6 }}
-            style={{ fontFamily: interFont.style.fontFamily }}
+            transition={{ type: "spring", stiffness: 200, damping: 25 }}
           >
-            <TextShimmerWave 
-              className='[--base-color:#0D74CE] [--base-gradient-color:#5EB1EF]'
-              duration={2}
-              spread={0.8}
-            >
-              Ask me anything that you want to know about Vamsi Batchu            
-            </TextShimmerWave>
+            {suggestionQuestions.map((question) => (
+              <SuggestionChip
+                key={question}
+                text={question}
+                onClick={() => handleChipClick(question)}
+              />
+            ))}
           </motion.div>
         )}
       </AnimatePresence>
+
       <motion.div 
-        className="w-full"
+        className="w-full relative"
         initial={{ opacity: 0, y: 60 }}
         animate={showInputBox ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
         transition={{ type: "spring", stiffness: 200, damping: 25 }}
       >
-        <PromptInputBox onSend={handleSend} />
+        <PromptInputBox 
+          onSend={handleSend}
+          placeholder=""
+        />
+        <ShimmerPlaceholder 
+          text="Ask anything that you want to know about me" 
+          show={showHint && !hasStartedTyping}
+        />
       </motion.div>
     </div>
   );

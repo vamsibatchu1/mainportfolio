@@ -51,7 +51,7 @@ const DragElementsDemo: React.FC = () => {
     <div className="w-full h-full relative bg-gray-100 overflow-hidden">
       <DragElements dragMomentum={false} className="p-2 md:p-4 flex items-center justify-center">
         {urls.map((url, index) => {
-          const rotation = index === 0 ? randomInt(-40, 76) : randomInt(-80, 45);
+          const rotation = randomInt(-25, 25); // Consistent random rotation for all photos
           const width = screenSize.lessThan(`md`)
             ? randomInt(70, 90)
             : randomInt(90, 110);
@@ -62,8 +62,8 @@ const DragElementsDemo: React.FC = () => {
           return (
             <motion.div
               key={index}
-              initial={{ opacity: 0, scale: 0.8, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.8, y: 20, rotate: rotation + (index * 5) }} // Add slight rotation offset per photo
+              animate={{ opacity: 1, scale: 1, y: 0, rotate: rotation }}
               transition={{ 
                 delay: 3.6 + (index * 0.3), // Wait for content card + text + gray box + stagger
                 duration: 3,
@@ -73,7 +73,6 @@ const DragElementsDemo: React.FC = () => {
               }}
               className={`flex items-start justify-center bg-white shadow-2xl p-1`}
               style={{
-                transform: `rotate(${rotation}deg)`,
                 width: `${width}px`,
                 height: `${height}px`,
               }}
@@ -152,14 +151,14 @@ const AboutContent = () => {
       className="flex items-start gap-4 w-full h-[320px]"
     >
       <div id="about-content-1" className="flex flex-col items-start justify-start gap-4 w-[30%] h-full flex-shrink-0">
-        <div id="about-text" className="flex items-start justify-center gap-1.5 text-white w-full">
+        <div id="text-widget" className="flex items-start justify-center gap-1.5 text-white w-full">
           <AnimatedText 
             text="Creative at heart, designing products with a focus on craft and code."
             className={`${loraFont.className} text-[16px] leading-[18px]`}
           />
         </div>
         <motion.div
-          id="colored-box-wrapper"
+          id="filesystem-widget"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{
@@ -182,7 +181,7 @@ const AboutContent = () => {
       </div>
 
       <motion.div 
-        id="about-dragelements" 
+        id="photos-widget" 
         className="flex flex-col bg-gray-100 rounded-sm items-center justify-center gap-1.5 w-[70%] h-full overflow-hidden"
         initial={{ opacity: 0, y: 120, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
