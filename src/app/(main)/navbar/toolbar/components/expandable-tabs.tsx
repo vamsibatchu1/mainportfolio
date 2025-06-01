@@ -6,6 +6,7 @@ import { useOnClickOutside } from "usehooks-ts";
 import { cn } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
 import { Inter } from "next/font/google";
+import { useSound } from "@/hooks/use-sound";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -61,6 +62,7 @@ export function ExpandableTabs({
 }: ExpandableTabsProps) {
   const [selected, setSelected] = React.useState<number | null>(selectedIndex);
   const outsideClickRef = React.useRef(null);
+  const { playSound } = useSound();
 
   // Sync external selectedIndex with internal state
   React.useEffect(() => {
@@ -73,6 +75,7 @@ export function ExpandableTabs({
   });
 
   const handleSelect = (index: number) => {
+    playSound('tab-nav'); // Play navigation sound
     setSelected(index);
     onChange?.(index);
   };

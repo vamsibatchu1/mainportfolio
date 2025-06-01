@@ -41,8 +41,12 @@ const ChatBubbleResponse = ({ text }: { text: string }) => {
       {/* Avatar */}
       
       {/* Message bubble */}
-      <div className="rounded-[10px] rounded-tl-[4px] px-4 py-3 max-w-[85%] bg-gradient-to-r from-[#0D74CE] to-[#5EB1EF]">
-        <div className={`${interFont.className} text-sm leading-relaxed`} style={{ color: '#fff' }}>
+      <div className="rounded-[10px] rounded-tl-[4px] px-4 py-3 max-w-[85%] border" 
+           style={{ 
+             backgroundColor: 'rgba(23, 23, 25, 0.53)',
+             borderColor: '#3c3c3c'
+           }}>
+        <div className={`${interFont.className} text-sm leading-relaxed`} style={{ color: '#B0B0B0' }}>
           {text}
         </div>
       </div>

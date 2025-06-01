@@ -18,11 +18,13 @@ import WritingContent from './views/writing_content';
 import AboutContent from './views/about_content';
 import ExperimentsContent from './views/experiments_content';
 import { ExpandableTabs } from './components/expandable-tabs';
+import { useSound } from '@/hooks/use-sound';
 
 type Mode = 'home' | 'work' | 'writing' | 'about' | 'experiments'
 
 function DefaultDemo({ onTabChange }: { onTabChange: (mode: Mode) => void }) {
   const [activeIndex, setActiveIndex] = useState<number | null>(0); // Start with Home selected
+  const { playSound } = useSound();
 
   const tabs = [
     { title: "Home", icon: Home },
@@ -34,6 +36,9 @@ function DefaultDemo({ onTabChange }: { onTabChange: (mode: Mode) => void }) {
 
   const handleTabSelection = (index: number | null) => {
     if (index === null) return;
+    
+    // Play tab navigation sound
+    playSound('tab-nav');
     
     setActiveIndex(index);
     
@@ -106,9 +111,15 @@ const ContentCard = ({ mode }: { mode: Mode }) => {
 
 const Page = ({ onDismiss }: { onDismiss: () => void }) => {
   const [mode, setMode] = useState<Mode>('home')
+  const { playSound } = useSound();
 
   const handleTabChange = (newMode: Mode) => {
     setMode(newMode);
+  };
+
+  const handleDismiss = () => {
+    playSound('tab-close'); // Play close sound
+    onDismiss();
   };
 
   return (
@@ -117,7 +128,7 @@ const Page = ({ onDismiss }: { onDismiss: () => void }) => {
       <div className="flex items-end gap-2">
         <DefaultDemo onTabChange={handleTabChange} />
         <button
-          onClick={onDismiss}
+          onClick={handleDismiss}
           className="p-2.5 bg-[#27272A] rounded-full text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
           aria-label="Close toolbar"
         >

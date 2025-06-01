@@ -5,9 +5,11 @@ import LeftCard from './components/LeftCard';
 import { motion, AnimatePresence } from 'framer-motion';
 import { fourFont } from '@/app/fonts';
 import ToolbarPage from '../navbar/toolbar/page';
+import { useSound } from '@/hooks/use-sound';
 
 export default function HomeNewPage() {
   const [showOverlay, setShowOverlay] = useState(false);
+  const { playSound } = useSound();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -22,6 +24,7 @@ export default function HomeNewPage() {
         if (!isInputFocused) {
           event.preventDefault();
           if (!showOverlay) {
+            playSound('tab-appear'); // Play slide-up sound
             setShowOverlay(true);
           }
         }
@@ -36,7 +39,7 @@ export default function HomeNewPage() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [showOverlay]);
+  }, [showOverlay, playSound]);
 
   return (
     <>
