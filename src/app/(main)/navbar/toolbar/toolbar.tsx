@@ -109,7 +109,7 @@ const ContentCard = ({ mode }: { mode: Mode }) => {
   );
 };
 
-const Page = ({ onDismiss }: { onDismiss: () => void }) => {
+const Toolbar = ({ onDismiss }: { onDismiss: () => void }) => {
   const [mode, setMode] = useState<Mode>('home')
   const { playSound } = useSound();
 
@@ -139,4 +139,4 @@ const Page = ({ onDismiss }: { onDismiss: () => void }) => {
   )
 }
 
-export default Page 
+export default Toolbar 
