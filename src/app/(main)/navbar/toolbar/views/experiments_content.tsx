@@ -95,7 +95,7 @@ const ShimmerPlaceholder = ({
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
       <TextShimmerWave 
-        className='[--base-color:#0D74CE] [--base-gradient-color:#5EB1EF]'
+        className='[--base-color:#0D74CE] [--base-gradient-color:#5EB1EF] text-sm'
         duration={2}
         spread={0.8}
       >
@@ -249,7 +249,7 @@ const ExperimentsContent = () => {
               className="flex items-start gap-2"
             >
               <TextShimmerWave 
-                className='[--base-color:#0D74CE] [--base-gradient-color:#5EB1EF]'
+                className='[--base-color:#0D74CE] [--base-gradient-color:#5EB1EF] text-sm'
                 duration={1.5}
                 spread={0.6}
               >
