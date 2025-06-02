@@ -10,32 +10,31 @@ const contentSpring = { type: "spring", stiffness: 200, damping: 25 };
 export function Demo() {
   const songs = [
     {
-      title: "Finding Her",
-      artists: "Kushagra, Bharath, Saaheal",
-      duration: 207,
-      albumArt:
-        "https://i.scdn.co/image/ab67616d00001e0283141000ee8ce3b893a0b425",
+      title: "Building Intuitive User Experiences",
+      artists: "A deep dive into creating interfaces that feel natural and effortless to use",
+      duration: 6, // 6 min read
+      albumArt: "/images/personalsoftware.png",
     },
     {
-      title: "Daylight",
-      artists: "David Kushner",
-      duration: 226,
+      title: "The Future of AI in Design", 
+      artists: "How artificial intelligence is reshaping the design industry and creative processes",
+      duration: 8, // 8 min read
       albumArt:
-        "https://i.scdn.co/image/ab67616d0000b273e40c514edddb844439af6201",
+        "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=400&fit=crop&crop=center",
     },
     {
-      title: "Heat Waves",
-      artists: "Glass Animals",
-      duration: 237,
+      title: "Crafting Delightful Products",
+      artists: "The art and science behind creating products that users love and remember",
+      duration: 5, // 5 min read
       albumArt:
-        "https://i.scdn.co/image/ab67616d0000b273712701c5e263efc8726b1464",
+        "https://images.unsplash.com/photo-1559526324-593bc073d938?w=400&h=400&fit=crop&crop=center",
     },
     {
-      title: "Perfect",
-      artists: "Ed Sheeran",
-      duration: 263,
+      title: "Design Systems at Scale",
+      artists: "Building and maintaining consistent design languages across large organizations",
+      duration: 7, // 7 min read
       albumArt:
-        "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96",
+        "https://images.unsplash.com/photo-1635405074683-96d266eb60aa?w=400&h=400&fit=crop&crop=center",
     },
   ];
   return (

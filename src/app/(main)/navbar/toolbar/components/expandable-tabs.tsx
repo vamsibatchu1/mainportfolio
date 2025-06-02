@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useOnClickOutside } from "usehooks-ts";
 import { cn } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
 import { Inter } from "next/font/google";
@@ -68,11 +67,6 @@ export function ExpandableTabs({
   React.useEffect(() => {
     setSelected(selectedIndex);
   }, [selectedIndex]);
-
-  useOnClickOutside(outsideClickRef, () => {
-    setSelected(null);
-    onChange?.(null);
-  });
 
   const handleSelect = (index: number) => {
     playSound('tab-nav'); // Play navigation sound

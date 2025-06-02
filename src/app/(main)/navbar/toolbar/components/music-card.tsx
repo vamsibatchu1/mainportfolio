@@ -16,11 +16,9 @@ interface SpotifyCardProps {
 export function SpotifyCard({ songs }: SpotifyCardProps) {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [animationProgress, setAnimationProgress] = useState<number>(0);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(75);
   const [isDraggingVolume, setIsDraggingVolume] = useState<boolean>(false);
-  const [isDraggingProgress, setIsDraggingProgress] = useState<boolean>(false);
   const [showContextMenu, setShowContextMenu] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [currentSongIndex, setCurrentSongIndex] = useState<number>(0);
@@ -28,7 +26,6 @@ export function SpotifyCard({ songs }: SpotifyCardProps) {
   
   const cardRef = useRef<HTMLDivElement>(null);
   const volumeBarRef = useRef<HTMLDivElement>(null);
-  const progressBarRef = useRef<HTMLDivElement>(null);
   const contextMenuRef = useRef<HTMLDivElement>(null);
   
   const currentSong = songs[currentSongIndex];
@@ -44,22 +41,6 @@ export function SpotifyCard({ songs }: SpotifyCardProps) {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isPlaying && !isDraggingProgress) {
-      interval = setInterval(() => {
-        setAnimationProgress(prev => {
-          if (prev >= 100) {
-            handleNextSong();
-            return 0;
-          }
-          return prev + (100 / (songDuration * 10));
-        });
-      }, 100);
-    }
-    return () => clearInterval(interval);
-  }, [isPlaying, isDraggingProgress, songDuration, currentSongIndex]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
@@ -97,31 +78,6 @@ export function SpotifyCard({ songs }: SpotifyCardProps) {
     setIsMuted(newVolume === 0);
   };
   
-  const handleProgressMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-    setIsDraggingProgress(true);
-    handleProgressChange(e);
-    
-    const handleMouseMove = (e: MouseEvent) => handleProgressChange(e);
-    const handleMouseUp = () => {
-      setIsDraggingProgress(false);
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-    
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-  };
-  
-  const handleProgressChange = (e: MouseEvent | React.MouseEvent) => {
-    if (!progressBarRef.current) return;
-    
-    const rect = progressBarRef.current.getBoundingClientRect();
-    let newProgress = ((e.clientX - rect.left) / rect.width) * 100;
-    newProgress = Math.max(0, Math.min(100, newProgress));
-    setAnimationProgress(newProgress);
-  };
-  
   const toggleMute = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (isMuted) {
@@ -141,7 +97,6 @@ export function SpotifyCard({ songs }: SpotifyCardProps) {
     e?.stopPropagation();
     const newIndex = currentSongIndex === 0 ? songs.length - 1 : currentSongIndex - 1;
     setCurrentSongIndex(newIndex);
-    setAnimationProgress(0);
     if (!isPlaying) setIsPlaying(true);
   };
   
@@ -149,17 +104,8 @@ export function SpotifyCard({ songs }: SpotifyCardProps) {
     e?.stopPropagation();
     const newIndex = (currentSongIndex + 1) % songs.length;
     setCurrentSongIndex(newIndex);
-    setAnimationProgress(0);
     if (!isPlaying) setIsPlaying(true);
   };
-  
-  const formatTime = (seconds: number): string => {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
-  
-  const currentTime = (animationProgress / 100) * songDuration;
   
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -212,16 +158,6 @@ export function SpotifyCard({ songs }: SpotifyCardProps) {
       <div className="p-5 relative z-10">
         <div className="flex justify-between items-center mb-3">
           <div className="flex items-center">
-            <div 
-              className="w-14 h-14 rounded-xl mr-3 flex items-center justify-center overflow-hidden bg-black/90 relative"
-            >
-              <svg viewBox="0 0 24 24" className="w-8 h-8" 
-                style={{
-                  fill: '#1ED760'
-                }}>
-                <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
-              </svg>
-            </div>
             <div className="text-white font-medium text-lg">
               <span className="text-white">
                 My Writings
@@ -238,18 +174,16 @@ Updated a minute ago.              </div>
             <ChevronRight size={18} />
           </button>
         </div>
-        <p className="text-gray-200 text-sm mb-4 font-light tracking-wide">
-A collection of articles that I have written on UX, AI and building delightful products.        </p>
         <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent mb-5 mx-2 rounded-full" 
           style={{ 
-            boxShadow: isHovered ? '0 0 8px rgba(30, 215, 96, 0.2)' : 'none',
+            boxShadow: isHovered ? '0 0 8px rgba(255, 255, 255, 0.2)' : 'none',
             transform: isHovered ? 'scaleX(0.98)' : 'scaleX(1.5)',
             transition: 'all 0.5s ease-out'
           }}
         />
       </div>
 
-      <div className="relative w-48 h-48 mx-auto rounded-xl overflow-hidden" 
+      <div className="relative w-64 h-64 mx-auto rounded-xl overflow-hidden" 
         style={{ 
           boxShadow: isHovered ? '0 15px 30px -10px rgba(0, 0, 0, 0.4), 0 0 10px rgba(80, 80, 85, 0.15)' : '0 5px 15px -5px rgba(0, 0, 0, 0.2)',
           transition: 'all 0.7s cubic-bezier(0.16, 1, 0.3, 1)'
@@ -268,21 +202,6 @@ A collection of articles that I have written on UX, AI and building delightful p
           className="absolute inset-0 flex items-center justify-center transition-all duration-500"
           style={{ opacity: isHovered ? 1 : 0 }}
         >
-          <button 
-            onClick={togglePlay}
-            className="w-12 h-12 rounded-full bg-gray-400 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-gray-300"
-            style={{ 
-              boxShadow: '0 0 20px rgba(120, 120, 125, 0.5)',
-              transform: `scale(${isHovered ? 1 : 0})`,
-              opacity: isHovered ? 1 : 0
-            }}
-          >
-            {isPlaying ? 
-              <Pause size={20} className="text-black" /> : 
-              <Play size={20} className="text-black ml-1" />
-            }
-          </button>
-          
           <div className="absolute bottom-3 right-3 flex gap-2">
             <button 
               className="w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center transition-all duration-300 hover:bg-black/60"
@@ -318,55 +237,53 @@ A collection of articles that I have written on UX, AI and building delightful p
         </div>
       </div>
       
+      {/* Article info below image */}
+      <div className="w-64 mx-auto mt-6">
+        <div className="text-white">
+          <div className="font-medium text-sm group-hover:text-white transition-colors duration-500">
+            {currentSong.title}
+          </div>
+          <div className="text-gray-400 text-xs mt-0.5">{currentSong.artists}</div>
+        </div>
+        <div className="text-xs text-gray-400 tabular-nums mt-2">
+          {songDuration} min read
+        </div>
+      </div>
+      
       {showContextMenu && (
         <div 
           ref={contextMenuRef}
-          className="absolute right-6 bottom-32 bg-green-900/90 backdrop-blur-md rounded-lg shadow-lg overflow-hidden border border-white/10 z-30"
+          className="absolute right-6 bottom-32 bg-gray-900/90 backdrop-blur-md rounded-lg shadow-lg overflow-hidden border border-white/10 z-30"
           style={{ 
             width: '200px',
             animation: 'fadeIn 0.2s ease-out forwards'
           }}
         >
           <div className="py-1.5">
-            <button className="w-full text-left px-4 py-2.5 text-sm text-white hover:bg-green-800/50 transition-all duration-200 flex items-center gap-3 group">
-              <Heart size={15} className="text-green-400/70 group-hover:text-white transition-colors duration-200" 
-                fill={isLiked ? "rgba(30, 215, 96, 0.7)" : "none"}
+            <button className="w-full text-left px-4 py-2.5 text-sm text-white hover:bg-gray-800/50 transition-all duration-200 flex items-center gap-3 group">
+              <Heart size={15} className="text-gray-400/70 group-hover:text-white transition-colors duration-200" 
+                fill={isLiked ? "rgba(255, 255, 255, 0.7)" : "none"}
               /> 
               <span className="font-medium">{isLiked ? 'Remove from Liked' : 'Add to Liked'}</span>
             </button>
-            <button className="w-full text-left px-4 py-2.5 text-sm text-white hover:bg-green-800/50 transition-all duration-200 flex items-center gap-3 group">
-              <Plus size={15} className="text-green-400/70 group-hover:text-white transition-colors duration-200" /> 
+            <button className="w-full text-left px-4 py-2.5 text-sm text-white hover:bg-gray-800/50 transition-all duration-200 flex items-center gap-3 group">
+              <Plus size={15} className="text-gray-400/70 group-hover:text-white transition-colors duration-200" /> 
               <span className="font-medium">Add to playlist</span>
             </button>
-            <div className="h-px bg-green-500/10 my-1" />
-            <button className="w-full text-left px-4 py-2.5 text-sm text-white hover:bg-green-800/50 transition-all duration-200 flex items-center gap-3 group">
-              <SkipForward size={15} className="text-green-400/70 group-hover:text-white transition-colors duration-200" /> 
+            <div className="h-px bg-gray-500/10 my-1" />
+            <button className="w-full text-left px-4 py-2.5 text-sm text-white hover:bg-gray-800/50 transition-all duration-200 flex items-center gap-3 group">
+              <SkipForward size={15} className="text-gray-400/70 group-hover:text-white transition-colors duration-200" /> 
               <span className="font-medium">Next in queue</span>
             </button>
-            <button className="w-full text-left px-4 py-2.5 text-sm text-white hover:bg-green-800/50 transition-all duration-200 flex items-center gap-3 group">
-              <SkipBack size={15} className="text-green-400/70 group-hover:text-white transition-colors duration-200" /> 
+            <button className="w-full text-left px-4 py-2.5 text-sm text-white hover:bg-gray-800/50 transition-all duration-200 flex items-center gap-3 group">
+              <SkipBack size={15} className="text-gray-400/70 group-hover:text-white transition-colors duration-200" /> 
               <span className="font-medium">Previous in queue</span>
             </button>
           </div>
         </div>
       )}
       
-      <div className="flex justify-center gap-1 mt-3 mb-6 h-7 items-end transition-all duration-300">
-        {isPlaying && (
-          <>
-            {[1, 2, 3, 4, 5].map((i) => (
-              <div 
-                key={i}
-                className="w-1 bg-green-500 rounded-full transition-all"
-                style={{
-                  height: `${Math.sin((Date.now()/300) + i * 0.5) * 6 + 10}px`,
-                  opacity: 0.7,
-                  animation: `wave${i} 1.${i}s ease-in-out infinite`,
-                }}
-              />
-            ))}
-          </>
-        )}
+      <div className="flex justify-center gap-1 mt-2 h-7 items-end transition-all duration-300">
       </div>
       
       <div 
@@ -375,36 +292,6 @@ A collection of articles that I have written on UX, AI and building delightful p
           boxShadow: isHovered ? '0 -5px 15px rgba(0, 0, 0, 0.3)' : 'none'
         }}
       >
-        <div 
-          ref={progressBarRef}
-          className="w-full h-1.5 bg-white/10 rounded-full cursor-pointer relative mb-3 overflow-hidden"
-          onMouseDown={handleProgressMouseDown}
-          style={{
-            boxShadow: '0 0 3px rgba(30, 215, 96, 0.2)'
-          }}
-        >
-          <div 
-            className="h-full rounded-full transition-all duration-150"
-            style={{ 
-              width: `${animationProgress}%`,
-              background: 'linear-gradient(90deg, rgba(30, 215, 96, 0.8), rgba(30, 215, 96, 1))',
-              boxShadow: '0 0 6px rgba(30, 215, 96, 0.4)'
-            }}
-          />
-        </div>
-        
-        <div className="flex items-center justify-between mb-2">
-          <div className="text-white">
-            <div className="font-medium text-xs group-hover:text-green-400 transition-colors duration-500">
-              {currentSong.title}
-            </div>
-            <div className="text-gray-400 text-xs mt-0.5">{currentSong.artists}</div>
-          </div>
-          <div className="text-xs text-gray-400 tabular-nums">
-            {formatTime(currentTime)} / {formatTime(songDuration)}
-          </div>
-        </div>
-        
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <button 
@@ -449,7 +336,7 @@ A collection of articles that I have written on UX, AI and building delightful p
               onMouseDown={handleVolumeMouseDown}
             >
               <div 
-                className="h-full bg-white rounded-full group-hover/volume:bg-green-500 transition-colors duration-300" 
+                className="h-full bg-white rounded-full group-hover/volume:bg-white transition-colors duration-300" 
                 style={{ width: `${isMuted ? 0 : volume}%` }} 
               />
               
@@ -470,7 +357,7 @@ A collection of articles that I have written on UX, AI and building delightful p
       <div 
         className="h-0.5 w-full absolute bottom-0 transition-all duration-500"
         style={{ 
-          background: 'linear-gradient(90deg, transparent, rgba(46, 212, 105, 0.5), transparent)',
+          background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent)',
           opacity: isHovered ? 1 : 0,
           filter: 'blur(1px)'
         }}
@@ -479,7 +366,7 @@ A collection of articles that I have written on UX, AI and building delightful p
       <div 
         className="absolute inset-0 pointer-events-none rounded-xl transition-opacity duration-700 opacity-0 group-hover:opacity-100"
         style={{
-          border: '1px solid rgba(30, 215, 96, 0.2)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
           animation: 'pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite'
         }}
       />

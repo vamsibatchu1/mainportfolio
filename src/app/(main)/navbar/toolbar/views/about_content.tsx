@@ -170,10 +170,13 @@ const AboutContent = () => {
         >
           <div 
             id="colored-box" 
-            className={`flex flex-col flex-grow items-start justify-start gap-1.5 text-white w-full h-full overflow-hidden p-4 rounded-lg no-scrollbar ${interFont.className}`}
-            style={{ backgroundColor: '#90D9E0' }}
+            className={`flex flex-col flex-grow items-start justify-start gap-1.5 text-white w-full h-full overflow-hidden p-4 rounded-lg no-scrollbar border ${interFont.className}`}
+            style={{ 
+              backgroundColor: 'rgba(23, 23, 25, 0.53)',
+              borderColor: '#3c3c3c'
+            }}
           >
-            <ul className="w-full text-sm text-black no-scrollbar overflow-y-auto overflow-x-auto">
+            <ul className="w-full text-sm text-white no-scrollbar overflow-y-auto overflow-x-auto">
               <FilesystemItem node={filesystemData} animated />
             </ul>
           </div>

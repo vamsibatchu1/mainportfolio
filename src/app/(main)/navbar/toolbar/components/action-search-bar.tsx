@@ -171,12 +171,6 @@ function ActionSearchBar({ actions = allActions }: { actions?: Action[] }) {
         <div className={`w-full max-w-xl mx-auto ${interFont.className}`}>
             <div className="relative flex flex-col justify-start items-center min-h-[300px]">
                 <div className="w-full max-w-sm sticky top-0 z-10 pt-4 pb-1">
-                    <label
-                        className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 block"
-                        htmlFor="search"
-                    >
-                        Search Commands
-                    </label>
                     <div className="relative">
                         <Input
                             type="text"
@@ -221,7 +215,11 @@ function ActionSearchBar({ actions = allActions }: { actions?: Action[] }) {
                     <AnimatePresence>
                         {isFocused && result && !selectedAction && (
                             <motion.div
-                                className="w-full border rounded-md shadow-sm overflow-hidden dark:border-gray-800 bg-white dark:bg-black mt-1"
+                                className="w-full border rounded-md shadow-sm overflow-hidden mt-1"
+                                style={{
+                                    backgroundColor: 'rgba(23, 23, 25, 0.53)',
+                                    borderColor: '#3c3c3c'
+                                }}
                                 variants={container}
                                 initial="hidden"
                                 animate="show"
@@ -231,7 +229,7 @@ function ActionSearchBar({ actions = allActions }: { actions?: Action[] }) {
                                     {result.actions.map((action) => (
                                         <motion.li
                                             key={action.id}
-                                            className="px-3 py-2 flex items-center justify-between hover:bg-gray-200 dark:hover:bg-zinc-900  cursor-pointer rounded-md"
+                                            className="px-3 py-2 flex items-center justify-between hover:bg-gray-700/50 cursor-pointer rounded-md"
                                             variants={item}
                                             layout
                                             onClick={() =>
@@ -243,10 +241,10 @@ function ActionSearchBar({ actions = allActions }: { actions?: Action[] }) {
                                                     <span className="text-gray-500">
                                                         {action.icon}
                                                     </span>
-                                                    <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                                    <span className="text-sm font-medium text-white">
                                                         {action.label}
                                                     </span>
-                                                    <span className="text-xs text-gray-400">
+                                                    <span className="text-xs text-gray-300">
                                                         {action.description}
                                                     </span>
                                                 </div>
@@ -262,8 +260,8 @@ function ActionSearchBar({ actions = allActions }: { actions?: Action[] }) {
                                         </motion.li>
                                     ))}
                                 </motion.ul>
-                                <div className="mt-2 px-3 py-2 border-t border-gray-100 dark:border-gray-800">
-                                    <div className="flex items-center justify-between text-xs text-gray-500">
+                                <div className="mt-2 px-3 py-2 border-t" style={{ borderColor: '#3c3c3c' }}>
+                                    <div className="flex items-center justify-between text-xs text-gray-400">
                                         <span>Press ⌘K to open commands</span>
                                         <span>ESC to cancel</span>
                                     </div>

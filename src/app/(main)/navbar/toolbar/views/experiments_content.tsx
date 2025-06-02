@@ -65,7 +65,11 @@ const SuggestionChip = ({
   return (
     <button
       onClick={onClick}
-      className={`${interFont.className} px-3 py-2 text-xs rounded-md border border-gray-600 bg-black backdrop-blur-sm hover:bg-[#0D74CE]/10 hover:border-[#0D74CE]/50 transition-all duration-200 text-[#fff] whitespace-nowrap`}
+      className={`${interFont.className} px-3 py-2 text-xs rounded-md border backdrop-blur-sm hover:bg-[#0D74CE]/10 hover:border-[#0D74CE]/50 transition-all duration-200 text-[#fff] whitespace-nowrap`}
+      style={{
+        backgroundColor: 'rgba(23, 23, 25, 0.53)',
+        borderColor: '#3c3c3c'
+      }}
     >
       {text}
     </button>
