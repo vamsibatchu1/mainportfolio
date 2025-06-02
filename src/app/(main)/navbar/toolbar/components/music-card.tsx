@@ -1,6 +1,7 @@
 "use client"
 import { useState, useEffect, useRef } from 'react';
 import { ChevronRight, Play, Pause, Volume2, Heart, Plus, MoreHorizontal, SkipBack, SkipForward } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface Song {
   title: string;
@@ -120,9 +121,12 @@ export function SpotifyCard({ songs }: SpotifyCardProps) {
   };
   
   return (
-    <div 
+    <motion.div 
       ref={cardRef}
-      className="w-80 rounded-xl overflow-hidden relative cursor-pointer group"
+      className="w-96 rounded-xl overflow-hidden relative cursor-pointer group"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.1, type: "spring", stiffness: 200, damping: 25 }}
       style={{
         background: 'radial-gradient(25% 40% at 50% 30%, rgba(60, 60, 65, 0.15), rgba(24, 24, 27, 0.98))',
         boxShadow: `0px 1px 0px 0px rgba(255, 255, 255, 0.08) inset, 
@@ -183,70 +187,72 @@ Updated a minute ago.              </div>
         />
       </div>
 
-      <div className="relative w-64 h-64 mx-auto rounded-xl overflow-hidden" 
-        style={{ 
-          boxShadow: isHovered ? '0 15px 30px -10px rgba(0, 0, 0, 0.4), 0 0 10px rgba(80, 80, 85, 0.15)' : '0 5px 15px -5px rgba(0, 0, 0, 0.2)',
-          transition: 'all 0.7s cubic-bezier(0.16, 1, 0.3, 1)'
-        }}>
-        <img 
-          src={currentSong.albumArt} 
-          alt="Album Cover" 
-          className="w-full h-full object-cover transition-all duration-700"
+      <div className="px-5">
+        <div className="relative w-64 h-64 mx-auto rounded-xl overflow-hidden" 
           style={{ 
-            transform: isHovered ? 'scale(1.02)' : 'scale(1)',
-            filter: isHovered ? 'brightness(1.05) contrast(1.02)' : 'brightness(1)',
-          }}
-        />
-        
-        <div 
-          className="absolute inset-0 flex items-center justify-center transition-all duration-500"
-          style={{ opacity: isHovered ? 1 : 0 }}
-        >
-          <div className="absolute bottom-3 right-3 flex gap-2">
-            <button 
-              className="w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center transition-all duration-300 hover:bg-black/60"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsLiked(!isLiked);
-              }}
-              style={{
-                transform: isLiked ? 'scale(1.05)' : 'scale(1)'
-              }}
-            >
-              <Heart size={14} fill={isLiked ? "#1ED760" : "none"} stroke={isLiked ? "#1ED760" : "white"} 
-                className="transition-all duration-300" 
-                style={{ 
-                  transform: isLiked ? 'scale(1.1)' : 'scale(1)',
-                  filter: isLiked ? 'drop-shadow(0 0 2px rgba(30, 215, 96, 0.5))' : 'none'
+            boxShadow: isHovered ? '0 15px 30px -10px rgba(0, 0, 0, 0.4), 0 0 10px rgba(80, 80, 85, 0.15)' : '0 5px 15px -5px rgba(0, 0, 0, 0.2)',
+            transition: 'all 0.7s cubic-bezier(0.16, 1, 0.3, 1)'
+          }}>
+          <img 
+            src={currentSong.albumArt} 
+            alt="Album Cover" 
+            className="w-full h-full object-cover transition-all duration-700"
+            style={{ 
+              transform: isHovered ? 'scale(1.02)' : 'scale(1)',
+              filter: isHovered ? 'brightness(1.05) contrast(1.02)' : 'brightness(1)',
+            }}
+          />
+          
+          <div 
+            className="absolute inset-0 flex items-center justify-center transition-all duration-500"
+            style={{ opacity: isHovered ? 1 : 0 }}
+          >
+            <div className="absolute bottom-3 right-3 flex gap-2">
+              <button 
+                className="w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center transition-all duration-300 hover:bg-black/60"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsLiked(!isLiked);
                 }}
-              />
-            </button>
-            <button className="w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center transition-all duration-300 hover:bg-black/60 hover:scale-105">
-              <Plus size={14} className="text-white" />
-            </button>
-            <button 
-              className="w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center transition-all duration-300 hover:bg-black/60 hover:scale-105"
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowContextMenu(!showContextMenu);
-              }}
-            >
-              <MoreHorizontal size={14} className="text-white" />
-            </button>
+                style={{
+                  transform: isLiked ? 'scale(1.05)' : 'scale(1)'
+                }}
+              >
+                <Heart size={14} fill={isLiked ? "#1ED760" : "none"} stroke={isLiked ? "#1ED760" : "white"} 
+                  className="transition-all duration-300" 
+                  style={{ 
+                    transform: isLiked ? 'scale(1.1)' : 'scale(1)',
+                    filter: isLiked ? 'drop-shadow(0 0 2px rgba(30, 215, 96, 0.5))' : 'none'
+                  }}
+                />
+              </button>
+              <button className="w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center transition-all duration-300 hover:bg-black/60 hover:scale-105">
+                <Plus size={14} className="text-white" />
+              </button>
+              <button 
+                className="w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center transition-all duration-300 hover:bg-black/60 hover:scale-105"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowContextMenu(!showContextMenu);
+                }}
+              >
+                <MoreHorizontal size={14} className="text-white" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      
-      {/* Article info below image */}
-      <div className="w-64 mx-auto mt-6">
-        <div className="text-white">
-          <div className="font-medium text-sm group-hover:text-white transition-colors duration-500">
-            {currentSong.title}
+        
+        {/* Article info below image */}
+        <div className="w-64 mx-auto mt-6">
+          <div className="text-white">
+            <div className="font-medium text-sm group-hover:text-white transition-colors duration-500">
+              {currentSong.title}
+            </div>
+            <div className="text-gray-400 text-xs mt-0.5">{currentSong.artists}</div>
           </div>
-          <div className="text-gray-400 text-xs mt-0.5">{currentSong.artists}</div>
-        </div>
-        <div className="text-xs text-gray-400 tabular-nums mt-2">
-          {songDuration} min read
+          <div className="text-xs text-gray-400 tabular-nums mt-2">
+            {songDuration} min read
+          </div>
         </div>
       </div>
       
@@ -423,6 +429,6 @@ Updated a minute ago.              </div>
           50% { height: 13px; }
         }
       `}</style>
-    </div>
+    </motion.div>
   );
 } 
