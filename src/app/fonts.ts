@@ -1,5 +1,5 @@
 import localFont from 'next/font/local';
-import {Poppins, IBM_Plex_Mono, Instrument_Serif, Teko, Kode_Mono, Lora, Inter } from 'next/font/google';
+import {Poppins, IBM_Plex_Mono, Instrument_Serif, Teko, Kode_Mono, Lora, Inter, EB_Garamond } from 'next/font/google';
 
 // Primary Font: W95FA (Windows 95 Font)
 export const priFont = localFont({
@@ -75,5 +75,14 @@ export const interFont = Inter({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700', '800', '900'],
   variable: '--font-inter',
+  display: 'swap',
+});
+
+// EB Garamond Font from Google
+export const ebGaramondFont = EB_Garamond({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  style: ['normal', 'italic'],
+  variable: '--font-eb-garamond',
   display: 'swap',
 });

@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 // import { TextScramble } from '@/components/ui/text-scramble'; // REMOVED
 import { motion, AnimationDefinition } from 'framer-motion';
-import { priFont, fiveFont } from '@/app/fonts';
+import {priFont, fiveFont } from '@/app/fonts';
 import { PixelGridBlock } from './PixelGridBlock';
 
 // Brand colors (ensure these match your design system)
