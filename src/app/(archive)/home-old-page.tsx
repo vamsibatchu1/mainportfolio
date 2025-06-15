@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import LeftCard from './components/LeftCard';
+import LeftCard from './home-components/LeftCard';
 import { motion, AnimatePresence } from 'framer-motion';
 import { priFont } from '@/app/fonts';
-import ToolbarPage from '../navbar/toolbar/toolbar';
+import ToolbarPage from '../(main)/navbar/toolbar/toolbar';
 import { useSound } from '@/hooks/use-sound';
 
 export default function HomeNewPage() {
