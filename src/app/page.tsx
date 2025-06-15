@@ -1,6 +1,20 @@
 "use client";
-import { redirect } from 'next/navigation';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Loader from './(main)/home/loader/loader';
 
 export default function Page() {
-  redirect('/home');
+  const [showLoader, setShowLoader] = useState(true);
+  const router = useRouter();
+
+  const handleLoaderComplete = () => {
+    setShowLoader(false);
+    router.push('/home');
+  };
+
+  if (showLoader) {
+    return <Loader onComplete={handleLoaderComplete} />;
+  }
+
+  return null;
 }

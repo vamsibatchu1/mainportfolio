@@ -41,7 +41,7 @@ const LandingPageNew2: React.FC = () => {
       <div className="min-h-screen w-full relative bg-black overflow-hidden flex items-center justify-center">
         
         {/* Container for all images - centered on page */}
-        <div className="relative" style={{ width: '1215px', height: '571px' }}>
+        <div className="relative" style={{ width: '1215px', height: '571px', transform: 'scale(0.75)', transformOrigin: 'center' }}>
         
         {/* Mac Computer - x=0, y=16, w=432px, h=555.5px - 1st */}
         <motion.div

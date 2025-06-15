@@ -86,3 +86,4 @@ export const ebGaramondFont = EB_Garamond({
   variable: '--font-eb-garamond',
   display: 'swap',
 });
+
