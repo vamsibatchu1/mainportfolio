@@ -6,4 +6,5 @@ export { Widgets } from './Widgets';
 export { RecentArticles } from './RecentArticles';
 export { Specialties } from './Specialties';
 export { LearnMoreSheet } from './learnmore-sheet';
+export { VoiceAboutMeSheet } from './voiceaboutme-sheet';
 export { default as BottomNavigation } from './BottomNavigation'; 

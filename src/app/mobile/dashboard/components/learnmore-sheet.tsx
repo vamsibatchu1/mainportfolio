@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
-import { AlertTriangle } from 'lucide-react';
+import React from 'react';
+import { X } from 'lucide-react';
 
 interface LearnMoreSheetProps {
   isOpen: boolean;
@@ -9,45 +9,6 @@ interface LearnMoreSheetProps {
 }
 
 export const LearnMoreSheet: React.FC<LearnMoreSheetProps> = ({ isOpen, onClose }) => {
-  const sheetRef = useRef<HTMLDivElement>(null);
-  const [startY, setStartY] = useState(0);
-  const [currentY, setCurrentY] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-
-  useEffect(() => {
-    if (!isOpen) {
-      setCurrentY(0);
-    }
-  }, [isOpen]);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setStartY(e.touches[0].clientY);
-    setIsDragging(true);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging) return;
-    
-    const deltaY = e.touches[0].clientY - startY;
-    
-    // Only allow downward drag
-    if (deltaY > 0) {
-      setCurrentY(deltaY);
-    }
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-    
-    // If dragged down more than 100px, close the sheet
-    if (currentY > 100) {
-      onClose();
-    } else {
-      // Snap back to original position
-      setCurrentY(0);
-    }
-  };
-
   if (!isOpen) return null;
 
   return (
@@ -58,72 +19,58 @@ export const LearnMoreSheet: React.FC<LearnMoreSheetProps> = ({ isOpen, onClose 
         onClick={onClose}
       />
       
-      {/* Bottom Sheet */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 animate-in slide-in-from-bottom duration-300 flex justify-center">
-        <div 
-          ref={sheetRef}
-          className="bg-[#2a2a2a] rounded-t-3xl mx-3 w-full max-w-[calc(393px-24px)] sm:w-[calc(393px-24px)] transition-transform duration-300 ease-out"
-          style={{ 
-            transform: `translateY(${currentY}px)`,
-            opacity: isDragging ? Math.max(0.3, 1 - currentY / 300) : 1
-          }}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-        >
-          {/* Handle bar */}
-          <div className="flex justify-center pt-3 pb-6">
-            <div className="w-12 h-1 bg-gray-500 rounded-full" />
-          </div>
-          
-          {/* Content */}
-          <div className="px-6 pb-8">
-            {/* Warning Icon */}
-            <div className="flex justify-center mb-6">
-              <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center">
-                <AlertTriangle className="w-6 h-6 text-white" strokeWidth={2} />
+              {/* Bottom Sheet */}
+        <div className="fixed bottom-0 left-0 right-0 z-50 animate-in slide-in-from-bottom duration-300 flex justify-center">
+          <div className="bg-[#ffffff] rounded-tl-[24px] rounded-tr-[24px] shadow-[0px_0px_24px_0px_rgba(17,17,17,0.12)] mx-3 w-full max-w-[calc(393px-24px)] sm:w-[calc(393px-24px)]">
+            <div className="flex flex-col items-center relative w-full h-full">
+              <div className="box-border content-stretch flex flex-col gap-6 items-center justify-start pb-8 pt-10 px-6 relative w-full h-full">
+                
+                {/* Header with Title and Close Button */}
+                <div className="relative shrink-0 w-full">
+                  <div className="box-border content-stretch flex flex-row items-center justify-between p-0 relative w-full">
+                    <div className="font-jakarta font-semibold leading-[0] overflow-ellipsis overflow-hidden relative shrink-0 text-[#111111] text-[28px] text-left text-nowrap w-[233px]">
+                      <p className="block leading-[32px] overflow-inherit">
+                        About Rocket
+                      </p>
+                    </div>
+                    <button 
+                      onClick={onClose}
+                      className="relative shrink-0 w-6 h-6"
+                    >
+                      <X className="w-full h-full" />
+                    </button>
+                  </div>
+                </div>
+                
+                {/* Body Text */}
+                <div className="font-jakarta font-medium leading-[0] min-w-full relative shrink-0 text-[#545454] text-[16px] text-left" style={{ width: "min-content" }}>
+                  <p className="block leading-[20px]">
+                    What truly excites me about design is its potential to orchestrate meaningful change. Every pixel we place, every interaction we craft, and every system we architect has the power to make someone&apos;s day better, their work more efficient, or their goals more achievable.
+                    <br />
+                    <br />
+                    After all, a designer just doesn&apos;t just solve problems; they create possibilities.
+                  </p>
+                </div>
+                
+                {/* Read More Button */}
+                <div className="bg-[#111111] h-12 relative rounded-[48px] shrink-0 w-[321px]">
+                  <div className="flex flex-row items-center justify-center relative w-full h-full">
+                    <button 
+                      onClick={onClose}
+                      className="box-border content-stretch flex flex-row gap-2 h-12 items-center justify-center px-5 py-3 relative w-[321px]"
+                    >
+                      <div className="font-jakarta font-medium leading-[0] relative shrink-0 text-[#ffffff] text-[16px] text-left text-nowrap">
+                        <p className="block leading-[24px] whitespace-pre">
+                          Read more
+                        </p>
+                      </div>
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-            
-            {/* Title */}
-            <div className="text-center mb-4">
-              <h2 className="font-jakarta font-semibold text-white text-[24px] leading-[28px]">
-                Easy PIN
-              </h2>
-            </div>
-            
-            {/* Message */}
-            <div className="text-center mb-8">
-              <p className="font-jakarta font-medium text-gray-300 text-[16px] leading-[22px]">
-                Are you sure you want to set a PIN that anyone can guess?
-              </p>
-            </div>
-            
-            {/* Buttons */}
-            <div className="flex flex-col gap-3">
-              {/* Primary Button - Change it */}
-              <button 
-                onClick={onClose}
-                className="bg-white rounded-full py-4 px-6 w-full"
-              >
-                <span className="font-jakarta font-semibold text-[#111111] text-[16px]">
-                  Change it
-                </span>
-              </button>
-              
-              {/* Secondary Button - Continue */}
-              <button 
-                onClick={onClose}
-                className="bg-[#4a4a4a] rounded-full py-4 px-6 w-full"
-              >
-                <span className="font-jakarta font-medium text-white text-[16px]">
-                  Continue
-                </span>
-              </button>
             </div>
           </div>
         </div>
-      </div>
     </>
   );
 }; 
