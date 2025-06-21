@@ -159,7 +159,7 @@ export const VoiceAboutMeSheet: React.FC<VoiceAboutMeSheetProps> = ({ isOpen, on
       
       {/* Bottom Sheet */}
       <div className="fixed bottom-0 left-0 right-0 z-50 animate-in slide-in-from-bottom duration-300 flex justify-center">
-        <div className="bg-[#ffffff] rounded-tl-[24px] rounded-tr-[24px] shadow-[0px_0px_24px_0px_rgba(17,17,17,0.12)] mx-3 w-full max-w-[calc(393px-24px)] sm:w-[calc(393px-24px)]">
+        <div className="bg-[#ffffff] rounded-tl-[24px] rounded-tr-[24px] shadow-[0px_0px_24px_0px_rgba(17,17,17,0.12)] mx-2 w-[calc(100vw-16px)] max-w-[377px]">
           {currentState === 'selection' ? (
             // State 1: Voice Selection
             <div className="flex flex-col items-center relative w-full h-full">
