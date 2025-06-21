@@ -4,6 +4,65 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { kodeMonoFont, fiveFont } from '@/app/fonts';
 
+// Ring Spinner Component
+const RingSpinner = ({ size = 24 }: { size?: number }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 44 44"
+    stroke="currentColor"
+  >
+    <title>Loading...</title>
+    <g fill="none" fillRule="evenodd" strokeWidth="2">
+      <circle cx="22" cy="22" r="1">
+        <animate
+          attributeName="r"
+          begin="0s"
+          dur="1.8s"
+          values="1; 20"
+          calcMode="spline"
+          keyTimes="0; 1"
+          keySplines="0.165, 0.84, 0.44, 1"
+          repeatCount="indefinite"
+        />
+        <animate
+          attributeName="stroke-opacity"
+          begin="0s"
+          dur="1.8s"
+          values="1; 0"
+          calcMode="spline"
+          keyTimes="0; 1"
+          keySplines="0.3, 0.61, 0.355, 1"
+          repeatCount="indefinite"
+        />
+      </circle>
+      <circle cx="22" cy="22" r="1">
+        <animate
+          attributeName="r"
+          begin="-0.9s"
+          dur="1.8s"
+          values="1; 20"
+          calcMode="spline"
+          keyTimes="0; 1"
+          keySplines="0.165, 0.84, 0.44, 1"
+          repeatCount="indefinite"
+        />
+        <animate
+          attributeName="stroke-opacity"
+          begin="-0.9s"
+          dur="1.8s"
+          values="1; 0"
+          calcMode="spline"
+          keyTimes="0; 1"
+          keySplines="0.3, 0.61, 0.355, 1"
+          repeatCount="indefinite"
+        />
+      </circle>
+    </g>
+  </svg>
+);
+
 interface LoaderProps {
   onComplete: () => void;
 }
@@ -111,10 +170,10 @@ const Loader: React.FC<LoaderProps> = ({ onComplete }) => {
   return (
     <div className="fixed inset-0 bg-black flex items-center justify-center z-50">
       <div className="text-center">
-        {/* Animated Logo/Icon */}
+        {/* Ring Spinner */}
         <motion.div
-          initial={{ scale: 0, rotate: -180 }}
-          animate={{ scale: 1, rotate: 0 }}
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
           transition={{ 
             duration: 0.8, 
             ease: [0.22, 1, 0.36, 1],
@@ -123,39 +182,8 @@ const Loader: React.FC<LoaderProps> = ({ onComplete }) => {
           }}
           className="mb-8"
         >
-          <div className="w-20 h-20 mx-auto relative">
-            {/* Outer ring */}
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ 
-                duration: 2, 
-                repeat: Infinity, 
-                ease: "linear" 
-              }}
-              className="absolute inset-0 border-2 border-white/20 rounded-full"
-            />
-            
-            {/* Inner spinning element */}
-            <motion.div
-              animate={{ rotate: -360 }}
-              transition={{ 
-                duration: 1.5, 
-                repeat: Infinity, 
-                ease: "linear" 
-              }}
-              className="absolute inset-2 border-2 border-t-white border-r-white/40 border-b-white/20 border-l-white/60 rounded-full"
-            />
-            
-            {/* Center dot */}
-            <motion.div
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ 
-                duration: 1, 
-                repeat: Infinity, 
-                ease: "easeInOut" 
-              }}
-              className="absolute inset-6 bg-white rounded-full"
-            />
+          <div className="text-white">
+            <RingSpinner size={80} />
           </div>
         </motion.div>
 

@@ -1,5 +1,5 @@
 import localFont from 'next/font/local';
-import {Poppins, IBM_Plex_Mono, Instrument_Serif, Teko, Kode_Mono, Lora, Inter, EB_Garamond } from 'next/font/google';
+import {Poppins, IBM_Plex_Mono, Instrument_Serif, Teko, Kode_Mono, Lora, Inter, EB_Garamond, Plus_Jakarta_Sans } from 'next/font/google';
 
 // Primary Font: W95FA (Windows 95 Font)
 export const priFont = localFont({
@@ -84,6 +84,15 @@ export const ebGaramondFont = EB_Garamond({
   weight: ['400', '500', '600', '700', '800'],
   style: ['normal', 'italic'],
   variable: '--font-eb-garamond',
+  display: 'swap',
+});
+
+// Jakarta Sans Font from Google
+export const jakartaFont = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['200', '300', '400', '500', '600', '700', '800'],
+  style: ['normal', 'italic'],
+  variable: '--font-jakarta',
   display: 'swap',
 });
 

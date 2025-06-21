@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { priFont, secFont, triFont } from '@/lib/config/fonts';
+import { interFont, jakartaFont } from '@/app/fonts';
 
 // Export metadata for SEO
 export const metadata: Metadata = {
@@ -27,6 +28,7 @@ const Icons = {
   ),
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const DATA = {
   navbar: [
     { href: "/home", icon: HomeIcon, label: "Home" },
@@ -58,7 +60,7 @@ export default function RootLayout({
   return (
     <html 
       lang="en" 
-      className={`${GeistSans.variable} ${GeistMono.variable} ${priFont.variable} ${secFont.variable} ${triFont.variable}`}
+      className={`${GeistSans.variable} ${GeistMono.variable} ${priFont.variable} ${secFont.variable} ${triFont.variable} ${interFont.variable} ${jakartaFont.variable}`}
     >
       <head>
         {/* Add any additional head elements if needed */}

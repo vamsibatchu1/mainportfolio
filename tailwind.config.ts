@@ -15,6 +15,8 @@ export default {
   		  'pri': ['var(--font-pri)'],
   		  'sec': ['var(--font-sec)'],
   		  'tri': ['var(--font-tri)'],
+  		  'inter': ['var(--font-inter)'],
+  		  'jakarta': ['var(--font-jakarta)'],
   		},
   		colors: {
   			background: 'hsl(var(--background))',
