@@ -1,4 +1,3 @@
-export { PersonIcon } from './PersonIcon';
 export { Header } from './Header';
 export { Hero } from './Hero';
 export { QuickActions } from './QuickActions';
