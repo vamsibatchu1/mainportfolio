@@ -1,8 +1,7 @@
 import React from 'react';
 import { ArrowRight, DollarSign, CreditCard, Receipt, TrendingUp, MessageCircle } from 'lucide-react';
 
-// Image constants from Figma - keeping the profile image
-const imgEllipse184 = "http://localhost:3845/assets/fd7bba309554df13a359662a70858d76b9d382d6.png";
+
 
 export const DesignPhilosophy: React.FC = () => {
   return (
@@ -23,12 +22,9 @@ export const DesignPhilosophy: React.FC = () => {
             
             {/* Philosophy Content */}
             <div className="flex flex-col gap-4 items-start justify-start w-full">
-              <div className="font-jakarta font-semibold text-[#111111] text-[16px] w-full">
-                <p className="leading-[20px]">What truly excites me about design is its potential to orchestrate meaningful change.</p>
-              </div>
-              <div className="font-jakarta font-medium text-[#545454] text-[14px] w-full">
+              <div className="font-jakarta font-medium text-[#545454] text-[16px] w-full">
                 <p className="leading-[20px]">
-                  Every pixel we place, every interaction we craft, and every system we architect has the power to make someone&apos;s day better, their work more efficient, or their goals more achievable.
+                What truly excites me about design is its potential to orchestrate meaningful change. Every pixel we place, every interaction we craft, and every system we architect has the power to make someone&apos;s day better, their work more efficient, or their goals more achievable.
                   <br /><br />
                   After all, a designer just doesn&apos;t just solve problems; they create possibilities.
                 </p>
@@ -38,11 +34,6 @@ export const DesignPhilosophy: React.FC = () => {
             {/* Philosophy Card with Photo */}
             <div className="bg-[#f7f7f7] rounded-[20px] w-full border border-[#f2f2f2] p-5">
               <div className="flex flex-row gap-2 items-center justify-start w-full">
-                <div className="w-10 h-10 relative">
-                  <div className="absolute inset-[-2.5%]">
-                    <img alt="" className="block max-w-none w-full h-full" height="42" loading="lazy" src={imgEllipse184} width="42" />
-                  </div>
-                </div>
                 <div className="flex-1">
                   <div className="flex flex-col gap-0.5 items-start justify-center w-full">
                     <div className="font-jakarta font-semibold text-[#111111] text-[14px] w-full">

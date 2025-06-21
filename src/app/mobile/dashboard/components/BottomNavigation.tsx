@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Rocket, MapPin, Search, User } from 'lucide-react';
+import { Home, Briefcase, FlaskConical, User, LucideMenu } from 'lucide-react';
 
 const BottomNavigation: React.FC = () => {
   return (
@@ -8,17 +8,17 @@ const BottomNavigation: React.FC = () => {
         {/* Home - Active */}
         <Home size={24} strokeWidth={1.5} className="text-black" />
 
-        {/* Search */}
-        <Search size={24} strokeWidth={1.5} className="text-gray-400" />
+        {/* Work */}
+        <Briefcase size={24} strokeWidth={1.5} className="text-gray-400" />
 
-        {/* Rocket Assist */}
-        <Rocket size={24} strokeWidth={1.5} className="text-gray-400" />
+        {/* About Me */}
+        <User size={24} strokeWidth={1.5} className="text-gray-400" />
 
-        {/* Explore */}
-        <MapPin size={24} strokeWidth={1.5} className="text-gray-400" />
+        {/* Experiments */}
+        <FlaskConical size={24} strokeWidth={1.5} className="text-gray-400" />
 
         {/* Profile */}
-        <User size={24} strokeWidth={1.5} className="text-gray-400" />
+        <LucideMenu size={24} strokeWidth={1.5} className="text-gray-400" />
       </div>
     </div>
   );
