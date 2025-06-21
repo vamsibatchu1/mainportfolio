@@ -3,8 +3,8 @@ import { BarChart3, DollarSign, ArrowRight } from 'lucide-react';
 
 export const Specialties: React.FC = () => {
   return (
-    <div className="relative shrink-0 w-[344px]">
-      <div className="flex flex-col gap-4 items-start justify-start relative w-[344px]">
+    <div className="relative shrink-0 w-full sm:w-[344px]">
+      <div className="flex flex-col gap-4 items-start justify-start relative w-full">
         
         {/* Title */}
         <div className="font-jakarta font-semibold leading-[0] relative shrink-0 text-[#111111] text-[20px] text-left w-full">

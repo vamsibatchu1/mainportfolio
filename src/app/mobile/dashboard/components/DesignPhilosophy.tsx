@@ -6,8 +6,8 @@ const imgEllipse184 = "http://localhost:3845/assets/fd7bba309554df13a359662a7085
 
 export const DesignPhilosophy: React.FC = () => {
   return (
-    <div className="relative shrink-0 w-[345px]">
-      <div className="flex flex-col gap-4 items-start justify-start relative w-[345px]">
+    <div className="relative shrink-0 w-full sm:w-[345px]">
+      <div className="flex flex-col gap-4 items-start justify-start relative w-full">
         
         {/* Philosophy Title */}
         <div className="h-8 relative shrink-0 w-full">
@@ -22,13 +22,13 @@ export const DesignPhilosophy: React.FC = () => {
         </div>
         
         {/* Philosophy Card */}
-        <div className="bg-white relative rounded-3xl shrink-0 w-[345px] border border-[#e9e9e9]">
+        <div className="bg-white relative rounded-3xl shrink-0 w-full border border-[#e9e9e9]">
           <div className="flex flex-col justify-center overflow-hidden relative w-full h-full">
-            <div className="flex flex-col gap-6 items-start justify-center p-6 relative w-[345px]">
+            <div className="flex flex-col gap-6 items-start justify-center p-6 relative w-full">
               
               {/* Philosophy Content */}
-              <div className="relative shrink-0 w-[297px]">
-                <div className="flex flex-col gap-4 items-start justify-start leading-[0] text-left relative w-[297px]">
+              <div className="relative shrink-0 w-full">
+                <div className="flex flex-col gap-4 items-start justify-start leading-[0] text-left relative w-full">
                   <div className="font-jakarta font-semibold relative shrink-0 text-[#111111] text-[16px] w-full">
                     <p className="block leading-[20px]">What truly excites me about design is its potential to orchestrate meaningful change.</p>
                   </div>
@@ -81,9 +81,9 @@ export const DesignPhilosophy: React.FC = () => {
               </div>
               
               {/* Philosophy Carousel */}
-              <div className="relative shrink-0 w-[321px]">
+              <div className="relative shrink-0 w-full">
                 <div className="overflow-x-auto overflow-y-hidden relative w-full h-full">
-                  <div className="flex flex-row gap-2.5 items-start justify-start pl-0 pr-8 py-0 relative w-[321px]">
+                  <div className="flex flex-row gap-2.5 items-start justify-start pl-0 pr-8 py-0 relative w-full">
                     
                     {/* Card 1 - Loan Amount */}
                     <div className="bg-[#f7f7f7] relative rounded-[20px] shrink-0 w-[142.5px] h-[142.5px]">

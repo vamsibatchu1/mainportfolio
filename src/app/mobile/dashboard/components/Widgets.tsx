@@ -2,10 +2,10 @@ import { interFont } from '@/app/fonts';
 
 export function Widgets() {
   return (
-    <div className={`relative w-[345px] ${interFont.variable}`}>
-      <div className="flex flex-col gap-4 items-start justify-start p-0 relative w-[345px]">
-        <div className="relative w-[345px]">
-          <div className="flex flex-row items-center justify-between p-0 relative w-[345px]">
+    <div className={`relative w-full sm:w-[345px] ${interFont.variable}`}>
+      <div className="flex flex-col gap-4 items-start justify-start p-0 relative w-full">
+        <div className="relative w-full">
+          <div className="flex flex-row items-center justify-between p-0 relative w-full">
             <div className="font-inter font-medium text-[20px] leading-6 text-[#111111]">
               <p>Widgets</p>
             </div>
@@ -16,9 +16,9 @@ export function Widgets() {
             </div>
           </div>
         </div>
-        <div className="bg-[#edf1ff] rounded-2xl w-[345px]">
+        <div className="bg-[#edf1ff] rounded-2xl w-full">
           <div className="flex flex-col justify-center overflow-hidden relative w-full h-full">
-            <div className="flex flex-col gap-4 items-start justify-center p-4 relative w-[345px]">
+            <div className="flex flex-col gap-4 items-start justify-center p-4 relative w-full">
               <div className="relative w-full">
                 <div className="flex flex-col gap-8 items-start justify-start p-0 relative w-full">
                   <div className="relative w-full">
@@ -28,8 +28,8 @@ export function Widgets() {
                           <path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="#819dfc" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                       </div>
-                      <div className="relative w-[241px]">
-                        <div className="flex flex-col items-start justify-center p-0 relative w-[241px]">
+                      <div className="relative flex-1">
+                        <div className="flex flex-col items-start justify-center p-0 relative w-full">
                           <div className="font-inter font-medium text-[16px] leading-6 text-[#111111]">
                             <p>Customize your home screen</p>
                           </div>

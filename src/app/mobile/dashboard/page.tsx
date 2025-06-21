@@ -13,9 +13,9 @@ import {
 
 export default function MobileDashboard() {
   return (
-    <div className={`bg-gray-100 min-h-screen flex items-center justify-center ${jakartaFont.variable}`}>
-      {/* Mobile Container - 393px width with full screen height */}
-      <div className="bg-white relative w-[393px] max-w-full h-screen max-h-screen overflow-hidden flex flex-col">
+    <div className={`bg-gray-100 min-h-screen sm:flex sm:items-center sm:justify-center ${jakartaFont.variable}`}>
+      {/* Mobile Container - Full width on mobile, capped at 393px on 600px+ screens */}
+      <div className="bg-white relative w-full sm:w-[393px] sm:max-w-[393px] h-screen max-h-screen overflow-hidden flex flex-col">
         
         {/* Main Content - Scrollable */}
         <div className="flex-1 overflow-y-auto w-full">

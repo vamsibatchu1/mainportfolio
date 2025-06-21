@@ -26,8 +26,8 @@ const Button = () => (
 
 export const RecentArticles: React.FC = () => {
   return (
-    <div className="relative shrink-0 w-[345px]">
-      <div className="flex flex-col gap-5 items-start justify-start relative w-[345px]">
+    <div className="relative shrink-0 w-full sm:w-[345px]">
+      <div className="flex flex-col gap-5 items-start justify-start relative w-full">
         
         {/* Title */}
         <div className="relative shrink-0 w-full">
