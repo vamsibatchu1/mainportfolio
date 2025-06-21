@@ -3,7 +3,7 @@ import { Briefcase, User, Eye, ChevronRight, FolderOpen } from 'lucide-react';
 
 export const QuickActions: React.FC = () => {
   return (
-    <div className="relative shrink-0 w-full">
+    <div className="relative shrink-0 w-full pl-6">
       <div className="flex flex-col gap-4 items-start justify-start relative w-full">
         
         {/* Title */}
@@ -14,7 +14,7 @@ export const QuickActions: React.FC = () => {
         {/* Quick Actions Carousel */}
         <div className="relative shrink-0 w-full">
           <div className="overflow-x-auto overflow-y-hidden relative w-full">
-            <div className="flex flex-row gap-3 items-center justify-start relative min-w-max px-0 py-0">
+            <div className="flex flex-row gap-3 items-center justify-start relative min-w-max pl-0 pr-6 py-0">
               
               {/* Card 1 - Look at the recent work */}
               <div className="bg-[rgba(115,38,18,0.05)] h-40 min-w-40 relative rounded-3xl shrink-0 w-40">

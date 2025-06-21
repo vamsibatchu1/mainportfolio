@@ -3,7 +3,7 @@ import { User } from 'lucide-react';
 
 export const Header: React.FC = () => {
   return (
-    <div className="bg-white relative shrink-0 w-full">
+    <div className="bg-white relative shrink-0 w-full px-6">
       <div className="flex flex-row justify-center relative w-full h-full">
         <div className="flex flex-row gap-2 items-start justify-center pb-0 pt-6 px-0 relative w-full">
           {/* Good morning text */}

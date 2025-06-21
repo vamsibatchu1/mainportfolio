@@ -8,7 +8,7 @@ const imgIanMacdonaldPmqTjdVbKdMUnsplash2 = "http://localhost:3845/assets/4ccb67
 
 export const Hero: React.FC = () => {
   return (
-    <div className="relative shrink-0 w-full">
+    <div className="relative shrink-0 w-full px-6">
       <div className="flex flex-col gap-4 items-center justify-center relative w-full">
         
         {/* Introduction Text */}

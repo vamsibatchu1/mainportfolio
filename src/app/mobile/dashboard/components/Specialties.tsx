@@ -3,7 +3,7 @@ import { BarChart3, DollarSign, ArrowRight } from 'lucide-react';
 
 export const Specialties: React.FC = () => {
   return (
-    <div className="relative shrink-0 w-full sm:w-[344px]">
+    <div className="relative shrink-0 w-full pl-6">
       <div className="flex flex-col gap-4 items-start justify-start relative w-full">
         
         {/* Title */}
@@ -14,7 +14,7 @@ export const Specialties: React.FC = () => {
         {/* Specialties Carousel */}
         <div className="relative shrink-0 w-full">
           <div className="overflow-x-auto overflow-y-hidden relative w-full">
-            <div className="flex flex-row gap-3 items-start justify-start relative min-w-max px-0 py-0">
+            <div className="flex flex-row gap-3 items-start justify-start relative min-w-max pl-0 pr-6 py-0">
               
               {/* Card 1 - Enterprise Design */}
               <div className="bg-[#f2f2f2] h-[166px] overflow-hidden relative rounded-3xl shrink-0 w-[163px]">

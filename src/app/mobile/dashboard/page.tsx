@@ -20,7 +20,7 @@ export default function MobileDashboard() {
         {/* Main Content - Scrollable */}
         <div className="flex-1 overflow-y-auto w-full">
           <div className="relative w-full h-full">
-            <div className="flex flex-col gap-10 items-start justify-start pb-6 pt-6 px-6 relative w-full">
+            <div className="flex flex-col gap-10 items-start justify-start pb-6 pt-6 relative w-full">
               
               {/* Header Section */}
               <Header />

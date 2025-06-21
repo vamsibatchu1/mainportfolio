@@ -2,7 +2,7 @@ import { interFont } from '@/app/fonts';
 
 export function Widgets() {
   return (
-    <div className={`relative w-full sm:w-[345px] ${interFont.variable}`}>
+    <div className={`relative w-full px-6 ${interFont.variable}`}>
       <div className="flex flex-col gap-4 items-start justify-start p-0 relative w-full">
         <div className="relative w-full">
           <div className="flex flex-row items-center justify-between p-0 relative w-full">

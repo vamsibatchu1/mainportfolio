@@ -6,7 +6,7 @@ const imgEllipse184 = "http://localhost:3845/assets/fd7bba309554df13a359662a7085
 
 export const DesignPhilosophy: React.FC = () => {
   return (
-    <div className="relative shrink-0 w-full sm:w-[345px]">
+    <div className="relative shrink-0 w-full px-6">
       <div className="flex flex-col gap-4 items-start justify-start relative w-full">
         
         {/* Philosophy Title */}

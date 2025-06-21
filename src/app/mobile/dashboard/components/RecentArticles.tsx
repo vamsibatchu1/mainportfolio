@@ -26,7 +26,7 @@ const Button = () => (
 
 export const RecentArticles: React.FC = () => {
   return (
-    <div className="relative shrink-0 w-full sm:w-[345px]">
+    <div className="relative shrink-0 w-full pl-6">
       <div className="flex flex-col gap-5 items-start justify-start relative w-full">
         
         {/* Title */}
@@ -41,7 +41,7 @@ export const RecentArticles: React.FC = () => {
         {/* Articles Carousel */}
         <div className="relative shrink-0 w-full">
           <div className="overflow-x-auto overflow-y-hidden relative w-full">
-            <div className="flex flex-row gap-3 items-start justify-start relative min-w-max px-0 py-0">
+            <div className="flex flex-row gap-3 items-start justify-start relative min-w-max pl-0 pr-6 py-0">
               
               {/* Article Card 1 */}
               <div className="bg-[#f7f7f7] relative rounded-2xl shrink-0 w-80">
