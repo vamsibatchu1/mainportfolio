@@ -5,4 +5,5 @@ export { DesignPhilosophy } from './DesignPhilosophy';
 export { Widgets } from './Widgets';
 export { RecentArticles } from './RecentArticles';
 export { Specialties } from './Specialties';
+export { LearnMoreSheet } from './learnmore-sheet';
 export { default as BottomNavigation } from './BottomNavigation'; 

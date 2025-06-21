@@ -1,7 +1,17 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
+import { LearnMoreSheet } from './learnmore-sheet';
 
 export const Hero: React.FC = () => {
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
   return (
+    <>
+      <LearnMoreSheet 
+        isOpen={isSheetOpen} 
+        onClose={() => setIsSheetOpen(false)} 
+      />
     <div className="relative shrink-0 w-full px-6">
       <div className="flex flex-col gap-6 items-center justify-center w-full">
         
@@ -32,14 +42,18 @@ export const Hero: React.FC = () => {
                 <p className="leading-[20px]">My team focuses on transforming trading experiences and workflows</p>
               </div>
             </div>
-            <div className="bg-[#ededed] rounded-3xl px-4 py-2 w-fit">
+            <button 
+              onClick={() => setIsSheetOpen(true)}
+              className="bg-[#ededed] rounded-3xl px-4 py-2 w-fit"
+            >
               <div className="font-jakarta font-medium text-[#111111] text-[14px] text-nowrap">
                 <p className="leading-normal">Learn more</p>
               </div>
-            </div>
+            </button>
           </div>
         </div>
       </div>
     </div>
+    </>
   );
 }; 
