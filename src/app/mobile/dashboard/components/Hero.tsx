@@ -152,7 +152,7 @@ export const Hero: React.FC = () => {
               <div className="relative shrink-0 w-full">
                 <div className="flex flex-row items-start justify-between relative w-full">
                   <div className="font-jakarta font-medium leading-[0] relative shrink-0 text-[#545454] text-[14px] text-left w-[247px]">
-                    <p className="block leading-[20px]">Match with 32 more homes by adding 5 mins to your commute</p>
+                    <p className="block leading-[20px]">Match with 30 more homes by adding 5 mins to your commute</p>
                   </div>
                   <div className="relative rounded-full shrink-0 w-10 h-10">
                     <div className="flex flex-row items-center justify-center relative w-full h-full">
