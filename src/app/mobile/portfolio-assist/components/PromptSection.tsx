@@ -36,51 +36,60 @@ export const PromptSection: React.FC<PromptSectionProps> = ({
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSubmit();
-    }
-  };
+
 
   return (
-    <div className="bg-white w-full px-6 pb-4">
-      <div className="flex flex-col gap-3 items-end justify-start w-full">
+    <div className="bg-white w-full">
+      <div className="flex flex-col gap-5 items-start justify-start w-full">
         {/* Prompt Suggestions */}
-        <div className="w-full overflow-x-auto">
-          <div className="flex flex-row gap-3 items-center justify-start min-w-max">
-            {PROMPT_SUGGESTIONS.map((suggestion, index) => (
-              <button
-                key={index}
-                onClick={() => handleSuggestionClick(suggestion)}
-                className="bg-[#f7f7f7] h-8 min-w-[120px] rounded-[20px] shrink-0 hover:bg-[#efefef] transition-colors"
-              >
-                <div className="flex flex-col justify-center min-w-inherit h-full">
-                  <div className="flex flex-col h-8 items-start justify-center min-w-inherit px-4">
-                    <div className="font-jakarta font-medium text-[#111111] text-[14px] text-left text-nowrap leading-normal whitespace-pre">
-                      {suggestion}
+        <div className="relative shrink-0 w-full">
+          <div className="flex flex-row items-center overflow-x-auto overflow-y-clip relative size-full">
+            <div className="box-border content-stretch flex flex-row gap-3 items-center justify-start px-5 py-0 relative w-full">
+              {PROMPT_SUGGESTIONS.map((suggestion, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleSuggestionClick(suggestion)}
+                  className="bg-[#f7f7f7] h-8 min-w-[120px] relative rounded-[20px] shrink-0 hover:bg-[#efefef] transition-colors"
+                >
+                  <div className="flex flex-col justify-center min-w-inherit relative size-full">
+                    <div className="box-border content-stretch flex flex-col h-8 items-start justify-center min-w-inherit p-[16px] relative">
+                      <div className="relative shrink-0">
+                        <div className="box-border content-stretch flex flex-col items-start justify-start p-0 relative">
+                          <div className="flex flex-col font-jakarta font-medium justify-center leading-[0] relative shrink-0 text-[#111111] text-[14px] text-left text-nowrap">
+                            <p className="block leading-[normal] whitespace-pre">
+                              {suggestion}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </button>
-            ))}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Prompt Composer */}
-        <div className="bg-[#ffffff] h-16 rounded-[60px] w-full relative border border-[#e1e1e1]">
-          <div className="flex flex-row items-center h-full">
-            <div className="flex flex-row h-16 items-center justify-between pl-6 pr-4 py-4 w-full">
-              <input
-                type="text"
+        <div className="bg-[#ececec] relative rounded-tl-[20px] rounded-tr-[20px] shrink-0 w-full">
+          <div className="flex flex-col items-end justify-center relative size-full">
+            <div className="box-border content-stretch flex flex-col gap-3 items-end justify-center p-[32px] relative w-full">
+              <textarea
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Ask anything"
-                className="font-jakarta font-medium text-[14px] text-[#111111] placeholder:text-[#9d9d9d] leading-[20px] bg-transparent border-none outline-none flex-1"
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSubmit();
+                  }
+                }}
+                placeholder="Ask me anything"
+                className="font-jakarta font-medium leading-[20px] w-full relative shrink-0 text-[#111111] placeholder:text-[#525151] text-[14px] text-left bg-transparent border-none outline-none resize-none"
+                rows={2}
               />
               <button
                 onClick={handleSubmit}
-                className="bg-[#f7f7f7] rounded-[50px] w-10 h-10 flex items-center justify-center hover:bg-[#efefef] transition-colors"
+                className="bg-[#f7f7f7] relative rounded-[50px] shrink-0 w-10 h-10 flex items-center justify-center hover:bg-[#efefef] transition-colors"
               >
                 <AudioLines size={24} className="text-[#111111]" />
               </button>

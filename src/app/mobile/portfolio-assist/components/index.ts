@@ -4,6 +4,7 @@ export { PromptSection } from './PromptSection';
 export { UserPrompt } from './UserPrompt';
 export { Response } from './Response';
 export { ChatArea } from './ChatArea';
+export { LoadingComponent } from './LoadingComponent';
 
 // Export types
 export type { ResponseContent, InfoCardData, ResponseType } from './Response';

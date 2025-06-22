@@ -12,8 +12,8 @@ export default function PortfolioAssist() {
     handlePromptSubmit(prompt);
   };
 
-  const handlePromptSubmit = (prompt: string) => {
-    // Add user message
+  const handlePromptSubmit = async (prompt: string) => {
+    // Add user message immediately
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
       type: 'user',
@@ -21,16 +21,39 @@ export default function PortfolioAssist() {
       timestamp: new Date(),
     };
 
-    // Simulate AI response based on prompt
-    const responseContent: ResponseContent = getResponseForPrompt(prompt);
-    const aiMessage: ChatMessage = {
-      id: (Date.now() + 1).toString(),
-      type: 'response',
-      content: responseContent,
-      timestamp: new Date(),
-    };
+    setMessages(prev => [...prev, userMessage]);
 
-    setMessages(prev => [...prev, userMessage, aiMessage]);
+    // Add loading response after a short delay to show user message first
+    setTimeout(() => {
+      const loadingMessage: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        type: 'response',
+        content: { type: 'text', text: '' }, // Empty content for loading
+        timestamp: new Date(),
+        isLoading: true,
+      };
+
+      setMessages(prev => [...prev, loadingMessage]);
+
+      // Simulate AI processing time and then show actual response
+      setTimeout(() => {
+        const responseContent: ResponseContent = getResponseForPrompt(prompt);
+        const aiMessage: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          type: 'response',
+          content: responseContent,
+          timestamp: new Date(),
+          isLoading: false,
+        };
+
+        // Replace loading message with actual response
+        setMessages(prev => {
+          const newMessages = [...prev];
+          newMessages[newMessages.length - 1] = aiMessage;
+          return newMessages;
+        });
+      }, 2000); // 2 second loading simulation
+    }, 300); // Small delay to show user message first
   };
 
   // Sample response generator based on prompt
