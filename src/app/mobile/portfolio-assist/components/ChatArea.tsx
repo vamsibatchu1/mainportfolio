@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { UserPrompt } from './UserPrompt';
 import { Response, ResponseContent } from './Response';
@@ -59,47 +59,10 @@ const loadingToContentVariants = {
 };
 
 export const ChatArea: React.FC<ChatAreaProps> = ({ messages }) => {
-  const chatContainerRef = useRef<HTMLDivElement>(null);
-  const lastMessageRef = useRef<HTMLDivElement>(null);
-
-  // Auto-scroll to latest message when new messages are added
-  useEffect(() => {
-    if (messages.length > 0) {
-      // Add a small delay to ensure DOM is updated and animations have started
-      setTimeout(() => {
-        if (lastMessageRef.current) {
-          lastMessageRef.current.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'start',
-            inline: 'nearest'
-          });
-        }
-      }, 150);
-    }
-  }, [messages]);
-
-  // Additional scroll specifically for when loading completes
-  useEffect(() => {
-    const lastMessage = messages[messages.length - 1];
-    if (lastMessage && lastMessage.type === 'response' && !lastMessage.isLoading) {
-      setTimeout(() => {
-        if (lastMessageRef.current) {
-          lastMessageRef.current.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'start',
-            inline: 'nearest'
-          });
-        }
-      }, 300);
-    }
-  }, [messages]);
 
   return (
-    <div 
-      ref={chatContainerRef}
-      className="w-full px-6 flex-1 overflow-y-auto"
-    >
-      <div className="flex flex-col gap-10 items-start justify-start w-full">
+    <div className="relative shrink-0 w-full">
+      <div className="flex flex-col gap-10 items-start justify-start w-full pb-8">
         {messages.length === 0 ? (
           <motion.div 
             className="text-center text-gray-500 w-full py-8"
@@ -110,11 +73,10 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ messages }) => {
           </motion.div>
         ) : (
           <AnimatePresence mode="popLayout">
-            {messages.map((message, index) => (
+            {messages.map((message) => (
               <motion.div 
                 key={message.id} 
                 className="w-full"
-                ref={index === messages.length - 1 ? lastMessageRef : null}
                 variants={messageVariants}
                 initial="hidden"
                 animate="visible"

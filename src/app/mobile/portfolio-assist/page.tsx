@@ -1,16 +1,41 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { jakartaFont } from '@/app/fonts';
 import { Header, PromptSection, ChatArea, ChatMessage, ResponseContent } from './components';
 import { BottomNavigation } from '../dashboard/components';
+import { generateResponse } from '@/lib/gemini';
 
 export default function PortfolioAssist() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const handlePromptSelect = (prompt: string) => {
-    handlePromptSubmit(prompt);
-  };
+  // Auto-scroll to latest message when new messages are added
+  useEffect(() => {
+    if (messages.length > 0 && scrollContainerRef.current) {
+      // Add a delay to ensure DOM is updated and animations have started
+      setTimeout(() => {
+        if (scrollContainerRef.current) {
+          // Scroll to bottom to show the latest message
+          scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+        }
+      }, 150);
+    }
+  }, [messages]);
+
+  // Additional scroll specifically for when loading completes
+  useEffect(() => {
+    const lastMessage = messages[messages.length - 1];
+    if (lastMessage && lastMessage.type === 'response' && !lastMessage.isLoading && scrollContainerRef.current) {
+      setTimeout(() => {
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+        }
+      }, 300);
+    }
+  }, [messages]);
+
+
 
   const handlePromptSubmit = async (prompt: string) => {
     // Add user message immediately
@@ -24,7 +49,7 @@ export default function PortfolioAssist() {
     setMessages(prev => [...prev, userMessage]);
 
     // Add loading response after a short delay to show user message first
-    setTimeout(() => {
+    setTimeout(async () => {
       const loadingMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         type: 'response',
@@ -35,9 +60,14 @@ export default function PortfolioAssist() {
 
       setMessages(prev => [...prev, loadingMessage]);
 
-      // Simulate AI processing time and then show actual response
-      setTimeout(() => {
-        const responseContent: ResponseContent = getResponseForPrompt(prompt);
+      // Get actual AI response from Gemini
+      try {
+        const aiResponseText = await generateResponse(prompt);
+        const responseContent: ResponseContent = {
+          type: 'text',
+          text: aiResponseText
+        };
+        
         const aiMessage: ChatMessage = {
           id: (Date.now() + 1).toString(),
           type: 'response',
@@ -52,7 +82,25 @@ export default function PortfolioAssist() {
           newMessages[newMessages.length - 1] = aiMessage;
           return newMessages;
         });
-      }, 2000); // 2 second loading simulation
+      } catch (error) {
+        console.error('Error getting AI response:', error);
+        
+        // Fallback to original mock response if API fails
+        const responseContent: ResponseContent = getResponseForPrompt(prompt);
+        const aiMessage: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          type: 'response',
+          content: responseContent,
+          timestamp: new Date(),
+          isLoading: false,
+        };
+
+        setMessages(prev => {
+          const newMessages = [...prev];
+          newMessages[newMessages.length - 1] = aiMessage;
+          return newMessages;
+        });
+      }
     }, 300); // Small delay to show user message first
   };
 
@@ -103,26 +151,25 @@ export default function PortfolioAssist() {
       {/* Mobile Container - Full width on mobile, capped at 393px on 600px+ screens */}
       <div className="bg-white relative w-full sm:w-[393px] sm:max-w-[393px] h-screen max-h-screen overflow-hidden flex flex-col">
         
-        {/* Main Content - Scrollable */}
-        <div className="flex-1 overflow-y-auto w-full">
-          <div className="relative w-full h-full">
-            <div className="flex flex-col gap-10 items-start justify-start pb-6 pt-6 relative w-full min-h-full">
-              
-              {/* Header Section */}
-              <Header />
-              
-              {/* Chat Area */}
-              <ChatArea messages={messages} />
-              
-            </div>
+        {/* Main Content - Header and Chat Area */}
+        <div className="flex-1 overflow-hidden flex flex-col">
+          {/* Header Section - Fixed */}
+          <div className="pt-10 px-6">
+            <Header />
+          </div>
+          
+          {/* Chat Area - Scrollable */}
+          <div ref={scrollContainerRef} className="flex-1 overflow-y-auto px-6 pt-10">
+            <ChatArea messages={messages} />
           </div>
         </div>
         
-        {/* Prompt Section - Sticky above bottom nav */}
-        <PromptSection 
-          onPromptSelect={handlePromptSelect}
-          onPromptSubmit={handlePromptSubmit}
-        />
+        {/* Prompt Section - Sticky at bottom */}
+        <div className="px-6 pb-6">
+          <PromptSection 
+            onPromptSubmit={handlePromptSubmit}
+          />
+        </div>
         
         {/* Bottom Navigation - Sticky */}
         <BottomNavigation />
