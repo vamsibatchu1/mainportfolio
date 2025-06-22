@@ -5,9 +5,10 @@ import { Send } from 'lucide-react';
 
 // Configurable prompt suggestions - easy to add more in the future
 const PROMPT_SUGGESTIONS = [
-  "Where do you work?",
-  "Thoughts about AI?",
-  "Find homes near me",
+  "What's next for you?",
+  "Favorite design trends right now?",
+  "Thoughts about AI design tools?",
+  "Any advice for new designers?",
   // Add more suggestions here easily
 ];
 
@@ -84,7 +85,7 @@ export const PromptSection: React.FC<PromptSectionProps> = ({
                           handleSubmit();
                         }
                       }}
-                      placeholder="Ask anything"
+                      placeholder="What would you like to know?"
                       className="block leading-[20px] w-full bg-transparent border-none outline-none resize-none font-['Plus_Jakarta_Sans:Medium',_sans-serif] font-medium text-[16px] text-[#000000] placeholder:text-[#9d9d9d] h-[88px]"
                       rows={1}
                     />

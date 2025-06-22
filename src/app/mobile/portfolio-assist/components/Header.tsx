@@ -7,15 +7,14 @@ export const Header: React.FC = () => {
         {/* Portfolio Agent Title */}
         <div className="font-jakarta font-semibold text-[#111111] text-[32px] text-left tracking-[-0.96px] overflow-hidden w-full">
           <p className="leading-[40px] text-nowrap overflow-ellipsis">
-            Portfolio Agent
+            Ask Vamsi
           </p>
         </div>
         
         {/* Subtitle */}
         <div className="font-jakarta font-medium text-[#545454] text-[16px] w-full">
           <p className="leading-[24px]">
-            Ask me anything about me, my work or get to know my design thoughts.
-          </p>
+          Get to know me, my work, and my thoughts on design. What would you like to discover?          </p>
         </div>
       </div>
     </div>
