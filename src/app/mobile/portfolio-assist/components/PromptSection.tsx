@@ -83,7 +83,7 @@ export const PromptSection: React.FC<PromptSectionProps> = ({
                     handleSubmit();
                   }
                 }}
-                placeholder="Ask me anything"
+                placeholder="Ask me anything that you want to know"
                 className="font-jakarta font-medium leading-[20px] w-full relative shrink-0 text-[#111111] placeholder:text-[#525151] text-[14px] text-left bg-transparent border-none outline-none resize-none"
                 rows={2}
               />
