@@ -1,9 +1,21 @@
+'use client';
+
 import React from 'react';
 import { jakartaFont } from '@/app/fonts';
-import { Header } from './components';
+import { Header, PromptSection } from './components';
 import { BottomNavigation } from '../dashboard/components';
 
-export default function Work() {
+export default function PortfolioAssist() {
+  const handlePromptSelect = (prompt: string) => {
+    console.log('Selected prompt:', prompt);
+    // Handle prompt selection logic here
+  };
+
+  const handlePromptSubmit = (prompt: string) => {
+    console.log('Submitted prompt:', prompt);
+    // Handle prompt submission logic here
+  };
+
   return (
     <div className={`bg-gray-100 min-h-screen sm:flex sm:items-center sm:justify-center ${jakartaFont.variable}`}>
       {/* Mobile Container - Full width on mobile, capped at 393px on 600px+ screens */}
@@ -17,16 +29,22 @@ export default function Work() {
               {/* Header Section */}
               <Header />
               
-              {/* Work Content - To be added */}
-              <div className="w-full px-6">
+              {/* Chat Area Content - To be added */}
+              <div className="w-full px-6 flex-1">
                 <div className="text-center text-gray-500">
-                  Work content will be added here
+                  Chat area will be added here
                 </div>
               </div>
               
             </div>
           </div>
         </div>
+        
+        {/* Prompt Section - Sticky above bottom nav */}
+        <PromptSection 
+          onPromptSelect={handlePromptSelect}
+          onPromptSubmit={handlePromptSubmit}
+        />
         
         {/* Bottom Navigation - Sticky */}
         <BottomNavigation />
