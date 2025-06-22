@@ -1,19 +1,78 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { jakartaFont } from '@/app/fonts';
-import { Header, PromptSection } from './components';
+import { Header, PromptSection, ChatArea, ChatMessage, ResponseContent } from './components';
 import { BottomNavigation } from '../dashboard/components';
 
 export default function PortfolioAssist() {
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+
   const handlePromptSelect = (prompt: string) => {
-    console.log('Selected prompt:', prompt);
-    // Handle prompt selection logic here
+    handlePromptSubmit(prompt);
   };
 
   const handlePromptSubmit = (prompt: string) => {
-    console.log('Submitted prompt:', prompt);
-    // Handle prompt submission logic here
+    // Add user message
+    const userMessage: ChatMessage = {
+      id: Date.now().toString(),
+      type: 'user',
+      content: prompt,
+      timestamp: new Date(),
+    };
+
+    // Simulate AI response based on prompt
+    const responseContent: ResponseContent = getResponseForPrompt(prompt);
+    const aiMessage: ChatMessage = {
+      id: (Date.now() + 1).toString(),
+      type: 'response',
+      content: responseContent,
+      timestamp: new Date(),
+    };
+
+    setMessages(prev => [...prev, userMessage, aiMessage]);
+  };
+
+  // Sample response generator based on prompt
+  const getResponseForPrompt = (prompt: string): ResponseContent => {
+    const lowerPrompt = prompt.toLowerCase();
+    
+    if (lowerPrompt.includes('work') || lowerPrompt.includes('job')) {
+      return {
+        type: 'mixed',
+        mixedContent: [
+          {
+            type: 'text',
+            text: 'I currently work as a Senior UX Designer at TechCorp!'
+          },
+          {
+            type: 'info',
+            infoCard: {
+              title: 'Current Role',
+              value: 'Senior UX Designer',
+              rows: [
+                { label: 'Company', value: 'TechCorp' },
+                { label: 'Experience', value: '5+ years' },
+                { label: 'Focus', value: 'Mobile & Web Design' }
+              ]
+            }
+          }
+        ]
+      };
+    }
+    
+    if (lowerPrompt.includes('ai') || lowerPrompt.includes('artificial')) {
+      return {
+        type: 'text',
+        text: 'I believe AI is transforming design by automating repetitive tasks and enabling more personalized user experiences. It\'s a powerful tool that augments human creativity rather than replacing it.'
+      };
+    }
+    
+    // Default response
+    return {
+      type: 'text',
+      text: 'That\'s an interesting question! I\'d be happy to share more about my work, experience, or design philosophy. What would you like to know specifically?'
+    };
   };
 
   return (
@@ -24,17 +83,13 @@ export default function PortfolioAssist() {
         {/* Main Content - Scrollable */}
         <div className="flex-1 overflow-y-auto w-full">
           <div className="relative w-full h-full">
-            <div className="flex flex-col gap-10 items-start justify-start pb-6 pt-6 relative w-full">
+            <div className="flex flex-col gap-10 items-start justify-start pb-6 pt-6 relative w-full min-h-full">
               
               {/* Header Section */}
               <Header />
               
-              {/* Chat Area Content - To be added */}
-              <div className="w-full px-6 flex-1">
-                <div className="text-center text-gray-500">
-                  Chat area will be added here
-                </div>
-              </div>
+              {/* Chat Area */}
+              <ChatArea messages={messages} />
               
             </div>
           </div>
