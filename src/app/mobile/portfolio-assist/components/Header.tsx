@@ -12,8 +12,8 @@ export const Header: React.FC = () => {
         </div>
         
         {/* Subtitle */}
-        <div className="font-jakarta font-medium text-[#545454] text-[14px] w-full">
-          <p className="leading-[20px]">
+        <div className="font-jakarta font-medium text-[#545454] text-[16px] w-full">
+          <p className="leading-[24px]">
             Ask me anything about me, my work or get to know my design thoughts.
           </p>
         </div>

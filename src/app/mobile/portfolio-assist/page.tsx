@@ -3,7 +3,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { jakartaFont } from '@/app/fonts';
 import { Header, PromptSection, ChatArea, ChatMessage, ResponseContent } from './components';
-import { BottomNavigation } from '../dashboard/components';
 import { generateResponse } from '@/lib/gemini';
 
 export default function PortfolioAssist() {
@@ -170,9 +169,6 @@ export default function PortfolioAssist() {
             onPromptSubmit={handlePromptSubmit}
           />
         </div>
-        
-        {/* Bottom Navigation - Sticky */}
-        <BottomNavigation />
       </div>
     </div>
   );
