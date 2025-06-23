@@ -15,18 +15,6 @@ export function Widgets() {
     <>
       <div className={`relative w-full px-6 ${interFont.variable}`}>
         <div className="flex flex-col gap-4 items-start justify-start p-0 relative w-full">
-          <div className="relative w-full">
-            <div className="flex flex-row items-center justify-between p-0 relative w-full">
-              <div className="font-inter font-medium text-[20px] leading-6 text-[#111111]">
-                <p>Widgets</p>
-              </div>
-              <div className="w-6 h-6 overflow-hidden">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 5v14M5 12h14" stroke="#111111" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-            </div>
-          </div>
           <button 
             onClick={handleWidgetClick}
             className="bg-[#edf1ff] relative rounded-2xl w-full h-full cursor-pointer hover:bg-[#e5efff] transition-colors"

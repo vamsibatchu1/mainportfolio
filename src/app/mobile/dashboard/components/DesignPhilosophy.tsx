@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Users, BarChart3, MessageSquare, Lightbulb, Heart, RefreshCw } from 'lucide-react';
 
 
 
@@ -42,7 +42,6 @@ export const DesignPhilosophy: React.FC = () => {
                     </div>
                   </div>
                 </div>
-                <Sparkles className="w-6 h-6 text-[#111111]" />
               </div>
             </div>
             
@@ -54,45 +53,117 @@ export const DesignPhilosophy: React.FC = () => {
               
               {/* Philosophy Carousel */}
               <div className="w-full overflow-x-auto overflow-y-hidden">
-                <div className="flex flex-row gap-2.5 items-start justify-start pr-8">
+                <div className="flex flex-row gap-6 items-start justify-start pr-8">
                   
-                  {/* Card 1 - Value driven */}
-                  <div className="bg-[#f7f7f7] rounded-[20px] w-[142.5px] h-[142.5px] p-5 flex flex-col justify-end">
-                    <div className="flex flex-col gap-2">
-                      <div className="flex flex-col gap-1">
-                        <div className="font-jakarta font-semibold text-[#111111] text-[16px]">
-                          <p className="leading-[24px]">Value driven</p>
-                        </div>
-                        <div className="font-jakarta font-medium text-[#545454] text-[12px]">
-                          <p className="leading-[16px]">Putting the design first infront of anyone</p>
+                  {/* Card 1 - User-Centered */}
+                  <div className="rounded-2xl shrink-0">
+                    <div className="flex flex-row gap-3 items-center justify-start">
+                      <div className="bg-[#eaf3ec] rounded-xl shrink-0 size-12 flex items-center justify-center">
+                        <Users size={24} className="text-[#8dbf9a]" />
+                      </div>
+                      <div className="shrink-0">
+                        <div className="flex flex-col gap-1.5 items-start justify-start">
+                          <div className="font-jakarta font-semibold text-[#111111] text-[16px] w-full">
+                            <p className="leading-[20px]">User-Centered</p>
+                          </div>
+                          <div className="font-jakarta font-medium text-[#545454] text-[14px] w-full">
+                            <p className="leading-[20px]">Always putting users first</p>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                   
-                  {/* Card 2 - Value 2 */}
-                  <div className="bg-[#f7f7f7] rounded-[20px] w-[142.5px] h-[142.5px] p-5 flex flex-col justify-end">
-                    <div className="flex flex-col gap-2">
-                      <div className="flex flex-col gap-1">
-                        <div className="font-jakarta font-semibold text-[#111111] text-[16px]">
-                          <p className="leading-[24px]">Value 2</p>
-                        </div>
-                        <div className="font-jakarta font-medium text-[#545454] text-[12px]">
-                          <p className="leading-[16px]">Putting the design first infront of anyone</p>
+                  {/* Card 2 - Data-Driven */}
+                  <div className="rounded-2xl shrink-0">
+                    <div className="flex flex-row gap-3 items-center justify-start">
+                      <div className="bg-[#eaf3ec] rounded-xl shrink-0 size-12 flex items-center justify-center">
+                        <BarChart3 size={24} className="text-[#8dbf9a]" />
+                      </div>
+                      <div className="shrink-0">
+                        <div className="flex flex-col gap-1.5 items-start justify-start">
+                          <div className="font-jakarta font-semibold text-[#111111] text-[16px] w-full">
+                            <p className="leading-[20px]">Data-Driven</p>
+                          </div>
+                          <div className="font-jakarta font-medium text-[#545454] text-[14px] w-full">
+                            <p className="leading-[20px]">Decisions backed by insights</p>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                   
-                  {/* Card 3 - Philosophy1 */}
-                  <div className="bg-[#f7f7f7] rounded-[20px] w-[142.5px] h-[142.5px] p-5 flex flex-col justify-end">
-                    <div className="flex flex-col gap-2">
-                      <div className="flex flex-col gap-1">
-                        <div className="font-jakarta font-semibold text-[#111111] text-[16px]">
-                          <p className="leading-[24px]">Philosophy1</p>
+                  {/* Card 3 - Collaborative */}
+                  <div className="rounded-2xl shrink-0">
+                    <div className="flex flex-row gap-3 items-center justify-start">
+                      <div className="bg-[#eaf3ec] rounded-xl shrink-0 size-12 flex items-center justify-center">
+                        <MessageSquare size={24} className="text-[#8dbf9a]" />
+                      </div>
+                      <div className="shrink-0">
+                        <div className="flex flex-col gap-1.5 items-start justify-start">
+                          <div className="font-jakarta font-semibold text-[#111111] text-[16px] w-full">
+                            <p className="leading-[20px]">Collaborative</p>
+                          </div>
+                          <div className="font-jakarta font-medium text-[#545454] text-[14px] w-full">
+                            <p className="leading-[20px]">Building together as a team</p>
+                          </div>
                         </div>
-                        <div className="font-jakarta font-medium text-[#545454] text-[12px]">
-                          <p className="leading-[16px]">Putting the design first infront of anyone</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Card 4 - Innovative */}
+                  <div className="rounded-2xl shrink-0">
+                    <div className="flex flex-row gap-3 items-center justify-start">
+                      <div className="bg-[#eaf3ec] rounded-xl shrink-0 size-12 flex items-center justify-center">
+                        <Lightbulb size={24} className="text-[#8dbf9a]" />
+                      </div>
+                      <div className="shrink-0">
+                        <div className="flex flex-col gap-1.5 items-start justify-start">
+                          <div className="font-jakarta font-semibold text-[#111111] text-[16px] w-full">
+                            <p className="leading-[20px]">Innovative</p>
+                          </div>
+                          <div className="font-jakarta font-medium text-[#545454] text-[14px] w-full">
+                            <p className="leading-[20px]">Pushing creative boundaries</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Card 5 - Accessible */}
+                  <div className="rounded-2xl shrink-0">
+                    <div className="flex flex-row gap-3 items-center justify-start">
+                      <div className="bg-[#eaf3ec] rounded-xl shrink-0 size-12 flex items-center justify-center">
+                        <Heart size={24} className="text-[#8dbf9a]" />
+                      </div>
+                      <div className="shrink-0">
+                        <div className="flex flex-col gap-1.5 items-start justify-start">
+                          <div className="font-jakarta font-semibold text-[#111111] text-[16px] w-full">
+                            <p className="leading-[20px]">Accessible</p>
+                          </div>
+                          <div className="font-jakarta font-medium text-[#545454] text-[14px] w-full">
+                            <p className="leading-[20px]">Design for everyone</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Card 6 - Iterative */}
+                  <div className="rounded-2xl shrink-0">
+                    <div className="flex flex-row gap-3 items-center justify-start">
+                      <div className="bg-[#eaf3ec] rounded-xl shrink-0 size-12 flex items-center justify-center">
+                        <RefreshCw size={24} className="text-[#8dbf9a]" />
+                      </div>
+                      <div className="shrink-0">
+                        <div className="flex flex-col gap-1.5 items-start justify-start">
+                          <div className="font-jakarta font-semibold text-[#111111] text-[16px] w-full">
+                            <p className="leading-[20px]">Iterative</p>
+                          </div>
+                          <div className="font-jakarta font-medium text-[#545454] text-[14px] w-full">
+                            <p className="leading-[20px]">Continuous improvement</p>
+                          </div>
                         </div>
                       </div>
                     </div>

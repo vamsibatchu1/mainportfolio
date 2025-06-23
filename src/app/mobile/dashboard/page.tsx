@@ -32,14 +32,17 @@ export default function MobileDashboard() {
               {/* Now Playing Section */}
               <NowPlaying />
               
+              
               {/* Quick Actions Section */}
               <QuickActions />
+
+              {/* Widgets Section */}
+              <Widgets />
               
               {/* Design Philosophy Section */}
               <DesignPhilosophy />
               
-              {/* Widgets Section */}
-              <Widgets />
+             
               
               {/* Recent Articles Section */}
               <RecentArticles />
