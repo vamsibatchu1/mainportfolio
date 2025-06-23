@@ -20,8 +20,9 @@ export const Hero: React.FC = () => {
           <p className="leading-[32px]">I am vamsi batchu, a product design leader at the intersection of craft & code</p>
         </div>
         
+        
         {/* Current Work Card */}
-        <div className="bg-[#f7f7f7] rounded-2xl w-full p-6">
+        {/* <div className="bg-[#f7f7f7] rounded-2xl w-full p-6">
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
               <div className="flex flex-row gap-2 items-start justify-start">
@@ -51,7 +52,7 @@ export const Hero: React.FC = () => {
               </div>
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
     </>

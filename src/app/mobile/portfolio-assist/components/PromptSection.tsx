@@ -1,25 +1,99 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Send } from 'lucide-react';
+import type { ChatMessage } from './ChatArea';
 
-// Configurable prompt suggestions - easy to add more in the future
-const PROMPT_SUGGESTIONS = [
-  "What's next for you?",
-  "Favorite design trends right now?",
-  "Thoughts about AI design tools?",
-  "Any advice for new designers?",
-  // Add more suggestions here easily
+// Initial prompt suggestions
+const INITIAL_SUGGESTIONS = [
+  "What's your design process?",
+  "Tell me about your best project",
+  "How do you approach UX challenges?",
+  "What tools do you use daily?",
 ];
+
+// Follow-up suggestions based on conversation topics
+const FOLLOW_UP_SUGGESTIONS = {
+  design: [
+    "Show me your design philosophy",
+    "What inspires your creativity?",
+    "Any recent design challenges?",
+    "Favorite design resources?"
+  ],
+  work: [
+    "What's your typical workday like?",
+    "Tell me about your team",
+    "Current projects you're working on?",
+    "Career growth aspirations?"
+  ],
+  process: [
+    "How do you handle feedback?",
+    "Your favorite design tools?",
+    "Research methods you use?",
+    "Collaboration with developers?"
+  ],
+  ai: [
+    "AI tools you recommend?",
+    "Future of AI in design?",
+    "How AI changed your workflow?",
+    "Concerns about AI in design?"
+  ],
+  advice: [
+    "Portfolio tips for beginners?",
+    "Skills to focus on in 2024?",
+    "Common design mistakes?",
+    "How to get first design job?"
+  ],
+  personal: [
+    "What motivates you daily?",
+    "Work-life balance tips?",
+    "Hobbies outside of design?",
+    "Books that influenced you?"
+  ]
+};
 
 interface PromptSectionProps {
   onPromptSubmit?: (prompt: string) => void;
+  messages?: ChatMessage[];
 }
 
 export const PromptSection: React.FC<PromptSectionProps> = ({
   onPromptSubmit,
+  messages = [],
 }) => {
   const [inputValue, setInputValue] = useState('');
+
+  // Generate dynamic suggestions based on conversation context
+  const currentSuggestions = useMemo(() => {
+    if (messages.length === 0) {
+      return INITIAL_SUGGESTIONS;
+    }
+
+    // Analyze recent messages to determine context
+    const recentMessages = messages.slice(-4); // Look at last 4 messages
+    const conversationText = recentMessages
+      .map(msg => typeof msg.content === 'string' ? msg.content : msg.content?.text || '')
+      .join(' ')
+      .toLowerCase();
+
+    // Determine context based on keywords
+    if (conversationText.includes('ai') || conversationText.includes('artificial')) {
+      return FOLLOW_UP_SUGGESTIONS.ai;
+    } else if (conversationText.includes('work') || conversationText.includes('job') || conversationText.includes('career')) {
+      return FOLLOW_UP_SUGGESTIONS.work;
+    } else if (conversationText.includes('process') || conversationText.includes('method') || conversationText.includes('approach')) {
+      return FOLLOW_UP_SUGGESTIONS.process;
+    } else if (conversationText.includes('advice') || conversationText.includes('tip') || conversationText.includes('beginner')) {
+      return FOLLOW_UP_SUGGESTIONS.advice;
+    } else if (conversationText.includes('design') || conversationText.includes('ux') || conversationText.includes('ui')) {
+      return FOLLOW_UP_SUGGESTIONS.design;
+    } else if (conversationText.includes('personal') || conversationText.includes('motivate') || conversationText.includes('inspire')) {
+      return FOLLOW_UP_SUGGESTIONS.personal;
+    }
+
+    // Default to design-related suggestions if no specific context
+    return FOLLOW_UP_SUGGESTIONS.design;
+  }, [messages]);
 
   const handleSuggestionClick = (suggestion: string) => {
     // Directly submit the suggestion without setting it in the input field
@@ -44,7 +118,7 @@ export const PromptSection: React.FC<PromptSectionProps> = ({
         <div className="relative shrink-0 w-full">
           <div className="overflow-x-auto overflow-y-hidden">
             <div className="box-border content-stretch flex flex-row gap-3 items-center justify-start p-0 relative w-max">
-              {PROMPT_SUGGESTIONS.map((suggestion, index) => (
+              {currentSuggestions.map((suggestion: string, index: number) => (
                 <button
                   key={index}
                   onClick={() => handleSuggestionClick(suggestion)}

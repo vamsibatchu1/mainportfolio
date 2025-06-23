@@ -1,5 +1,6 @@
 export { Header } from './Header';
 export { Hero } from './Hero';
+export { NowPlaying } from './NowPlaying';
 export { QuickActions } from './QuickActions';
 export { DesignPhilosophy } from './DesignPhilosophy';
 export { Widgets } from './Widgets';

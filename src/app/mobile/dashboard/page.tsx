@@ -3,6 +3,7 @@ import { jakartaFont } from '@/app/fonts';
 import { 
   Header,
   Hero,
+  NowPlaying,
   QuickActions,
   DesignPhilosophy,
   Widgets,
@@ -27,6 +28,9 @@ export default function MobileDashboard() {
               
               {/* Hero Section */}
               <Hero />
+              
+              {/* Now Playing Section */}
+              <NowPlaying />
               
               {/* Quick Actions Section */}
               <QuickActions />

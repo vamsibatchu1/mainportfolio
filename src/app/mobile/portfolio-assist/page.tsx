@@ -59,47 +59,50 @@ export default function PortfolioAssist() {
 
       setMessages(prev => [...prev, loadingMessage]);
 
-      // Get actual AI response from Gemini
-      try {
-        const aiResponseText = await generateResponse(prompt);
-        const responseContent: ResponseContent = {
-          type: 'text',
-          text: aiResponseText
-        };
-        
-        const aiMessage: ChatMessage = {
-          id: (Date.now() + 1).toString(),
-          type: 'response',
-          content: responseContent,
-          timestamp: new Date(),
-          isLoading: false,
-        };
+      // Wait for 4 seconds minimum before showing response
+      setTimeout(async () => {
+        // Get actual AI response from Gemini
+        try {
+          const aiResponseText = await generateResponse(prompt);
+          const responseContent: ResponseContent = {
+            type: 'text',
+            text: aiResponseText
+          };
+          
+          const aiMessage: ChatMessage = {
+            id: (Date.now() + 1).toString(),
+            type: 'response',
+            content: responseContent,
+            timestamp: new Date(),
+            isLoading: false,
+          };
 
-        // Replace loading message with actual response
-        setMessages(prev => {
-          const newMessages = [...prev];
-          newMessages[newMessages.length - 1] = aiMessage;
-          return newMessages;
-        });
-      } catch (error) {
-        console.error('Error getting AI response:', error);
-        
-        // Fallback to original mock response if API fails
-        const responseContent: ResponseContent = getResponseForPrompt(prompt);
-        const aiMessage: ChatMessage = {
-          id: (Date.now() + 1).toString(),
-          type: 'response',
-          content: responseContent,
-          timestamp: new Date(),
-          isLoading: false,
-        };
+          // Replace loading message with actual response
+          setMessages(prev => {
+            const newMessages = [...prev];
+            newMessages[newMessages.length - 1] = aiMessage;
+            return newMessages;
+          });
+        } catch (error) {
+          console.error('Error getting AI response:', error);
+          
+          // Fallback to original mock response if API fails
+          const responseContent: ResponseContent = getResponseForPrompt(prompt);
+          const aiMessage: ChatMessage = {
+            id: (Date.now() + 1).toString(),
+            type: 'response',
+            content: responseContent,
+            timestamp: new Date(),
+            isLoading: false,
+          };
 
-        setMessages(prev => {
-          const newMessages = [...prev];
-          newMessages[newMessages.length - 1] = aiMessage;
-          return newMessages;
-        });
-      }
+          setMessages(prev => {
+            const newMessages = [...prev];
+            newMessages[newMessages.length - 1] = aiMessage;
+            return newMessages;
+          });
+        }
+      }, 4500); // Wait 4.5 seconds before showing response
     }, 300); // Small delay to show user message first
   };
 
@@ -167,6 +170,7 @@ export default function PortfolioAssist() {
         <div className="px-6 pb-6">
           <PromptSection 
             onPromptSubmit={handlePromptSubmit}
+            messages={messages}
           />
         </div>
       </div>
