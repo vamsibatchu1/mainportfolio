@@ -8,7 +8,7 @@ export const QuickActions: React.FC = () => {
         
         {/* Title */}
         <div className="font-jakarta font-semibold text-[20px] leading-[24px] text-[#111111] w-[283px]">
-          <p>Here are some quick actions</p>
+          <p>A few things you can do</p>
         </div>
         
         {/* Quick Actions Carousel */}

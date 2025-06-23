@@ -1,10 +1,27 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { LearnMoreSheet } from './learnmore-sheet';
+
+// Dynamic greetings - easy to add more
+const DYNAMIC_GREETINGS = [
+  "Good morning!",
+  "Hello there!",
+  "Hope you are doing well!",
+  "Thanks for visiting my website!",
+  "Welcome!",
+  "Great to see you here!",
+  "Hope you're having a wonderful day!",
+  "Thanks for stopping by!",
+];
 
 export const Hero: React.FC = () => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  
+  // Select a random greeting on component mount
+  const dynamicGreeting = useMemo(() => {
+    return DYNAMIC_GREETINGS[Math.floor(Math.random() * DYNAMIC_GREETINGS.length)];
+  }, []);
 
   return (
     <>
@@ -17,7 +34,7 @@ export const Hero: React.FC = () => {
         
         {/* Introduction Text */}
         <div className="font-jakarta font-semibold text-[#111111] text-[28px] text-left w-full overflow-hidden">
-          <p className="leading-[32px]">I am vamsi batchu, a product design leader at the intersection of craft & code</p>
+          <p className="leading-[32px]">{dynamicGreeting} I am vamsi batchu, a product design leader at the intersection of craft & code</p>
         </div>
         
         
