@@ -279,9 +279,9 @@ export default function PortfolioAssist() {
   };
 
   return (
-    <div className={`bg-gray-100 min-h-screen sm:flex sm:items-center sm:justify-center ${jakartaFont.variable}`}>
+    <div className={`bg-gray-100 h-screen overflow-hidden sm:flex sm:items-center sm:justify-center ${jakartaFont.variable}`}>
       {/* Mobile Container - Full width on mobile, capped at 393px on 600px+ screens */}
-      <div className="bg-white relative w-full sm:w-[393px] sm:max-w-[393px] h-screen max-h-screen overflow-hidden flex flex-col">
+      <div className="bg-white relative w-full sm:w-[393px] sm:max-w-[393px] h-full sm:h-screen overflow-hidden flex flex-col">
         
         {/* Main Content - Header and Chat Area */}
         <div className="flex-1 overflow-hidden flex flex-col">
