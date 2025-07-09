@@ -9,6 +9,20 @@ export default function PortfolioAssist() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
+  // Prevent body scrolling when component mounts
+  useEffect(() => {
+    // Save original overflow style
+    const originalOverflow = document.body.style.overflow;
+    
+    // Prevent page scrolling
+    document.body.style.overflow = 'hidden';
+    
+    // Cleanup: restore original overflow when component unmounts
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, []);
+
   // Auto-scroll to latest message when new messages are added
   useEffect(() => {
     if (messages.length > 0 && scrollContainerRef.current) {
@@ -278,17 +292,22 @@ export default function PortfolioAssist() {
     };
   };
 
+  // Function to clear all messages
+  const handleRefresh = () => {
+    setMessages([]);
+  };
+
   return (
-    <div className={`bg-gray-100 h-screen overflow-hidden fixed inset-0 sm:relative sm:flex sm:items-center sm:justify-center ${jakartaFont.variable}`}>
+    <div className={`bg-gray-100 overflow-hidden fixed inset-0 sm:relative sm:flex sm:items-center sm:justify-center ${jakartaFont.variable}`} style={{ height: '100dvh' }}>
       {/* Mobile Container - Full width on mobile, capped at 393px on 600px+ screens */}
       <div className="bg-white relative w-full sm:w-[393px] sm:max-w-[393px] h-full overflow-hidden flex flex-col">
         
         {/* Main Content - Header and Chat Area */}
         <div className="flex-1 overflow-hidden flex flex-col">
-          {/* Header Section - Fixed */}
-          <div>
-            <Header />
-          </div>
+                  {/* Header Section - Fixed */}
+        <div>
+          <Header onRefresh={handleRefresh} />
+        </div>
           
           {/* Chat Area - Scrollable */}
           <div ref={scrollContainerRef} className="flex-1 overflow-y-auto px-6 pt-10">
@@ -297,7 +316,7 @@ export default function PortfolioAssist() {
         </div>
         
         {/* Prompt Section - Sticky at bottom */}
-        <div className="pb-6">
+        <div className="px-6 pb-6 bg-white">
           <PromptSection 
             onPromptSubmit={handlePromptSubmit}
             messages={messages}

@@ -113,7 +113,7 @@ export const PromptSection: React.FC<PromptSectionProps> = ({
 
   return (
     <div className="relative shrink-0 w-full">
-      <div className="box-border content-stretch flex flex-col gap-4 items-end justify-end p-0 relative w-full px-6">
+      <div className="box-border content-stretch flex flex-col gap-4 items-end justify-end p-0 relative w-full">
         {/* Prompt Suggestions */}
         <div className="relative shrink-0 w-full">
           <div className="overflow-x-auto overflow-y-hidden">
