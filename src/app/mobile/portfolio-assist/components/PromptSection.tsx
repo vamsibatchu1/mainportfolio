@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { Send } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 import type { ChatMessage } from './ChatArea';
 
 // Initial prompt suggestions
@@ -113,7 +113,7 @@ export const PromptSection: React.FC<PromptSectionProps> = ({
 
   return (
     <div className="relative shrink-0 w-full">
-      <div className="box-border content-stretch flex flex-col gap-4 items-end justify-end p-0 relative w-full">
+      <div className="box-border content-stretch flex flex-col gap-4 items-end justify-end p-0 relative w-full px-6">
         {/* Prompt Suggestions */}
         <div className="relative shrink-0 w-full">
           <div className="overflow-x-auto overflow-y-hidden">
@@ -171,7 +171,7 @@ export const PromptSection: React.FC<PromptSectionProps> = ({
                           onClick={handleSubmit}
                           className="relative shrink-0 size-5 flex items-center justify-center"
                         >
-                          <Send size={20} className="text-white" />
+                          <ArrowUp size={20} className="text-white" />
                         </button>
                       </div>
                     </div>

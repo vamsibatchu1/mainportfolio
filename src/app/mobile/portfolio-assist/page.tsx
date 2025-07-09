@@ -279,9 +279,9 @@ export default function PortfolioAssist() {
   };
 
   return (
-    <div className={`bg-gray-100 h-screen overflow-hidden sm:flex sm:items-center sm:justify-center ${jakartaFont.variable}`}>
+    <div className={`bg-gray-100 h-screen overflow-hidden fixed inset-0 sm:relative sm:flex sm:items-center sm:justify-center ${jakartaFont.variable}`}>
       {/* Mobile Container - Full width on mobile, capped at 393px on 600px+ screens */}
-      <div className="bg-white relative w-full sm:w-[393px] sm:max-w-[393px] h-full sm:h-screen overflow-hidden flex flex-col">
+      <div className="bg-white relative w-full sm:w-[393px] sm:max-w-[393px] h-full overflow-hidden flex flex-col">
         
         {/* Main Content - Header and Chat Area */}
         <div className="flex-1 overflow-hidden flex flex-col">
@@ -297,7 +297,7 @@ export default function PortfolioAssist() {
         </div>
         
         {/* Prompt Section - Sticky at bottom */}
-        <div className="px-6 pb-6">
+        <div className="pb-6">
           <PromptSection 
             onPromptSubmit={handlePromptSubmit}
             messages={messages}
