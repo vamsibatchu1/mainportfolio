@@ -6,6 +6,7 @@ import {
   NowPlaying,
   QuickActions,
   DesignPhilosophy,
+  Carousel,
   Widgets,
   RecentArticles,
   Specialties,
@@ -41,6 +42,9 @@ export default function MobileDashboard() {
               
               {/* Design Philosophy Section */}
               <DesignPhilosophy />
+              
+              {/* Carousel Section */}
+              <Carousel />
               
              
               

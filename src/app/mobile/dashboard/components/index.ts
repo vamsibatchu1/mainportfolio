@@ -3,6 +3,7 @@ export { Hero } from './Hero';
 export { NowPlaying } from './NowPlaying';
 export { QuickActions } from './QuickActions';
 export { DesignPhilosophy } from './DesignPhilosophy';
+export { Carousel } from './Carousel';
 export { Widgets } from './Widgets';
 export { RecentArticles } from './RecentArticles';
 export { Specialties } from './Specialties';

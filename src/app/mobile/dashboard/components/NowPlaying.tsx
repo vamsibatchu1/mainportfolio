@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pause, MoreVertical } from 'lucide-react';
+import { Pause, MoreVertical, CreditCard, MessageCircle, Home, TrendingUp } from 'lucide-react';
 
 export const NowPlaying: React.FC = () => {
   return (
@@ -63,8 +63,10 @@ export const NowPlaying: React.FC = () => {
             {/* Album Items */}
             <div className="flex flex-col gap-4 pr-3">
               {/* Item 1 - Rocket Logic XP */}
-              <div className="flex gap-2 items-center">
-                <div className="bg-[#d9d9d9] w-12 h-12 flex-shrink-0"></div>
+              <div className="flex gap-4 items-center">
+                <div className="bg-[#e7e7e7] rounded-lg w-12 h-12 flex items-center justify-center flex-shrink-0">
+                  <CreditCard className="w-6 h-6 text-[#000000]" />
+                </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-jakarta font-semibold text-[18px] leading-[24px] text-[#111111] truncate">
                     Rocket Logic XP
@@ -77,8 +79,10 @@ export const NowPlaying: React.FC = () => {
               </div>
 
               {/* Item 2 - Synopsis */}
-              <div className="flex gap-2 items-center">
-                <div className="bg-[#d9d9d9] w-12 h-12 flex-shrink-0"></div>
+              <div className="flex gap-4 items-center">
+                <div className="bg-[#e7e7e7] rounded-lg w-12 h-12 flex items-center justify-center flex-shrink-0">
+                  <MessageCircle className="w-6 h-6 text-[#000000]" />
+                </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-jakarta font-semibold text-[18px] leading-[24px] text-[#111111] truncate">
                     Synopsis
@@ -91,8 +95,10 @@ export const NowPlaying: React.FC = () => {
               </div>
 
               {/* Item 3 - Home buying plan */}
-              <div className="flex gap-2 items-center">
-                <div className="bg-[#d9d9d9] w-12 h-12 flex-shrink-0"></div>
+              <div className="flex gap-4 items-center">
+                <div className="bg-[#e7e7e7] rounded-lg w-12 h-12 flex items-center justify-center flex-shrink-0">
+                  <Home className="w-6 h-6 text-[#000000]" />
+                </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-jakarta font-semibold text-[18px] leading-[24px] text-[#111111] truncate">
                     Home buying plan
@@ -105,14 +111,16 @@ export const NowPlaying: React.FC = () => {
               </div>
 
               {/* Item 4 - Try Again */}
-              <div className="flex gap-2 items-center">
-                <div className="bg-[#d9d9d9] w-12 h-12 flex-shrink-0"></div>
+                <div className="flex gap-4 items-center">
+                <div className="bg-[#E7E7E7] rounded-lg w-12 h-12 flex items-center justify-center flex-shrink-0">
+                  <TrendingUp className="w-6 h-6 text-[#000000]" />
+                </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-jakarta font-semibold text-[18px] leading-[24px] text-[#111111] truncate">
-                    Try Again
+                   Rocket Pro
                   </h3>
                   <p className="font-jakarta font-medium text-[14px] leading-[20px] text-[#545454]">
-                    Try Again
+                    Redesigning the broker experience
                   </p>
                 </div>
                 <MoreVertical size={24} className="text-gray-600 flex-shrink-0" />

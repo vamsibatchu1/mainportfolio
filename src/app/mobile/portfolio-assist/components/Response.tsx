@@ -1,10 +1,16 @@
 import React from 'react';
-import { ExternalLink } from 'lucide-react';
+import { ResponseInfoCard1 } from './ResponseInfoCard1';
+import { ResponseInfoCard2 } from './ResponseInfoCard2';
+import { ResponseInfoCard3 } from './ResponseInfoCard3';
+import { ResponseInfoCard4 } from './ResponseInfoCard4';
 
-// Response types for flexibility
+// Response types for flexibility - defines what kind of content can be displayed
 export type ResponseType = 'text' | 'info' | 'image' | 'mixed';
 
-// Info card data structure
+// Info card style types
+export type InfoCardStyle = 'style1' | 'style2' | 'style3' | 'style4' | 'default';
+
+// Info card data structure - for displaying structured information with key-value pairs
 export interface InfoCardData {
   title: string;
   value: string;
@@ -12,16 +18,24 @@ export interface InfoCardData {
     label: string;
     value: string;
   }>;
+  // New properties for styled cards
+  cardStyle?: InfoCardStyle;
+  subtitle?: string;
+  description?: string;
+  imageUrl?: string;
+  icon?: React.ReactNode;
+  actionText?: string;
+  onClick?: () => void;
 }
 
-// Response content union type
+// Response content union type - defines all possible content structures for AI responses
 export interface ResponseContent {
   type: ResponseType;
-  text?: string;
-  infoCard?: InfoCardData;
-  imageUrl?: string;
-  imageAlt?: string;
-  mixedContent?: Array<{
+  text?: string;                    // Plain text content
+  infoCard?: InfoCardData;          // Structured info card with title, value, and rows
+  imageUrl?: string;                // Image URL for image responses
+  imageAlt?: string;                // Alt text for accessibility
+  mixedContent?: Array<{            // Array of mixed content types
     type: 'text' | 'info' | 'image';
     text?: string;
     infoCard?: InfoCardData;
@@ -34,81 +48,92 @@ interface ResponseProps {
   content: ResponseContent;
 }
 
+/**
+ * Response Component - Renders AI responses in various formats
+ * Supports text, info cards, images, and mixed content types
+ * All responses are left-aligned and span full width of container
+ */
 export const Response: React.FC<ResponseProps> = ({ content }) => {
+  
+  /**
+   * Renders a text response with full width and proper typography
+   * @param text - The text content to display
+   * @param isLast - Whether this is the last item in a mixed content array (affects border radius)
+   */
   const renderTextResponse = (text: string, isLast: boolean = false) => (
-    <div className={`bg-[#f7f7f7] w-[264px] relative ${isLast ? 'rounded-bl-[8px] rounded-br-[16px] rounded-tl-[16px] rounded-tr-[16px]' : 'rounded-2xl'} shrink-0`}>
-      <div className="flex flex-row items-center relative w-full">
-        <div className="box-border content-stretch flex flex-row gap-6 items-center justify-start px-4 py-2 relative w-full">
-          <div className="basis-0 font-jakarta font-medium grow leading-[0] min-h-px min-w-px relative shrink-0 text-[#000000] text-[16px] text-left">
-            <p className="block leading-[24px]">
-              {text}
-            </p>
-          </div>
-        </div>
+    <div className={`relative w-full ${isLast ? 'rounded-bl-[8px] rounded-br-[16px] rounded-tl-[16px] rounded-tr-[16px]' : 'rounded-2xl'}`}>
+      {/* Text wrapper with Jakarta font spanning full width */}
+      <div className="font-jakarta font-medium text-[#000000] text-[16px] text-left w-full">
+        <p className="block leading-[24px] w-full">
+          {text}
+        </p>
       </div>
     </div>
   );
 
-  const renderInfoCard = (infoCard: InfoCardData) => (
-    <div className="bg-[#f7f7f7] max-w-[264px] relative rounded-[20px] shrink-0 w-full">
-      <div className="absolute border-[0px_0px_1px] border-[rgba(0,0,0,0.05)] border-solid inset-0 pointer-events-none rounded-[20px]" />
-      <div className="flex flex-col justify-center max-w-inherit relative size-full">
-        <div className="box-border content-stretch flex flex-col gap-4 items-start justify-center max-w-inherit p-[16px] relative w-full">
-          {/* Title Section */}
-          <div className="relative shrink-0 w-full">
-            <div className="box-border content-stretch flex flex-row items-start justify-between p-0 relative w-full">
-              <div className="relative shrink-0">
-                <div className="box-border content-stretch flex flex-col gap-1 items-start justify-start leading-[0] p-0 relative text-left text-nowrap">
-                  <div className="font-jakarta font-medium relative shrink-0 text-[#545454] text-[14px]">
-                    <p className="block leading-[20px] text-nowrap whitespace-pre">
-                      {infoCard.title}
-                    </p>
-                  </div>
-                  <div className="font-jakarta font-bold relative shrink-0 text-[#111111] text-[24px] tracking-[-0.72px]">
-                    <p className="block leading-[24px] text-nowrap whitespace-pre">
-                      {infoCard.value}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-[rgba(0,0,0,0.04)] relative rounded-[100px] shrink-0 size-8">
-                <div className="flex flex-row items-center justify-center relative size-full">
-                  <div className="box-border content-stretch flex flex-row gap-2.5 items-center justify-center p-[8px] relative size-8">
-                    <ExternalLink size={16} className="text-[#111111] rotate-45" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Content Rows */}
-          <div className="relative shrink-0 w-full">
-            <div className="box-border content-stretch flex flex-col gap-3 items-start justify-start p-0 relative w-full">
-              {infoCard.rows.map((row, index) => (
-                <div key={index} className="relative shrink-0 w-full">
-                  <div className="box-border content-stretch flex flex-row font-jakarta font-medium items-center justify-between leading-[0] p-0 relative text-[14px] text-left text-nowrap w-full">
-                    <div className="relative shrink-0 text-[#545454]">
-                      <p className="block leading-[20px] text-nowrap whitespace-pre">
-                        {row.label}
-                      </p>
-                    </div>
-                    <div className="relative shrink-0 text-[#000000]">
-                      <p className="block leading-[20px] text-nowrap whitespace-pre">
-                        {row.value}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  /**
+   * Renders an info card with structured data display
+   * Features different card styles based on cardStyle property
+   * @param infoCard - The structured data to display
+   */
+  const renderInfoCard = (infoCard: InfoCardData) => {
+    // Map cardStyle to appropriate component and props
+    switch (infoCard.cardStyle) {
+      case 'style1':
+        return (
+          <ResponseInfoCard1
+            imageUrl={infoCard.imageUrl}
+            title={infoCard.value}
+            subtitle={infoCard.subtitle || infoCard.title}
+            onClick={infoCard.onClick}
+          />
+        );
+      case 'style2':
+        return (
+          <ResponseInfoCard2
+            icon={infoCard.icon}
+            title={infoCard.value}
+            onClick={infoCard.onClick}
+          />
+        );
+      case 'style3':
+        return (
+          <ResponseInfoCard3
+            icon={infoCard.icon}
+            title={infoCard.value}
+            description={infoCard.description || infoCard.title}
+            onClick={infoCard.onClick}
+          />
+        );
+      case 'style4':
+        return (
+          <ResponseInfoCard4
+            title={infoCard.value}
+            description={infoCard.description || infoCard.title}
+            actionText={infoCard.actionText}
+            onClick={infoCard.onClick}
+          />
+        );
+      default:
+        // Default to style1
+        return (
+          <ResponseInfoCard1
+            imageUrl={infoCard.imageUrl}
+            title={infoCard.value}
+            subtitle={infoCard.subtitle || infoCard.title}
+            onClick={infoCard.onClick}
+          />
+        );
+    }
+  };
 
+  /**
+   * Renders an image response with proper aspect ratio handling
+   * @param imageUrl - URL of the image to display
+   * @param imageAlt - Alt text for accessibility
+   */
   const renderImageResponse = (imageUrl: string, imageAlt: string) => (
-    <div className="bg-[#f7f7f7] max-w-[264px] relative rounded-2xl shrink-0 overflow-hidden">
+    <div className="relative rounded-2xl shrink-0 overflow-hidden">
       <img 
         src={imageUrl} 
         alt={imageAlt}
@@ -117,56 +142,65 @@ export const Response: React.FC<ResponseProps> = ({ content }) => {
     </div>
   );
 
+  /**
+   * Main content rendering logic - switches between different response types
+   * Handles text, info, image, and mixed content types
+   */
   const renderContent = () => {
     switch (content.type) {
       case 'text':
+        // Simple text response
         return content.text ? renderTextResponse(content.text) : null;
       
       case 'info':
+        // Structured info card
         return content.infoCard ? renderInfoCard(content.infoCard) : null;
       
       case 'image':
+        // Image with alt text
         return content.imageUrl ? renderImageResponse(content.imageUrl, content.imageAlt || '') : null;
       
       case 'mixed':
-        return content.mixedContent?.map((item, index) => {
-          const isLast = index === content.mixedContent!.length - 1;
-          switch (item.type) {
-            case 'text':
-              return item.text ? (
-                <div key={index}>
-                  {renderTextResponse(item.text, isLast && content.mixedContent!.length > 1)}
-                </div>
-              ) : null;
-            case 'info':
-              return item.infoCard ? (
-                <div key={index}>
-                  {renderInfoCard(item.infoCard)}
-                </div>
-              ) : null;
-            case 'image':
-              return item.imageUrl ? (
-                <div key={index}>
-                  {renderImageResponse(item.imageUrl, item.imageAlt || '')}
-                </div>
-              ) : null;
-            default:
-              return null;
-          }
-        });
+        // Multiple content types in sequence with 12px gap
+        return (
+          <div className="flex flex-col gap-3 w-full">
+            {content.mixedContent?.map((item, index) => {
+              const isLast = index === content.mixedContent!.length - 1;
+              switch (item.type) {
+                case 'text':
+                  return item.text ? (
+                    <div key={index}>
+                      {renderTextResponse(item.text, isLast && content.mixedContent!.length > 1)}
+                    </div>
+                  ) : null;
+                case 'info':
+                  return item.infoCard ? (
+                    <div key={index}>
+                      {renderInfoCard(item.infoCard)}
+                    </div>
+                  ) : null;
+                case 'image':
+                  return item.imageUrl ? (
+                    <div key={index}>
+                      {renderImageResponse(item.imageUrl, item.imageAlt || '')}
+                    </div>
+                  ) : null;
+                default:
+                  return null;
+              }
+            })}
+          </div>
+        );
       
       default:
         return null;
     }
   };
 
+  // Main component render - simple wrapper that spans full width
   return (
-    <div className="relative shrink-0 w-full">
-      <div className="relative size-full">
-        <div className="box-border content-stretch flex flex-col gap-1 items-start justify-start pl-0 pr-20 py-0 relative w-full">
-          {renderContent()}
-        </div>
-      </div>
+    <div className="relative w-full">
+      {renderContent()}
     </div>
   );
 }; 

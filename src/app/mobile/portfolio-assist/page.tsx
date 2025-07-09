@@ -15,22 +15,29 @@ export default function PortfolioAssist() {
       // Add a delay to ensure DOM is updated and animations have started
       setTimeout(() => {
         if (scrollContainerRef.current) {
-          // Scroll to bottom to show the latest message
-          scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+          // Smooth scroll to bottom to show the latest message
+          scrollContainerRef.current.scrollTo({
+            top: scrollContainerRef.current.scrollHeight,
+            behavior: 'smooth'
+          });
         }
-      }, 150);
+      }, 100);
     }
   }, [messages]);
 
-  // Additional scroll specifically for when loading completes
+  // Smooth scroll specifically for when loading completes
   useEffect(() => {
     const lastMessage = messages[messages.length - 1];
     if (lastMessage && lastMessage.type === 'response' && !lastMessage.isLoading && scrollContainerRef.current) {
+      // Wait for the content animation to start, then smooth scroll
       setTimeout(() => {
         if (scrollContainerRef.current) {
-          scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+          scrollContainerRef.current.scrollTo({
+            top: scrollContainerRef.current.scrollHeight,
+            behavior: 'smooth'
+          });
         }
-      }, 300);
+      }, 200); // Reduced timing to sync with animation
     }
   }, [messages]);
 
@@ -64,10 +71,33 @@ export default function PortfolioAssist() {
         // Get actual AI response from Gemini
         try {
           const aiResponseText = await generateResponse(prompt);
-          const responseContent: ResponseContent = {
-            type: 'text',
-            text: aiResponseText
-          };
+          
+          // Check if we should add an info card based on the prompt
+          const shouldAddCard = shouldIncludeInfoCard(prompt);
+          let responseContent: ResponseContent;
+          
+          if (shouldAddCard) {
+            // Mixed content: Gemini text + relevant info card
+            responseContent = {
+              type: 'mixed',
+              mixedContent: [
+                {
+                  type: 'text',
+                  text: aiResponseText
+                },
+                {
+                  type: 'info',
+                  infoCard: getRelevantInfoCard(prompt)
+                }
+              ]
+            };
+          } else {
+            // Just the Gemini text response
+            responseContent = {
+              type: 'text',
+              text: aiResponseText
+            };
+          }
           
           const aiMessage: ChatMessage = {
             id: (Date.now() + 1).toString(),
@@ -106,6 +136,67 @@ export default function PortfolioAssist() {
     }, 300); // Small delay to show user message first
   };
 
+  // Helper function to determine if an info card should be included
+  const shouldIncludeInfoCard = (prompt: string): boolean => {
+    const lowerPrompt = prompt.toLowerCase();
+    return (
+      lowerPrompt.includes('design') || 
+      lowerPrompt.includes('process') || 
+      lowerPrompt.includes('work') || 
+      lowerPrompt.includes('experience') ||
+      lowerPrompt.includes('project') ||
+      lowerPrompt.includes('portfolio')
+    );
+  };
+
+  // Helper function to get relevant info card based on prompt
+  const getRelevantInfoCard = (prompt: string) => {
+    const lowerPrompt = prompt.toLowerCase();
+    
+    if (lowerPrompt.includes('work') || lowerPrompt.includes('experience')) {
+      return {
+        cardStyle: 'style1' as const,
+        title: 'Current Role',
+        value: 'Senior UX Designer at TechCorp',
+        subtitle: '5+ years experience',
+        imageUrl: '/images/work-experience.jpg',
+        rows: []
+      };
+    }
+    
+    if (lowerPrompt.includes('design') || lowerPrompt.includes('process')) {
+      return {
+        cardStyle: 'style1' as const,
+        title: 'Design Article',
+        value: 'My Design Process Explained',
+        subtitle: '4 min read',
+        imageUrl: '/images/design-process.jpg',
+        rows: []
+      };
+    }
+    
+    if (lowerPrompt.includes('project') || lowerPrompt.includes('portfolio')) {
+      return {
+        cardStyle: 'style1' as const,
+        title: 'Featured Project',
+        value: 'E-commerce Mobile App Redesign',
+        subtitle: 'Case Study',
+        imageUrl: '/images/featured-project.jpg',
+        rows: []
+      };
+    }
+    
+    // Default card
+    return {
+      cardStyle: 'style1' as const,
+      title: 'Learn More',
+      value: 'About My Work & Philosophy',
+      subtitle: 'Quick read',
+      imageUrl: '/images/about-work.jpg',
+      rows: []
+    };
+  };
+
   // Sample response generator based on prompt
   const getResponseForPrompt = (prompt: string): ResponseContent => {
     const lowerPrompt = prompt.toLowerCase();
@@ -134,6 +225,29 @@ export default function PortfolioAssist() {
       };
     }
     
+    if (lowerPrompt.includes('design') || lowerPrompt.includes('process')) {
+      return {
+        type: 'mixed',
+        mixedContent: [
+          {
+            type: 'text',
+            text: 'My design process is collaborative & iterative. I focus on deeply understanding user needs, crafting elegant solutions, and validating them through testing. Leadership & AI enablement are key!'
+          },
+          {
+            type: 'info',
+            infoCard: {
+              cardStyle: 'style1',
+              title: 'Related Article',
+              value: 'Design Systems at Scale',
+              subtitle: '5 min read',
+              imageUrl: '/images/design-article.jpg',
+              rows: []
+            }
+          }
+        ]
+      };
+    }
+    
     if (lowerPrompt.includes('ai') || lowerPrompt.includes('artificial')) {
       return {
         type: 'text',
@@ -141,10 +255,26 @@ export default function PortfolioAssist() {
       };
     }
     
-    // Default response
+    // Default response with mixed content
     return {
-      type: 'text',
-      text: 'That\'s an interesting question! I\'d be happy to share more about my work, experience, or design philosophy. What would you like to know specifically?'
+      type: 'mixed',
+      mixedContent: [
+        {
+          type: 'text',
+          text: 'That\'s an interesting question! I\'d be happy to share more about my work, experience, or design philosophy.'
+        },
+        {
+          type: 'info',
+          infoCard: {
+            cardStyle: 'style1',
+            title: 'Featured Content',
+            value: 'My Journey into UX Design',
+            subtitle: '3 min read',
+            imageUrl: '/images/ux-journey.jpg',
+            rows: []
+          }
+        }
+      ]
     };
   };
 
@@ -156,7 +286,7 @@ export default function PortfolioAssist() {
         {/* Main Content - Header and Chat Area */}
         <div className="flex-1 overflow-hidden flex flex-col">
           {/* Header Section - Fixed */}
-          <div className="pt-10 px-6">
+          <div>
             <Header />
           </div>
           
