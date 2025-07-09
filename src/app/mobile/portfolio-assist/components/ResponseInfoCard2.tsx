@@ -18,9 +18,8 @@ export const ResponseInfoCard2: React.FC<ResponseInfoCard2Props> = ({
   onClick
 }) => {
   return (
-    <div className="bg-[#f7f7f7] relative rounded-3xl w-full">
-      <div className="min-w-inherit relative w-full">
-        <div className="box-border content-stretch flex flex-col items-start justify-between min-w-inherit p-4 relative w-full h-full min-h-[120px]">
+    <div className="bg-[#f7f7f7] relative rounded-3xl w-40 h-40">
+        <div className="box-border content-stretch gap-4 flex flex-col items-start justify-between min-w-inherit p-4 relative w-full h-full min-h-[120px]">
           
           {/* Top section - Icon */}
           <div className="bg-[#dddddd] box-border content-stretch flex flex-row gap-2 items-center justify-center p-2 relative rounded-2xl shrink-0 size-12">
@@ -52,7 +51,6 @@ export const ResponseInfoCard2: React.FC<ResponseInfoCard2Props> = ({
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 }; 

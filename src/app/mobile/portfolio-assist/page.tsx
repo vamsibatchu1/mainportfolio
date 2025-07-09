@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { jakartaFont } from '@/app/fonts';
 import { Header, PromptSection, ChatArea, ChatMessage, ResponseContent } from './components';
 import { generateResponse } from '@/lib/gemini';
+import { Rocket, Wrench } from 'lucide-react';
 
 export default function PortfolioAssist() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -88,9 +89,14 @@ export default function PortfolioAssist() {
           
           // Check if we should add an info card based on the prompt
           const shouldAddCard = shouldIncludeInfoCard(prompt);
+          console.log('Should add card:', shouldAddCard, 'for prompt:', prompt);
+          
           let responseContent: ResponseContent;
           
           if (shouldAddCard) {
+            const infoCard = getRelevantInfoCard(prompt);
+            console.log('Generated info card:', infoCard);
+            
             // Mixed content: Gemini text + relevant info card
             responseContent = {
               type: 'mixed',
@@ -101,7 +107,7 @@ export default function PortfolioAssist() {
                 },
                 {
                   type: 'info',
-                  infoCard: getRelevantInfoCard(prompt)
+                  infoCard: infoCard
                 }
               ]
             };
@@ -159,13 +165,53 @@ export default function PortfolioAssist() {
       lowerPrompt.includes('work') || 
       lowerPrompt.includes('experience') ||
       lowerPrompt.includes('project') ||
-      lowerPrompt.includes('portfolio')
+      lowerPrompt.includes('portfolio') ||
+      lowerPrompt.includes('tool') ||
+      lowerPrompt.includes('software') ||
+      lowerPrompt.includes('app') ||
+      lowerPrompt.includes('advice') ||
+      lowerPrompt.includes('tip') ||
+      lowerPrompt.includes('learn') ||
+      lowerPrompt.includes('career')
     );
   };
 
   // Helper function to get relevant info card based on prompt
   const getRelevantInfoCard = (prompt: string) => {
     const lowerPrompt = prompt.toLowerCase();
+    
+    // Check more specific keywords first to avoid conflicts
+    if (lowerPrompt.includes('tool') || lowerPrompt.includes('software') || lowerPrompt.includes('app')) {
+      return {
+        cardStyle: 'style3' as const,
+        title: 'Design Tools',
+        value: 'My Essential Toolkit',
+        description: 'Figma, Sketch, Adobe Creative Suite',
+        icon: React.createElement(Wrench, { size: 24, className: "text-[#111111]" }),
+        rows: []
+      };
+    }
+    
+    if (lowerPrompt.includes('advice') || lowerPrompt.includes('tip') || lowerPrompt.includes('learn') || lowerPrompt.includes('career')) {
+      return {
+        cardStyle: 'style4' as const,
+        title: 'Career Guidance',
+        value: 'Design Career Roadmap',
+        description: 'Essential steps to break into UX design and advance your career',
+        actionText: 'Get Started',
+        rows: []
+      };
+    }
+    
+    if (lowerPrompt.includes('project') || lowerPrompt.includes('portfolio')) {
+      return {
+        cardStyle: 'style2' as const,
+        title: 'Quick Actions',
+        value: 'View My Projects',
+        icon: React.createElement(Rocket, { size: 24, className: "text-[#111111]" }),
+        rows: []
+      };
+    }
     
     if (lowerPrompt.includes('work') || lowerPrompt.includes('experience')) {
       return {
@@ -185,17 +231,6 @@ export default function PortfolioAssist() {
         value: 'My Design Process Explained',
         subtitle: '4 min read',
         imageUrl: '/images/design-process.jpg',
-        rows: []
-      };
-    }
-    
-    if (lowerPrompt.includes('project') || lowerPrompt.includes('portfolio')) {
-      return {
-        cardStyle: 'style1' as const,
-        title: 'Featured Project',
-        value: 'E-commerce Mobile App Redesign',
-        subtitle: 'Case Study',
-        imageUrl: '/images/featured-project.jpg',
         rows: []
       };
     }

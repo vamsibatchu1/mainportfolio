@@ -1,11 +1,12 @@
 import React from 'react';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, FileText } from 'lucide-react';
 
 interface ResponseInfoCard1Props {
   imageUrl?: string;
   title: string;
   subtitle: string;
   onClick?: () => void;
+  icon?: React.ReactNode;
 }
 
 /**
@@ -14,10 +15,10 @@ interface ResponseInfoCard1Props {
  * Use case: Articles, blog posts, content with thumbnails
  */
 export const ResponseInfoCard1: React.FC<ResponseInfoCard1Props> = ({
-  imageUrl,
   title,
   subtitle,
-  onClick
+  onClick,
+  icon
 }) => {
   return (
     <div className="bg-[#f7f7f7] relative rounded-2xl w-full">
@@ -29,17 +30,9 @@ export const ResponseInfoCard1: React.FC<ResponseInfoCard1Props> = ({
             {/* Left side - Image and text content */}
             <div className="basis-0 box-border content-stretch flex flex-row gap-4 grow items-center justify-start min-h-px min-w-px p-0 relative">
               
-              {/* Thumbnail image */}
+              {/* Thumbnail icon */}
               <div className="bg-[#dddddd] rounded-lg shrink-0 size-[72px] flex items-center justify-center overflow-hidden">
-                {imageUrl ? (
-                  <img 
-                    src={imageUrl} 
-                    alt={title}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-[#dddddd]" />
-                )}
+                {icon || <FileText size={32} className="text-[#111111]" />}
               </div>
               
               {/* Text content */}

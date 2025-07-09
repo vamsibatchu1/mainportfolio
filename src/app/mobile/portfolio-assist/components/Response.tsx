@@ -77,6 +77,7 @@ export const Response: React.FC<ResponseProps> = ({ content }) => {
    * @param infoCard - The structured data to display
    */
   const renderInfoCard = (infoCard: InfoCardData) => {
+    console.log('Rendering info card with style:', infoCard.cardStyle, infoCard);
     // Map cardStyle to appropriate component and props
     switch (infoCard.cardStyle) {
       case 'style1':
