@@ -2,53 +2,54 @@
 
 import React, { useState, useMemo } from 'react';
 import { ArrowUp } from 'lucide-react';
+import { kodeMonoFont } from '@/app/fonts';
 import type { ChatMessage } from './ChatArea';
 
 // Initial prompt suggestions
 const INITIAL_SUGGESTIONS = [
-  "What's your design process?",
-  "Tell me about your best project",
-  "How do you approach UX challenges?",
-  "What tools do you use daily?",
+  "WHAT'S YOUR DESIGN PROCESS?",
+  "TELL ME ABOUT YOUR BEST PROJECT",
+  "HOW DO YOU APPROACH UX CHALLENGES?",
+  "WHAT TOOLS DO YOU USE DAILY?",
 ];
 
 // Follow-up suggestions based on conversation topics
 const FOLLOW_UP_SUGGESTIONS = {
   design: [
-    "Show me your design philosophy",
-    "What inspires your creativity?",
-    "Any recent design challenges?",
-    "Favorite design resources?"
+    "SHOW ME YOUR DESIGN PHILOSOPHY",
+    "WHAT INSPIRES YOUR CREATIVITY?",
+    "ANY RECENT DESIGN CHALLENGES?",
+    "FAVORITE DESIGN RESOURCES?"
   ],
   work: [
-    "What's your typical workday like?",
-    "Tell me about your team",
-    "Current projects you're working on?",
-    "Career growth aspirations?"
+    "WHAT'S YOUR TYPICAL WORKDAY LIKE?",
+    "TELL ME ABOUT YOUR TEAM",
+    "CURRENT PROJECTS YOU'RE WORKING ON?",
+    "CAREER GROWTH ASPIRATIONS?"
   ],
   process: [
-    "How do you handle feedback?",
-    "Your favorite design tools?",
-    "Research methods you use?",
-    "Collaboration with developers?"
+    "HOW DO YOU HANDLE FEEDBACK?",
+    "YOUR FAVORITE DESIGN TOOLS?",
+    "RESEARCH METHODS YOU USE?",
+    "COLLABORATION WITH DEVELOPERS?"
   ],
   ai: [
-    "AI tools you recommend?",
-    "Future of AI in design?",
-    "How AI changed your workflow?",
-    "Concerns about AI in design?"
+    "AI TOOLS YOU RECOMMEND?",
+    "FUTURE OF AI IN DESIGN?",
+    "HOW AI CHANGED YOUR WORKFLOW?",
+    "CONCERNS ABOUT AI IN DESIGN?"
   ],
   advice: [
-    "Portfolio tips for beginners?",
-    "Skills to focus on in 2024?",
-    "Common design mistakes?",
-    "How to get first design job?"
+    "PORTFOLIO TIPS FOR BEGINNERS?",
+    "SKILLS TO FOCUS ON IN 2024?",
+    "COMMON DESIGN MISTAKES?",
+    "HOW TO GET FIRST DESIGN JOB?"
   ],
   personal: [
-    "What motivates you daily?",
-    "Work-life balance tips?",
-    "Hobbies outside of design?",
-    "Books that influenced you?"
+    "WHAT MOTIVATES YOU DAILY?",
+    "WORK-LIFE BALANCE TIPS?",
+    "HOBBIES OUTSIDE OF DESIGN?",
+    "BOOKS THAT INFLUENCED YOU?"
   ]
 };
 
@@ -122,13 +123,13 @@ export const PromptSection: React.FC<PromptSectionProps> = ({
                 <button
                   key={index}
                   onClick={() => handleSuggestionClick(suggestion)}
-                  className="bg-[#f7f7f7] h-12 min-w-[120px] relative rounded-[32px] shrink-0 hover:bg-[#efefef] transition-colors"
+                  className="bg-[#f7f7f7] h-12 min-w-[120px] relative rounded-[16px] border border-[#F3F3F3] shrink-0 hover:bg-[#efefef] transition-colors"
                 >
                   <div className="flex flex-col justify-center min-w-inherit relative size-full">
                     <div className="box-border content-stretch flex flex-col h-8 items-start justify-center min-w-inherit p-[16px] relative">
                       <div className="relative shrink-0">
                         <div className="box-border content-stretch flex flex-col items-start justify-start p-0 relative">
-                          <div className="flex flex-col font-['Plus_Jakarta_Sans:Medium',_sans-serif] font-medium justify-center leading-[0] relative shrink-0 text-[#111111] text-[16px] text-left text-nowrap">
+                          <div className={`flex flex-col ${kodeMonoFont.variable} font-kodemono font-semibold justify-center leading-[0] relative shrink-0 text-[#222222] text-[14px] text-left text-nowrap`}>
                             <p className="block leading-[normal] whitespace-pre">
                               {suggestion}
                             </p>
@@ -146,7 +147,7 @@ export const PromptSection: React.FC<PromptSectionProps> = ({
         {/* Prompt Composer */}
         <div className="bg-[#ffffff] h-[120px] relative rounded-[20px] shrink-0 w-full">
           <div className="relative size-full">
-            <div className="box-border content-stretch flex flex-row items-start justify-between overflow-clip pl-6 pr-4 py-4 relative size-full">
+            <div className="box-border content-stretch flex flex-row items-start justify-between overflow-clip pl-4 pr-4 py-4 relative size-full">
               <div className="relative shrink-0 w-full">
                 <div className="box-border content-stretch flex flex-row justify-between p-0 relative w-full">
                   <div className="font-['Plus_Jakarta_Sans:Medium',_sans-serif] font-medium leading-[0] relative flex-1 text-[14px] text-left mr-4">
@@ -159,19 +160,19 @@ export const PromptSection: React.FC<PromptSectionProps> = ({
                           handleSubmit();
                         }
                       }}
-                      placeholder="What would you like to know?"
+                      
                       className="block leading-[20px] w-full bg-transparent border-none outline-none resize-none font-['Plus_Jakarta_Sans:Medium',_sans-serif] font-medium text-[16px] text-[#000000] placeholder:text-[#9d9d9d] h-[88px]"
                       rows={1}
                     />
                   </div>
-                  <div className="bg-[#000000] relative rounded-[50px] shrink-0 size-10">
+                  <div className="relative rounded-[50px] shrink-0 size-10">
                     <div className="flex flex-col items-center justify-center relative size-full">
                       <div className="box-border content-stretch flex flex-col items-center justify-center p-[8px] relative size-10">
                         <button
                           onClick={handleSubmit}
                           className="relative shrink-0 size-5 flex items-center justify-center"
                         >
-                          <ArrowUp size={20} className="text-white" />
+                          <ArrowUp size={20} className="text-[#111111]" />
                         </button>
                       </div>
                     </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { jakartaFont } from '@/app/fonts';
+import { jakartaFont, kodeMonoFont } from '@/app/fonts';
 import { Header, PromptSection, ChatArea, ChatMessage, ResponseContent } from './components';
 import { generateResponse } from '@/lib/gemini';
 import { Rocket, Wrench } from 'lucide-react';
@@ -333,7 +333,7 @@ export default function PortfolioAssist() {
   };
 
   return (
-    <div className={`bg-gray-100 overflow-hidden fixed inset-0 sm:relative sm:flex sm:items-center sm:justify-center ${jakartaFont.variable}`} style={{ height: '100dvh' }}>
+    <div className={`bg-gray-100 overflow-hidden fixed inset-0 sm:relative sm:flex sm:items-center sm:justify-center ${jakartaFont.variable} ${kodeMonoFont.variable}`} style={{ height: '100dvh' }}>
       {/* Mobile Container - Full width on mobile, capped at 393px on 600px+ screens */}
       <div className="bg-white relative w-full sm:w-[393px] sm:max-w-[393px] h-full overflow-hidden flex flex-col">
         

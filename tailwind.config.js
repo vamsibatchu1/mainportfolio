@@ -14,6 +14,7 @@ module.exports = {
         'pri': ['var(--font-pri)'],
         'sec': ['var(--font-sec)'],
         'tri': ['var(--font-tri)'],
+        'kodemono': ['var(--font-kodemono)'],
       },
       colors: {
         border: "hsl(var(--border))",

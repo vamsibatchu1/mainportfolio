@@ -9,7 +9,7 @@ export const UserPrompt: React.FC<UserPromptProps> = ({ message }) => {
     <div className="relative size-full">
       <div className="flex flex-col items-end relative size-full">
                   <div className="box-border content-stretch flex flex-col gap-1 items-end justify-start pl-20 pr-0 py-0 relative size-full">
-            <div className="bg-[#111111] max-w-[264px] w-fit relative rounded-2xl shrink-0 self-end">
+            <div className="bg-[#111111] max-w-[264px] w-fit relative rounded-2xl rounded-br-none shrink-0 self-end">
               <div className="flex flex-row items-center relative w-full">
                 <div className="box-border content-stretch flex flex-row gap-6 items-center justify-start px-4 py-2 relative w-full">
                 <div className="basis-0 font-['Plus_Jakarta_Sans:Medium',_sans-serif] font-medium grow leading-[0] min-h-px min-w-px relative text-[#ffffff] text-[16px] text-left">
