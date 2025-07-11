@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, Sparkles, EyeOff } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { kodeMonoFont } from '@/app/fonts';
 import type { ChatMessage } from './ChatArea';
 
@@ -63,6 +64,7 @@ export const PromptSection: React.FC<PromptSectionProps> = ({
   messages = [],
 }) => {
   const [inputValue, setInputValue] = useState('');
+  const [showSuggestions, setShowSuggestions] = useState(true);
 
   // Generate dynamic suggestions based on conversation context
   const currentSuggestions = useMemo(() => {
@@ -97,9 +99,12 @@ export const PromptSection: React.FC<PromptSectionProps> = ({
   }, [messages]);
 
   const handleSuggestionClick = (suggestion: string) => {
+    // Convert all-caps suggestion to regular sentence case for user prompt
+    const regularCasePrompt = suggestion.toLowerCase().replace(/^\w/, l => l.toUpperCase());
+    
     // Directly submit the suggestion without setting it in the input field
     if (onPromptSubmit) {
-      onPromptSubmit(suggestion);
+      onPromptSubmit(regularCasePrompt);
     }
   };
 
@@ -119,27 +124,82 @@ export const PromptSection: React.FC<PromptSectionProps> = ({
         <div className="relative shrink-0 w-full">
           <div className="overflow-x-auto overflow-y-hidden">
             <div className="box-border content-stretch flex flex-row gap-3 items-center justify-start p-0 relative w-max">
-              {currentSuggestions.map((suggestion: string, index: number) => (
-                <button
-                  key={index}
-                  onClick={() => handleSuggestionClick(suggestion)}
-                  className="bg-[#f7f7f7] h-12 min-w-[120px] relative rounded-[16px] border border-[#F3F3F3] shrink-0 hover:bg-[#efefef] transition-colors"
+              {/* Toggle Button */}
+              <motion.button
+                onClick={() => setShowSuggestions(!showSuggestions)}
+                className="bg-[#f7f7f7] h-12 w-12 relative rounded-full border border-[#F3F3F3] shrink-0 hover:bg-[#efefef] transition-colors flex items-center justify-center"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <motion.div
+                  initial={false}
+                  animate={{ rotate: showSuggestions ? 0 : 180 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
                 >
-                  <div className="flex flex-col justify-center min-w-inherit relative size-full">
-                    <div className="box-border content-stretch flex flex-col h-8 items-start justify-center min-w-inherit p-[16px] relative">
-                      <div className="relative shrink-0">
-                        <div className="box-border content-stretch flex flex-col items-start justify-start p-0 relative">
-                          <div className={`flex flex-col ${kodeMonoFont.variable} font-kodemono font-semibold justify-center leading-[0] relative shrink-0 text-[#222222] text-[14px] text-left text-nowrap`}>
-                            <p className="block leading-[normal] whitespace-pre">
-                              {suggestion}
-                            </p>
+                  {showSuggestions ? (
+                    <EyeOff size={20} className="text-[#222222]" />
+                  ) : (
+                    <Sparkles size={20} className="text-[#222222]" />
+                  )}
+                </motion.div>
+              </motion.button>
+              
+              {/* Suggestion Chips */}
+              <AnimatePresence mode="wait">
+                {showSuggestions && (
+                  <motion.div 
+                    className="flex flex-row gap-3 items-center"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {currentSuggestions.map((suggestion: string, index: number) => (
+                      <motion.button
+                        key={index}
+                        onClick={() => handleSuggestionClick(suggestion)}
+                        className="bg-[#f7f7f7] h-12 min-w-[120px] relative rounded-[16px] border border-[#F3F3F3] shrink-0 hover:bg-[#efefef] transition-colors"
+                        initial={{ 
+                          opacity: 0, 
+                          scale: 0.3,
+                          x: -48 - (index * 12) // Start from toggle button position
+                        }}
+                        animate={{ 
+                          opacity: 1, 
+                          scale: 1,
+                          x: 0
+                        }}
+                        exit={{ 
+                          opacity: 0, 
+                          scale: 0.3,
+                          x: -48 - (index * 12) // Collapse back to toggle button
+                        }}
+                        transition={{ 
+                          duration: 0.4,
+                          delay: index * 0.1, // Stagger animation
+                          ease: "easeOut"
+                        }}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <div className="flex flex-col justify-center min-w-inherit relative size-full">
+                          <div className="box-border content-stretch flex flex-col h-8 items-start justify-center min-w-inherit p-[16px] relative">
+                            <div className="relative shrink-0">
+                              <div className="box-border content-stretch flex flex-col items-start justify-start p-0 relative">
+                                <div className={`flex flex-col ${kodeMonoFont.variable} font-kodemono font-semibold justify-center leading-[0] relative shrink-0 text-[#222222] text-[14px] text-left text-nowrap`}>
+                                  <p className="block leading-[normal] whitespace-pre">
+                                    {suggestion}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </button>
-              ))}
+                      </motion.button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>
