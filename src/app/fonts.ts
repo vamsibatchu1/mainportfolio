@@ -96,3 +96,5 @@ export const jakartaFont = Plus_Jakarta_Sans({
   display: 'swap',
 });
 
+
+

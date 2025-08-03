@@ -51,7 +51,7 @@ export default function BottomSheet({
             {/* Intro */}
             <div className="mb-6 text-left">
               <div className="flex flex-row items-center justify-between w-full mb-2">
-                <div className="font-kodemono text-[20px] text-[#111]">About this experiment</div>
+                <div className="font-kodemono text-[18px] text-[#111]">ABOUT THIS EXPERIMENT</div>
                 <button
                   className="bg-[#ededed] rounded-full w-10 h-10 flex items-center justify-center hover:bg-[#e1e1e1] transition-colors"
                   onClick={onClose}
@@ -73,7 +73,7 @@ export default function BottomSheet({
 
             {/* Tone Selection */}
             <div className="mb-6">
-              <div className="font-kodemono text-[18px] text-[#222] mb-3">Select your tone</div>
+              <div className="font-kodemono text-[18px] text-[#222] mb-3">SELECT YOUR TONE</div>
               <div className="flex flex-row gap-2 flex-wrap">
                 {TONES.map(tone => (
                   <button
@@ -92,7 +92,7 @@ export default function BottomSheet({
 
             {/* Summary Type Selection */}
             <div>
-              <div className="font-kodemono text-[18px] text-[#222] mb-3">Choose your summary type</div>
+              <div className="font-kodemono text-[18px] text-[#222] mb-3">CHOOSE YOUR SUMMARY TYPE</div>
               <div className="flex flex-row gap-2 flex-wrap">
                 {SUMMARIES.map(summary => (
                   <button

@@ -15,6 +15,7 @@ module.exports = {
         'sec': ['var(--font-sec)'],
         'tri': ['var(--font-tri)'],
         'kodemono': ['var(--font-kodemono)'],
+        'sf-pro': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'Segoe UI', 'Roboto', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
