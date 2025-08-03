@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { RotateCcw, MoreVertical, HelpCircle, Folder, Check, X, Pencil, Settings, Trash2, Copy, Cloud, Zap, ArrowUpDown, Star, MessageSquare } from 'lucide-react';
+import { RotateCcw, ActivityIcon, MoreVertical, HelpCircle, Folder, Check, X, Pencil, Settings, Trash2, Copy, Cloud, Zap, ArrowUpDown, Star, MessageSquare } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import clsx from 'clsx';
+import SystemMonitor from './system-monitor';
 
 interface TerminalHeaderProps {
   onMouseDown: (e: React.MouseEvent) => void;
@@ -12,6 +13,7 @@ interface TerminalHeaderProps {
 
 export default function TerminalHeader({ onMouseDown, onRefresh, currentTopic, messageCount }: TerminalHeaderProps) {
   const [showTooltip, setShowTooltip] = useState(false);
+  const [showSystemMonitor, setShowSystemMonitor] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [favorite, setFavorite] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -90,16 +92,37 @@ export default function TerminalHeader({ onMouseDown, onRefresh, currentTopic, m
         )}
         <RotateCcw className="w-4 h-4 text-gray-600 cursor-pointer hover:text-gray-800" onClick={onRefresh} />
         <div className="relative">
+          <ActivityIcon
+            className="w-4 h-4 text-gray-600 cursor-pointer hover:text-gray-800" 
+            onMouseEnter={() => setShowSystemMonitor(true)}
+            onMouseLeave={() => setShowSystemMonitor(false)}
+          />
+          {showSystemMonitor && (
+            <div className="absolute top-6 right-0 z-50">
+              <SystemMonitor />
+            </div>
+          )}
+        </div>
+        
+        <div className="relative">
           <HelpCircle 
             className="w-4 h-4 text-gray-600 cursor-pointer hover:text-gray-800" 
             onMouseEnter={() => setShowTooltip(true)}
             onMouseLeave={() => setShowTooltip(false)}
           />
           {showTooltip && (
-            <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-50 bg-[#f6f6f6] border border-gray-300 rounded-lg shadow-lg p-3 w-40">
+            <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-50 bg-[#f6f6f6] border border-gray-300 rounded-lg shadow-lg p-3 w-48">
               <p className="text-xs text-gray-700 font-sf-pro leading-relaxed">
                 This is a tiny project built out of love for experimentation and craft using Cursor and Gemini API, carefully crafted for delight and interactions.
               </p>
+              <div className="flex items-center justify-start mb-2">
+                <img 
+                  src="/images/gemini.png"
+                  alt="Gemini AI"
+                  className="w-16 h-8 object-contain"
+                />
+              </div>
+              
             </div>
           )}
         </div>
