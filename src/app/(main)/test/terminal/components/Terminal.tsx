@@ -2,8 +2,10 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { RotateCcw, MessageSquare, Search, HelpCircle, Folder } from 'lucide-react';
 import { geminiService } from '../services/gemini';
+import TerminalHeader from './TerminalHeader';
+import ChatArea from './ChatArea';
+import InputArea from './InputArea';
 
 interface Message {
   id: string;
@@ -17,11 +19,32 @@ interface TerminalProps {
 }
 
 export default function Terminal({ initialPosition = { x: 100, y: 100 } }: TerminalProps) {
+  // Different welcome messages for variety
+  const welcomeMessages = [
+    'Hey there! 👋 I\'m your AI companion, ready to chat about anything that sparks your curiosity. From deep thoughts to casual conversation, I\'m here to explore ideas with you. What\'s on your mind?',
+    
+    'Welcome to our little chat corner! ✨ I\'m your friendly AI assistant, and I love diving into interesting conversations. Whether you want to brainstorm, learn something new, or just chat, I\'m all ears. What shall we explore today?',
+    
+    'Hello, curious mind! 🚀 I\'m your AI buddy, and I\'m excited to see what fascinating topics we\'ll uncover together. I\'m here to help, inspire, and maybe even surprise you with some insights. What\'s your question?',
+    
+    'Greetings, fellow explorer! 🌟 I\'m your AI companion, ready to embark on whatever journey your mind takes us on. From the practical to the philosophical, I\'m here to chat, think, and discover with you. What would you like to dive into?',
+    
+    'Hi there, creative soul! 🎨 I\'m your AI partner in crime, and I can\'t wait to see what brilliant ideas we\'ll bounce around together. Whether you need advice, inspiration, or just a good conversation, I\'m your AI. What\'s brewing in that mind of yours?',
+    
+    'Welcome to our digital hangout! 💫 I\'m your AI friend, and I\'m genuinely excited to chat with you. I love learning from humans and sharing perspectives. So, what\'s something you\'ve been thinking about lately?'
+  ];
+
+  // Get a random welcome message
+  const getRandomWelcomeMessage = () => {
+    const randomIndex = Math.floor(Math.random() * welcomeMessages.length);
+    return welcomeMessages[randomIndex];
+  };
+
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
       type: 'output',
-      content: 'Hey, I am your helpful AI agent! 🤖\n\nI can help you answer any questions that you want to ask. Feel free to ask me anything - whether it\'s about coding, design, technology, or just general knowledge.\n\nWhat would you like to know?',
+      content: getRandomWelcomeMessage(),
       timestamp: new Date()
     }
   ]);
@@ -100,6 +123,18 @@ export default function Terminal({ initialPosition = { x: 100, y: 100 } }: Termi
     handleUserMessage(suggestion);
   };
 
+  const handleRefresh = () => {
+    setMessages([
+      {
+        id: '1',
+        type: 'output',
+        content: getRandomWelcomeMessage(),
+        timestamp: new Date()
+      }
+    ]);
+    geminiService.resetChat();
+  };
+
   const handleMouseDown = (e: React.MouseEvent) => {
     const rect = dragRef.current?.getBoundingClientRect();
     if (rect) {
@@ -135,101 +170,22 @@ export default function Terminal({ initialPosition = { x: 100, y: 100 } }: Termi
       }}
       drag={false}
     >
-      {/* Top Bar */}
-      <div 
-        className="bg-[#f6f6f6] rounded-t-lg border-b border-gray-300 px-4 py-3 flex items-center justify-between cursor-move"
-        onMouseDown={handleMouseDown}
-      >
-        {/* Traffic Lights */}
-        <div className="flex items-center space-x-2">
-          <div className="w-3 h-3 bg-[#ff5f57] rounded-full cursor-pointer"></div>
-          <div className="w-3 h-3 bg-[#ffbd2e] rounded-full cursor-pointer"></div>
-          <div className="w-3 h-3 bg-[#28ca42] rounded-full cursor-pointer"></div>
-        </div>
+      <TerminalHeader onMouseDown={handleMouseDown} onRefresh={handleRefresh} />
 
-        {/* Title */}
-        <div className="flex-1 text-center">
-          <span className="text-gray-700 font-medium text-sm font-sf-pro">Untitled</span>
-        </div>
+      <ChatArea 
+        messages={messages}
+        isLoading={isLoading}
+        suggestionOptions={suggestionOptions}
+        onSuggestionClick={handleSuggestionClick}
+        messagesEndRef={messagesEndRef}
+      />
 
-        {/* Right Icons */}
-        <div className="flex items-center space-x-3">
-          <RotateCcw className="w-4 h-4 text-gray-600 cursor-pointer hover:text-gray-800" />
-          <MessageSquare className="w-4 h-4 text-gray-600 cursor-pointer hover:text-gray-800" />
-          <Search className="w-4 h-4 text-gray-600 cursor-pointer hover:text-gray-800" />
-          <HelpCircle className="w-4 h-4 text-gray-600 cursor-pointer hover:text-gray-800" />
-          <div className="bg-gray-500 text-white px-2 py-1 rounded text-xs font-medium flex items-center space-x-1 font-sf-pro">
-            <Folder className="w-3 h-3" />
-            <span>_vamsi</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Chat Area */}
-      <div className="bg-[#ECECEC] h-[400px] overflow-y-auto p-4 font-mono text-sm">
-        <div className="space-y-3">
-          {messages.map((message) => (
-            <div key={message.id} className={`flex ${message.type === 'command' ? 'justify-end' : 'justify-start'}`}>
-              {message.type === 'command' ? (
-                // User message (right side, blue background, white text)
-                <div className="bg-[#007AFF] text-white px-3 py-2 rounded-lg max-w-[70%] font-sf-pro text-sm">
-                  {message.content}
-                </div>
-              ) : (
-                // System/AI response (left side, no background, black text)
-                <div className="text-black max-w-[70%] font-sf-pro text-sm">
-                  {message.content}
-                </div>
-              )}
-            </div>
-          ))}
-          
-          {/* Loading indicator */}
-          {isLoading && (
-            <div className="flex justify-start">
-              <div className="text-black max-w-[70%] font-sf-pro text-sm flex items-center space-x-2">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-600"></div>
-                <span>Thinking...</span>
-              </div>
-            </div>
-          )}
-
-          {/* Suggestion options - only show if no messages from user yet */}
-          {messages.length === 1 && !isLoading && (
-            <div className="flex flex-col space-y-2 mt-4">
-              {suggestionOptions.map((suggestion, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleSuggestionClick(suggestion)}
-                  className="text-left text-gray-500 hover:text-gray-700 font-sf-pro text-sm px-3 py-2 rounded-lg border border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-colors cursor-pointer w-fit bg-white"
-                >
-                  {suggestion}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* Input Area */}
-      <div className="bg-[#ECECEC] rounded-b-lg p-4">
-        <form onSubmit={handleSubmit} className="flex items-center space-x-3">
-          <input
-            type="text"
-            value={currentInput}
-            onChange={(e) => setCurrentInput(e.target.value)}
-            placeholder="Ask me anything"
-            className="flex-1 bg-transparent px-3 py-2 text-sm focus:outline-none font-sf-pro placeholder-gray-500"
-          />
-          <button 
-            type="submit"
-            className="bg-black text-white rounded-full hover:bg-gray-800 transition-colors w-8 h-8 flex items-center justify-center text-xs"
-          >
-            ▶
-          </button>
-        </form>
-      </div>
+      <InputArea 
+        value={currentInput}
+        onChange={(e) => setCurrentInput(e.target.value)}
+        onSubmit={handleSubmit}
+        placeholder="Ask me anything that you want to know"
+      />
     </motion.div>
   );
 }
