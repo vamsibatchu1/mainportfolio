@@ -19,7 +19,7 @@ export default function InputArea({ value, onChange, onSubmit, placeholder = "As
           placeholder={placeholder}
           className="flex-1 bg-transparent px-3 py-2 text-sm focus:outline-none font-sf-pro placeholder-gray-500"
         />
-        <SendButton onClick={() => {}} />
+        <SendButton onClick={() => {}} disabled={!value.trim()} />
       </form>
     </div>
   );

@@ -11,7 +11,11 @@ export default function SendButton({ onClick, disabled = false }: SendButtonProp
       type="submit"
       onClick={onClick}
       disabled={disabled}
-      className="bg-black text-white rounded-full hover:bg-gray-800 transition-colors w-8 h-8 flex items-center justify-center text-xs"
+      className={`rounded-full transition-colors w-8 h-8 flex items-center justify-center text-xs ${
+        disabled 
+          ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+          : 'bg-black text-white hover:bg-gray-800 cursor-pointer'
+      }`}
     >
       ▶
     </button>

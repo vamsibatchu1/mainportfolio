@@ -52,6 +52,7 @@ export default function Terminal({ initialPosition = { x: 100, y: 100 } }: Termi
   const [currentInput, setCurrentInput] = useState('');
   const [position, setPosition] = useState(initialPosition);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentTopic, setCurrentTopic] = useState('');
   const dragRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -78,6 +79,10 @@ export default function Terminal({ initialPosition = { x: 100, y: 100 } }: Termi
   };
 
   const handleUserMessage = async (message: string) => {
+    // Extract topic from user message (first few words)
+    const topicWords = message.split(' ').slice(0, 4).join(' ');
+    setCurrentTopic(topicWords);
+
     const newMessage: Message = {
       id: Date.now().toString(),
       type: 'command',
@@ -170,7 +175,7 @@ export default function Terminal({ initialPosition = { x: 100, y: 100 } }: Termi
       }}
       drag={false}
     >
-      <TerminalHeader onMouseDown={handleMouseDown} onRefresh={handleRefresh} />
+                     <TerminalHeader onMouseDown={handleMouseDown} onRefresh={handleRefresh} currentTopic={currentTopic} messageCount={messages.length} />
 
       <ChatArea 
         messages={messages}

@@ -1,14 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { RotateCcw, MoreVertical, HelpCircle, Folder, Check, X, Pencil, Settings, Trash2, Copy, Cloud, Zap, ArrowUpDown, Star } from 'lucide-react';
+import { RotateCcw, MoreVertical, HelpCircle, Folder, Check, X, Pencil, Settings, Trash2, Copy, Cloud, Zap, ArrowUpDown, Star, MessageSquare } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import clsx from 'clsx';
 
 interface TerminalHeaderProps {
   onMouseDown: (e: React.MouseEvent) => void;
   onRefresh: () => void;
+  currentTopic?: string;
+  messageCount?: number;
 }
 
-export default function TerminalHeader({ onMouseDown, onRefresh }: TerminalHeaderProps) {
+export default function TerminalHeader({ onMouseDown, onRefresh, currentTopic, messageCount }: TerminalHeaderProps) {
   const [showTooltip, setShowTooltip] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [favorite, setFavorite] = useState(false);
@@ -43,6 +45,18 @@ export default function TerminalHeader({ onMouseDown, onRefresh }: TerminalHeade
 
   const widthPercentage = (elapsedTime / maxTime) * 100;
 
+  // Generate dynamic folder name based on conversation topic
+  const getDynamicFolderName = () => {
+    if (!currentTopic) return '_vamsi';
+    
+    // Extract key words and create a folder name
+    const words = currentTopic.toLowerCase().split(' ').slice(0, 3);
+    const folderName = words.join('-');
+    return `_${folderName}`;
+  };
+
+
+
   return (
     <div 
       className="bg-[#f6f6f6] rounded-t-lg border-b border-gray-300 px-4 py-3 flex items-center justify-between cursor-move"
@@ -55,17 +69,18 @@ export default function TerminalHeader({ onMouseDown, onRefresh }: TerminalHeade
         <div className="w-3 h-3 bg-[#28ca42] rounded-full cursor-pointer"></div>
       </div>
 
-      {/* Title */}
-      <div className="flex-1 text-center">
-        <span className="text-gray-700 font-medium text-sm font-sf-pro">Untitled</span>
-      </div>
-
       {/* Right Icons */}
-      <div className="flex items-center space-x-3">
+      <div className="flex items-center space-x-3 ml-auto">
         <div className="bg-gray-200 text-black px-2 py-1 rounded text-xs font-medium flex items-center space-x-1 font-sf-pro">
           <Folder className="w-3 h-3" />
-          <span>_vamsi</span>
+          <span>{getDynamicFolderName()}</span>
         </div>
+        {messageCount && messageCount > 0 && (
+          <div className="bg-gray-200 text-black px-2 py-1 rounded text-xs font-medium flex items-center space-x-1 font-sf-pro">
+            <MessageSquare className="w-3 h-3" />
+            <span>{messageCount}</span>
+          </div>
+        )}
         <RotateCcw className="w-4 h-4 text-gray-600 cursor-pointer hover:text-gray-800" onClick={onRefresh} />
         <div className="relative">
           <HelpCircle 
