@@ -8,11 +8,12 @@ import SystemMonitor from './system-monitor';
 interface TerminalHeaderProps {
   onMouseDown: (e: React.MouseEvent) => void;
   onRefresh: () => void;
+  onMinimize: () => void;
   currentTopic?: string;
   messageCount?: number;
 }
 
-export default function TerminalHeader({ onMouseDown, onRefresh, currentTopic, messageCount }: TerminalHeaderProps) {
+export default function TerminalHeader({ onMouseDown, onRefresh, onMinimize, currentTopic, messageCount }: TerminalHeaderProps) {
   const [showTooltip, setShowTooltip] = useState(false);
   const [showSystemMonitor, setShowSystemMonitor] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -85,7 +86,7 @@ export default function TerminalHeader({ onMouseDown, onRefresh, currentTopic, m
       {/* Traffic Lights */}
       <div className="flex items-center space-x-2">
         <div className="w-3 h-3 bg-[#ff5f57] rounded-full cursor-pointer"></div>
-        <div className="w-3 h-3 bg-[#ffbd2e] rounded-full cursor-pointer"></div>
+        <div className="w-3 h-3 bg-[#ffbd2e] rounded-full cursor-pointer" onClick={onMinimize}></div>
         <div className="w-3 h-3 bg-[#28ca42] rounded-full cursor-pointer"></div>
       </div>
 

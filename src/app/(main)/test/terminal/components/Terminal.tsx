@@ -17,9 +17,11 @@ interface Message {
 
 interface TerminalProps {
   initialPosition?: { x: number; y: number };
+  onMinimize?: () => void;
 }
 
-export default function Terminal({ initialPosition }: TerminalProps) {
+export default function Terminal({ initialPosition, onMinimize }: TerminalProps) {
+  const [isMinimized, setIsMinimized] = useState(false);
   // Different welcome messages for variety
   const welcomeMessages = [
     'Hey there! 👋 I\'m your AI companion, ready to chat about anything that sparks your curiosity. From deep thoughts to casual conversation, I\'m here to explore ideas with you. What\'s on your mind?',
@@ -171,6 +173,11 @@ export default function Terminal({ initialPosition }: TerminalProps) {
     setIsCardExpanded(!isCardExpanded);
   };
 
+  const handleMinimize = () => {
+    setIsMinimized(true);
+    onMinimize?.();
+  };
+
   const handleMouseDown = (e: React.MouseEvent) => {
     const rect = dragRef.current?.getBoundingClientRect();
     if (rect) {
@@ -221,7 +228,7 @@ export default function Terminal({ initialPosition }: TerminalProps) {
       }}
       drag={false}
     >
-                     <TerminalHeader onMouseDown={handleMouseDown} onRefresh={handleRefresh} currentTopic={currentTopic} messageCount={messages.length} />
+                     <TerminalHeader onMouseDown={handleMouseDown} onRefresh={handleRefresh} onMinimize={handleMinimize} currentTopic={currentTopic} messageCount={messages.length} />
 
       {/* <ExpandableCard 
         isExpanded={isCardExpanded}

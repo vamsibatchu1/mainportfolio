@@ -96,5 +96,11 @@ export const jakartaFont = Plus_Jakarta_Sans({
   display: 'swap',
 });
 
-
-
+// SF Pro Font - Using system font fallback
+export const sfProFont = {
+  variable: '--font-sf-pro',
+  className: 'font-sf-pro',
+  style: {
+    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif',
+  },
+};
