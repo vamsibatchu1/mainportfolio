@@ -25,6 +25,7 @@ export default function TerminalHeader({ onMouseDown, onRefresh, onMinimize, cur
   const ref = useRef<HTMLInputElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const systemMonitorRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useOnClickOutside(tooltipRef, () => {
     setShowTooltip(false);
@@ -32,6 +33,10 @@ export default function TerminalHeader({ onMouseDown, onRefresh, onMinimize, cur
 
   useOnClickOutside(systemMonitorRef, () => {
     setShowSystemMonitor(false);
+  });
+
+  useOnClickOutside(dropdownRef, () => {
+    setShowDropdown(false);
   });
 
   const handleStart = () => {
@@ -136,7 +141,7 @@ export default function TerminalHeader({ onMouseDown, onRefresh, onMinimize, cur
             </div>
           )}
         </div>
-        <div className="relative">
+        <div className="relative" ref={dropdownRef}>
           <MoreVertical 
             className="w-4 h-4 text-gray-600 cursor-pointer hover:text-gray-800" 
             onClick={() => setShowDropdown(!showDropdown)}
