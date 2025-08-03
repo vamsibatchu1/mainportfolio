@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import MessageList from './MessageList';
 import LoadingIndicator from './LoadingIndicator';
 import SuggestionOptions from './SuggestionOptions';
@@ -16,6 +17,7 @@ interface ChatAreaProps {
   suggestionOptions: string[];
   onSuggestionClick: (suggestion: string) => void;
   messagesEndRef: React.RefObject<HTMLDivElement>;
+  showContent?: boolean;
 }
 
 export default function ChatArea({ 
@@ -23,19 +25,32 @@ export default function ChatArea({
   isLoading, 
   suggestionOptions, 
   onSuggestionClick, 
-  messagesEndRef 
+  messagesEndRef,
+  showContent = true
 }: ChatAreaProps) {
   return (
     <div className="bg-[#fff] h-[400px] overflow-y-auto p-4 font-mono text-sm">
-      <MessageList messages={messages} />
-      
-      <LoadingIndicator isLoading={isLoading} />
+      <AnimatePresence>
+        {showContent && (
+          <>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            >
+              <MessageList messages={messages} />
+              
+              <LoadingIndicator isLoading={isLoading} />
+            </motion.div>
 
-      <SuggestionOptions 
-        suggestions={suggestionOptions}
-        onSuggestionClick={onSuggestionClick}
-        visible={messages.length === 1 && !isLoading}
-      />
+            <SuggestionOptions 
+              suggestions={suggestionOptions}
+              onSuggestionClick={onSuggestionClick}
+              visible={messages.length === 1 && !isLoading}
+            />
+          </>
+        )}
+      </AnimatePresence>
       
       <div ref={messagesEndRef} />
     </div>

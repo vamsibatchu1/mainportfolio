@@ -47,12 +47,19 @@ export default function TerminalHeader({ onMouseDown, onRefresh, currentTopic, m
 
   // Generate dynamic folder name based on conversation topic
   const getDynamicFolderName = () => {
-    if (!currentTopic) return '_vamsi';
+    if (!currentTopic) return 'vamsi';
     
     // Extract key words and create a folder name
     const words = currentTopic.toLowerCase().split(' ').slice(0, 3);
     const folderName = words.join('-');
-    return `_${folderName}`;
+    const fullName = folderName;
+    
+    // Limit to 6 characters and add ellipsis if longer
+    if (fullName.length > 6) {
+      return fullName.substring(0, 5) + '...';
+    }
+    
+    return fullName;
   };
 
 

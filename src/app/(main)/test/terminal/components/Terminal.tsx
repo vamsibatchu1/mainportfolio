@@ -53,6 +53,7 @@ export default function Terminal({ initialPosition }: TerminalProps) {
   const [position, setPosition] = useState(initialPosition || { x: 100, y: 100 });
   const [isLoading, setIsLoading] = useState(false);
   const [currentTopic, setCurrentTopic] = useState('');
+  const [showChatContent, setShowChatContent] = useState(false);
   const dragRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -85,6 +86,15 @@ export default function Terminal({ initialPosition }: TerminalProps) {
       });
     }
   }, [initialPosition]);
+
+  // Show chat content after terminal container loads
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowChatContent(true);
+    }, 800); // 0.8s delay after terminal appears
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -213,6 +223,7 @@ export default function Terminal({ initialPosition }: TerminalProps) {
         suggestionOptions={suggestionOptions}
         onSuggestionClick={handleSuggestionClick}
         messagesEndRef={messagesEndRef}
+        showContent={showChatContent}
       />
 
       <InputArea 
