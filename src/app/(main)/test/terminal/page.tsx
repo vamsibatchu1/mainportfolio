@@ -26,6 +26,14 @@ export default function TerminalTestPage() {
           <Terminal />
         </motion.div>
       </AnimatePresence>
+      
+      <div className="absolute top-[-4px] right-4">
+        <img 
+          src="/images/vamsi.svg"
+          alt="Vamsi"
+          className="w-[120px] h-auto"
+        />
+      </div>
     </div>
   );
 } 
