@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { geminiService } from '../services/gemini';
 import TerminalHeader from './TerminalHeader';
+import ExpandableCard from './ExpandableCard';
 import ChatArea from './ChatArea';
 import InputArea from './InputArea';
 
@@ -54,6 +55,7 @@ export default function Terminal({ initialPosition }: TerminalProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [currentTopic, setCurrentTopic] = useState('');
   const [showChatContent, setShowChatContent] = useState(false);
+  const [isCardExpanded, setIsCardExpanded] = useState(false);
   const dragRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -165,6 +167,10 @@ export default function Terminal({ initialPosition }: TerminalProps) {
     geminiService.resetChat();
   };
 
+  const handleCardToggle = () => {
+    setIsCardExpanded(!isCardExpanded);
+  };
+
   const handleMouseDown = (e: React.MouseEvent) => {
     const rect = dragRef.current?.getBoundingClientRect();
     if (rect) {
@@ -216,6 +222,11 @@ export default function Terminal({ initialPosition }: TerminalProps) {
       drag={false}
     >
                      <TerminalHeader onMouseDown={handleMouseDown} onRefresh={handleRefresh} currentTopic={currentTopic} messageCount={messages.length} />
+
+      {/* <ExpandableCard 
+        isExpanded={isCardExpanded}
+        onToggle={handleCardToggle}
+      /> */}
 
       <ChatArea 
         messages={messages}
