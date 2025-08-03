@@ -10,7 +10,7 @@ interface InputAreaProps {
 
 export default function InputArea({ value, onChange, onSubmit, placeholder = "Ask me anything" }: InputAreaProps) {
   return (
-    <div className="bg-[#ECECEC] rounded-b-lg p-4">
+    <div className="bg-[#fff] rounded-b-lg p-4">
       <form onSubmit={onSubmit} className="flex items-center space-x-3">
         <input
           type="text"

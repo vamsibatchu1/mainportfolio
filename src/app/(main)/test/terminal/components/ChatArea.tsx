@@ -26,7 +26,7 @@ export default function ChatArea({
   messagesEndRef 
 }: ChatAreaProps) {
   return (
-    <div className="bg-[#ECECEC] h-[400px] overflow-y-auto p-4 font-mono text-sm">
+    <div className="bg-[#fff] h-[400px] overflow-y-auto p-4 font-mono text-sm">
       <MessageList messages={messages} />
       
       <LoadingIndicator isLoading={isLoading} />
