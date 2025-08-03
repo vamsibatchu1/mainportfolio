@@ -18,7 +18,7 @@ interface TerminalProps {
   initialPosition?: { x: number; y: number };
 }
 
-export default function Terminal({ initialPosition = { x: 100, y: 100 } }: TerminalProps) {
+export default function Terminal({ initialPosition }: TerminalProps) {
   // Different welcome messages for variety
   const welcomeMessages = [
     'Hey there! 👋 I\'m your AI companion, ready to chat about anything that sparks your curiosity. From deep thoughts to casual conversation, I\'m here to explore ideas with you. What\'s on your mind?',
@@ -50,7 +50,7 @@ export default function Terminal({ initialPosition = { x: 100, y: 100 } }: Termi
   ]);
   
   const [currentInput, setCurrentInput] = useState('');
-  const [position, setPosition] = useState(initialPosition);
+  const [position, setPosition] = useState(initialPosition || { x: 100, y: 100 });
   const [isLoading, setIsLoading] = useState(false);
   const [currentTopic, setCurrentTopic] = useState('');
   const dragRef = useRef<HTMLDivElement>(null);
@@ -70,6 +70,21 @@ export default function Terminal({ initialPosition = { x: 100, y: 100 } }: Termi
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Center the terminal on mount if no initial position is provided
+  useEffect(() => {
+    if (!initialPosition) {
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      const terminalWidth = viewportWidth >= 768 ? 480 : 320;
+      const terminalHeight = 500;
+      
+      setPosition({
+        x: (viewportWidth - terminalWidth) / 2,
+        y: (viewportHeight - terminalHeight) / 2
+      });
+    }
+  }, [initialPosition]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -147,9 +162,25 @@ export default function Terminal({ initialPosition = { x: 100, y: 100 } }: Termi
       const offsetY = e.clientY - rect.top;
 
       const handleMouseMove = (e: MouseEvent) => {
+        // Get viewport dimensions
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        
+        // Get terminal dimensions (responsive)
+        const terminalWidth = window.innerWidth >= 768 ? 480 : 320;
+        const terminalHeight = 500; // Fixed height
+        
+        // Calculate boundaries
+        const maxX = viewportWidth - terminalWidth;
+        const maxY = viewportHeight - terminalHeight;
+        
+        // Constrain position within viewport
+        const constrainedX = Math.max(0, Math.min(e.clientX - offsetX, maxX));
+        const constrainedY = Math.max(0, Math.min(e.clientY - offsetY, maxY));
+        
         setPosition({
-          x: e.clientX - offsetX,
-          y: e.clientY - offsetY
+          x: constrainedX,
+          y: constrainedY
         });
       };
 
@@ -166,11 +197,10 @@ export default function Terminal({ initialPosition = { x: 100, y: 100 } }: Termi
   return (
     <motion.div
       ref={dragRef}
-      className="fixed bg-[#f6f6f6] rounded-lg shadow-2xl border border-gray-300 select-none"
+      className="fixed bg-[#f6f6f6] rounded-lg shadow-2xl border border-gray-300 select-none w-[320px] md:w-[480px]"
       style={{
         left: position.x,
         top: position.y,
-        width: '480px',
         zIndex: 50
       }}
       drag={false}

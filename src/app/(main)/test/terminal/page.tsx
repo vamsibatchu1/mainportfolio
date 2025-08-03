@@ -11,7 +11,7 @@ export default function TerminalTestPage() {
         maxOpacity={0.1}
         flickerChance={0.2}
       />
-      <Terminal initialPosition={{ x: 50, y: 100 }} />
+      <Terminal />
     </div>
   );
 } 
