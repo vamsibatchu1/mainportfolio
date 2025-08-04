@@ -1,20 +1,13 @@
 "use client";
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Loader from './(main)/home/loader/loader';
+import { useEffect } from 'react';
 
 export default function Page() {
-  const [showLoader, setShowLoader] = useState(true);
   const router = useRouter();
 
-  const handleLoaderComplete = () => {
-    setShowLoader(false);
+  useEffect(() => {
     router.push('/home');
-  };
-
-  if (showLoader) {
-    return <Loader onComplete={handleLoaderComplete} />;
-  }
+  }, [router]);
 
   return null;
 }

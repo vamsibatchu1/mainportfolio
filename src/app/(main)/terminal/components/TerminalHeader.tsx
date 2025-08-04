@@ -92,7 +92,6 @@ export default function TerminalHeader({ onMouseDown, onRefresh, onMinimize, cur
       <div className="flex items-center space-x-2">
         <div className="w-3 h-3 bg-[#ff5f57] rounded-full cursor-pointer"></div>
         <div className="w-3 h-3 bg-[#ffbd2e] rounded-full cursor-pointer" onClick={onMinimize}></div>
-        <div className="w-3 h-3 bg-[#28ca42] rounded-full cursor-pointer"></div>
       </div>
 
       {/* Right Icons */}

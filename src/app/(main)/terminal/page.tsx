@@ -163,7 +163,6 @@ export default function TerminalTestPage() {
             <motion.div
                           initial={isFirstLoad ? { 
               opacity: 0, 
-              y: 50,
               x: 0
             } : { 
               opacity: 0, 

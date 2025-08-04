@@ -109,7 +109,7 @@ function Dock({
           mouseX.set(Infinity);
         }}
         className={cn(
-          'mx-auto flex w-fit gap-4 rounded-2xl bg-gray-50 px-4 dark:bg-neutral-900',
+          'mx-auto flex w-fit gap-4 rounded-2xl bg-gray-50 px-4 dark:bg-neutral-900 border border-gray-300',
           className
         )}
         style={{ height: panelHeight }}
@@ -127,7 +127,7 @@ function Dock({
 function DockItem({ children, className, onClick }: DockItemProps) {
   const ref = useRef<HTMLDivElement>(null);
 
-  const { distance, magnification, mouseX, spring } = useDock();
+  const { distance, mouseX, spring } = useDock();
 
   const isHovered = useMotionValue(0);
 
@@ -136,10 +136,13 @@ function DockItem({ children, className, onClick }: DockItemProps) {
     return val - domRect.x - domRect.width / 2;
   });
 
+  // Disable magnification in both light and dark modes
+  const effectiveMagnification = 40;
+
   const widthTransform = useTransform(
     mouseDistance,
     [-distance, 0, distance],
-    [40, magnification, 40]
+    [40, effectiveMagnification, 40]
   );
 
   const width = useSpring(widthTransform, spring);
@@ -206,13 +209,24 @@ function DockLabel({ children, className, ...rest }: DockLabelProps) {
 function DockIcon({ children, className, ...rest }: DockIconProps) {
   const restProps = rest as Record<string, unknown>;
   const width = restProps['width'] as MotionValue<number>;
+  const isHovered = restProps['isHovered'] as MotionValue<number>;
+  const [hoverState, setHoverState] = useState(0);
 
   const widthTransform = useTransform(width, (val) => val / 2);
+
+  useEffect(() => {
+    const unsubscribe = isHovered.on('change', (latest) => {
+      setHoverState(latest);
+    });
+    return () => unsubscribe();
+  }, [isHovered]);
 
   return (
     <motion.div
       style={{ width: widthTransform }}
       className={cn('flex items-center justify-center', className)}
+      animate={hoverState === 0 ? { y: -2 } : { y: 0 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
     >
       {children}
     </motion.div>

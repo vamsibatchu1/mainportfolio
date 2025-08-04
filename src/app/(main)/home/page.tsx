@@ -5,9 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { priFont } from '@/app/fonts';
 import ToolbarPage from '../navbar/toolbar/toolbar';
 import { useSound } from '@/hooks/use-sound';
+import WelcomeDialog from '@/components/ui/WelcomeDialog';
 
 const LandingPageNew2: React.FC = () => {
   const [showOverlay, setShowOverlay] = useState(false);
+  const [showWelcomeDialog, setShowWelcomeDialog] = useState(true);
   const { playSound } = useSound();
 
   useEffect(() => {
@@ -36,190 +38,40 @@ const LandingPageNew2: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [showOverlay, playSound]);
 
+  const handleYesClick = () => {
+    setShowWelcomeDialog(false);
+  };
+
+  const handleYesAgainClick = () => {
+    setShowWelcomeDialog(false);
+  };
+
+  const handleCloseDialog = () => {
+    setShowWelcomeDialog(false);
+  };
+
   return (
     <>
-      <div className="min-h-screen w-full relative bg-black overflow-hidden flex items-center justify-center">
+      <div className="min-h-screen w-full relative overflow-hidden flex items-center justify-center" style={{ backgroundImage: 'url(/images/bg.png)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
         
-        {/* Container for all images - centered on page */}
-        <div className="relative" style={{ width: '1215px', height: '571px', transform: 'scale(0.75)', transformOrigin: 'center' }}>
-        
-        {/* Mac Computer - x=0, y=16, w=432px, h=555.5px - 1st */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ 
-            duration: 0.8, 
-            delay: 0.2,
-            ease: [0.22, 1, 0.36, 1]
-          }}
-          className="absolute"
-          style={{
-            left: '0px',
-            top: '16px',
-          }}
-        >
-          <img 
-            src="/images/home-new2/mac.png" 
-            alt="Mac computer" 
-            className="w-[432px] h-[555.5px]"
-          />
-        </motion.div>
-
-        {/* Folder icon - x=87, y=109, w=116.5, h=96.5 - 2nd */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ 
-            duration: 0.6, 
-            delay: 0.6,
-            ease: [0.22, 1, 0.36, 1]
-          }}
-          className="absolute"
-          style={{
-            left: '87px',
-            top: '109px',
-          }}
-        >
-          <img 
-            src="/images/home-new2/folder.png" 
-            alt="Folder icon" 
-            className="w-[116.5px] h-[96.5px]"
-          />
-        </motion.div>
-
-        {/* Sticky note - x=39, y=395, w=112.5, h=112.5 - 2nd */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ 
-            duration: 0.6, 
-            delay: 0.6,
-            ease: [0.22, 1, 0.36, 1]
-          }}
-          className="absolute"
-          style={{
-            left: '39px',
-            top: '395px',
-          }}
-        >
-          <img 
-            src="/images/home-new2/sticky.png" 
-            alt="Sticky note" 
-            className="w-[112.5px] h-[112.5px]"
-          />
-        </motion.div>
-
-        {/* Card 1 - x=437, y=0, w=407, h=295.5 - 3rd */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ 
-            duration: 0.6, 
-            delay: 1.0,
-            ease: [0.22, 1, 0.36, 1]
-          }}
-          className="absolute"
-          style={{
-            left: '437px',
-            top: '0px',
-          }}
-        >
-          <img 
-            src="/images/home-new2/card1.png" 
-            alt="Portfolio card 1" 
-            className="w-[407px] h-[295.5px] opacity-90 hover:opacity-100 transition-opacity"
-          />
-        </motion.div>
-
-        {/* Card 2 - x=437, y=320, w=481, h=250 - 3rd */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ 
-            duration: 0.6, 
-            delay: 1.0,
-            ease: [0.22, 1, 0.36, 1]
-          }}
-          className="absolute"
-          style={{
-            left: '437px',
-            top: '320px',
-          }}
-        >
-          <img 
-            src="/images/home-new2/card2.png" 
-            alt="Portfolio card 2" 
-            className="w-[481px] h-[250px] opacity-90 hover:opacity-100 transition-opacity"
-          />
-        </motion.div>
-
-        {/* Card 3 - x=844, y=432, w=354, h=139 - 4th */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ 
-            duration: 0.6, 
-            delay: 1.4,
-            ease: [0.22, 1, 0.36, 1]
-          }}
-          className="absolute"
-          style={{
-            left: '844px',
-            top: '432px',
-          }}
-        >
-          <img 
-            src="/images/home-new2/card3.png" 
-            alt="Portfolio card 3" 
-            className="w-[354px] h-[139px] opacity-90 hover:opacity-100 transition-opacity"
-          />
-        </motion.div>
-
-        {/* "Let's do this" Speech Bubble - x=792, y=230, w=423, h=110.5 - 5th */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ 
-            duration: 0.6, 
-            delay: 1.8,
-            ease: [0.22, 1, 0.36, 1]
-          }}
-          className="absolute"
-          style={{
-            left: '792px',
-            top: '230px',
-          }}
-        >
-          <img 
-            src="/images/home-new2/dothis.png" 
-            alt="Let's do this speech bubble" 
-            className="w-[423px] h-[110.5px]"
-          />
-        </motion.div>
-
-        {/* Ctrl/Yes Button - x=1059, y=382, w=156, h=100.5 - 5th */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ 
-            duration: 0.6, 
-            delay: 1.8,
-            ease: [0.22, 1, 0.36, 1]
-          }}
-          className="absolute"
-          style={{
-            left: '1059px',
-            top: '382px',
-          }}
-        >
-          <img 
-            src="/images/home-new2/ctrl.png" 
-            alt="Ctrl Yes button" 
-            className="w-[156px] h-[100.5px] cursor-pointer hover:scale-105 transition-transform"
-          />
-        </motion.div>
-
-        </div> {/* End of container */}
+        {/* Welcome Dialog */}
+        <AnimatePresence>
+          {showWelcomeDialog && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="relative z-10"
+            >
+              <WelcomeDialog 
+                onYesClick={handleYesClick}
+                onYesAgainClick={handleYesAgainClick}
+                onClose={handleCloseDialog}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Spacebar Navigation Instruction */}
         <motion.div 

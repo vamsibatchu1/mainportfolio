@@ -128,6 +128,10 @@ body {
     font-family: var(--font-jakarta), system-ui, sans-serif;
   }
   
+  .font-handjet {
+    font-family: var(--font-handjet), system-ui, sans-serif;
+  }
+  
   .font-sf-pro {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
   }

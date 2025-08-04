@@ -81,7 +81,7 @@ export default function Terminal({ initialPosition, onMinimize }: TerminalProps)
     if (!initialPosition) {
       const viewportWidth = window.innerWidth;
       const viewportHeight = window.innerHeight;
-      const terminalWidth = viewportWidth >= 768 ? 480 : 320;
+      const terminalWidth = viewportWidth >= 768 ? 480 : 360;
       const terminalHeight = 500;
       
       setPosition({
@@ -190,7 +190,7 @@ export default function Terminal({ initialPosition, onMinimize }: TerminalProps)
         const viewportHeight = window.innerHeight;
         
         // Get terminal dimensions (responsive)
-        const terminalWidth = window.innerWidth >= 768 ? 480 : 320;
+        const terminalWidth = window.innerWidth >= 768 ? 480 : 360;
         const terminalHeight = 500; // Fixed height
         
         // Calculate boundaries
@@ -220,7 +220,7 @@ export default function Terminal({ initialPosition, onMinimize }: TerminalProps)
   return (
     <motion.div
       ref={dragRef}
-      className="fixed bg-[#f6f6f6] rounded-lg shadow-2xl border border-gray-300 select-none w-[320px] md:w-[480px]"
+      className="fixed bg-[#f6f6f6] rounded-lg shadow-2xl border border-gray-300 select-none w-[360px] md:w-[480px]"
       style={{
         left: position.x,
         top: position.y,

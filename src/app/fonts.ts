@@ -1,5 +1,5 @@
 import localFont from 'next/font/local';
-import {Poppins, IBM_Plex_Mono, Instrument_Serif, Teko, Kode_Mono, Lora, Inter, EB_Garamond, Plus_Jakarta_Sans } from 'next/font/google';
+import {Poppins, IBM_Plex_Mono, Instrument_Serif, Teko, Kode_Mono, Lora, Inter, EB_Garamond, Plus_Jakarta_Sans, Handjet } from 'next/font/google';
 
 // Primary Font: W95FA (Windows 95 Font)
 export const priFont = localFont({
@@ -93,6 +93,14 @@ export const jakartaFont = Plus_Jakarta_Sans({
   weight: ['200', '300', '400', '500', '600', '700', '800'],
   style: ['normal', 'italic'],
   variable: '--font-jakarta',
+  display: 'swap',
+});
+
+// Handjet Font from Google
+export const handjetFont = Handjet({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-handjet',
   display: 'swap',
 });
 

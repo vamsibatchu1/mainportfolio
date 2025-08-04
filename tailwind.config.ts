@@ -17,6 +17,7 @@ export default {
   		  'tri': ['var(--font-tri)'],
   		  'inter': ['var(--font-inter)'],
   		  'jakarta': ['var(--font-jakarta)'],
+  		  'handjet': ['var(--font-handjet)'],
   		},
   		colors: {
   			background: 'hsl(var(--background))',
