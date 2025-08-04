@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { geminiService } from '../services/gemini';
 import TerminalHeader from './TerminalHeader';
-import ExpandableCard from './ExpandableCard';
 import ChatArea from './ChatArea';
 import InputArea from './InputArea';
 
@@ -20,8 +19,14 @@ interface TerminalProps {
   onMinimize?: () => void;
 }
 
+// Sound effects
+const playSlideupSound = () => {
+  const audio = new Audio('/audio/Tabbar_Slideup.mp3');
+  audio.volume = 0.3;
+  audio.play().catch(console.error);
+};
+
 export default function Terminal({ initialPosition, onMinimize }: TerminalProps) {
-  const [isMinimized, setIsMinimized] = useState(false);
   // Different welcome messages for variety
   const welcomeMessages = [
     'Hey there! 👋 I\'m your AI companion, ready to chat about anything that sparks your curiosity. From deep thoughts to casual conversation, I\'m here to explore ideas with you. What\'s on your mind?',
@@ -57,7 +62,6 @@ export default function Terminal({ initialPosition, onMinimize }: TerminalProps)
   const [isLoading, setIsLoading] = useState(false);
   const [currentTopic, setCurrentTopic] = useState('');
   const [showChatContent, setShowChatContent] = useState(false);
-  const [isCardExpanded, setIsCardExpanded] = useState(false);
   const dragRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -154,6 +158,8 @@ export default function Terminal({ initialPosition, onMinimize }: TerminalProps)
   };
 
   const handleSuggestionClick = (suggestion: string) => {
+    // Play slideup sound when suggestion is clicked
+    playSlideupSound();
     handleUserMessage(suggestion);
   };
 
@@ -169,12 +175,7 @@ export default function Terminal({ initialPosition, onMinimize }: TerminalProps)
     geminiService.resetChat();
   };
 
-  const handleCardToggle = () => {
-    setIsCardExpanded(!isCardExpanded);
-  };
-
   const handleMinimize = () => {
-    setIsMinimized(true);
     onMinimize?.();
   };
 
