@@ -9,12 +9,18 @@ import { motion } from 'framer-motion';
 export default function WelcomeScreen() {
   const [currentSymbol, setCurrentSymbol] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const symbols = ['/images/refresh-images/symbol1.svg', '/images/refresh-images/symbol2.svg', '/images/refresh-images/symbol3.svg', '/images/refresh-images/symbol4.svg'];
+  const symbols = ['/images/refresh-images/symbol1.svg', 
+    '/images/refresh-images/symbol2.svg', 
+    '/images/refresh-images/symbol4.svg',
+    '/images/refresh-images/symbol5.svg',
+    '/images/refresh-images/symbol3.svg', 
+    '/images/refresh-images/symbol6.svg',
+    '/images/refresh-images/symbol7.svg'];
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSymbol((prev) => (prev + 1) % symbols.length);
-    }, 400);
+    }, 250);
 
     return () => clearInterval(interval);
   }, [symbols.length]);
@@ -75,7 +81,7 @@ export default function WelcomeScreen() {
                 alt={`Symbol ${currentSymbol + 1}`}
                 width={160}
                 height={160}
-                className="transition-opacity duration-300"
+                className="w-[160px] h-auto transition-opacity duration-300"
               />
             </div>
           </motion.div>
