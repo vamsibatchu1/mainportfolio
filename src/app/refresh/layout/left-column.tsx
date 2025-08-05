@@ -1,106 +1,235 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { jakartaFont, fiveFont } from '../../fonts';
 
 export default function LeftColumn() {
+  const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+  const [animationFrame, setAnimationFrame] = useState(0);
+
+  // Pixel configurations for each navigation item with multiple animation frames
+  const pixelConfigs = {
+    home: {
+      default: [
+        [1, 1, 1, 0],
+        [0, 0, 0, 1]
+      ],
+      frames: [
+        [
+          [1, 0, 0, 0],
+          [1, 1, 1, 1]
+        ],
+        [
+          [0, 1, 0, 0],
+          [1, 0, 1, 1]
+        ],
+        [
+          [0, 0, 1, 0],
+          [1, 1, 0, 1]
+        ],
+        [
+          [0, 0, 0, 1],
+          [1, 1, 1, 0]
+        ]
+      ]
+    },
+    work: {
+      default: [
+        [1, 0, 0, 1],
+        [1, 1, 1, 1]
+      ],
+      frames: [
+        [
+          [0, 1, 1, 0],
+          [1, 0, 0, 1]
+        ],
+        [
+          [1, 0, 1, 0],
+          [0, 1, 0, 1]
+        ],
+        [
+          [0, 1, 0, 1],
+          [1, 0, 1, 0]
+        ],
+        [
+          [1, 1, 0, 0],
+          [0, 0, 1, 1]
+        ]
+      ]
+    },
+    experiments: {
+      default: [
+        [1, 1, 1, 0],
+        [1, 0, 1, 0]
+      ],
+      frames: [
+        [
+          [0, 1, 0, 0],
+          [1, 1, 1, 1]
+        ],
+        [
+          [1, 0, 1, 0],
+          [0, 1, 0, 1]
+        ],
+        [
+          [0, 0, 1, 1],
+          [1, 1, 0, 0]
+        ],
+        [
+          [1, 0, 0, 1],
+          [0, 1, 1, 0]
+        ]
+      ]
+    },
+    writing: {
+      default: [
+        [1, 0, 0, 0],
+        [0, 1, 0, 0]
+      ],
+      frames: [
+        [
+          [0, 0, 0, 1],
+          [1, 1, 1, 0]
+        ],
+        [
+          [0, 0, 1, 0],
+          [1, 1, 0, 1]
+        ],
+        [
+          [0, 1, 0, 0],
+          [1, 0, 1, 1]
+        ],
+        [
+          [1, 0, 0, 0],
+          [0, 1, 1, 1]
+        ]
+      ]
+    },
+    about: {
+      default: [
+        [1, 0, 0, 1],
+        [1, 1, 1, 1]
+      ],
+      frames: [
+        [
+          [0, 1, 1, 0],
+          [0, 1, 1, 0]
+        ],
+        [
+          [1, 0, 0, 1],
+          [0, 1, 1, 0]
+        ],
+        [
+          [0, 1, 1, 0],
+          [1, 0, 0, 1]
+        ],
+        [
+          [1, 1, 0, 0],
+          [0, 0, 1, 1]
+        ]
+      ]
+    }
+  };
+
+  const colors = ['#16B364', '#2973DE', '#FDB022', '#A48AFB', '#EF6820'];
+
+  // Animation loop effect
+  useEffect(() => {
+    if (hoveredItem !== null) {
+      const interval = setInterval(() => {
+        setAnimationFrame((prev) => (prev + 1) % 4);
+      }, 400); // Change frame every 400ms
+
+      return () => clearInterval(interval);
+    } else {
+      setAnimationFrame(0);
+    }
+  }, [hoveredItem]);
+
+  const renderPixelIcon = (config: number[][], color: string) => (
+    <div className="flex flex-col">
+      {config.map((row, rowIndex) => (
+        <div key={rowIndex} className="flex flex-row">
+          {row.map((pixel, colIndex) => (
+            <div
+              key={colIndex}
+              className={`w-5 h-5 transition-all duration-200 ease-out ${
+                pixel ? `bg-[${color}]` : ''
+              }`}
+            />
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <div className="w-full h-full flex flex-col">
       {/* Navigation Section */}
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-8 scale-[0.7] origin-top-left">
         {/* Home */}
-        <div className="flex flex-row items-center gap-3">
-          <div className="flex flex-col">
-            <div className="flex flex-row">
-              <div className="w-5 h-5 bg-[#16B364]"></div>
-              <div className="w-5 h-5 bg-[#16B364]"></div>
-              <div className="w-5 h-5 bg-[#16B364]"></div>
-              <div className="w-5 h-5 bg-[#16B364]"></div>
-            </div>
-            <div className="flex flex-row">
-              <div className="w-5 h-5"></div>
-              <div className="w-5 h-5"></div>
-              <div className="w-5 h-5"></div>
-              <div className="w-5 h-5 bg-[#16B364]"></div>
-            </div>
-          </div>
+        <div 
+          className="flex flex-row items-center gap-3 cursor-pointer"
+          onMouseEnter={() => setHoveredItem(0)}
+          onMouseLeave={() => setHoveredItem(null)}
+        >
+          {renderPixelIcon(
+            hoveredItem === 0 ? pixelConfigs.home.frames[animationFrame] : pixelConfigs.home.default,
+            colors[0]
+          )}
           <span className={`${jakartaFont.className} text-white text-[48px] font-bold leading-[100%] tracking-[-0.04em]`}>Home</span>
         </div>
         
         {/* Work */}
-        <div className="flex flex-row items-center gap-3">
-          <div className="flex flex-col">
-            <div className="flex flex-row">
-              <div className="w-5 h-5 bg-[#2973DE]"></div>
-              <div className="w-5 h-5"></div>
-              <div className="w-5 h-5"></div>
-              <div className="w-5 h-5 bg-[#2973DE]"></div>
-            </div>
-            <div className="flex flex-row">
-              <div className="w-5 h-5 bg-[#2973DE]"></div>
-              <div className="w-5 h-5 bg-[#2973DE]"></div>
-              <div className="w-5 h-5 bg-[#2973DE]"></div>
-              <div className="w-5 h-5 bg-[#2973DE]"></div>
-            </div>
-          </div>
+        <div 
+          className="flex flex-row items-center gap-3 cursor-pointer"
+          onMouseEnter={() => setHoveredItem(1)}
+          onMouseLeave={() => setHoveredItem(null)}
+        >
+          {renderPixelIcon(
+            hoveredItem === 1 ? pixelConfigs.work.frames[animationFrame] : pixelConfigs.work.default,
+            colors[1]
+          )}
           <span className={`${jakartaFont.className} text-white text-[48px] font-bold leading-[100%] tracking-[-0.04em]`}>Work</span>
         </div>
         
         {/* Experiments */}
-        <div className="flex flex-row items-center gap-3">
-          <div className="flex flex-col">
-            <div className="flex flex-row">
-              <div className="w-5 h-5 bg-[#FDB022]"></div>
-              <div className="w-5 h-5 bg-[#FDB022]"></div>
-              <div className="w-5 h-5 bg-[#FDB022]"></div>
-              <div className="w-5 h-5"></div>
-            </div>
-            <div className="flex flex-row">
-              <div className="w-5 h-5 bg-[#FDB022]"></div>
-              <div className="w-5 h-5"></div>
-              <div className="w-5 h-5 bg-[#FDB022]"></div>
-              <div className="w-5 h-5"></div>
-            </div>
-          </div>
+        <div 
+          className="flex flex-row items-center gap-3 cursor-pointer"
+          onMouseEnter={() => setHoveredItem(2)}
+          onMouseLeave={() => setHoveredItem(null)}
+        >
+          {renderPixelIcon(
+            hoveredItem === 2 ? pixelConfigs.experiments.frames[animationFrame] : pixelConfigs.experiments.default,
+            colors[2]
+          )}
           <span className={`${jakartaFont.className} text-white text-[48px] font-bold leading-[100%] tracking-[-0.04em]`}>Experiments</span>
         </div>
         
         {/* Writing */}
-        <div className="flex flex-row items-center gap-3">
-          <div className="flex flex-col">
-            <div className="flex flex-row">
-              <div className="w-5 h-5 bg-[#A48AFB]"></div>
-              <div className="w-5 h-5"></div>
-              <div className="w-5 h-5"></div>
-              <div className="w-5 h-5"></div>
-            </div>
-            <div className="flex flex-row">
-              <div className="w-5 h-5"></div>
-              <div className="w-5 h-5 bg-[#A48AFB]"></div>
-              <div className="w-5 h-5"></div>
-              <div className="w-5 h-5"></div>
-            </div>
-          </div>
+        <div 
+          className="flex flex-row items-center gap-3 cursor-pointer"
+          onMouseEnter={() => setHoveredItem(3)}
+          onMouseLeave={() => setHoveredItem(null)}
+        >
+          {renderPixelIcon(
+            hoveredItem === 3 ? pixelConfigs.writing.frames[animationFrame] : pixelConfigs.writing.default,
+            colors[3]
+          )}
           <span className={`${jakartaFont.className} text-white text-[48px] font-bold leading-[100%] tracking-[-0.04em]`}>Writing</span>
         </div>
         
         {/* About me */}
-        <div className="flex flex-row items-center gap-3">
-          <div className="flex flex-col">
-            <div className="flex flex-row">
-              <div className="w-5 h-5 bg-[#EF6820]"></div>
-              <div className="w-5 h-5"></div>
-              <div className="w-5 h-5"></div>
-              <div className="w-5 h-5 bg-[#EF6820]"></div>
-            </div>
-            <div className="flex flex-row">
-              <div className="w-5 h-5 bg-[#EF6820]"></div>
-              <div className="w-5 h-5 bg-[#EF6820]"></div>
-              <div className="w-5 h-5 bg-[#EF6820]"></div>
-              <div className="w-5 h-5 bg-[#EF6820]"></div>
-            </div>
-          </div>
+        <div 
+          className="flex flex-row items-center gap-3 cursor-pointer"
+          onMouseEnter={() => setHoveredItem(4)}
+          onMouseLeave={() => setHoveredItem(null)}
+        >
+          {renderPixelIcon(
+            hoveredItem === 4 ? pixelConfigs.about.frames[animationFrame] : pixelConfigs.about.default,
+            colors[4]
+          )}
           <span className={`${jakartaFont.className} text-white text-[48px] font-bold leading-[100%] tracking-[-0.04em]`}>About me</span>
         </div>
       </div>
@@ -125,11 +254,11 @@ export default function LeftColumn() {
           
           {/* Third column - Text block with Instrument Serif */}
           <div className="flex-1">
-            <div className={`${fiveFont.className} text-white text-[40px] leading-[100%] tracking-[0%]`}>
-              <p>product designer &</p>
-              <p>creative technologist</p>
-              <p>crafting possibilities with</p>
-              <p>craft & code.</p>
+            <div className={`${fiveFont.className} text-white text-[32px] leading-[100%] tracking-[0%]`}>
+              product designer &
+              creative technologist
+              crafting possibilities with
+              craft & code.
             </div>
           </div>
         </div>
