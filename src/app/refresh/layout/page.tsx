@@ -10,7 +10,7 @@ export default function LayoutPage() {
       <div className="w-[1600px]">
         <div className="flex flex-row">
           {/* Left Column - 600px width, black background */}
-          <div className="w-[600px] h-screen bg-black p-[40px]">
+          <div className="w-[480px] h-screen bg-black p-[40px]">
             <LeftColumn />
           </div>
           

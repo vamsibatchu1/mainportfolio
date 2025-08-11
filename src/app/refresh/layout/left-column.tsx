@@ -154,9 +154,10 @@ export default function LeftColumn() {
           {row.map((pixel, colIndex) => (
             <div
               key={colIndex}
-              className={`w-5 h-5 transition-all duration-200 ease-out ${
-                pixel ? `bg-[${color}]` : ''
-              }`}
+              className="w-5 h-5 transition-all duration-200 ease-out"
+              style={{
+                backgroundColor: pixel ? color : 'transparent'
+              }}
             />
           ))}
         </div>
@@ -235,6 +236,7 @@ export default function LeftColumn() {
       </div>
       
       {/* Footer Section */}
+      {/* ////////////////////////////////////////////////////////////// */}
       <div className="mt-auto">
         {/* First row - 3 columns with 20px gap */}
         <div className="flex flex-row gap-5 items-end mb-4">
@@ -265,8 +267,7 @@ export default function LeftColumn() {
         
         {/* Second row - Text with Plus Jakarta Sans */}
         <div className={`${jakartaFont.className} text-gray-400 text-[20px] leading-[120%] tracking-[-0.04em]`}>
-          <p>Design is not what we make, design is what we make</p>
-          <p>possible. We are here to show what can be.</p>
+          <p>Design is not what we make, design is what we make possible, to truly show what can be.</p>
         </div>
       </div>
     </div>
