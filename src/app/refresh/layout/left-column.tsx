@@ -2,17 +2,21 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import { jakartaFont, fiveFont } from '../../fonts';
 
 export default function LeftColumn() {
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [animationFrame, setAnimationFrame] = useState(0);
+  const [activeItem, setActiveItem] = useState(0); // 0: Home, 1: Work, 2: Experiments, 3: Writing, 4: About
+  const [isScrambling, setIsScrambling] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   // Pixel configurations for each navigation item with multiple animation frames
   const pixelConfigs = {
     home: {
       default: [
-        [1, 1, 1, 0],
+        [1, 1, 1, 1],
         [0, 0, 0, 1]
       ],
       frames: [
@@ -60,7 +64,7 @@ export default function LeftColumn() {
     },
     experiments: {
       default: [
-        [1, 1, 1, 0],
+        [1, 1, 1, 1],
         [1, 0, 1, 0]
       ],
       frames: [
@@ -84,8 +88,8 @@ export default function LeftColumn() {
     },
     writing: {
       default: [
-        [1, 0, 0, 0],
-        [0, 1, 0, 0]
+        [1, 0, 1, 0],
+        [0, 1, 0, 1]
       ],
       frames: [
         [
@@ -108,8 +112,8 @@ export default function LeftColumn() {
     },
     about: {
       default: [
-        [1, 0, 0, 1],
-        [1, 1, 1, 1]
+        [1, 1, 0, 1],
+        [0, 0, 1, 1]
       ],
       frames: [
         [
@@ -133,6 +137,94 @@ export default function LeftColumn() {
   };
 
   const colors = ['#16B364', '#2973DE', '#FDB022', '#A48AFB', '#EF6820'];
+  const navItems = ['Home', 'Work', 'Play', 'Writing', 'About'];
+
+
+
+
+
+  // Text scramble effect - progressive character reveal
+  const [scrambledTexts, setScrambledTexts] = useState<{ [key: string]: string }>({});
+  const [scrambleProgress, setScrambleProgress] = useState(0);
+  
+  const scrambleText = (text: string, key: string) => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
+    
+    if (!scrambledTexts[key]) {
+      // Initialize with fully scrambled text
+      const initialScrambled = text.split('').map(char => 
+        char === ' ' ? ' ' : chars[Math.floor(Math.random() * chars.length)]
+      ).join('');
+      setScrambledTexts(prev => ({ ...prev, [key]: initialScrambled }));
+      return initialScrambled;
+    }
+    
+    // Progressive reveal based on scrambleProgress
+    let result = '';
+    for (let i = 0; i < text.length; i++) {
+      if (text[i] === ' ') {
+        result += ' ';
+        continue;
+      }
+      
+      if (scrambleProgress * text.length > i) {
+        result += text[i]; // Reveal correct character
+      } else {
+        result += chars[Math.floor(Math.random() * chars.length)]; // Keep scrambled
+      }
+    }
+    
+    return result;
+  };
+
+  const handleItemClick = (index: number) => {
+    if (index === activeItem) return; // Don't scramble if clicking the same item
+    
+    setIsScrambling(true);
+    
+    // Progressive scramble animation for click
+    const steps = 30; // Number of animation steps (faster than initial load)
+    let step = 0;
+    
+    const interval = setInterval(() => {
+      step++;
+      setScrambleProgress(step / steps);
+      
+      if (step >= steps) {
+        clearInterval(interval);
+        setActiveItem(index);
+        setIsScrambling(false);
+        setScrambleProgress(0);
+      }
+    }, 15); // 15ms per step = 450ms total
+    
+    return () => clearInterval(interval);
+  };
+
+  // Initial load text scramble effect
+  useEffect(() => {
+    if (isInitialLoad) {
+      setIsScrambling(true);
+      
+      // Progressive scramble animation
+      const steps = 40; // Number of animation steps
+      let step = 0;
+      
+      const interval = setInterval(() => {
+        step++;
+        setScrambleProgress(step / steps);
+        
+        if (step >= steps) {
+          clearInterval(interval);
+          setIsScrambling(false);
+          setIsInitialLoad(false);
+          setScrambleProgress(0);
+        }
+      }, 20); // 20ms per step = 800ms total
+      
+      return () => clearInterval(interval);
+    }
+  }, [isInitialLoad]);
 
   // Animation loop effect
   useEffect(() => {
@@ -169,75 +261,98 @@ export default function LeftColumn() {
     <div className="w-full h-full flex flex-col">
       {/* Navigation Section */}
       <div className="flex flex-col gap-8 scale-[0.7] origin-top-left">
-        {/* Home */}
-        <div 
+        {/* Active Item - Large */}
+        <motion.div 
           className="flex flex-row items-center gap-3 cursor-pointer"
-          onMouseEnter={() => setHoveredItem(0)}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          onMouseEnter={() => setHoveredItem(activeItem)}
           onMouseLeave={() => setHoveredItem(null)}
+          onClick={() => handleItemClick(activeItem)}
         >
           {renderPixelIcon(
-            hoveredItem === 0 ? pixelConfigs.home.frames[animationFrame] : pixelConfigs.home.default,
-            colors[0]
+            hoveredItem === activeItem ? pixelConfigs[Object.keys(pixelConfigs)[activeItem] as keyof typeof pixelConfigs].frames[animationFrame] : pixelConfigs[Object.keys(pixelConfigs)[activeItem] as keyof typeof pixelConfigs].default,
+            colors[activeItem]
           )}
-          <span className={`${jakartaFont.className} text-white text-[48px] font-bold leading-[100%] tracking-[-0.04em]`}>Home</span>
-        </div>
+          <span className={`${jakartaFont.className} text-white text-[48px] font-bold leading-[100%] tracking-[-0.04em] transition-all duration-300`}>
+            {(isScrambling || isInitialLoad) ? scrambleText(navItems[activeItem], `active-${activeItem}`) : navItems[activeItem]}
+          </span>
+        </motion.div>
         
-        {/* Work */}
-        <div 
-          className="flex flex-row items-center gap-3 cursor-pointer"
-          onMouseEnter={() => setHoveredItem(1)}
-          onMouseLeave={() => setHoveredItem(null)}
+        {/* Inactive Items - Fixed Width Grid */}
+        <motion.div 
+          className="flex flex-col gap-6 mt-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 1.2 }}
         >
-          {renderPixelIcon(
-            hoveredItem === 1 ? pixelConfigs.work.frames[animationFrame] : pixelConfigs.work.default,
-            colors[1]
-          )}
-          <span className={`${jakartaFont.className} text-white text-[48px] font-bold leading-[100%] tracking-[-0.04em]`}>Work</span>
-        </div>
-        
-        {/* Experiments */}
-        <div 
-          className="flex flex-row items-center gap-3 cursor-pointer"
-          onMouseEnter={() => setHoveredItem(2)}
-          onMouseLeave={() => setHoveredItem(null)}
-        >
-          {renderPixelIcon(
-            hoveredItem === 2 ? pixelConfigs.experiments.frames[animationFrame] : pixelConfigs.experiments.default,
-            colors[2]
-          )}
-          <span className={`${jakartaFont.className} text-white text-[48px] font-bold leading-[100%] tracking-[-0.04em]`}>Experiments</span>
-        </div>
-        
-        {/* Writing */}
-        <div 
-          className="flex flex-row items-center gap-3 cursor-pointer"
-          onMouseEnter={() => setHoveredItem(3)}
-          onMouseLeave={() => setHoveredItem(null)}
-        >
-          {renderPixelIcon(
-            hoveredItem === 3 ? pixelConfigs.writing.frames[animationFrame] : pixelConfigs.writing.default,
-            colors[3]
-          )}
-          <span className={`${jakartaFont.className} text-white text-[48px] font-bold leading-[100%] tracking-[-0.04em]`}>Writing</span>
-        </div>
-        
-        {/* About me */}
-        <div 
-          className="flex flex-row items-center gap-3 cursor-pointer"
-          onMouseEnter={() => setHoveredItem(4)}
-          onMouseLeave={() => setHoveredItem(null)}
-        >
-          {renderPixelIcon(
-            hoveredItem === 4 ? pixelConfigs.about.frames[animationFrame] : pixelConfigs.about.default,
-            colors[4]
-          )}
-          <span className={`${jakartaFont.className} text-white text-[48px] font-bold leading-[100%] tracking-[-0.04em]`}>About me</span>
-        </div>
+          {/* First Row - Always 3 items */}
+          <div className="flex flex-row gap-6">
+            {navItems
+              .filter((_, index) => index !== activeItem) // Remove active item
+              .slice(0, 3) // Take first 3 inactive items
+              .map((item, arrayIndex) => {
+                const originalIndex = navItems.findIndex((_, index) => index !== activeItem && navItems.slice(0, index + 1).filter((_, i) => i !== activeItem).length === arrayIndex + 1);
+                
+                return (
+                  <div 
+                    key={originalIndex}
+                    className="w-[160px] flex flex-row items-center gap-2 cursor-pointer"
+                    onMouseEnter={() => setHoveredItem(originalIndex)}
+                    onMouseLeave={() => setHoveredItem(null)}
+                    onClick={() => handleItemClick(originalIndex)}
+                  >
+                    {renderPixelIcon(
+                      hoveredItem === originalIndex ? pixelConfigs[Object.keys(pixelConfigs)[originalIndex] as keyof typeof pixelConfigs].frames[animationFrame] : pixelConfigs[Object.keys(pixelConfigs)[originalIndex] as keyof typeof pixelConfigs].default,
+                      colors[originalIndex]
+                    )}
+                    <span className={`${jakartaFont.className} text-white text-[20px] font-bold leading-[100%] tracking-[-0.04em] transition-all duration-300 flex-1`}>
+                      {(isScrambling || isInitialLoad) ? scrambleText(item, `inactive-${originalIndex}`) : item}
+                    </span>
+                  </div>
+                );
+              })}
+          </div>
+          
+          {/* Second Row - Remaining items */}
+          <div className="flex flex-row gap-6">
+            {navItems
+              .filter((_, index) => index !== activeItem) // Remove active item
+              .slice(3) // Take remaining inactive items
+              .map((item, arrayIndex) => {
+                const originalIndex = navItems.findIndex((_, index) => index !== activeItem && navItems.slice(0, index + 1).filter((_, i) => i !== activeItem).length === arrayIndex + 4);
+                
+                return (
+                  <div 
+                    key={originalIndex}
+                    className="w-[160px] flex flex-row items-center gap-2 cursor-pointer"
+                    onMouseEnter={() => setHoveredItem(originalIndex)}
+                    onMouseLeave={() => setHoveredItem(null)}
+                    onClick={() => handleItemClick(originalIndex)}
+                  >
+                    {renderPixelIcon(
+                      hoveredItem === originalIndex ? pixelConfigs[Object.keys(pixelConfigs)[originalIndex] as keyof typeof pixelConfigs].frames[animationFrame] : pixelConfigs[Object.keys(pixelConfigs)[originalIndex] as keyof typeof pixelConfigs].default,
+                      colors[originalIndex]
+                    )}
+                    <span className={`${jakartaFont.className} text-white text-[20px] font-bold leading-[100%] tracking-[-0.04em] transition-all duration-300 flex-1`}>
+                      {(isScrambling || isInitialLoad) ? scrambleText(item, `inactive-${originalIndex}`) : item}
+                    </span>
+                  </div>
+                );
+              })}
+          </div>
+        </motion.div>
       </div>
       
       {/* Footer Section */}
       {/* ////////////////////////////////////////////////////////////// */}
-      <div className="mt-auto">
+      <motion.div 
+        className="mt-auto"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 1.6 }}
+      >
         {/* First row - 3 columns with 20px gap */}
         <div className="flex flex-row gap-5 items-end mb-4">
                       {/* First column - Image */}
@@ -269,7 +384,7 @@ export default function LeftColumn() {
         <div className={`${jakartaFont.className} text-gray-400 text-[20px] leading-[120%] tracking-[-0.04em]`}>
           <p>Design is not what we make, design is what we make possible, to truly show what can be.</p>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 } 
