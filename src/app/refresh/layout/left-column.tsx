@@ -5,10 +5,14 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { jakartaFont, fiveFont } from '../../fonts';
 
-export default function LeftColumn() {
+interface LeftColumnProps {
+  activeItem: number;
+  setActiveItem: (index: number) => void;
+}
+
+export default function LeftColumn({ activeItem, setActiveItem }: LeftColumnProps) {
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [animationFrame, setAnimationFrame] = useState(0);
-  const [activeItem, setActiveItem] = useState(0); // 0: Home, 1: Work, 2: Experiments, 3: Writing, 4: About
   const [isScrambling, setIsScrambling] = useState(false);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
