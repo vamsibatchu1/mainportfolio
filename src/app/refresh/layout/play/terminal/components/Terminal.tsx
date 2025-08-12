@@ -58,7 +58,35 @@ export default function Terminal({ initialPosition, onMinimize }: TerminalProps)
   ]);
   
   const [currentInput, setCurrentInput] = useState('');
-  const [position, setPosition] = useState(initialPosition || { x: 100, y: 100 });
+  const [position, setPosition] = useState(initialPosition || { x: 0, y: 0 });
+
+  // Center the terminal on mount
+  useEffect(() => {
+    const centerTerminal = () => {
+      const terminalWidth = window.innerWidth >= 768 ? 480 : 360;
+      const terminalHeight = 500;
+      
+      // Get the right column container
+      const container = dragRef.current?.parentElement;
+      if (container) {
+        const containerRect = container.getBoundingClientRect();
+        
+        // Calculate center position
+        const centerX = (containerRect.width - terminalWidth) / 2;
+        const centerY = (containerRect.height - terminalHeight) / 2;
+        
+        setPosition({
+          x: Math.max(0, centerX),
+          y: Math.max(0, centerY)
+        });
+      }
+    };
+
+    // Center on mount and on window resize
+    centerTerminal();
+    window.addEventListener('resize', centerTerminal);
+    return () => window.removeEventListener('resize', centerTerminal);
+  }, []);
   const [isLoading, setIsLoading] = useState(false);
   const [currentTopic, setCurrentTopic] = useState('');
   const [showChatContent, setShowChatContent] = useState(false);
@@ -80,20 +108,7 @@ export default function Terminal({ initialPosition, onMinimize }: TerminalProps)
     scrollToBottom();
   }, [messages]);
 
-  // Center the terminal on mount if no initial position is provided
-  useEffect(() => {
-    if (!initialPosition) {
-      const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
-      const terminalWidth = viewportWidth >= 768 ? 480 : 360;
-      const terminalHeight = 500;
-      
-      setPosition({
-        x: (viewportWidth - terminalWidth) / 2,
-        y: (viewportHeight - terminalHeight) / 2
-      });
-    }
-  }, [initialPosition]);
+
 
   // Show chat content after terminal container loads
   useEffect(() => {
@@ -186,21 +201,21 @@ export default function Terminal({ initialPosition, onMinimize }: TerminalProps)
       const offsetY = e.clientY - rect.top;
 
       const handleMouseMove = (e: MouseEvent) => {
-        // Get viewport dimensions
-        const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
+        // Get container dimensions (right column)
+        const container = dragRef.current?.parentElement;
+        if (!container) return;
         
-        // Get terminal dimensions (responsive)
+        const containerRect = container.getBoundingClientRect();
         const terminalWidth = window.innerWidth >= 768 ? 480 : 360;
         const terminalHeight = 500; // Fixed height
         
-        // Calculate boundaries
-        const maxX = viewportWidth - terminalWidth;
-        const maxY = viewportHeight - terminalHeight;
+        // Calculate boundaries within the right column
+        const maxX = containerRect.width - terminalWidth;
+        const maxY = containerRect.height - terminalHeight;
         
-        // Constrain position within viewport
-        const constrainedX = Math.max(0, Math.min(e.clientX - offsetX, maxX));
-        const constrainedY = Math.max(0, Math.min(e.clientY - offsetY, maxY));
+        // Constrain position within the right column
+        const constrainedX = Math.max(0, Math.min(e.clientX - containerRect.left - offsetX, maxX));
+        const constrainedY = Math.max(0, Math.min(e.clientY - containerRect.top - offsetY, maxY));
         
         setPosition({
           x: constrainedX,
@@ -218,10 +233,12 @@ export default function Terminal({ initialPosition, onMinimize }: TerminalProps)
     }
   };
 
+
+
   return (
     <motion.div
       ref={dragRef}
-      className="fixed bg-[#f6f6f6] rounded-lg shadow-2xl border border-gray-300 select-none w-[360px] md:w-[480px]"
+      className="absolute bg-[#f6f6f6] rounded-lg shadow-2xl border border-gray-300 select-none w-[360px] md:w-[480px]"
       style={{
         left: position.x,
         top: position.y,

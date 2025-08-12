@@ -364,7 +364,7 @@ export default function LeftColumn({ activeItem, setActiveItem }: LeftColumnProp
               <Image
                 src="/images/refresh-images/v-b.svg"
                 alt="Profile Image"
-                width={103}
+                width={80}
                 height={40}
                 className="w-full h-full object-cover"
               />
@@ -375,18 +375,13 @@ export default function LeftColumn({ activeItem, setActiveItem }: LeftColumnProp
           
           {/* Third column - Text block with Instrument Serif */}
           <div className="flex-1">
-            <div className={`${fiveFont.className} text-white text-[32px] leading-[100%] tracking-[0%]`}>
+            <div className={`${fiveFont.className} text-white text-[24px] leading-[100%] tracking-[0%]`}>
               product designer &
               creative technologist
               crafting possibilities with
               craft & code.
             </div>
           </div>
-        </div>
-        
-        {/* Second row - Text with Plus Jakarta Sans */}
-        <div className={`${jakartaFont.className} text-gray-400 text-[20px] leading-[120%] tracking-[-0.04em]`}>
-          <p>Design is not what we make, design is what we make possible, to truly show what can be.</p>
         </div>
       </motion.div>
     </div>

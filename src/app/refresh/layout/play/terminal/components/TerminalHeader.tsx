@@ -6,7 +6,7 @@ import { useOnClickOutside } from 'usehooks-ts';
 import SystemMonitor from './system-monitor';
 
 interface TerminalHeaderProps {
-  onMouseDown: (e: React.MouseEvent) => void;
+  onMouseDown?: (e: React.MouseEvent) => void;
   onRefresh: () => void;
   onMinimize: () => void;
   currentTopic?: string;

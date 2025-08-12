@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Terminal from './components/Terminal';
 import { FlickeringGrid } from './components/flickerbg';
@@ -116,8 +116,6 @@ function AppleStyleDock({ isTerminalMinimized, onTerminalRestore }: { isTerminal
 
 export default function TerminalTestPage() {
   const [isTerminalMinimized, setIsTerminalMinimized] = useState(false);
-  const [isFirstLoad, setIsFirstLoad] = useState(true);
-  const [dockItemPosition, setDockItemPosition] = useState({ x: 0, y: 0 });
 
   const handleTerminalMinimize = () => {
     setIsTerminalMinimized(true);
@@ -125,33 +123,10 @@ export default function TerminalTestPage() {
 
   const handleTerminalRestore = () => {
     setIsTerminalMinimized(false);
-    setIsFirstLoad(false);
   };
-
-  // Calculate the position of the Terminal dock item
-  const calculateDockItemPosition = () => {
-    // Terminal is the 6th item (index 5) in the dock
-    // Dock is centered, so we calculate the position
-    const dockWidth = 7 * 64 + 6 * 16; // 7 items * 64px + 6 gaps * 16px
-    const itemWidth = 64;
-    const gap = 16;
-    const terminalIndex = 5; // Terminal is at index 5
-    
-    // Calculate position relative to dock center
-    const terminalX = (terminalIndex * (itemWidth + gap)) - (dockWidth / 2) + (itemWidth / 2);
-    const terminalY = window.innerHeight - 100; // Dock is at bottom
-    
-    setDockItemPosition({ x: terminalX, y: terminalY });
-  };
-
-  useEffect(() => {
-    calculateDockItemPosition();
-    window.addEventListener('resize', calculateDockItemPosition);
-    return () => window.removeEventListener('resize', calculateDockItemPosition);
-  }, []);
 
   return (
-    <div className="h-screen bg-gray-100 p-8 relative overflow-hidden">
+    <div className="w-full h-full bg-gray-100 relative overflow-hidden">
       <FlickeringGrid 
         className="absolute inset-0"
         color="rgb(0, 0, 0)"
@@ -161,33 +136,24 @@ export default function TerminalTestPage() {
               <AnimatePresence>
           {!isTerminalMinimized && (
             <motion.div
-                          initial={isFirstLoad ? { 
-              opacity: 0, 
-              x: 0
-            } : { 
-              opacity: 0, 
-              scale: 0.3,
-              y: dockItemPosition.y,
-              x: dockItemPosition.x
-            }}
+              initial={{ 
+                opacity: 0, 
+                scale: 0.9
+              }}
               animate={{ 
                 opacity: 1, 
-                scale: 1,
-                y: 0,
-                x: 0
+                scale: 1
               }}
               exit={{ 
                 opacity: 0, 
-                scale: 0.1,
-                y: dockItemPosition.y,
-                x: dockItemPosition.x
+                scale: 0.9
               }}
               transition={{ 
                 duration: 0.6,
                 ease: "easeOut"
               }}
               style={{
-                position: 'fixed',
+                position: 'absolute',
                 top: 0,
                 left: 0,
                 right: 0,
@@ -200,13 +166,7 @@ export default function TerminalTestPage() {
           )}
         </AnimatePresence>
       
-      <div className="absolute top-[-4px] right-4">
-        <img 
-          src="/images/vamsi.svg"
-          alt="Vamsi"
-          className="w-[120px] h-auto"
-        />
-      </div>
+
       
       <AppleStyleDock isTerminalMinimized={isTerminalMinimized} onTerminalRestore={handleTerminalRestore} />
     </div>

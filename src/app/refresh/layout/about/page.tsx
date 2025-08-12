@@ -2,176 +2,84 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { jakartaFont, fiveFont } from '../../../fonts';
 
-export default function AboutPage() {
-  const skills = [
-    { category: "Design", items: ["UI/UX Design", "Design Systems", "Prototyping", "User Research", "Visual Design"] },
-    { category: "Development", items: ["React", "TypeScript", "Next.js", "Framer Motion", "Tailwind CSS"] },
-    { category: "Tools", items: ["Figma", "Sketch", "Adobe Creative Suite", "Git", "VS Code"] },
-    { category: "Other", items: ["Product Strategy", "Design Thinking", "Agile Methodologies", "User Testing", "Accessibility"] }
-  ];
-
-  const experience = [
-    {
-      role: "Senior Product Designer",
-      company: "TechCorp",
-      period: "2022 - Present",
-      description: "Leading design initiatives for enterprise software products, focusing on user experience and design systems."
-    },
-    {
-      role: "UX Designer",
-      company: "StartupXYZ",
-      period: "2020 - 2022",
-      description: "Designed user experiences for mobile applications and web platforms, working closely with development teams."
-    },
-    {
-      role: "Design Intern",
-      company: "Creative Agency",
-      period: "2019 - 2020",
-      description: "Assisted in creating visual designs and user interfaces for various client projects."
-    }
-  ];
+// Component for staggered word animation
+const StaggeredText = ({ text, className, delay = 0, staggerDelay = 0.1 }: { 
+  text: string; 
+  className: string; 
+  delay?: number;
+  staggerDelay?: number;
+}) => {
+  const words = text.split(' ');
 
   return (
+    <div className={className}>
+      {words.map((word, index) => (
+        <motion.span
+          key={index}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.6,
+            delay: delay + (index * staggerDelay),
+            ease: "easeOut"
+          }}
+          className="inline-block mr-2"
+        >
+          {word}
+        </motion.span>
+      ))}
+    </div>
+  );
+};
+
+export default function AboutPage() {
+  return (
     <motion.div 
-      className="w-full flex flex-col"
+      className="w-full h-full flex flex-col justify-center p-10"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
     >
-      {/* Header */}
-      <motion.div 
-        className="mb-12"
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-      >
-        <h1 className={`${fiveFont.className} text-black text-[48px] leading-[100%] tracking-[-0.02em] mb-4`}>
-          About Me
-        </h1>
-        <p className={`${jakartaFont.className} text-gray-600 text-[20px] leading-[140%] max-w-[600px]`}>
-          I'm passionate about creating meaningful digital experiences that solve real problems and delight users.
-        </p>
-      </motion.div>
-      
-      {/* Bio Section */}
-      <motion.div 
-        className="mb-12"
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.4 }}
-      >
-        <div className="bg-gray-50 rounded-lg p-8">
-          <h2 className={`${fiveFont.className} text-black text-[32px] leading-[120%] mb-6`}>
-            My Story
-          </h2>
-          <div className={`${jakartaFont.className} text-gray-700 text-[18px] leading-[160%] space-y-4`}>
-            <p>
-              I started my journey in design with a curiosity about how things work and a desire to make them work better. 
-              What began as a fascination with visual aesthetics evolved into a deep appreciation for the intersection of 
-              design, technology, and human behavior.
-            </p>
-            <p>
-              Today, I work as a product designer and creative technologist, helping companies build digital products 
-              that not only look great but also solve real problems for real people. I believe that the best designs 
-              are invisible—they feel so natural that users don't even notice them.
-            </p>
-            <p>
-              When I'm not designing, you can find me experimenting with new technologies, writing about design, 
-              or exploring the latest trends in creative coding and generative art.
-            </p>
-          </div>
-        </div>
-      </motion.div>
-      
-      {/* Experience Section */}
-      <motion.div 
-        className="mb-12"
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.6 }}
-      >
-        <h2 className={`${fiveFont.className} text-black text-[32px] leading-[120%] mb-6`}>
-          Experience
-        </h2>
-        <div className="space-y-6">
-          {experience.map((job, index) => (
-            <div key={index} className="border-l-4 border-black pl-6">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className={`${fiveFont.className} text-black text-[24px] leading-[120%]`}>
-                  {job.role}
-                </h3>
-                <span className={`${jakartaFont.className} text-gray-500 text-[16px]`}>
-                  {job.period}
-                </span>
-              </div>
-              <p className={`${jakartaFont.className} text-blue-600 text-[18px] font-medium mb-2`}>
-                {job.company}
-              </p>
-              <p className={`${jakartaFont.className} text-gray-600 text-[16px] leading-[140%]`}>
-                {job.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </motion.div>
-      
-      {/* Skills Section */}
-      <motion.div 
-        className="mb-12"
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.8 }}
-      >
-        <h2 className={`${fiveFont.className} text-black text-[32px] leading-[120%] mb-6`}>
-          Skills & Expertise
-        </h2>
-        <div className="grid grid-cols-2 gap-8">
-          {skills.map((skillGroup, index) => (
-            <div key={index} className="space-y-4">
-              <h3 className={`${fiveFont.className} text-black text-[20px] leading-[120%]`}>
-                {skillGroup.category}
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {skillGroup.items.map((skill, skillIndex) => (
-                  <span 
-                    key={skillIndex}
-                    className={`${jakartaFont.className} bg-gray-100 text-gray-700 px-3 py-1 text-[14px] rounded-full`}
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </motion.div>
-      
-      {/* Contact Section */}
-      <motion.div 
-        className="mt-12 pt-8 border-t border-gray-200"
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1.0 }}
-      >
-        <div className="text-center">
-          <h3 className={`${fiveFont.className} text-black text-[24px] leading-[120%] mb-4`}>
-            Let's Work Together
-          </h3>
-          <p className={`${jakartaFont.className} text-gray-600 text-[16px] mb-6`}>
-            I'm always interested in new opportunities and exciting projects.
-          </p>
-          <div className="flex gap-4 justify-center">
-            <button className={`${jakartaFont.className} bg-black text-white px-8 py-4 text-[18px] font-semibold rounded-lg hover:bg-gray-800 transition-colors`}>
-              Get in Touch
-            </button>
-            <button className={`${jakartaFont.className} border-2 border-black text-black px-8 py-4 text-[18px] font-semibold rounded-lg hover:bg-black hover:text-white transition-colors`}>
-              Download Resume
-            </button>
-          </div>
-        </div>
-      </motion.div>
+      {/* Section 1: Main Heading */}
+      <div className="text-center mx-40 mb-16">
+        <StaggeredText 
+          text="Design to me is fundamentally about providing clarity in complexity."
+          className={`${fiveFont.className} text-black text-[64px] leading-[100%] tracking-[-0.02em] mb-4 italic`}
+          delay={0.2}
+          staggerDelay={0.08}
+        />
+        <motion.p 
+          className={`${fiveFont.className} text-black text-[32px] leading-[120%] tracking-[-0.01em]`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.5, ease: "easeOut" }}
+        >
+          It&apos;s about seeing beyond immediate feature requests to uncover the deeper patterns and opportunities that can transform how people work and live.
+        </motion.p>
+      </div>
+
+      {/* Section 2: Text */}
+      <div className="text-center mx-40 flex flex-col items-center">    
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 1.8 }}
+        >
+          <Image src="/images/refresh-images/about1.png" alt="About Me" width={200} height={158} className="mb-4" />
+        </motion.div>
+        <motion.p 
+          className={`${jakartaFont.className} text-black text-[20px] leading-[140%] max-w-[600px] mx-auto text-left`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 2.0, ease: "easeOut" }}
+        >
+          I am an atlanta based product designer currently leading AI experiences at Rocket Mortgage. I am at a unique interesection of craft & code.
+        </motion.p>
+      </div>
+
     </motion.div>
   );
 }

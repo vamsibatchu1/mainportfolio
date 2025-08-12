@@ -27,7 +27,7 @@ export default function LayoutPage() {
         
         {/* Right Column - Scrollable, white background */}
         <motion.div 
-          className="flex-1 h-screen bg-white p-[40px] overflow-y-auto"
+          className="flex-1 h-screen bg-white overflow-y-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
