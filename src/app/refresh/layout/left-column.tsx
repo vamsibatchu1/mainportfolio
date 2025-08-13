@@ -375,7 +375,7 @@ export default function LeftColumn({ activeItem, setActiveItem }: LeftColumnProp
           
           {/* Third column - Text block with Instrument Serif */}
           <div className="flex-1">
-            <div className={`${fiveFont.className} text-white text-[24px] leading-[100%] tracking-[0%]`}>
+            <div className={`${fiveFont.className} text-white text-[18px] leading-[100%] tracking-[0%]`}>
               product designer &
               creative technologist
               crafting possibilities with
