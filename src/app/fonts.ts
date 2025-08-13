@@ -1,5 +1,5 @@
 import localFont from 'next/font/local';
-import {Poppins, IBM_Plex_Mono, Instrument_Serif, Teko, Kode_Mono, Lora, Inter, EB_Garamond, Plus_Jakarta_Sans, Handjet } from 'next/font/google';
+import {Poppins, IBM_Plex_Mono, Instrument_Serif, Teko, Kode_Mono, Lora, Inter, EB_Garamond, Plus_Jakarta_Sans, Handjet, Lato } from 'next/font/google';
 
 // Primary Font: W95FA (Windows 95 Font)
 export const priFont = localFont({
@@ -112,3 +112,11 @@ export const sfProFont = {
     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif',
   },
 };
+
+// Lato Font from Google - Slack's primary font
+export const latoFont = Lato({
+  subsets: ['latin'],
+  weight: ['100', '300', '400', '700', '900'], // Including Black (900) for Slack's design
+  variable: '--font-lato',
+  display: 'swap',
+});

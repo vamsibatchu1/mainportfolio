@@ -39,6 +39,7 @@ export default function AboutPage() {
   return (
     <motion.div 
       className="w-full h-full flex flex-col justify-center p-10"
+      style={{ backgroundColor: '#F3F3EB' }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
