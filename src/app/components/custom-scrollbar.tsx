@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Hand } from 'lucide-react';
-import { fourFont } from '../../fonts';
+import { fourFont } from '../fonts';
 
 interface CustomScrollbarProps {
   onScrollChange: (progress: number) => void;

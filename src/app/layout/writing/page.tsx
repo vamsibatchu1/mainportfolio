@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { jakartaFont } from '../../../fonts';
+import { jakartaFont } from '../../fonts';
 import { PenTool, StickyNote, Type, Sparkles, Plus } from 'lucide-react';
 
 interface StickyNote {

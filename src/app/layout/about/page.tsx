@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { jakartaFont, fiveFont } from '../../../fonts';
+import { jakartaFont, fiveFont } from '../../fonts';
 import Slack from './slack/page';
 import { Instrument_Serif } from 'next/font/google';
 

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { jakartaFont, fiveFont } from '../../../fonts';
+import { jakartaFont, fiveFont } from '../../fonts';
 
 export default function PlayPage() {
   const experiments = [

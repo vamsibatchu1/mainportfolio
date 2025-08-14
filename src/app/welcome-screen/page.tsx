@@ -80,7 +80,7 @@ export default function WelcomeScreen() {
       
       // After elements start disappearing, show loading screen
       setTimeout(() => {
-        router.push('/refresh/loading');
+        router.push('/loading');
       }, 600); // Wait 600ms for exit animation to start
     }
   };

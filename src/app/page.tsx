@@ -114,7 +114,7 @@ export default function WelcomeScreen() {
             if (nextIndex >= loadingMessages.length) {
               clearInterval(messageInterval);
               setTimeout(() => {
-                router.push('/refresh/layout');
+                router.push('/layout');
               }, 1000); // Wait 1 second after showing the final message
               return prev; // Keep showing the last message
             }

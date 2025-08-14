@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { latoFont } from '../../../../fonts';
+import { latoFont } from '../../../fonts';
 import { Plus, Video, Mic, Smile, AtSign, Send, ChevronDown, Pin } from 'lucide-react';
 
 export default function Slack() {

@@ -64,7 +64,7 @@ export default function LoadingScreen() {
             setIsExiting(true);
             // Redirect after fade-out animation completes
             setTimeout(() => {
-              router.push('/refresh/layout');
+              router.push('/layout');
             }, 800); // Wait for fade-out animation
           }, 1000); // Wait 1 second after showing the final message
           return prev; // Keep showing the last message
