@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { DualCard } from '@/app/design-system/dualcard/dualcard';
+// import { DualCard } from '@/app/design-system/dualcard/dualcard';
 
 export default function TestPage() {
   return (
@@ -12,22 +12,25 @@ export default function TestPage() {
         <div className="space-y-12">
           <div>
             <h2 className="text-2xl font-semibold mb-4">Card XS</h2>
-            <DualCard variant="xs" />
+            {/* <DualCard variant="xs" /> */}
+            <div className="p-4 bg-gray-800 rounded">DualCard component not available</div>
           </div>
           
           <div>
             <h2 className="text-2xl font-semibold mb-4">Card SM</h2>
-            <DualCard variant="sm" />
+            {/* <DualCard variant="sm" /> */}
+            <div className="p-4 bg-gray-800 rounded">DualCard component not available</div>
           </div>
           
           <div>
             <h2 className="text-2xl font-semibold mb-4">Card MD</h2>
-            <DualCard variant="md" />
+            {/* <DualCard variant="md" /> */}
+            <div className="p-4 bg-gray-800 rounded">DualCard component not available</div>
           </div>
           
           <div>
             <h2 className="text-2xl font-semibold mb-4">Custom Card</h2>
-            <DualCard 
+            {/* <DualCard 
               variant="sm"
               config={{
                 cardWidth: '720px',
@@ -35,7 +38,8 @@ export default function TestPage() {
                 secondaryBgColor: '#FF531A',
                 titleFontSize: '56px'
               }}
-            />
+            /> */}
+            <div className="p-4 bg-gray-800 rounded">DualCard component not available</div>
           </div>
         </div>
       </div>

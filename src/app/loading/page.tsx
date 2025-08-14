@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { jakartaFont } from '../../fonts';
+import { jakartaFont } from '../fonts';
 import { useRouter } from 'next/navigation';
 import { 
   Package, 

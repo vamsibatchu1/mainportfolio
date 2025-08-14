@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { CardXs } from '@/app/design-system/dualcard/dualcard';
+// import { CardXs } from '@/app/design-system/dualcard/dualcard';
 import { motion, AnimatePresence } from 'framer-motion';
 import { priFont } from '@/lib/config/fonts';
 
@@ -253,7 +253,7 @@ export function IntroAnimation() {
         transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
         className="w-auto"
       >
-        <CardXs 
+        {/* <CardXs 
           primaryContent={
              // Container to ensure AnimatePresence has consistent size and text is centered
              <div style={{
@@ -295,7 +295,10 @@ export function IntroAnimation() {
               />
             </div>
           }
-        />
+        /> */}
+        <div className="p-8 bg-gray-800 rounded text-white">
+          CardXs component not available
+        </div>
       </motion.div>
     </motion.div>
   );
