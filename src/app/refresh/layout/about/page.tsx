@@ -190,7 +190,23 @@ export default function AboutPage() {
       </div>
 
 
-      {/* Section 4: Image Carousel */}
+             {/* Section 4: Values */}
+       <div className="flex justify-center items-center mt-16 w-full">
+         <motion.div
+           initial={{ opacity: 0, y: 30 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 0.8, delay: 2.8, ease: "easeOut" }}
+           className="flex justify-center"
+         >
+           <Image 
+             src="/images/refresh-images/aboutvalues.svg" 
+             alt="About Values" 
+             width={800} 
+             height={400} 
+             className="w-[800px] h-auto"
+           />
+         </motion.div>
+       </div>    
 
 
 
