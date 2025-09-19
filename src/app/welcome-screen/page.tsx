@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { fiveFont, jakartaFont, fourFont } from '../fonts';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Pause, RotateCcw, Play } from 'lucide-react';
+import { Pause, RotateCcw, Play, ArrowRight, Package, Layout, FileX, Settings, Briefcase, Zap, CheckCircle } from 'lucide-react';
 
 export default function WelcomeScreen() {
   const router = useRouter();
@@ -14,6 +14,8 @@ export default function WelcomeScreen() {
   const [isExiting, setIsExiting] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [isLoadingPhase, setIsLoadingPhase] = useState(false);
+  const [loadingIndex, setLoadingIndex] = useState(0);
   
   const symbols = ['/images/refresh-images/symbol1.svg', 
     '/images/refresh-images/symbol2.svg', 
@@ -22,6 +24,26 @@ export default function WelcomeScreen() {
     '/images/refresh-images/symbol3.svg', 
     '/images/refresh-images/symbol6.svg',
     '/images/refresh-images/symbol7.svg'];
+
+  const loadingMessages = [
+    "Loading components...",
+    "Adjusting layouts...",
+    "Cleaning up files...",
+    "Initializing systems...",
+    "Preparing workspace...",
+    "Optimizing performance...",
+    "Finalizing setup..."
+  ];
+
+  const loadingIcons = [
+    Package,
+    Layout,
+    FileX,
+    Settings,
+    Briefcase,
+    Zap,
+    CheckCircle
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -74,21 +96,45 @@ export default function WelcomeScreen() {
     }, 50);
   };
 
-  const handleKeyPress = (event: KeyboardEvent) => {
-    if (event.key === 'Enter' && !isExiting) {
-      setIsExiting(true);
-      
-      // After elements start disappearing, show loading screen
-      setTimeout(() => {
-        router.push('/loading');
-      }, 600); // Wait 600ms for exit animation to start
+  const handleKeyPress = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'Enter' && !isExiting && !isLoadingPhase) {
+      setIsLoadingPhase(true);
     }
-  };
+  }, [isExiting, isLoadingPhase]);
+
+  // Loading sequence effect
+  useEffect(() => {
+    if (!isLoadingPhase) return;
+
+    const loadingInterval = setInterval(() => {
+      setLoadingIndex((prev) => {
+        const nextIndex = prev + 1;
+        
+        // If we've shown all loading messages, start exit animation
+        if (nextIndex >= loadingMessages.length) {
+          setTimeout(() => {
+            setIsExiting(true);
+            // Navigate to layout page after fade-out animation completes
+            setTimeout(() => {
+              router.push('/layout');
+            }, 800); // Wait for fade-out animation
+          }, 1000); // Wait 1 second after showing the final message
+          return prev; // Keep showing the last message
+        }
+        
+        return nextIndex;
+      });
+    }, 750); // Change message every 750ms
+
+    return () => {
+      clearInterval(loadingInterval);
+    };
+  }, [isLoadingPhase, router, loadingMessages.length]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [isExiting]);
+  }, [handleKeyPress]);
 
   // Animation variants
   const containerVariants = {
@@ -164,30 +210,16 @@ export default function WelcomeScreen() {
     }
   };
 
-  const scrollbarVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { delay: 2.4, duration: 0.8, ease: "easeOut" }
-    },
-    exit: {
-      opacity: 0,
-      y: -30,
-      transition: {
-        duration: 0.6,
-        ease: "easeInOut"
-      }
-    }
-  };
 
 
 
 
 
   return (
-    <div className="min-h-screen bg-[#000000] flex items-center justify-center relative">
+    <div className="min-h-screen bg-[#000000] flex flex-col items-center justify-center relative">
+      {/* Main content that fades during loading */}
       <AnimatePresence mode="wait">
-        {!isExiting && (
+        {!isExiting && !isLoadingPhase && (
           <motion.div 
             className="w-[800px] flex flex-col gap-4"
             variants={containerVariants}
@@ -312,36 +344,69 @@ export default function WelcomeScreen() {
                 </motion.div>
               </div>
             </motion.div>
-            
-                        {/* Third row - Instructions and control icons */}
-            <motion.div 
-              className="flex justify-between items-center"
-              variants={scrollbarVariants}
-            >
-              {/* Instructions */}
-              <div className={`${fourFont.className} text-white/50 text-sm`}>
-                Press Enter to continue...
-              </div>
-              
-              {/* Control Icons */}
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={handlePause}
-                  className="text-white/60 hover:text-white/80 transition-colors"
-                >
-                  {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
-                </button>
-                <button
-                  onClick={handleRestart}
-                  className="text-white/60 hover:text-white/80 transition-colors"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                </button>
-              </div>
-            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
+      
+      {/* Instructions section - stays visible during loading */}
+      <div className="pt-8 bottom-8 left-8 right-8">
+        <div className="w-[800px] mx-auto flex justify-between items-center">
+           {/* Instructions */}
+           <motion.div 
+             className={`${fourFont.className} text-white/50 text-sm flex items-center gap-2`}
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             transition={{ delay: 2.4, duration: 0.8, ease: "easeOut" }}
+           >
+             <motion.div
+               className="flex items-center gap-2"
+               key={isLoadingPhase ? loadingIndex : 'initial'}
+               initial={{ opacity: 0, y: 10 }}
+               animate={{ opacity: 1, y: 0 }}
+               exit={{ opacity: 0, y: -10 }}
+               transition={{ duration: 0.3 }}
+             >
+               {isLoadingPhase ? (
+                 <>
+                   {React.createElement(loadingIcons[loadingIndex], {
+                     size: 16,
+                     className: "text-white/50"
+                   })}
+                   {loadingMessages[loadingIndex]}
+                 </>
+               ) : (
+                 <>
+                   <ArrowRight className="w-4 h-4" />
+                   Press Enter to continue...
+                 </>
+               )}
+             </motion.div>
+           </motion.div>
+          
+          {/* Control Icons - Hide during loading phase */}
+          {!isLoadingPhase && (
+            <motion.div 
+              className="flex items-center gap-2"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 2.4, duration: 0.8, ease: "easeOut" }}
+            >
+              <button
+                onClick={handlePause}
+                className="text-white/60 hover:text-white/80 transition-colors"
+              >
+                {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
+              </button>
+              <button
+                onClick={handleRestart}
+                className="text-white/60 hover:text-white/80 transition-colors"
+              >
+                <RotateCcw className="w-4 h-4" />
+              </button>
+            </motion.div>
+          )}
+        </div>
+      </div>
     </div>
   );
 } 
