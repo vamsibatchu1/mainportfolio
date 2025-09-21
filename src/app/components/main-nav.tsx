@@ -63,84 +63,86 @@ export function MainNav({ className = "" }: MainNavProps) {
   }, []);
 
   return (
-    <div className={`w-[1440px] mx-auto box-border content-stretch flex items-center justify-between py-[16px] relative size-full border-b border-neutral-200 ${className}`}>
-      {/* Left side - Navigation items */}
-      <div className="content-stretch flex gap-[24px] items-center justify-start relative shrink-0">
-        <div className="content-center flex flex-wrap gap-[20px] items-center justify-start relative shrink-0">
-          {navItems.map((item) => {
-            const active = isActive(item.path);
-            const isScrambling = scramblingItem === item.title;
-            
-            return (
-              <div key={item.path} className="content-stretch flex gap-[10px] items-center justify-center relative shrink-0">
-                <button
-                  onClick={() => handleNavClick(item.path, item.title)}
-                  className={`${interFont.variable} font-inter font-normal leading-[20px] relative shrink-0 text-[18px] text-nowrap transition-colors duration-600 ${
-                    active ? 'text-neutral-990' : 'text-neutral-500 hover:text-neutral-800'
-                  }`}
-                >
-                  {isScrambling ? (
-                      <TextScramble
-                        key={scrambleKey}
-                        trigger={true}
-                        duration={1.5}
-                        speed={0.04}
-                      className={`${interFont.variable} font-inter font-normal leading-[20px] text-[18px] text-nowrap ${
-                        active ? 'text-neutral-950' : 'text-neutral-600'
-                      }`}
-                      onScrambleComplete={() => setScramblingItem(null)}
-                    >
-                      {item.title}
-                    </TextScramble>
-                  ) : (
-                    <>
-                      {item.title}
-                      {active && <span className="animate-[blink_1s_ease-in-out_infinite]">|</span>}
-                    </>
-                  )}
-                </button>
-              </div>
-            );
-          })}
+    <>
+      <div className={`w-[1440px] mx-auto box-border content-stretch flex items-center justify-between py-[16px] relative size-full border-b border-neutral-200 ${className}`}>
+        {/* Left side - Navigation items */}
+        <div className="content-stretch flex gap-[24px] items-center justify-start relative shrink-0">
+          <div className="content-center flex flex-wrap gap-[20px] items-center justify-start relative shrink-0">
+            {navItems.map((item) => {
+              const active = isActive(item.path);
+              const isScrambling = scramblingItem === item.title;
+              
+              return (
+                <div key={item.path} className="content-stretch flex gap-[10px] items-center justify-center relative shrink-0">
+                  <button
+                    onClick={() => handleNavClick(item.path, item.title)}
+                    className={`${interFont.variable} font-inter font-normal leading-[20px] relative shrink-0 text-[18px] text-nowrap transition-colors duration-600 ${
+                      active ? 'text-neutral-990' : 'text-neutral-500 hover:text-neutral-800'
+                    }`}
+                  >
+                    {isScrambling ? (
+                        <TextScramble
+                          key={scrambleKey}
+                          trigger={true}
+                          duration={1.5}
+                          speed={0.04}
+                        className={`${interFont.variable} font-inter font-normal leading-[20px] text-[18px] text-nowrap ${
+                          active ? 'text-neutral-950' : 'text-neutral-600'
+                        }`}
+                        onScrambleComplete={() => setScramblingItem(null)}
+                      >
+                        {item.title}
+                      </TextScramble>
+                    ) : (
+                      <>
+                        {item.title}
+                        {active && <span className="animate-[blink_1s_ease-in-out_infinite]">|</span>}
+                      </>
+                    )}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Right side - Action buttons */}
+        <div className="content-stretch flex gap-[8px] items-center justify-start relative shrink-0">
+          {/* GitHub Button */}
+          <Button variant="ghost" size="default" className="h-[36px] px-[16px] py-[8px]">
+            <Github className="w-4 h-4 mr-2" />
+            <span className={`${interFont.variable} font-inter font-medium text-[14px] leading-[20px]`}>
+              GitHub
+            </span>
+          </Button>
+
+          {/* Search Button */}
+          <button
+            className={`${interFont.variable} font-inter inline-flex h-9 w-fit rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20`}
+            onClick={() => setOpen(true)}
+          >
+            <span className="flex grow items-center">
+              <Search
+                className="-ms-1 me-3 text-muted-foreground/80"
+                size={16}
+                strokeWidth={2}
+                aria-hidden="true"
+              />
+              <span className={`${interFont.variable} font-inter font-normal text-muted-foreground/70`}>Search</span>
+            </span>
+            <kbd className={`${interFont.variable} font-inter -me-1 ms-12 inline-flex h-5 max-h-full items-center rounded border border-border bg-background px-1 text-[0.625rem] font-medium text-muted-foreground/70`}>
+              ⌘K
+            </kbd>
+          </button>
+
+          {/* Brightness Toggle Button */}
+          <Button variant="outline" size="icon" className="w-[36px] h-[36px] bg-neutral-100 border-neutral-200 shadow-sm">
+            <Sun className="w-4 h-4" />
+          </Button>
         </div>
       </div>
 
-      {/* Right side - Action buttons */}
-      <div className="content-stretch flex gap-[8px] items-center justify-start relative shrink-0">
-        {/* GitHub Button */}
-        <Button variant="ghost" size="default" className="h-[36px] px-[16px] py-[8px]">
-          <Github className="w-4 h-4 mr-2" />
-          <span className={`${interFont.variable} font-inter font-medium text-[14px] leading-[20px]`}>
-            GitHub
-          </span>
-        </Button>
-
-        {/* Search Button */}
-        <button
-          className={`${interFont.variable} font-inter inline-flex h-9 w-fit rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20`}
-          onClick={() => setOpen(true)}
-        >
-          <span className="flex grow items-center">
-            <Search
-              className="-ms-1 me-3 text-muted-foreground/80"
-              size={16}
-              strokeWidth={2}
-              aria-hidden="true"
-            />
-            <span className={`${interFont.variable} font-inter font-normal text-muted-foreground/70`}>Search</span>
-          </span>
-          <kbd className={`${interFont.variable} font-inter -me-1 ms-12 inline-flex h-5 max-h-full items-center rounded border border-border bg-background px-1 text-[0.625rem] font-medium text-muted-foreground/70`}>
-            ⌘K
-          </kbd>
-        </button>
-
-        {/* Brightness Toggle Button */}
-        <Button variant="outline" size="icon" className="w-[36px] h-[36px] bg-neutral-100 border-neutral-200 shadow-sm">
-          <Sun className="w-4 h-4" />
-        </Button>
-      </div>
-
-      {/* Command Dialog */}
+      {/* Command Dialog - Moved outside the main container */}
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="Type a command or search..." className={`${interFont.variable} font-inter`} />
         <CommandList className={`${interFont.variable} font-inter`}>
@@ -184,6 +186,6 @@ export function MainNav({ className = "" }: MainNavProps) {
           </CommandGroup>
         </CommandList>
       </CommandDialog>
-    </div>
+    </>
   );
 }
