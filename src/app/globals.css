@@ -237,6 +237,15 @@ body {
   animation: scroll-left 15s linear infinite;
 }
 
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
 /* Custom class for orange background */
 .orange-bg {
   background-color: #FF531A !important;
@@ -282,4 +291,19 @@ body {
 
 .overflow-x-auto::-webkit-scrollbar {
   display: none; /* WebKit */
+}
+
+/* Command Dialog Hover States */
+[cmdk-item] {
+  transition: background-color 0.15s ease-in-out;
+}
+
+[cmdk-item]:hover {
+  background-color: hsl(var(--accent)) !important;
+  color: hsl(var(--accent-foreground)) !important;
+}
+
+[cmdk-item][data-selected="true"] {
+  background-color: hsl(var(--accent)) !important;
+  color: hsl(var(--accent-foreground)) !important;
 }

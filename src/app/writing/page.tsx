@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { jakartaFont } from '../../fonts';
+import { jakartaFont } from '../fonts';
+import MainLayout from '../layout/MainLayout';
 import { PenTool, StickyNote, Type, Sparkles, Plus } from 'lucide-react';
 
 interface StickyNote {
@@ -191,20 +192,21 @@ export default function WritingPage() {
   };
 
   return (
-    <motion.div 
-      className={`w-full h-screen relative overflow-hidden ${isPlacingSticky ? 'cursor-crosshair' : 'cursor-default'}`}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-      style={{
-        backgroundImage: `
-          radial-gradient(circle, #e5e7eb 1px, transparent 1px)
-        `,
-        backgroundSize: '20px 20px',
-        backgroundPosition: '0 0, 10px 10px'
-      }}
-      onClick={handleCanvasClick}
-    >
+    <MainLayout>
+      <motion.div 
+        className={`w-full h-screen relative overflow-hidden ${isPlacingSticky ? 'cursor-crosshair' : 'cursor-default'}`}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        style={{
+          backgroundImage: `
+            radial-gradient(circle, #e5e7eb 1px, transparent 1px)
+          `,
+          backgroundSize: '20px 20px',
+          backgroundPosition: '0 0, 10px 10px'
+        }}
+        onClick={handleCanvasClick}
+      >
       {/* FigJam-style dotted canvas background */}
       
       {/* Sticky Notes */}
@@ -354,6 +356,7 @@ export default function WritingPage() {
           </div>
         </div>
       </div>
-    </motion.div>
+      </motion.div>
+    </MainLayout>
   );
 }

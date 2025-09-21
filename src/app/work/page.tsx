@@ -2,16 +2,18 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { jakartaFont, fiveFont } from '../../fonts';
+import { jakartaFont, fiveFont } from '../fonts';
+import MainLayout from '../layout/MainLayout';
 
 export default function WorkPage() {
   return (
-    <motion.div 
-      className="w-full flex flex-col p-10 py-20"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-    >
+    <MainLayout>
+      <motion.div 
+        className="w-full flex flex-col p-10 py-20"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+      >
      
 
     {/* Section 1: Case Study 1 */}
@@ -82,7 +84,7 @@ export default function WorkPage() {
            </div>
          </div>
        </div>     
-    </motion.div>
-
+      </motion.div>
+    </MainLayout>
   );
 }

@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { jakartaFont, fiveFont } from '../../fonts';
+import { jakartaFont, fiveFont } from '../fonts';
+import MainLayout from '../layout/MainLayout';
 
 export default function PlayPage() {
   const experiments = [
@@ -57,12 +58,13 @@ export default function PlayPage() {
   ];
 
   return (
-    <motion.div 
-      className="w-full flex flex-col"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-    >
+    <MainLayout>
+      <motion.div 
+        className="w-full flex flex-col"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+      >
       {/* Header */}
       <motion.div 
         className="mb-12"
@@ -133,6 +135,7 @@ export default function PlayPage() {
           </button>
         </div>
       </motion.div>
-    </motion.div>
+      </motion.div>
+    </MainLayout>
   );
 }

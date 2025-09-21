@@ -34,7 +34,14 @@ export function TextScramble({
   const [isAnimating, setIsAnimating] = useState(false);
   const text = children;
 
+  // Reset state when component mounts or text changes
+  useEffect(() => {
+    setDisplayText('');
+    setIsAnimating(false);
+  }, [text]);
+
   const scramble = async () => {
+    console.log('Scramble called for:', text, 'isAnimating:', isAnimating);
     if (isAnimating) return;
     setIsAnimating(true);
 
@@ -49,13 +56,14 @@ export function TextScramble({
     }
     setDisplayText(initialScrambled);
 
-    const steps = duration / speed;
-    let step = 0;
+    const startTime = Date.now();
+    const totalDuration = duration * 1000; // Convert to milliseconds
 
     const interval = setInterval(() => {
-      let scrambled = '';
-      const progress = step / steps;
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / totalDuration, 1);
 
+      let scrambled = '';
       for (let i = 0; i < text.length; i++) {
         if (text[i] === ' ') {
           scrambled += ' ';
@@ -71,27 +79,39 @@ export function TextScramble({
       }
 
       setDisplayText(scrambled);
-      step++;
 
-      if (step > steps) {
+      // Continue scrambling even after text is complete to fill the full duration
+      if (progress >= 1) {
         clearInterval(interval);
         setDisplayText(text);
         setIsAnimating(false);
+        console.log('Scramble completed for:', text);
         onScrambleComplete?.();
       }
     }, speed * 1000);
+
+    // Store interval reference for cleanup
+    return interval;
   };
 
   useEffect(() => {
+    console.log('TextScramble useEffect triggered for:', text, 'trigger:', trigger);
     if (!trigger) return;
+
+    // Reset animation state when component mounts
+    setIsAnimating(false);
 
     // Small delay to ensure component is fully mounted
     const timer = setTimeout(() => {
       scramble();
     }, 50);
 
-    return () => clearTimeout(timer);
-  }, [trigger]);
+    return () => {
+      clearTimeout(timer);
+      // Clear any existing intervals when component unmounts or dependencies change
+      setIsAnimating(false);
+    };
+  }, [trigger, children, duration, speed, characterSet]); // Add all dependencies
 
   return (
     <MotionComponent className={className} {...props}>

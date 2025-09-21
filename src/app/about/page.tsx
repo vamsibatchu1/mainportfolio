@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { jakartaFont, fiveFont } from '../../fonts';
+import { jakartaFont, fiveFont } from '../fonts';
+import MainLayout from '../layout/MainLayout';
 import Slack from './slack/page';
 import { Instrument_Serif } from 'next/font/google';
 
@@ -89,13 +90,14 @@ const StaggeredText = ({ text, className, delay = 0, staggerDelay = 0.1 }: {
 
 export default function AboutPage() {
   return (
-    <motion.div 
-      className="w-full min-h-screen flex flex-col p-10 pt-40 overflow-y-auto"
-      style={{ backgroundColor: '#FAF6F3' }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-    >
+    <MainLayout>
+      <motion.div 
+        className="w-full min-h-screen flex flex-col p-10 pt-40 overflow-y-auto"
+        style={{ backgroundColor: '#FAF6F3' }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+      >
       {/* Section 1: Main Heading */}
       <div className="text-center mx-40 mb-16">
         <StaggeredText 
@@ -226,6 +228,7 @@ export default function AboutPage() {
 
       
 
-    </motion.div>
+      </motion.div>
+    </MainLayout>
   );
 }
