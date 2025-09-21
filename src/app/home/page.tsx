@@ -3,7 +3,6 @@
 import React from 'react';
 import MainLayout from '../layout/MainLayout';
 import { jakartaFont, triFont, interFont } from '../fonts';
-import { Card, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import { Expand } from 'lucide-react';
 
@@ -64,11 +63,8 @@ function HomeHeader() {
 function CaseStudy1() {
   return (
     <div className="w-[1440px] mx-auto mt-[48px] flex flex-col">
-      <Card className="bg-white relative rounded-[10px] size-full border border-neutral-200 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.1),0px_1px_2px_-1px_rgba(0,0,0,0.1)]">
-        <CardContent className="box-border content-stretch flex flex-col gap-[24px] items-start justify-start overflow-clip p-[32px] relative size-full">
-
-          {/* Main Content */}
-          <div className="content-stretch flex gap-[24px] items-start justify-start relative shrink-0 w-full">
+      {/* Main Content */}
+      <div className="content-stretch flex gap-[24px] items-start justify-start relative shrink-0 w-full">
             {/* Left side - Text content */}
             <div className="content-stretch flex flex-col gap-[16px] items-start justify-start leading-none relative shrink-0 text-black w-[600px]">
               <div className={`${jakartaFont.variable} font-jakarta font-bold relative shrink-0 text-[28px] tracking-[-1.12px] w-full`}>
@@ -109,8 +105,6 @@ function CaseStudy1() {
               </Button>
             </div>
           </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }

@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Image from "next/image";
-import useScreenSize from "../../../../../hooks/use-screen-size";
+import useScreenSize from "../../../../../../hooks/use-screen-size";
 import {loraFont, interFont } from '@/app/fonts';
 import DragElements from "../components/dragelements";
 import { FilesystemItem } from "../components/filesystem-item";

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { priFont } from '@/app/fonts';
-import ToolbarPage from '../../(main)/navbar/toolbar/toolbar';
+import ToolbarPage from '../(main)/navbar/toolbar/toolbar';
 import { useSound } from '@/hooks/use-sound';
 
 const LandingPage: React.FC = () => {

@@ -2,11 +2,11 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import HomePage from './home/page';
-import WorkPage from './work/page';
-import PlayPage from './play/terminal/page';
-import WritingPage from './writing/page';
-import AboutPage from './about/page';
+import HomePage from '../home/page';
+import WorkPage from '../work/page';
+import PlayPage from '../play/page';
+import WritingPage from '../writing/page';
+import AboutPage from '../about/page';
 
 interface RightColumnProps {
   activeItem: number;

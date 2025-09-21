@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-import UnifiedActionBar from '../../(archive)/UnifiedActionBar';
+import UnifiedActionBar from '../../UnifiedActionBar';
 
 export default function BlogLayout({
   children,
