@@ -1,68 +1,18 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import MainLayout from '../layout/MainLayout';
 import { jakartaFont, triFont, interFont } from '../fonts';
 import { Button } from '../../components/ui/button';
 import { Expand } from 'lucide-react';
+import { CaseStudyDialog } from '../components/casestudy_dialog';
 
-// Home Header Component
-function HomeHeader() {
-  return (
-    <div className="w-[1440px] mx-auto mt-[32px] flex flex-col">
-      {/* Home Header Section */}
-      <div className="content-stretch flex gap-[40px] items-start justify-start relative size-full">
-        {/* Left side - Main description */}
-        <div className={`${jakartaFont.variable} font-jakarta font-bold leading-[1.1] relative shrink-0 text-[40px] text-black tracking-[-1.6px] w-[889px]`}>
-          <p>
-            A systems-thinking product designer with a high bar for visual design, skilled at simplifying complexity and designing cohesive experiences at enterprise scale. With a proven track record leading cross-functional initiatives to shape product strategy, I specialize in defining the vision for zero-to-one, AI-native products and evolving data-informed design systems.
-          </p>
-        </div>
-        
-        {/* Right side - Numbered list */}
-        <div className="basis-0 content-stretch flex flex-col gap-[20px] grow items-start justify-center min-h-px min-w-px relative shrink-0">
-          <div className={`content-stretch flex ${triFont.variable} font-tri gap-[40px] items-start justify-start leading-none not-italic relative shrink-0 text-[18px] text-black tracking-[-0.72px] w-full`}>
-            <div className="relative shrink-0 w-[8px]">
-              <p className="leading-none">1</p>
-            </div>
-            <div className="basis-0 grow min-h-px min-w-px relative shrink-0">
-              <p className="leading-none">Define and own the strategic vision for significant portions of the product platform, influ</p>
-            </div>
-          </div>
-          <div className={`content-stretch flex ${triFont.variable} font-tri gap-[40px] items-start justify-start leading-none not-italic relative shrink-0 text-[18px] text-black tracking-[-0.72px] w-full`}>
-            <div className="relative shrink-0 w-[8px]">
-              <p className="leading-none">2</p>
-            </div>
-            <div className="basis-0 grow min-h-px min-w-px relative shrink-0">
-              <p className="leading-none">Define and own the strategic vision for significant portions</p>
-            </div>
-          </div>
-          <div className={`content-stretch flex ${triFont.variable} font-tri gap-[40px] items-start justify-start leading-none not-italic relative shrink-0 text-[18px] text-black tracking-[-0.72px] w-full`}>
-            <div className="relative shrink-0 w-[8px]">
-              <p className="leading-none">3</p>
-            </div>
-            <div className="basis-0 grow min-h-px min-w-px relative shrink-0">
-              <p className="leading-none">Define and own the strategic vision for significant portions</p>
-            </div>
-          </div>
-          <div className={`content-stretch flex ${triFont.variable} font-tri gap-[40px] items-start justify-start leading-none not-italic relative shrink-0 text-[18px] text-black tracking-[-0.72px] w-full`}>
-            <div className="relative shrink-0 w-[8px]">
-              <p className="leading-none">4</p>
-            </div>
-            <div className="basis-0 grow min-h-px min-w-px relative shrink-0">
-              <p className="leading-none">Define and own the strategic vision for significant portionsDefine and own the strategic vision for significant portionsDefine and own the strategic vision for significant portionsDefine and own the strategic vision for significant portions</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+
 
 // Home Header 2 Component
 function HomeHeader2() {
   return (
-    <div className="w-[1440px] mx-auto mt-[32px] flex flex-col">
+    <div className="w-[1440px] mx-auto mt-[64px] flex flex-col">
       {/* Home Header 2 Section */}
       <div className="content-stretch flex gap-[40px] items-end justify-start relative size-full">
         {/* Left side - Main content */}
@@ -142,8 +92,10 @@ function HomeHeader2() {
 
 // Case Study 1 Component
 function CaseStudy1() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   return (
-    <div className="w-[1440px] mx-auto mt-[48px] flex flex-col">
+    <div className="w-[1440px] mx-auto flex flex-col">
       {/* Main Content */}
       <div className="content-stretch flex gap-[24px] items-start justify-start relative shrink-0 w-full">
             {/* Left side - Text content */}
@@ -190,11 +142,25 @@ function CaseStudy1() {
               <p className="leading-[28px] whitespace-pre">Quick actions</p>
             </div>
             <div className="content-stretch flex gap-[8px] items-start justify-start relative shrink-0">
-              <Button variant="secondary" size="default" className="h-[36px] px-[16px] py-[8px] bg-[#F5F5F5]">
-                <span className={`${interFont.variable} font-inter font-medium text-[14px] leading-[20px] text-neutral-900`}>
-                  Explain like I am 5
-                </span>
-              </Button>
+              <div className="relative">
+                <Button 
+                  variant="secondary" 
+                  size="default" 
+                  className="h-[36px] px-[16px] py-[8px] bg-[#F5F5F5]"
+                  onClick={() => setIsDialogOpen(!isDialogOpen)}
+                >
+                  <span className={`${interFont.variable} font-inter font-medium text-[14px] leading-[20px] text-neutral-900`}>
+                    Explain like I am 5
+                  </span>
+                </Button>
+                
+                {/* Tooltip-like Case Study Dialog */}
+                {isDialogOpen && (
+                  <div className="absolute bottom-full left-0 mb-2 z-50">
+                    <CaseStudyDialog />
+                  </div>
+                )}
+              </div>
               <Button variant="secondary" size="default" className="h-[36px] px-[16px] py-[8px] bg-[#F5F5F5]">
                 <span className={`${interFont.variable} font-inter font-medium text-[14px] leading-[20px] text-neutral-900`}>
                   View the full case study
@@ -209,10 +175,13 @@ function CaseStudy1() {
   );
 }
 
+
+
+
 export default function HomePage() {
   return (
     <MainLayout>
-      <div className="w-full flex flex-col">
+      <div className="w-full flex flex-col gap-[64px]">
         {/* Home Header Section 
         <HomeHeader />*/}
         
@@ -221,7 +190,10 @@ export default function HomePage() {
         
         {/* Case Study 1 Section */}
         <CaseStudy1 />
-        
+
+        {/* Text Shimmer Basic Section 
+        <TextShimmerBasic />*/}
+
         {/* Additional sections will be added here as components */}
       </div>
     </MainLayout>
