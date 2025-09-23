@@ -16,6 +16,9 @@ export default function WelcomeScreen() {
   const [isPaused, setIsPaused] = useState(false);
   const [isLoadingPhase, setIsLoadingPhase] = useState(false);
   const [loadingIndex, setLoadingIndex] = useState(0);
+  const [showControlIcons, setShowControlIcons] = useState(true);
+  const [showInstructionText, setShowInstructionText] = useState(true);
+  const [startLoadingMessages, setStartLoadingMessages] = useState(false);
   
   const symbols = ['/images/refresh-images/symbol1.svg', 
     '/images/refresh-images/symbol2.svg', 
@@ -106,20 +109,43 @@ export default function WelcomeScreen() {
   useEffect(() => {
     if (!isLoadingPhase) return;
 
+    // Start the sequence after images fade out (add delay)
+    setTimeout(() => {
+      // Hide control icons after delay
+      setTimeout(() => {
+        setShowControlIcons(false);
+        
+        // After control icons disappear, start loading messages
+        setTimeout(() => {
+          setStartLoadingMessages(true);
+        }, 500); // Wait for control icons to fade away
+      }, 500); // 0.5 second delay for control icons to disappear
+    }, 100); // Delay after images fade out
+
+    return () => {};
+  }, [isLoadingPhase, router]);
+
+  // Loading messages effect - separate from the main sequence
+  useEffect(() => {
+    if (!startLoadingMessages) return;
+
     const loadingInterval = setInterval(() => {
       setLoadingIndex((prev) => {
         const nextIndex = prev + 1;
         
         // If we've shown all loading messages, start exit animation
         if (nextIndex >= loadingMessages.length) {
+          // Clear the interval to stop cycling
+          clearInterval(loadingInterval);
+          
           setTimeout(() => {
             setIsExiting(true);
             // Navigate to layout page after fade-out animation completes
             setTimeout(() => {
               router.push('/home');
-            }, 800); // Wait for fade-out animation
-          }, 1000); // Wait 1 second after showing the final message
-          return prev; // Keep showing the last message
+            }, 300); // Wait for fade-out animation
+          }, 100); // Wait 0.1 seconds after showing the final message
+          return loadingMessages.length - 1; // Keep showing the final message
         }
         
         return nextIndex;
@@ -129,7 +155,7 @@ export default function WelcomeScreen() {
     return () => {
       clearInterval(loadingInterval);
     };
-  }, [isLoadingPhase, router, loadingMessages.length]);
+  }, [startLoadingMessages, router, loadingMessages.length]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
@@ -349,62 +375,73 @@ export default function WelcomeScreen() {
       </AnimatePresence>
       
       {/* Instructions section - stays visible during loading */}
-      <div className="pt-8 bottom-8 left-8 right-8">
+      <div className="fixed bottom-10 left-8 right-8">
         <div className="w-[800px] mx-auto flex justify-between items-center">
-           {/* Instructions */}
-           <motion.div 
-             className={`${fourFont.className} text-white/50 text-sm flex items-center gap-2`}
-             initial={{ opacity: 0 }}
-             animate={{ opacity: 1 }}
-             transition={{ delay: 2.4, duration: 0.8, ease: "easeOut" }}
-           >
-             <motion.div
-               className="flex items-center gap-2"
-               key={isLoadingPhase ? loadingIndex : 'initial'}
-               initial={{ opacity: 0, y: 10 }}
-               animate={{ opacity: 1, y: 0 }}
-               exit={{ opacity: 0, y: -10 }}
-               transition={{ duration: 0.3 }}
-             >
-               {isLoadingPhase ? (
-                 <>
-                   {React.createElement(loadingIcons[loadingIndex], {
-                     size: 16,
-                     className: "text-white/50"
-                   })}
-                   {loadingMessages[loadingIndex]}
-                 </>
-               ) : (
-                 <>
-                   <ArrowRight className="w-4 h-4" />
-                   Press Enter to continue...
-                 </>
-               )}
-             </motion.div>
-           </motion.div>
-          
-          {/* Control Icons - Hide during loading phase */}
-          {!isLoadingPhase && (
-            <motion.div 
-              className="flex items-center gap-2"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 2.4, duration: 0.8, ease: "easeOut" }}
-            >
-              <button
-                onClick={handlePause}
-                className="text-white/60 hover:text-white/80 transition-colors"
+          <AnimatePresence>
+            {/* Instructions */}
+            {showInstructionText && (
+              <motion.div 
+                className={`${fourFont.className} text-white/50 text-sm flex items-center gap-2`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ delay: 2.4, duration: 0.8, ease: "easeOut" }}
               >
-                {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
-              </button>
-              <button
-                onClick={handleRestart}
-                className="text-white/60 hover:text-white/80 transition-colors"
+                <motion.div
+                  className="flex items-center gap-2"
+                  key={startLoadingMessages ? loadingIndex : 'initial'}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {startLoadingMessages ? (
+                    <>
+                      {React.createElement(loadingIcons[loadingIndex % loadingIcons.length], {
+                        size: 16,
+                        className: "text-white/50"
+                      })}
+                      {loadingMessages[loadingIndex % loadingMessages.length]}
+                    </>
+                  ) : (
+                    <>
+                      <ArrowRight className="w-4 h-4" />
+                      Press Enter to continue...
+                    </>
+                  )}
+                </motion.div>
+              </motion.div>
+            )}
+            
+            {/* Control Icons - Hide during loading phase */}
+            {showControlIcons && (
+              <motion.div 
+                className="flex items-center gap-2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ 
+                  delay: 2.4, 
+                  duration: 0.8, 
+                  ease: "easeOut",
+                  exit: { duration: 0.4, ease: "easeIn" }
+                }}
               >
-                <RotateCcw className="w-4 h-4" />
-              </button>
-            </motion.div>
-          )}
+                <button
+                  onClick={handlePause}
+                  className="text-white/60 hover:text-white/80 transition-colors"
+                >
+                  {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
+                </button>
+                <button
+                  onClick={handleRestart}
+                  className="text-white/60 hover:text-white/80 transition-colors"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>
