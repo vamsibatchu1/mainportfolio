@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MainLayout from '../layout/MainLayout';
 import { jakartaFont, triFont, interFont } from '../fonts';
 import { Button } from '../../components/ui/button';
-import { Expand } from 'lucide-react';
+import { Expand, Building2 } from 'lucide-react';
 import { CaseStudyDialog } from '../components/casestudy_dialog';
 import { motion } from 'framer-motion';
 
@@ -48,6 +48,143 @@ function HomeHeader2() {
         </motion.div>
       </div>
     </div>
+  );
+}
+
+
+// Specialties Component
+function Specialties() {
+  const [currentSpecialty, setCurrentSpecialty] = useState(0);
+  const [displayText, setDisplayText] = useState("");
+
+  const specialties = [
+    {
+      icon: "/images/spe1logo.svg",
+      text: "enterprise design",
+      backgroundImage: "/images/speciality1.png"
+    },
+    {
+      icon: "/images/spe2logo.svg",
+      text: "product design",
+      backgroundImage: "/images/speciality2.png"
+    },
+    {
+      icon: "/images/spe3logo.svg",
+      text: "ui/ux design",
+      backgroundImage: "/images/speciality3.png"
+    },
+    {
+      icon: "/images/spe4logo.svg",
+      text: "brand identity",
+      backgroundImage: "/images/speciality4.png"
+    },
+    {
+      icon: "/images/spe5logo.svg",
+      text: "design systems",
+      backgroundImage: "/images/speciality5.png"
+    }
+  ];
+
+  // Typing effect
+  useEffect(() => {
+    const currentText = specialties[currentSpecialty].text;
+    console.log('Starting typing effect for:', currentText, 'specialty:', currentSpecialty);
+    
+    let timeoutId: NodeJS.Timeout;
+    let index = 0;
+    let isDeleting = false;
+
+    // Reset display text when specialty changes
+    setDisplayText("");
+
+    const typeCharacter = () => {
+      console.log('typeCharacter called, isDeleting:', isDeleting, 'index:', index, 'currentText:', currentText);
+      
+      if (!isDeleting) {
+        // Typing forward
+        if (index < currentText.length) {
+          const newText = currentText.substring(0, index + 1);
+          console.log('Setting display text to:', newText);
+          setDisplayText(newText);
+          index++;
+          const speed = Math.max(50, Math.floor(1500 / currentText.length));
+          timeoutId = setTimeout(typeCharacter, speed);
+        } else {
+          // Finished typing, wait then start deleting
+          console.log('Finished typing, waiting to start deleting');
+          timeoutId = setTimeout(() => {
+            isDeleting = true;
+            typeCharacter();
+          }, 1000);
+        }
+      } else {
+        // Deleting
+        if (index > 0) {
+          const newText = currentText.substring(0, index - 1);
+          console.log('Deleting, setting display text to:', newText);
+          setDisplayText(newText);
+          index--;
+          const speed = Math.max(30, Math.floor(1500 / currentText.length));
+          timeoutId = setTimeout(typeCharacter, speed);
+        } else {
+          // Finished deleting, move to next specialty
+          console.log('Finished deleting, moving to next specialty');
+          isDeleting = false;
+          setCurrentSpecialty((prev) => (prev + 1) % specialties.length);
+        }
+      }
+    };
+
+    // Start the typing effect after a small delay
+    timeoutId = setTimeout(typeCharacter, 100);
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [currentSpecialty]);
+
+  const currentData = specialties[currentSpecialty];
+
+  return (
+    <motion.div 
+      className="w-[1440px] mx-auto flex flex-col"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8, delay: 1.0, ease: "easeOut" }}
+    >
+      <div className="relative w-full h-[400px] bg-[#f2f2f2] rounded-[14px] overflow-hidden">
+        {/* Background Image */}
+        <motion.div 
+          key={`bg-${currentSpecialty}`}
+          className="absolute bg-center bg-cover bg-no-repeat h-[288px] right-[32px] top-[112px] w-[898px]"
+          style={{ 
+            backgroundImage: `url('${currentData.backgroundImage}')` 
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+        />
+        
+        {/* Content */}
+        <motion.div 
+          key={`content-${currentSpecialty}`}
+          className="absolute left-[32px] top-[301px] flex gap-[8px] items-end"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+        >
+          <div className="relative shrink-0 w-[67px] h-[67px]">
+            <img src={currentData.icon} alt={currentData.text} className="w-full h-full object-cover" />
+          </div>
+          <div className={`${jakartaFont.variable} font-jakarta font-bold leading-[1.1] text-[32px] text-black tracking-[-1.28px] whitespace-nowrap`}>
+            {displayText}
+            <span className="animate-[blink_1s_ease-in-out_infinite]">|</span>
+          </div>
+        </motion.div>
+      </div>
+    </motion.div>
   );
 }
 
@@ -169,6 +306,9 @@ export default function HomePage() {
         
         {/* Home Header 2 Section */}
         <HomeHeader2 />
+        
+        {/* Specialties Section */}
+        <Specialties />
         
         {/* Case Study 1 Section */}
         <CaseStudy1 />
