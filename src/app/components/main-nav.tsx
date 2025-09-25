@@ -87,7 +87,7 @@ export function MainNav({ className = "" }: MainNavProps) {
           animate={{ scaleX: 1 }}
           transition={{ 
             duration: 0.8, 
-            delay: shouldAnimate ? 4.2 : 0,
+            delay: shouldAnimate ? 4.5 : 0,
             ease: "easeOut" 
           }}
         />
@@ -106,7 +106,7 @@ export function MainNav({ className = "" }: MainNavProps) {
                   animate={{ opacity: 1 }}
                   transition={{ 
                     duration: 0.6, 
-                    delay: shouldAnimate ? 3.0 + (index * 0.10) : 0,
+                    delay: shouldAnimate ? 3.3 + (index * 0.10) : 0,
                     ease: "easeOut" 
                   }}
                 >
@@ -150,7 +150,7 @@ export function MainNav({ className = "" }: MainNavProps) {
             animate={{ opacity: 1 }}
             transition={{ 
               duration: 0.6, 
-              delay: shouldAnimate ? 3.50 : 0,
+              delay: shouldAnimate ? 3.80 : 0,
               ease: "easeOut" 
             }}
           >
@@ -168,7 +168,7 @@ export function MainNav({ className = "" }: MainNavProps) {
             animate={{ opacity: 1 }}
             transition={{ 
               duration: 0.6, 
-              delay: shouldAnimate ? 3.60 : 0,
+              delay: shouldAnimate ? 3.90 : 0,
               ease: "easeOut" 
             }}
           >
@@ -197,7 +197,7 @@ export function MainNav({ className = "" }: MainNavProps) {
             animate={{ opacity: 1 }}
             transition={{ 
               duration: 0.6, 
-              delay: shouldAnimate ? 3.70 : 0,
+              delay: shouldAnimate ? 4.00 : 0,
               ease: "easeOut" 
             }}
           >

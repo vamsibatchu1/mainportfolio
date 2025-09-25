@@ -21,7 +21,7 @@ function HomeHeader2() {
           className="basis-0 content-stretch flex flex-col gap-[40px] grow items-start justify-start min-h-px min-w-px relative shrink-0"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+          transition={{ duration: 0.8, delay: 1.0, ease: "easeOut" }}
         >
           {/* Main description with different font sizes */}
           <div className={`${jakartaFont.variable} font-jakarta font-bold leading-[0] relative shrink-0 text-[0px] text-black tracking-[-1.6px] w-full`}>
@@ -38,7 +38,7 @@ function HomeHeader2() {
           className="h-[300px] shrink-0 w-[411px] overflow-hidden"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+          transition={{ duration: 0.8, delay: 1.6, ease: "easeOut" }}
         >
           <img 
             src="/images/currently.png" 
@@ -150,7 +150,7 @@ function Specialties() {
       className="w-[1440px] mx-auto flex flex-col"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.8, delay: 1.0, ease: "easeOut" }}
+      transition={{ duration: 0.8, delay: 2.2, ease: "easeOut" }}
     >
       <div className="relative w-full h-[400px] bg-[#f2f2f2] rounded-[14px] overflow-hidden">
         {/* Background Image */}
@@ -202,7 +202,7 @@ function CaseStudy1() {
               className="content-stretch flex flex-col gap-[16px] items-start justify-start leading-none relative shrink-0 text-black w-[600px]"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 1.4, ease: "easeOut" }}
+              transition={{ duration: 0.8, delay: 3.0, ease: "easeOut" }}
             >
               <div className="content-stretch flex flex-col gap-[32px] items-start justify-start relative size-full">
                 <div className={`${triFont.variable} font-tri leading-[0] not-italic relative shrink-0 text-[18px] text-black tracking-[-0.68px] w-full`}>
@@ -227,7 +227,7 @@ function CaseStudy1() {
                 className="basis-0 bg-[#e2e2e2] grow h-[300px] min-h-px min-w-px rounded-[14px] shrink-0"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 1.8, ease: "easeOut" }}
+                transition={{ duration: 0.8, delay: 3.4, ease: "easeOut" }}
               >
                 <img 
                   src="/images/casestudy1-t1.png" 
@@ -239,7 +239,7 @@ function CaseStudy1() {
                 className="basis-0 bg-[#e2e2e2] grow h-[300px] min-h-px min-w-px rounded-[14px] shrink-0"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 2.2, ease: "easeOut" }}
+                transition={{ duration: 0.8, delay: 3.8, ease: "easeOut" }}
               >
                 <img 
               src="/images/casestudy1-t2.png" 
@@ -255,7 +255,7 @@ function CaseStudy1() {
             className="bg-white box-border content-stretch flex h-[auto] items-center justify-between px-0 pt-[16px] relative shrink-0 w-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 2.6, ease: "easeOut" }}
+            transition={{ duration: 0.8, delay: 4.2, ease: "easeOut" }}
           >
             <div className={`${interFont.variable} font-inter font-semibold justify-center leading-[28px] relative shrink-0 text-[18px] text-neutral-950 text-nowrap`}>
               <p className="leading-[28px] whitespace-pre">Quick actions</p>
