@@ -30,6 +30,7 @@ export default {
   			breeze: '#90D9E0',
   			paprika: '#F25A3F',
   			'primary-orange': '#CA2625',
+  			muted: 'hsl(var(--muted))',
   			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'
@@ -88,7 +89,9 @@ export default {
       },
   		animation: {
   			grid: 'grid 15s linear infinite',
-  			'play-once': 'playOnce 1s steps(1) forwards'
+  			'play-once': 'playOnce 1s steps(1) forwards',
+  			"accordion-down": "accordion-down 0.2s ease-out",
+  			"accordion-up": "accordion-up 0.2s ease-out",
   		},
   		keyframes: {
   			grid: {
@@ -102,7 +105,15 @@ export default {
   			playOnce: {
   				'0%': { animationPlayState: 'running' },
   				'100%': { animationPlayState: 'running' }
-  			}
+  			},
+  			"accordion-down": {
+  				from: { height: "0" },
+  				to: { height: "var(--radix-accordion-content-height)" },
+  			},
+  			"accordion-up": {
+  				from: { height: "var(--radix-accordion-content-height)" },
+  				to: { height: "0" },
+  			},
   		},
   		transitionProperty: {
   			height: 'height',

@@ -307,3 +307,149 @@ body {
   background-color: hsl(var(--accent)) !important;
   color: hsl(var(--accent-foreground)) !important;
 }
+
+/* Editor specific styles */
+.editor-theme {
+  --editor-background: hsl(var(--background));
+  --editor-foreground: hsl(var(--foreground));
+  --editor-border: hsl(var(--border));
+  --editor-muted: hsl(var(--muted));
+  --editor-muted-foreground: hsl(var(--muted-foreground));
+  --editor-accent: hsl(var(--accent));
+  --editor-accent-foreground: hsl(var(--accent-foreground));
+  --editor-primary: hsl(var(--primary));
+  --editor-primary-foreground: hsl(var(--primary-foreground));
+  --editor-secondary: hsl(var(--secondary));
+  --editor-secondary-foreground: hsl(var(--secondary-foreground));
+  --editor-destructive: hsl(var(--destructive));
+  --editor-destructive-foreground: hsl(var(--destructive-foreground));
+  --editor-ring: hsl(var(--ring));
+  --editor-input: hsl(var(--input));
+  --editor-popover: hsl(var(--popover));
+  --editor-popover-foreground: hsl(var(--popover-foreground));
+  --editor-card: hsl(var(--card));
+  --editor-card-foreground: hsl(var(--card-foreground));
+}
+
+/* Lexical editor styles */
+.lexical-editor {
+  @apply bg-background text-foreground;
+}
+
+.lexical-editor .editor-paragraph {
+  @apply mb-2;
+}
+
+.lexical-editor .editor-heading {
+  @apply font-bold mb-4;
+}
+
+.lexical-editor .editor-heading-h1 {
+  @apply text-3xl;
+}
+
+.lexical-editor .editor-heading-h2 {
+  @apply text-2xl;
+}
+
+.lexical-editor .editor-heading-h3 {
+  @apply text-xl;
+}
+
+.lexical-editor .editor-quote {
+  @apply border-l-4 border-border pl-4 italic;
+}
+
+.lexical-editor .editor-code {
+  @apply px-1 py-0.5 rounded text-sm font-mono;
+  background-color: hsl(var(--muted));
+}
+
+.lexical-editor .editor-code-block {
+  @apply p-4 rounded-lg font-mono text-sm overflow-x-auto;
+  background-color: hsl(var(--muted));
+}
+
+.lexical-editor .editor-list {
+  @apply list-disc list-inside mb-2;
+}
+
+.lexical-editor .editor-list-item {
+  @apply mb-1;
+}
+
+.lexical-editor .editor-link {
+  @apply text-primary underline hover:no-underline;
+}
+
+.lexical-editor .editor-image {
+  @apply max-w-full h-auto rounded-lg;
+}
+
+/* AI Elements styles */
+.ai-conversation {
+  @apply flex flex-col h-full;
+}
+
+.ai-message {
+  @apply mb-4;
+}
+
+.ai-message-user {
+  @apply bg-primary text-primary-foreground rounded-lg px-3 py-2 ml-auto max-w-[80%];
+}
+
+.ai-message-assistant {
+  @apply rounded-lg px-3 py-2 mr-auto max-w-[80%];
+  background-color: hsl(var(--muted));
+}
+
+.ai-actions {
+  @apply flex gap-2 mt-2;
+}
+
+.ai-action {
+  @apply p-2 rounded transition-colors;
+}
+.ai-action:hover {
+  background-color: hsl(var(--muted));
+}
+
+.ai-suggestions {
+  @apply flex flex-wrap gap-2 mb-4;
+}
+
+.ai-suggestion {
+  @apply px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm hover:bg-secondary/80 transition-colors cursor-pointer;
+}
+
+.ai-prompt-input {
+  @apply border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-ring;
+}
+
+.ai-thinking {
+  @apply rounded-lg p-4 mb-4;
+  background-color: hsl(var(--muted));
+}
+
+.ai-sources {
+  @apply rounded-lg p-4 mb-4;
+  background-color: hsl(var(--muted));
+}
+
+.ai-reasoning {
+  @apply rounded-lg p-4 mb-4;
+  background-color: hsl(var(--muted));
+}
+
+/* Ensure all dropdown and overlay components are opaque */
+[data-radix-select-content],
+[data-radix-popover-content],
+[data-radix-command-root],
+[data-slot="select-content"],
+[data-slot="popover-content"],
+[data-slot="command"] {
+  background-color: hsl(var(--popover)) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
