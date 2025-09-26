@@ -1,5 +1,5 @@
 import localFont from 'next/font/local';
-import {Poppins, IBM_Plex_Mono, Instrument_Serif, Teko, Kode_Mono, Lora, Inter, EB_Garamond, Plus_Jakarta_Sans, Handjet, Lato } from 'next/font/google';
+import {Poppins, IBM_Plex_Mono, Instrument_Serif, Teko, Lora, Inter, EB_Garamond, Plus_Jakarta_Sans, Handjet, Lato } from 'next/font/google';
 
 // Primary Font: W95FA (Windows 95 Font)
 export const priFont = localFont({
@@ -54,8 +54,8 @@ export const tekoFont = Teko({
   display: 'swap',
 });
 
-// Kode Mono Font from Google
-export const kodeMonoFont = Kode_Mono({
+// Kode Mono Font - Using IBM Plex Mono as fallback
+export const kodeMonoFont = IBM_Plex_Mono({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-kodemono',
