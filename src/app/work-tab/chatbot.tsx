@@ -168,7 +168,7 @@ export function ChatBot() {
   };
 
   return (
-    <div className="bg-background overflow-hidden rounded-lg border shadow h-full flex flex-col relative font-inter">
+    <div className="bg-background overflow-hidden rounded-lg border h-full flex flex-col relative font-inter">
       <div className="flex flex-col h-full">
         <Tabs defaultValue="chat" className="flex h-full flex-col">
           <TabsList className="mx-2 mt-2">

@@ -29,9 +29,8 @@ export default {
   			juniper: '#4F7834',
   			breeze: '#90D9E0',
   			paprika: '#F25A3F',
-  			'primary-orange': '#CA2625',
-  			muted: 'hsl(var(--muted))',
-  			card: {
+			'primary-orange': '#CA2625',
+			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'
   			},

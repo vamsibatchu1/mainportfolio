@@ -80,17 +80,6 @@ export function MainNav({ className = "" }: MainNavProps) {
   return (
     <>
       <div className={`w-[1440px] mx-auto box-border content-stretch flex items-center justify-between py-[16px] relative size-full ${className}`}>
-        {/* Bottom border that animates after all nav elements */}
-        <motion.div
-          className="absolute bottom-0 left-0 right-0 h-px bg-neutral-200"
-          initial={shouldAnimate ? { scaleX: 0 } : { scaleX: 1 }}
-          animate={{ scaleX: 1 }}
-          transition={{ 
-            duration: 0.8, 
-            delay: shouldAnimate ? 4.5 : 0,
-            ease: "easeOut" 
-          }}
-        />
         {/* Left side - Navigation items */}
         <div className="content-stretch flex gap-[24px] items-center justify-start relative shrink-0">
           <div className="content-center flex flex-wrap gap-[20px] items-center justify-start relative shrink-0">

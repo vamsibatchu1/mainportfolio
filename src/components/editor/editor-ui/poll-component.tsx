@@ -50,7 +50,8 @@ function PollOptionComponent({
     onSelect?: () => void
   ) => void
 }): JSX.Element {
-  const { clientID } = useCollaborationContext()
+  const collaborationContext = useCollaborationContext()
+  const clientID = (collaborationContext as any)?.clientID || 'default-client'
   const checkboxRef = useRef(null)
   const votesArray = option.votes
   const checkedIndex = votesArray.indexOf(clientID)
