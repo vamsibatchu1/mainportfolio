@@ -107,7 +107,7 @@ function Specialties() {
           console.log('Setting display text to:', newText);
           setDisplayText(newText);
           index++;
-          const speed = Math.max(50, Math.floor(1500 / currentText.length));
+          const speed = Math.max(50, Math.floor(2500 / currentText.length));
           timeoutId = setTimeout(typeCharacter, speed);
         } else {
           // Finished typing, wait then start deleting
@@ -136,7 +136,7 @@ function Specialties() {
     };
 
     // Start the typing effect after a small delay
-    timeoutId = setTimeout(typeCharacter, 100);
+    timeoutId = setTimeout(typeCharacter, 600);
 
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
