@@ -301,7 +301,7 @@ export function Plugins({}) {
                       />
                     </div>
                   </ContextMenuTrigger>
-                  <ContextMenuContent className="w-52">
+                  <ContextMenuContent className="w-52 font-inter bg-white/95 backdrop-blur-sm border border-neutral-200">
                     <ContextMenuItem inset>
                       Back
                       <ContextMenuShortcut>⌘[</ContextMenuShortcut>

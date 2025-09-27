@@ -10,6 +10,360 @@ import { motion } from 'framer-motion';
 
 
 
+// New Header Component
+function NewHeader() {
+  const [selectedText, setSelectedText] = useState("oh hi");
+
+  const textBlocks = [
+    { id: "oh hi", text: "oh hi", bg: "bg-white", textColor: "text-black" },
+    { id: "I am vamsi batchu", text: "I am vamsi batchu", bg: "bg-black", textColor: "text-white" },
+    { id: "product builder", text: "product builder", bg: "bg-white", textColor: "text-black" },
+    { id: "with", text: "with", bg: "bg-white", textColor: "text-black" },
+    { id: "a high bar for", text: "a high bar for", bg: "bg-white", textColor: "text-black" },
+    { id: "visual design", text: "visual design", bg: "bg-white", textColor: "text-black" },
+    { id: "skilled", text: "skilled", bg: "bg-white", textColor: "text-black" },
+    { id: "simplifying complexity", text: "simplifying complexity", bg: "bg-white", textColor: "text-black" },
+    { id: "and designing", text: "and designing", bg: "bg-white", textColor: "text-black" },
+    { id: "scalable", text: "scalable", bg: "bg-white", textColor: "text-black" },
+    { id: "product experiences", text: "product experiences", bg: "bg-white", textColor: "text-black" },
+    { id: "currently", text: "currently", bg: "bg-white", textColor: "text-black" },
+    { id: "at", text: "at", bg: "bg-white", textColor: "text-black" },
+    { id: "Rocket mortgage", text: "Rocket mortgage", bg: "bg-white", textColor: "text-black" },
+    { id: "leading", text: "leading", bg: "bg-white", textColor: "text-black" },
+    { id: "design for", text: "design for", bg: "bg-white", textColor: "text-black" },
+    { id: "big bets", text: "big bets", bg: "bg-white", textColor: "text-black" },
+    { id: "&", text: "&", bg: "bg-white", textColor: "text-black" },
+    { id: "AI products", text: "AI products", bg: "bg-white", textColor: "text-black" }
+  ];
+
+  const getSubtext = (selectedId: string) => {
+    const subtexts: { [key: string]: string } = {
+      "oh hi": "Welcome to my portfolio! I'm a product designer passionate about creating meaningful experiences.",
+      "I am vamsi batchu": "I'm a product designer with 5+ years of experience in enterprise and consumer products.",
+      "product builder": "I specialize in building products from concept to launch, focusing on user-centered design.",
+      "with": "I work with cross-functional teams to deliver exceptional products that users love.",
+      "a high bar for": "I maintain high standards for visual design, user experience, and product quality.",
+      "visual design": "I create beautiful, functional interfaces that are both aesthetically pleasing and user-friendly.",
+      "skilled": "I'm skilled in design systems, prototyping, user research, and product strategy.",
+      "simplifying complexity": "I excel at breaking down complex problems into simple, elegant solutions.",
+      "and designing": "I design products that are intuitive, accessible, and delightful to use.",
+      "scalable": "I build scalable design systems and products that grow with business needs.",
+      "product experiences": "I create end-to-end product experiences that drive user engagement and business value.",
+      "currently": "I'm currently working on exciting projects that push the boundaries of product design.",
+      "at": "I'm based in Detroit, working with amazing teams to build the future of fintech.",
+      "Rocket mortgage": "I lead design initiatives at Rocket Mortgage, America's largest mortgage lender.",
+      "leading": "I lead design teams and initiatives that impact millions of users nationwide.",
+      "design for": "I design for big bets and AI products that transform the mortgage industry.",
+      "big bets": "I work on high-impact projects that have the potential to change entire industries.",
+      "&": "I collaborate with engineers, product managers, and stakeholders to deliver exceptional results.",
+      "AI products": "I design AI-powered products that make complex financial decisions simple and accessible."
+    };
+    return subtexts[selectedId] || "Select a text block to learn more about my work and experience.";
+  };
+
+  return (
+    <div className="w-[1440px] mx-auto mt-[40px] flex flex-col gap-[40px]">
+      {/* Main text blocks */}
+      <div className="flex flex-wrap gap-[30px] items-end justify-start w-full">
+        <div className="bg-white flex flex-wrap gap-[13px] items-start justify-start w-full">
+          {/* oh hi */}
+          <button 
+            onClick={() => setSelectedText("oh hi")}
+            className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-tl-[48px] cursor-pointer transition-colors ${
+              selectedText === "oh hi" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+              selectedText === "oh hi" ? "text-white" : "text-black"
+            }`}>
+              oh hi
+            </div>
+          </button>
+          
+          {/* I am vamsi batchu */}
+          <button 
+            onClick={() => setSelectedText("I am vamsi batchu")}
+            className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-tr-[48px] cursor-pointer transition-colors ${
+              selectedText === "I am vamsi batchu" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+              selectedText === "I am vamsi batchu" ? "text-white" : "text-black"
+            }`}>
+              I am vamsi batchu
+            </div>
+          </button>
+          
+          {/* product builder */}
+          <button 
+            onClick={() => setSelectedText("product builder")}
+            className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-[90px] cursor-pointer transition-colors ${
+              selectedText === "product builder" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+              selectedText === "product builder" ? "text-white" : "text-black"
+            }`}>
+              product builder
+            </div>
+          </button>
+          
+          {/* with */}
+          <button 
+            onClick={() => setSelectedText("with")}
+            className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-tl-[48px] rounded-tr-[48px] cursor-pointer transition-colors ${
+              selectedText === "with" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+              selectedText === "with" ? "text-white" : "text-black"
+            }`}>
+              with
+            </div>
+          </button>
+          
+          {/* a high bar for */}
+          <button 
+            onClick={() => setSelectedText("a high bar for")}
+            className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-[90px] cursor-pointer transition-colors ${
+              selectedText === "a high bar for" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+              selectedText === "a high bar for" ? "text-white" : "text-black"
+            }`}>
+              a high bar for
+            </div>
+          </button>
+          
+          {/* visual design */}
+          <button 
+            onClick={() => setSelectedText("visual design")}
+            className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-tr-[48px] cursor-pointer transition-colors ${
+              selectedText === "visual design" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+              selectedText === "visual design" ? "text-white" : "text-black"
+            }`}>
+              visual design
+            </div>
+          </button>
+          
+          {/* skilled */}
+          <button 
+            onClick={() => setSelectedText("skilled")}
+            className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-[60px] cursor-pointer transition-colors ${
+              selectedText === "skilled" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+              selectedText === "skilled" ? "text-white" : "text-black"
+            }`}>
+              skilled
+            </div>
+          </button>
+          
+          {/* simplifying complexity */}
+          <button 
+            onClick={() => setSelectedText("simplifying complexity")}
+            className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-tl-[48px] rounded-tr-[48px] cursor-pointer transition-colors ${
+              selectedText === "simplifying complexity" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+              selectedText === "simplifying complexity" ? "text-white" : "text-black"
+            }`}>
+              simplifying complexity
+            </div>
+          </button>
+          
+          {/* and designing */}
+          <button 
+            onClick={() => setSelectedText("and designing")}
+            className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-[70px] cursor-pointer transition-colors ${
+              selectedText === "and designing" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+              selectedText === "and designing" ? "text-white" : "text-black"
+            }`}>
+              and designing
+            </div>
+          </button>
+          
+          {/* scalable */}
+          <button 
+            onClick={() => setSelectedText("scalable")}
+            className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-br-[40px] rounded-tl-[48px] cursor-pointer transition-colors ${
+              selectedText === "scalable" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+              selectedText === "scalable" ? "text-white" : "text-black"
+            }`}>
+              scalable
+            </div>
+          </button>
+          
+          {/* product experiences */}
+          <button 
+            onClick={() => setSelectedText("product experiences")}
+            className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-tl-[48px] cursor-pointer transition-colors ${
+              selectedText === "product experiences" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+              selectedText === "product experiences" ? "text-white" : "text-black"
+            }`}>
+              product experiences
+            </div>
+          </button>
+          
+          {/* Decorative elements */}
+          <div className="relative w-[74.95px] h-[74.95px]">
+            <img 
+                  src="/images/newheader_svg1.svg" 
+                  alt="Handwritten note about current role at Rocket Mortgage"
+                  className="w-full h-full object-cover"
+              />
+          </div>
+          
+          <div className="relative w-[74.95px] h-[74.95px]">
+            <img 
+                  src="/images/newheader_svg2.svg" 
+                  alt="Handwritten note about current role at Rocket Mortgage"
+                  className="w-full h-full object-cover"
+              />
+          </div>
+          
+          {/* currently */}
+          <button 
+            onClick={() => setSelectedText("currently")}
+            className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-tr-[48px] cursor-pointer transition-colors ${
+              selectedText === "currently" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+              selectedText === "currently" ? "text-white" : "text-black"
+            }`}>
+              currently
+            </div>
+          </button>
+          
+          {/* at */}
+          <button 
+            onClick={() => setSelectedText("at")}
+            className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-tl-[48px] cursor-pointer transition-colors ${
+              selectedText === "at" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+              selectedText === "at" ? "text-white" : "text-black"
+            }`}>
+              at
+            </div>
+          </button>
+          
+          {/* Rocket mortgage */}
+          <button 
+            onClick={() => setSelectedText("Rocket mortgage")}
+            className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-[80px] cursor-pointer transition-colors ${
+              selectedText === "Rocket mortgage" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+              selectedText === "Rocket mortgage" ? "text-white" : "text-black"
+            }`}>
+              Rocket mortgage
+            </div>
+          </button>
+          
+          {/* leading */}
+          <button 
+            onClick={() => setSelectedText("leading")}
+            className={`border-2 border-black flex items-center justify-center p-[16.976px] cursor-pointer transition-colors ${
+              selectedText === "leading" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+              selectedText === "leading" ? "text-white" : "text-black"
+            }`}>
+              leading
+            </div>
+          </button>
+          
+          {/* design for */}
+          <button 
+            onClick={() => setSelectedText("design for")}
+            className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-bl-[48px] cursor-pointer transition-colors ${
+              selectedText === "design for" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+              selectedText === "design for" ? "text-white" : "text-black"
+            }`}>
+              design for
+            </div>
+          </button>
+          
+          {/* big bets */}
+          <button 
+            onClick={() => setSelectedText("big bets")}
+            className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-bl-[48px] cursor-pointer transition-colors ${
+              selectedText === "big bets" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+              selectedText === "big bets" ? "text-white" : "text-black"
+            }`}>
+              big bets
+            </div>
+          </button>
+          
+          {/* & */}
+          <button 
+            onClick={() => setSelectedText("&")}
+            className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-br-[48px] cursor-pointer transition-colors ${
+              selectedText === "&" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+              selectedText === "&" ? "text-white" : "text-black"
+            }`}>
+              &
+            </div>
+          </button>
+          
+          {/* AI products */}
+          <button 
+            onClick={() => setSelectedText("AI products")}
+            className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-br-[48px] cursor-pointer transition-colors ${
+              selectedText === "AI products" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+              selectedText === "AI products" ? "text-white" : "text-black"
+            }`}>
+              AI products
+            </div>
+          </button>
+        </div>
+      </div>
+      
+      {/* Subtext */}
+      <div className={`${jakartaFont.variable} font-jakarta font-medium text-[18px] text-black flex gap-[64px]`}>
+        <div className="w-[400px] leading-[1.2]">
+          {getSubtext(selectedText)}
+        </div>
+        <div className="w-[400px] leading-[1.2]">
+          {getSubtext(selectedText)}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Home Header 2 Component
 function HomeHeader2() {
   return (
@@ -304,8 +658,11 @@ export default function HomePage() {
         {/* Home Header Section 
         <HomeHeader />*/}
         
-        {/* Home Header 2 Section */}
-        <HomeHeader2 />
+        {/* New Header Section */}
+        <NewHeader />
+        
+        {/* Home Header 2 Section 
+        <HomeHeader2 />*/}
         
         {/* Specialties Section */}
         <Specialties />
