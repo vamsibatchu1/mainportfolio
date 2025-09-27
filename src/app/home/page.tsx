@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import MainLayout from '../layout/MainLayout';
 import { jakartaFont, triFont, interFont } from '../fonts';
 import { Button } from '../../components/ui/button';
@@ -8,32 +8,257 @@ import { Expand, Building2 } from 'lucide-react';
 import { CaseStudyDialog } from '../components/casestudy_dialog';
 import { motion } from 'framer-motion';
 
+// Word arrays for rotating text functionality
+const wordArrays = {
+  productBuilder: [
+    "product builder",
+    "product designer", 
+    "design leader",
+    "systems thinker",
+    "strategic designer",
+    "experience architect",
+    "innovation driver",
+    "design strategist",
+    "creative technologist",
+    "product visionary",
+    "design innovator"
+  ],
+  
+  visualDesign: [
+    "visual design",
+    "design craft",
+    "interaction design",
+    "design excellence",
+    "user experience",
+    "design systems",
+    "product craft",
+    "design quality",
+    "UX craft",
+    "interface design",
+    "design standards"
+  ],
+  
+  skilled: [
+    "skilled",
+    "expert",
+    "strategic",
+    "visionary",
+    "experienced",
+    "masterful",
+    "exceptional",
+    "influential",
+    "proficient",
+    "passionate"
+  ],
+  
+  simplifyingComplexity: [
+    "simplifying complexity",
+    "navigating ambiguity",
+    "solving problems",
+    "driving innovation",
+    "creating clarity",
+    "transforming chaos",
+    "architecting solutions",
+    "tackling challenges",
+    "untangling problems",
+    "reframing challenges",
+    "orchestrating systems"
+  ],
+  
+  scalable: [
+    "scalable",
+    "intuitive",
+    "impactful",
+    "innovative",
+    "delightful",
+    "meaningful",
+    "transformative",
+    "cohesive",
+    "seamless",
+    "elegant",
+    "future-ready"
+  ],
+  
+  productExperiences: [
+    "product experiences",
+    "user experiences",
+    "digital solutions",
+    "design systems",
+    "customer journeys",
+    "platform experiences",
+    "service designs",
+    "product strategies",
+    "design frameworks",
+    "user interfaces"
+  ],
+  
+  leading: [
+    "leading",
+    "driving",
+    "shaping",
+    "pioneering",
+    "championing",
+    "architecting",
+    "influencing",
+    "spearheading",
+    "advancing",
+    "elevating",
+    "defining"
+  ],
+  
+  bigBets: [
+    "big bets",
+    "0→1 initiatives",
+    "strategic initiatives",
+    "complex problems",
+    "frontier domains",
+    "moonshot projects",
+    "critical initiatives",
+    "ambitious projects",
+    "new ventures",
+    "breakthrough ideas",
+    "transformative work"
+  ],
+  
+  aiProducts: [
+    "AI products",
+    "emerging tech",
+    "future platforms",
+    "ML experiences",
+    "autonomous systems",
+    "intelligent products",
+    "next-gen solutions",
+    "innovative platforms",
+    "cutting-edge tech",
+    "AI experiences",
+    "frontier technology"
+  ]
+};
+
 
 
 // New Header Component
 function NewHeader() {
-  const [selectedText, setSelectedText] = useState("oh hi");
+  const [selectedText, setSelectedText] = useState("I am vamsi batchu");
+  const [isPaused, setIsPaused] = useState(false);
+  const [hoveredBlock, setHoveredBlock] = useState<string | null>(null);
+  
+  // State for rotating text blocks
+  const [currentWordIndices, setCurrentWordIndices] = useState({
+    productBuilder: 0,
+    visualDesign: 0,
+    skilled: 0,
+    simplifyingComplexity: 0,
+    scalable: 0,
+    productExperiences: 0,
+    leading: 0,
+    bigBets: 0,
+    aiProducts: 0
+  });
+
+  // Define the order of blocks that should rotate
+  const rotatingBlocks = [
+    'productBuilder',
+    'visualDesign', 
+    'skilled',
+    'simplifyingComplexity',
+    'scalable',
+    'productExperiences',
+    'leading',
+    'bigBets',
+    'aiProducts'
+  ];
+
+  const [currentRotatingIndex, setCurrentRotatingIndex] = useState(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Get current text for each rotating block
+  const getCurrentText = (blockKey: string) => {
+    const words = wordArrays[blockKey as keyof typeof wordArrays];
+    const currentIndex = currentWordIndices[blockKey as keyof typeof currentWordIndices];
+    return words[currentIndex] || words[0];
+  };
+
+  // Rotate text function
+  const rotateText = () => {
+    if (isPaused || hoveredBlock) return;
+
+    const currentBlock = rotatingBlocks[currentRotatingIndex];
+    const words = wordArrays[currentBlock as keyof typeof wordArrays];
+    const currentIndex = currentWordIndices[currentBlock as keyof typeof currentWordIndices];
+    
+    // Move to next word in current block
+    const nextIndex = (currentIndex + 1) % words.length;
+    
+    setCurrentWordIndices(prev => ({
+      ...prev,
+      [currentBlock]: nextIndex
+    }));
+
+    // Move to next block after a delay
+    setTimeout(() => {
+      setCurrentRotatingIndex(prev => (prev + 1) % rotatingBlocks.length);
+    }, 3500); // 3.5 second pause between blocks
+  };
+
+  // Set up rotation interval
+  useEffect(() => {
+    if (!isPaused && !hoveredBlock) {
+      intervalRef.current = setInterval(rotateText, 4000); // 4 second intervals
+    } else {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isPaused, hoveredBlock, currentRotatingIndex, currentWordIndices]);
+
+  // Handle block selection
+  const handleBlockClick = (blockId: string) => {
+    setSelectedText(blockId);
+    setIsPaused(true);
+    
+    // Resume after 5 seconds of no interaction
+    setTimeout(() => {
+      setIsPaused(false);
+    }, 5000);
+  };
+
+  // Handle hover events
+  const handleBlockHover = (blockId: string) => {
+    setHoveredBlock(blockId);
+  };
+
+  const handleBlockLeave = () => {
+    setHoveredBlock(null);
+  };
 
   const textBlocks = [
-    { id: "oh hi", text: "oh hi", bg: "bg-white", textColor: "text-black" },
-    { id: "I am vamsi batchu", text: "I am vamsi batchu", bg: "bg-black", textColor: "text-white" },
-    { id: "product builder", text: "product builder", bg: "bg-white", textColor: "text-black" },
-    { id: "with", text: "with", bg: "bg-white", textColor: "text-black" },
-    { id: "a high bar for", text: "a high bar for", bg: "bg-white", textColor: "text-black" },
-    { id: "visual design", text: "visual design", bg: "bg-white", textColor: "text-black" },
-    { id: "skilled", text: "skilled", bg: "bg-white", textColor: "text-black" },
-    { id: "simplifying complexity", text: "simplifying complexity", bg: "bg-white", textColor: "text-black" },
-    { id: "and designing", text: "and designing", bg: "bg-white", textColor: "text-black" },
-    { id: "scalable", text: "scalable", bg: "bg-white", textColor: "text-black" },
-    { id: "product experiences", text: "product experiences", bg: "bg-white", textColor: "text-black" },
-    { id: "currently", text: "currently", bg: "bg-white", textColor: "text-black" },
-    { id: "at", text: "at", bg: "bg-white", textColor: "text-black" },
-    { id: "Rocket mortgage", text: "Rocket mortgage", bg: "bg-white", textColor: "text-black" },
-    { id: "leading", text: "leading", bg: "bg-white", textColor: "text-black" },
-    { id: "design for", text: "design for", bg: "bg-white", textColor: "text-black" },
-    { id: "big bets", text: "big bets", bg: "bg-white", textColor: "text-black" },
-    { id: "&", text: "&", bg: "bg-white", textColor: "text-black" },
-    { id: "AI products", text: "AI products", bg: "bg-white", textColor: "text-black" }
+    { id: "oh hi", text: "oh hi", bg: "bg-white", textColor: "text-black", isRotating: false },
+    { id: "I am vamsi batchu", text: "I am vamsi batchu", bg: "bg-black", textColor: "text-white", isRotating: false },
+    { id: "product builder", text: getCurrentText('productBuilder'), bg: "bg-white", textColor: "text-black", isRotating: true, rotationKey: 'productBuilder' },
+    { id: "with", text: "with", bg: "bg-white", textColor: "text-black", isRotating: false },
+    { id: "a high bar for", text: "a high bar for", bg: "bg-white", textColor: "text-black", isRotating: false },
+    { id: "visual design", text: getCurrentText('visualDesign'), bg: "bg-white", textColor: "text-black", isRotating: true, rotationKey: 'visualDesign' },
+    { id: "skilled", text: getCurrentText('skilled'), bg: "bg-white", textColor: "text-black", isRotating: true, rotationKey: 'skilled' },
+    { id: "simplifying complexity", text: getCurrentText('simplifyingComplexity'), bg: "bg-white", textColor: "text-black", isRotating: true, rotationKey: 'simplifyingComplexity' },
+    { id: "and designing", text: "and designing", bg: "bg-white", textColor: "text-black", isRotating: false },
+    { id: "scalable", text: getCurrentText('scalable'), bg: "bg-white", textColor: "text-black", isRotating: true, rotationKey: 'scalable' },
+    { id: "product experiences", text: getCurrentText('productExperiences'), bg: "bg-white", textColor: "text-black", isRotating: true, rotationKey: 'productExperiences' },
+    { id: "currently", text: "currently", bg: "bg-white", textColor: "text-black", isRotating: false },
+    { id: "at", text: "at", bg: "bg-white", textColor: "text-black", isRotating: false },
+    { id: "Rocket mortgage", text: "Rocket mortgage", bg: "bg-white", textColor: "text-black", isRotating: false },
+    { id: "leading", text: getCurrentText('leading'), bg: "bg-white", textColor: "text-black", isRotating: true, rotationKey: 'leading' },
+    { id: "design for", text: "design for", bg: "bg-white", textColor: "text-black", isRotating: false },
+    { id: "big bets", text: getCurrentText('bigBets'), bg: "bg-white", textColor: "text-black", isRotating: true, rotationKey: 'bigBets' },
+    { id: "&", text: "&", bg: "bg-white", textColor: "text-black", isRotating: false },
+    { id: "AI products", text: getCurrentText('aiProducts'), bg: "bg-white", textColor: "text-black", isRotating: true, rotationKey: 'aiProducts' }
   ];
 
   const getSubtext = (selectedId: string) => {
@@ -68,7 +293,9 @@ function NewHeader() {
         <div className="bg-white flex flex-wrap gap-[13px] items-start justify-start w-full">
           {/* oh hi */}
           <button 
-            onClick={() => setSelectedText("oh hi")}
+            onClick={() => handleBlockClick("oh hi")}
+            onMouseEnter={() => handleBlockHover("oh hi")}
+            onMouseLeave={handleBlockLeave}
             className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-tl-[48px] cursor-pointer transition-colors ${
               selectedText === "oh hi" ? "bg-black" : "bg-white"
             }`}
@@ -82,7 +309,9 @@ function NewHeader() {
           
           {/* I am vamsi batchu */}
           <button 
-            onClick={() => setSelectedText("I am vamsi batchu")}
+            onClick={() => handleBlockClick("I am vamsi batchu")}
+            onMouseEnter={() => handleBlockHover("I am vamsi batchu")}
+            onMouseLeave={handleBlockLeave}
             className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-tr-[48px] cursor-pointer transition-colors ${
               selectedText === "I am vamsi batchu" ? "bg-black" : "bg-white"
             }`}
@@ -96,21 +325,32 @@ function NewHeader() {
           
           {/* product builder */}
           <button 
-            onClick={() => setSelectedText("product builder")}
+            onClick={() => handleBlockClick("product builder")}
+            onMouseEnter={() => handleBlockHover("product builder")}
+            onMouseLeave={handleBlockLeave}
             className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-[90px] cursor-pointer transition-colors ${
               selectedText === "product builder" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
-              selectedText === "product builder" ? "text-white" : "text-black"
-            }`}>
-              product builder
-            </div>
+            <motion.div 
+              key={getCurrentText('productBuilder')}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+                selectedText === "product builder" ? "text-white" : "text-black"
+              }`}
+            >
+              {getCurrentText('productBuilder')}
+            </motion.div>
           </button>
           
           {/* with */}
           <button 
-            onClick={() => setSelectedText("with")}
+            onClick={() => handleBlockClick("with")}
+            onMouseEnter={() => handleBlockHover("with")}
+            onMouseLeave={handleBlockLeave}
             className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-tl-[48px] rounded-tr-[48px] cursor-pointer transition-colors ${
               selectedText === "with" ? "bg-black" : "bg-white"
             }`}
@@ -124,7 +364,9 @@ function NewHeader() {
           
           {/* a high bar for */}
           <button 
-            onClick={() => setSelectedText("a high bar for")}
+            onClick={() => handleBlockClick("a high bar for")}
+            onMouseEnter={() => handleBlockHover("a high bar for")}
+            onMouseLeave={handleBlockLeave}
             className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-[90px] cursor-pointer transition-colors ${
               selectedText === "a high bar for" ? "bg-black" : "bg-white"
             }`}
@@ -138,49 +380,78 @@ function NewHeader() {
           
           {/* visual design */}
           <button 
-            onClick={() => setSelectedText("visual design")}
+            onClick={() => handleBlockClick("visual design")}
+            onMouseEnter={() => handleBlockHover("visual design")}
+            onMouseLeave={handleBlockLeave}
             className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-tr-[48px] cursor-pointer transition-colors ${
               selectedText === "visual design" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
-              selectedText === "visual design" ? "text-white" : "text-black"
-            }`}>
-              visual design
-            </div>
+            <motion.div 
+              key={getCurrentText('visualDesign')}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+                selectedText === "visual design" ? "text-white" : "text-black"
+              }`}
+            >
+              {getCurrentText('visualDesign')}
+            </motion.div>
           </button>
           
           {/* skilled */}
           <button 
-            onClick={() => setSelectedText("skilled")}
+            onClick={() => handleBlockClick("skilled")}
+            onMouseEnter={() => handleBlockHover("skilled")}
+            onMouseLeave={handleBlockLeave}
             className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-[60px] cursor-pointer transition-colors ${
               selectedText === "skilled" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
-              selectedText === "skilled" ? "text-white" : "text-black"
-            }`}>
-              skilled
-            </div>
+            <motion.div 
+              key={getCurrentText('skilled')}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+                selectedText === "skilled" ? "text-white" : "text-black"
+              }`}
+            >
+              {getCurrentText('skilled')}
+            </motion.div>
           </button>
           
           {/* simplifying complexity */}
           <button 
-            onClick={() => setSelectedText("simplifying complexity")}
+            onClick={() => handleBlockClick("simplifying complexity")}
+            onMouseEnter={() => handleBlockHover("simplifying complexity")}
+            onMouseLeave={handleBlockLeave}
             className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-tl-[48px] rounded-tr-[48px] cursor-pointer transition-colors ${
               selectedText === "simplifying complexity" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
-              selectedText === "simplifying complexity" ? "text-white" : "text-black"
-            }`}>
-              simplifying complexity
-            </div>
+            <motion.div 
+              key={getCurrentText('simplifyingComplexity')}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+                selectedText === "simplifying complexity" ? "text-white" : "text-black"
+              }`}
+            >
+              {getCurrentText('simplifyingComplexity')}
+            </motion.div>
           </button>
           
           {/* and designing */}
           <button 
-            onClick={() => setSelectedText("and designing")}
+            onClick={() => handleBlockClick("and designing")}
+            onMouseEnter={() => handleBlockHover("and designing")}
+            onMouseLeave={handleBlockLeave}
             className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-[70px] cursor-pointer transition-colors ${
               selectedText === "and designing" ? "bg-black" : "bg-white"
             }`}
@@ -194,30 +465,48 @@ function NewHeader() {
           
           {/* scalable */}
           <button 
-            onClick={() => setSelectedText("scalable")}
+            onClick={() => handleBlockClick("scalable")}
+            onMouseEnter={() => handleBlockHover("scalable")}
+            onMouseLeave={handleBlockLeave}
             className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-br-[40px] rounded-tl-[48px] cursor-pointer transition-colors ${
               selectedText === "scalable" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
-              selectedText === "scalable" ? "text-white" : "text-black"
-            }`}>
-              scalable
-            </div>
+            <motion.div 
+              key={getCurrentText('scalable')}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+                selectedText === "scalable" ? "text-white" : "text-black"
+              }`}
+            >
+              {getCurrentText('scalable')}
+            </motion.div>
           </button>
           
           {/* product experiences */}
           <button 
-            onClick={() => setSelectedText("product experiences")}
+            onClick={() => handleBlockClick("product experiences")}
+            onMouseEnter={() => handleBlockHover("product experiences")}
+            onMouseLeave={handleBlockLeave}
             className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-tl-[48px] cursor-pointer transition-colors ${
               selectedText === "product experiences" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
-              selectedText === "product experiences" ? "text-white" : "text-black"
-            }`}>
-              product experiences
-            </div>
+            <motion.div 
+              key={getCurrentText('productExperiences')}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+                selectedText === "product experiences" ? "text-white" : "text-black"
+              }`}
+            >
+              {getCurrentText('productExperiences')}
+            </motion.div>
           </button>
           
           {/* Decorative elements */}
@@ -239,7 +528,9 @@ function NewHeader() {
           
           {/* currently */}
           <button 
-            onClick={() => setSelectedText("currently")}
+            onClick={() => handleBlockClick("currently")}
+            onMouseEnter={() => handleBlockHover("currently")}
+            onMouseLeave={handleBlockLeave}
             className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-tr-[48px] cursor-pointer transition-colors ${
               selectedText === "currently" ? "bg-black" : "bg-white"
             }`}
@@ -253,7 +544,9 @@ function NewHeader() {
           
           {/* at */}
           <button 
-            onClick={() => setSelectedText("at")}
+            onClick={() => handleBlockClick("at")}
+            onMouseEnter={() => handleBlockHover("at")}
+            onMouseLeave={handleBlockLeave}
             className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-tl-[48px] cursor-pointer transition-colors ${
               selectedText === "at" ? "bg-black" : "bg-white"
             }`}
@@ -267,7 +560,9 @@ function NewHeader() {
           
           {/* Rocket mortgage */}
           <button 
-            onClick={() => setSelectedText("Rocket mortgage")}
+            onClick={() => handleBlockClick("Rocket mortgage")}
+            onMouseEnter={() => handleBlockHover("Rocket mortgage")}
+            onMouseLeave={handleBlockLeave}
             className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-[80px] cursor-pointer transition-colors ${
               selectedText === "Rocket mortgage" ? "bg-black" : "bg-white"
             }`}
@@ -281,21 +576,32 @@ function NewHeader() {
           
           {/* leading */}
           <button 
-            onClick={() => setSelectedText("leading")}
+            onClick={() => handleBlockClick("leading")}
+            onMouseEnter={() => handleBlockHover("leading")}
+            onMouseLeave={handleBlockLeave}
             className={`border-2 border-black flex items-center justify-center p-[16.976px] cursor-pointer transition-colors ${
               selectedText === "leading" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
-              selectedText === "leading" ? "text-white" : "text-black"
-            }`}>
-              leading
-            </div>
+            <motion.div 
+              key={getCurrentText('leading')}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+                selectedText === "leading" ? "text-white" : "text-black"
+              }`}
+            >
+              {getCurrentText('leading')}
+            </motion.div>
           </button>
           
           {/* design for */}
           <button 
-            onClick={() => setSelectedText("design for")}
+            onClick={() => handleBlockClick("design for")}
+            onMouseEnter={() => handleBlockHover("design for")}
+            onMouseLeave={handleBlockLeave}
             className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-bl-[48px] cursor-pointer transition-colors ${
               selectedText === "design for" ? "bg-black" : "bg-white"
             }`}
@@ -309,21 +615,32 @@ function NewHeader() {
           
           {/* big bets */}
           <button 
-            onClick={() => setSelectedText("big bets")}
+            onClick={() => handleBlockClick("big bets")}
+            onMouseEnter={() => handleBlockHover("big bets")}
+            onMouseLeave={handleBlockLeave}
             className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-bl-[48px] cursor-pointer transition-colors ${
               selectedText === "big bets" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
-              selectedText === "big bets" ? "text-white" : "text-black"
-            }`}>
-              big bets
-            </div>
+            <motion.div 
+              key={getCurrentText('bigBets')}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+                selectedText === "big bets" ? "text-white" : "text-black"
+              }`}
+            >
+              {getCurrentText('bigBets')}
+            </motion.div>
           </button>
           
           {/* & */}
           <button 
-            onClick={() => setSelectedText("&")}
+            onClick={() => handleBlockClick("&")}
+            onMouseEnter={() => handleBlockHover("&")}
+            onMouseLeave={handleBlockLeave}
             className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-br-[48px] cursor-pointer transition-colors ${
               selectedText === "&" ? "bg-black" : "bg-white"
             }`}
@@ -337,16 +654,25 @@ function NewHeader() {
           
           {/* AI products */}
           <button 
-            onClick={() => setSelectedText("AI products")}
+            onClick={() => handleBlockClick("AI products")}
+            onMouseEnter={() => handleBlockHover("AI products")}
+            onMouseLeave={handleBlockLeave}
             className={`border-2 border-black flex items-center justify-center p-[16.976px] rounded-br-[48px] cursor-pointer transition-colors ${
               selectedText === "AI products" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
-              selectedText === "AI products" ? "text-white" : "text-black"
-            }`}>
-              AI products
-            </div>
+            <motion.div 
+              key={getCurrentText('aiProducts')}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+                selectedText === "AI products" ? "text-white" : "text-black"
+              }`}
+            >
+              {getCurrentText('aiProducts')}
+            </motion.div>
           </button>
         </div>
       </div>
