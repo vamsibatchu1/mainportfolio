@@ -7,6 +7,7 @@ import { Button } from '../../components/ui/button';
 import { Expand, Building2 } from 'lucide-react';
 import { CaseStudyDialog } from '../components/casestudy_dialog';
 import { motion } from 'framer-motion';
+import TextRotate from '../components/text-rotate';
 
 // Word arrays for rotating text functionality
 const wordArrays = {
@@ -142,19 +143,6 @@ function NewHeader() {
   const [selectedText, setSelectedText] = useState("I am vamsi batchu");
   const [isPaused, setIsPaused] = useState(false);
   const [hoveredBlock, setHoveredBlock] = useState<string | null>(null);
-  
-  // State for rotating text blocks
-  const [currentWordIndices, setCurrentWordIndices] = useState({
-    productBuilder: 0,
-    visualDesign: 0,
-    skilled: 0,
-    simplifyingComplexity: 0,
-    scalable: 0,
-    productExperiences: 0,
-    leading: 0,
-    bigBets: 0,
-    aiProducts: 0
-  });
 
   // Define the order of blocks that should rotate
   const rotatingBlocks = [
@@ -172,39 +160,25 @@ function NewHeader() {
   const [currentRotatingIndex, setCurrentRotatingIndex] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Get current text for each rotating block
-  const getCurrentText = (blockKey: string) => {
-    const words = wordArrays[blockKey as keyof typeof wordArrays];
-    const currentIndex = currentWordIndices[blockKey as keyof typeof currentWordIndices];
-    return words[currentIndex] || words[0];
-  };
+  // Refs for TextRotate components
+  const textRotateRefs = useRef<{ [key: string]: any }>({});
 
-  // Rotate text function
-  const rotateText = () => {
-    if (isPaused || hoveredBlock) return;
-
-    const currentBlock = rotatingBlocks[currentRotatingIndex];
-    const words = wordArrays[currentBlock as keyof typeof wordArrays];
-    const currentIndex = currentWordIndices[currentBlock as keyof typeof currentWordIndices];
-    
-    // Move to next word in current block
-    const nextIndex = (currentIndex + 1) % words.length;
-    
-    setCurrentWordIndices(prev => ({
-      ...prev,
-      [currentBlock]: nextIndex
-    }));
-
-    // Move to next block after a delay
-    setTimeout(() => {
-      setCurrentRotatingIndex(prev => (prev + 1) % rotatingBlocks.length);
-    }, 3500); // 3.5 second pause between blocks
-  };
-
-  // Set up rotation interval
+  // Set up rotation interval - only one block should auto-rotate at a time
   useEffect(() => {
     if (!isPaused && !hoveredBlock) {
-      intervalRef.current = setInterval(rotateText, 4000); // 4 second intervals
+      intervalRef.current = setInterval(() => {
+        const currentBlock = rotatingBlocks[currentRotatingIndex];
+        const ref = textRotateRefs.current[currentBlock];
+        
+        if (ref) {
+          ref.next();
+        }
+        
+        // Move to next block after a delay
+        setTimeout(() => {
+          setCurrentRotatingIndex(prev => (prev + 1) % rotatingBlocks.length);
+        }, 500); // 3.5 second pause between blocks
+      }, 1200); // 4 second intervals
     } else {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -217,7 +191,7 @@ function NewHeader() {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isPaused, hoveredBlock, currentRotatingIndex, currentWordIndices]);
+  }, [isPaused, hoveredBlock, currentRotatingIndex]);
 
   // Handle block selection
   const handleBlockClick = (blockId: string) => {
@@ -239,27 +213,6 @@ function NewHeader() {
     setHoveredBlock(null);
   };
 
-  const textBlocks = [
-    { id: "oh hi", text: "oh hi", bg: "bg-white", textColor: "text-black", isRotating: false },
-    { id: "I am vamsi batchu", text: "I am vamsi batchu", bg: "bg-black", textColor: "text-white", isRotating: false },
-    { id: "product builder", text: getCurrentText('productBuilder'), bg: "bg-white", textColor: "text-black", isRotating: true, rotationKey: 'productBuilder' },
-    { id: "with", text: "with", bg: "bg-white", textColor: "text-black", isRotating: false },
-    { id: "a high bar for", text: "a high bar for", bg: "bg-white", textColor: "text-black", isRotating: false },
-    { id: "visual design", text: getCurrentText('visualDesign'), bg: "bg-white", textColor: "text-black", isRotating: true, rotationKey: 'visualDesign' },
-    { id: "skilled", text: getCurrentText('skilled'), bg: "bg-white", textColor: "text-black", isRotating: true, rotationKey: 'skilled' },
-    { id: "simplifying complexity", text: getCurrentText('simplifyingComplexity'), bg: "bg-white", textColor: "text-black", isRotating: true, rotationKey: 'simplifyingComplexity' },
-    { id: "and designing", text: "and designing", bg: "bg-white", textColor: "text-black", isRotating: false },
-    { id: "scalable", text: getCurrentText('scalable'), bg: "bg-white", textColor: "text-black", isRotating: true, rotationKey: 'scalable' },
-    { id: "product experiences", text: getCurrentText('productExperiences'), bg: "bg-white", textColor: "text-black", isRotating: true, rotationKey: 'productExperiences' },
-    { id: "currently", text: "currently", bg: "bg-white", textColor: "text-black", isRotating: false },
-    { id: "at", text: "at", bg: "bg-white", textColor: "text-black", isRotating: false },
-    { id: "Rocket mortgage", text: "Rocket mortgage", bg: "bg-white", textColor: "text-black", isRotating: false },
-    { id: "leading", text: getCurrentText('leading'), bg: "bg-white", textColor: "text-black", isRotating: true, rotationKey: 'leading' },
-    { id: "design for", text: "design for", bg: "bg-white", textColor: "text-black", isRotating: false },
-    { id: "big bets", text: getCurrentText('bigBets'), bg: "bg-white", textColor: "text-black", isRotating: true, rotationKey: 'bigBets' },
-    { id: "&", text: "&", bg: "bg-white", textColor: "text-black", isRotating: false },
-    { id: "AI products", text: getCurrentText('aiProducts'), bg: "bg-white", textColor: "text-black", isRotating: true, rotationKey: 'aiProducts' }
-  ];
 
   const getSubtext = (selectedId: string) => {
     const subtexts: { [key: string]: string } = {
@@ -332,18 +285,21 @@ function NewHeader() {
               selectedText === "product builder" ? "bg-black" : "bg-white"
             }`}
           >
-            <motion.div 
-              key={getCurrentText('productBuilder')}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+            <TextRotate
+              ref={(ref) => { textRotateRefs.current['productBuilder'] = ref; }}
+              texts={wordArrays.productBuilder}
+              auto={false}
+              mainClassName={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
                 selectedText === "product builder" ? "text-white" : "text-black"
               }`}
-            >
-              {getCurrentText('productBuilder')}
-            </motion.div>
+              staggerFrom="last"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-120%" }}
+              staggerDuration={0.025}
+              splitLevelClassName="overflow-hidden"
+              transition={{ type: "spring", damping: 30, stiffness: 400 }}
+            />
           </button>
           
           {/* with */}
@@ -387,18 +343,21 @@ function NewHeader() {
               selectedText === "visual design" ? "bg-black" : "bg-white"
             }`}
           >
-            <motion.div 
-              key={getCurrentText('visualDesign')}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+            <TextRotate
+              ref={(ref) => { textRotateRefs.current['visualDesign'] = ref; }}
+              texts={wordArrays.visualDesign}
+              auto={false}
+              mainClassName={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
                 selectedText === "visual design" ? "text-white" : "text-black"
               }`}
-            >
-              {getCurrentText('visualDesign')}
-            </motion.div>
+              staggerFrom="last"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-120%" }}
+              staggerDuration={0.025}
+              splitLevelClassName="overflow-hidden"
+              transition={{ type: "spring", damping: 30, stiffness: 400 }}
+            />
           </button>
           
           {/* skilled */}
@@ -410,18 +369,21 @@ function NewHeader() {
               selectedText === "skilled" ? "bg-black" : "bg-white"
             }`}
           >
-            <motion.div 
-              key={getCurrentText('skilled')}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+            <TextRotate
+              ref={(ref) => { textRotateRefs.current['skilled'] = ref; }}
+              texts={wordArrays.skilled}
+              auto={false}
+              mainClassName={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
                 selectedText === "skilled" ? "text-white" : "text-black"
               }`}
-            >
-              {getCurrentText('skilled')}
-            </motion.div>
+              staggerFrom="last"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-120%" }}
+              staggerDuration={0.025}
+              splitLevelClassName="overflow-hidden"
+              transition={{ type: "spring", damping: 30, stiffness: 400 }}
+            />
           </button>
           
           {/* simplifying complexity */}
@@ -433,18 +395,21 @@ function NewHeader() {
               selectedText === "simplifying complexity" ? "bg-black" : "bg-white"
             }`}
           >
-            <motion.div 
-              key={getCurrentText('simplifyingComplexity')}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+            <TextRotate
+              ref={(ref) => { textRotateRefs.current['simplifyingComplexity'] = ref; }}
+              texts={wordArrays.simplifyingComplexity}
+              auto={false}
+              mainClassName={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
                 selectedText === "simplifying complexity" ? "text-white" : "text-black"
               }`}
-            >
-              {getCurrentText('simplifyingComplexity')}
-            </motion.div>
+              staggerFrom="last"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-120%" }}
+              staggerDuration={0.025}
+              splitLevelClassName="overflow-hidden"
+              transition={{ type: "spring", damping: 30, stiffness: 400 }}
+            />
           </button>
           
           {/* and designing */}
@@ -472,18 +437,21 @@ function NewHeader() {
               selectedText === "scalable" ? "bg-black" : "bg-white"
             }`}
           >
-            <motion.div 
-              key={getCurrentText('scalable')}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+            <TextRotate
+              ref={(ref) => { textRotateRefs.current['scalable'] = ref; }}
+              texts={wordArrays.scalable}
+              auto={false}
+              mainClassName={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
                 selectedText === "scalable" ? "text-white" : "text-black"
               }`}
-            >
-              {getCurrentText('scalable')}
-            </motion.div>
+              staggerFrom="last"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-120%" }}
+              staggerDuration={0.025}
+              splitLevelClassName="overflow-hidden"
+              transition={{ type: "spring", damping: 30, stiffness: 400 }}
+            />
           </button>
           
           {/* product experiences */}
@@ -495,18 +463,21 @@ function NewHeader() {
               selectedText === "product experiences" ? "bg-black" : "bg-white"
             }`}
           >
-            <motion.div 
-              key={getCurrentText('productExperiences')}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+            <TextRotate
+              ref={(ref) => { textRotateRefs.current['productExperiences'] = ref; }}
+              texts={wordArrays.productExperiences}
+              auto={false}
+              mainClassName={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
                 selectedText === "product experiences" ? "text-white" : "text-black"
               }`}
-            >
-              {getCurrentText('productExperiences')}
-            </motion.div>
+              staggerFrom="last"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-120%" }}
+              staggerDuration={0.025}
+              splitLevelClassName="overflow-hidden"
+              transition={{ type: "spring", damping: 30, stiffness: 400 }}
+            />
           </button>
           
           {/* Decorative elements */}
@@ -583,18 +554,21 @@ function NewHeader() {
               selectedText === "leading" ? "bg-black" : "bg-white"
             }`}
           >
-            <motion.div 
-              key={getCurrentText('leading')}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+            <TextRotate
+              ref={(ref) => { textRotateRefs.current['leading'] = ref; }}
+              texts={wordArrays.leading}
+              auto={false}
+              mainClassName={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
                 selectedText === "leading" ? "text-white" : "text-black"
               }`}
-            >
-              {getCurrentText('leading')}
-            </motion.div>
+              staggerFrom="last"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-120%" }}
+              staggerDuration={0.025}
+              splitLevelClassName="overflow-hidden"
+              transition={{ type: "spring", damping: 30, stiffness: 400 }}
+            />
           </button>
           
           {/* design for */}
@@ -622,18 +596,21 @@ function NewHeader() {
               selectedText === "big bets" ? "bg-black" : "bg-white"
             }`}
           >
-            <motion.div 
-              key={getCurrentText('bigBets')}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+            <TextRotate
+              ref={(ref) => { textRotateRefs.current['bigBets'] = ref; }}
+              texts={wordArrays.bigBets}
+              auto={false}
+              mainClassName={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
                 selectedText === "big bets" ? "text-white" : "text-black"
               }`}
-            >
-              {getCurrentText('bigBets')}
-            </motion.div>
+              staggerFrom="last"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-120%" }}
+              staggerDuration={0.025}
+              splitLevelClassName="overflow-hidden"
+              transition={{ type: "spring", damping: 30, stiffness: 400 }}
+            />
           </button>
           
           {/* & */}
@@ -661,18 +638,21 @@ function NewHeader() {
               selectedText === "AI products" ? "bg-black" : "bg-white"
             }`}
           >
-            <motion.div 
-              key={getCurrentText('aiProducts')}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
+            <TextRotate
+              ref={(ref) => { textRotateRefs.current['aiProducts'] = ref; }}
+              texts={wordArrays.aiProducts}
+              auto={false}
+              mainClassName={`${jakartaFont.variable} font-jakarta font-bold text-[37.348px] tracking-[-1.4939px] leading-[1.1] ${
                 selectedText === "AI products" ? "text-white" : "text-black"
               }`}
-            >
-              {getCurrentText('aiProducts')}
-            </motion.div>
+              staggerFrom="last"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-120%" }}
+              staggerDuration={0.025}
+              splitLevelClassName="overflow-hidden"
+              transition={{ type: "spring", damping: 30, stiffness: 400 }}
+            />
           </button>
         </div>
       </div>
