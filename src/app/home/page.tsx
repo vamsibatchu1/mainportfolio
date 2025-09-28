@@ -5,7 +5,7 @@ import { HomeHero, HomeHighlights, HomeCaseStudy2, HomeCaseStudy1 } from './comp
 export default function HomePage() {
   return (
     <MainLayout>
-      <div className="w-full flex flex-col gap-[96px]">
+      <div className="w-full flex flex-col gap-[64px]">
         {/* Home Hero Section */}
         <HomeHero />
         

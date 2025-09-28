@@ -5,23 +5,31 @@ import { jakartaFont } from '../fonts';
 import { cn } from '@/lib/utils';
 import { LucideIcon } from 'lucide-react';
 
-// Brand symbol component with customizable color
+// Brand symbol component with customizable color and size
 interface BrandSymbolProps {
   color?: string;
+  size?: number; // Size in pixels (will be used for both width and height)
   className?: string;
 }
 
 const BrandSymbol: React.FC<BrandSymbolProps> = ({ 
   color = '#f9c842', 
+  size = 20,
   className 
 }) => (
-  <div 
-    className={cn("shrink-0 size-[20px]", className)}
-    style={{ 
-      backgroundColor: color,
-      borderRadius: '200px 210px 200px 190px' // Custom border radius for the symbol shape
-    }}
-  />
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 20 20" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg"
+    className={cn("shrink-0", className)}
+  >
+    <path 
+      d="M0 9.5C0 4.2533 4.25329 0 9.5 0V0C15.299 0 20 4.70101 20 10.5V20H10.2564C4.59195 20 0 15.408 0 9.74359V9.5Z" 
+      fill={color}
+    />
+  </svg>
 );
 
 // Portfolio Button Variants
@@ -41,6 +49,7 @@ export interface PortfolioButtonProps extends React.ButtonHTMLAttributes<HTMLBut
   children?: React.ReactNode;
   icon?: LucideIcon;
   symbolColor?: string;
+  symbolSize?: number;
   className?: string;
 }
 
@@ -90,6 +99,7 @@ export const PortfolioButton: React.FC<PortfolioButtonProps> = ({
   children,
   icon: Icon,
   symbolColor = '#f9c842',
+  symbolSize = 20,
   className,
   ...props
 }) => {
@@ -112,7 +122,7 @@ export const PortfolioButton: React.FC<PortfolioButtonProps> = ({
       
       {/* Symbol (for symbol variants) */}
       {hasSymbol && (
-        <BrandSymbol color={symbolColor} />
+        <BrandSymbol color={symbolColor} size={symbolSize} />
       )}
       
       {/* Text content */}

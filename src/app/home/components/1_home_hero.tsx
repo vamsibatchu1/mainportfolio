@@ -150,7 +150,6 @@ export default function HomeHero() {
     'aiProducts'
   ];
 
-  const [currentRotatingIndex, setCurrentRotatingIndex] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Refs for TextRotate components
@@ -160,18 +159,15 @@ export default function HomeHero() {
   useEffect(() => {
     if (!isPaused && !hoveredBlock) {
       intervalRef.current = setInterval(() => {
-        const currentBlock = rotatingBlocks[currentRotatingIndex];
-        const ref = textRotateRefs.current[currentBlock];
+        // Randomly select a block to rotate
+        const randomIndex = Math.floor(Math.random() * rotatingBlocks.length);
+        const randomBlock = rotatingBlocks[randomIndex];
+        const ref = textRotateRefs.current[randomBlock];
         
         if (ref) {
           ref.next();
         }
-        
-        // Move to next block after a delay
-        setTimeout(() => {
-          setCurrentRotatingIndex(prev => (prev + 1) % rotatingBlocks.length);
-        }, 500); // 3.5 second pause between blocks
-      }, 1200); // 4 second intervals
+      }, 2200); // 1.2 second intervals
     } else {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -184,7 +180,7 @@ export default function HomeHero() {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isPaused, hoveredBlock, currentRotatingIndex]);
+  }, [isPaused, hoveredBlock]);
 
   // Handle block selection
   const handleBlockClick = (blockId: string) => {

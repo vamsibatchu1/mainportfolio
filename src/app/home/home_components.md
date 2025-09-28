@@ -8,8 +8,8 @@ The home page is organized into 4 main sections, each implemented as a separate 
 
 1. **HomeHero** (`1_home_hero.tsx`) - Hero section with interactive text blocks
 2. **HomeHighlights** (`2_home_highlights.tsx`) - Rotating specialties showcase
-3. **HomeCaseStudy2** (`3_home_casestudy2.tsx`) - Case study highlight with buttons
-4. **HomeCaseStudy1** (`4_home_casestudy1.tsx`) - Detailed case study with images
+3. **HomeCaseStudy1** (`3_home_casestudy1.tsx`) - Case study highlight with buttons
+4. **HomeCaseStudy2** (`4_home_casestudy2.tsx`) - Detailed case study with images
 
 ---
 
@@ -23,7 +23,7 @@ The hero section serves as the main introduction to the portfolio, featuring an 
 
 ### Key Features
 - **Interactive Text Blocks**: Multiple clickable text elements that rotate through different variations
-- **Auto-rotation**: Text blocks automatically cycle through different words/phrases
+- **Randomized Auto-rotation**: Text blocks automatically cycle through different words/phrases in random order
 - **Hover Effects**: Visual feedback when hovering over interactive elements
 - **Dynamic Subtext**: Contextual descriptions that change based on selected text block
 - **Responsive Design**: Adapts to different screen sizes
@@ -32,7 +32,7 @@ The hero section serves as the main introduction to the portfolio, featuring an 
 - **State Management**: Uses React hooks for managing selected text, rotation state, and hover effects
 - **Animation**: Framer Motion for smooth transitions and text rotation effects
 - **Typography**: Jakarta Sans font for consistent branding
-- **Auto-rotation Logic**: Implements a sophisticated rotation system that cycles through different text blocks
+- **Randomized Auto-rotation Logic**: Implements a randomized rotation system that selects any text block at 1.2-second intervals
 
 ### Text Rotation System
 The component includes 9 rotating text blocks with predefined word arrays:
@@ -45,6 +45,7 @@ The component includes 9 rotating text blocks with predefined word arrays:
 - **Click**: Selects a text block and pauses auto-rotation
 - **Hover**: Temporarily stops auto-rotation for that specific block
 - **Auto-resume**: Rotation resumes after 5 seconds of inactivity
+- **Randomized Timing**: Words rotate every 1.2 seconds in random order for dynamic engagement
 
 ---
 
@@ -83,35 +84,6 @@ Showcases the designer's core specialties through an auto-rotating carousel that
 **Function:** `HomeCaseStudy1()`
 
 ### Purpose
-Presents a case study highlight in a clean, structured layout with placeholder images, descriptive text, and interactive buttons using the portfolio button system.
-
-### Key Features
-- **Two-column Layout**: Large text on left, detailed content on right
-- **Image Placeholders**: Two gray placeholder areas for case study visuals
-- **Structured Content**: Main description, bullet points, and action buttons
-- **Portfolio Buttons**: Uses the custom button system with symbol, default, and icon variants
-
-### Content Structure
-- **Left Column**: Large headline text (38px) describing the case study
-- **Right Column**: 
-  - Detailed description (21px)
-  - Bullet points with key features (16px)
-  - Three action buttons (symbol, default, icon)
-
-### Technical Implementation
-- **Typography**: Jakarta Sans font with specific sizing and spacing
-- **Layout**: Flexbox-based responsive design
-- **Button Integration**: Uses portfolio button components with proper variants
-- **Icon Integration**: Lucide React icons (Airplay icon for icon button)
-
----
-
-## 4. HomeCaseStudy2 Component
-
-**File:** `4_home_casestudy2.tsx`  
-**Function:** `HomeCaseStudy2()`
-
-### Purpose
 Provides a detailed case study presentation with images, comprehensive text content, and interactive elements including a dialog system for additional information.
 
 ### Key Features
@@ -141,6 +113,35 @@ Provides a detailed case study presentation with images, comprehensive text cont
 - **Case Study Dialog**: Popup component for simplified explanations
 - **View Full Case Study**: Button for complete case study access
 - **Expand Button**: Icon-only button for additional actions
+
+---
+
+## 4. HomeCaseStudy2 Component
+
+**File:** `4_home_casestudy2.tsx`  
+**Function:** `HomeCaseStudy2()`
+
+### Purpose
+Presents a case study highlight in a clean, structured layout with placeholder images, descriptive text, and interactive buttons using the portfolio button system.
+
+### Key Features
+- **Two-column Layout**: Large text on left, detailed content on right
+- **Image Placeholders**: Two gray placeholder areas for case study visuals
+- **Structured Content**: Main description, bullet points, and action buttons
+- **Portfolio Buttons**: Uses the custom button system with symbol, default, and icon variants
+
+### Content Structure
+- **Left Column**: Large headline text (38px) describing the case study
+- **Right Column**: 
+  - Detailed description (21px)
+  - Bullet points with key features (16px)
+  - Three action buttons (symbol, default, icon)
+
+### Technical Implementation
+- **Typography**: Jakarta Sans font with specific sizing and spacing
+- **Layout**: Flexbox-based responsive design
+- **Button Integration**: Uses portfolio button components with proper variants
+- **Icon Integration**: Lucide React icons (Airplay icon for icon button)
 
 ---
 
@@ -174,10 +175,10 @@ Provides a detailed case study presentation with images, comprehensive text cont
 src/app/home/components/
 ├── 1_home_hero.tsx          # Hero section with interactive text
 ├── 2_home_highlights.tsx    # Rotating specialties showcase  
-├── 3_home_casestudy2.tsx    # Case study highlight
-├── 4_home_casestudy1.tsx    # Detailed case study
+├── 3_home_casestudy1.tsx    # Detailed case study with images
+├── 4_home_casestudy2.tsx    # Case study highlight with buttons
 ├── index.ts                 # Component exports
-└── components.md           # This documentation file
+└── home_components.md       # This documentation file
 ```
 
 ## Usage in Home Page
@@ -185,13 +186,13 @@ src/app/home/components/
 The components are imported and used in the following order in `src/app/home/page.tsx`:
 
 ```tsx
-import { HomeHero, HomeHighlights, HomeCaseStudy2, HomeCaseStudy1 } from './components';
+import { HomeHero, HomeHighlights, HomeCaseStudy1, HomeCaseStudy2 } from './components';
 
 // Used in sequence:
 <HomeHero />           // 1. Hero section
 <HomeHighlights />     // 2. Specialties showcase
-<HomeCaseStudy2 />     // 3. Case study highlight
-<HomeCaseStudy1 />     // 4. Detailed case study
+<HomeCaseStudy1 />     // 3. Detailed case study with images
+<HomeCaseStudy2 />     // 4. Case study highlight with buttons
 ```
 
 ## Dependencies
@@ -221,5 +222,6 @@ import { HomeHero, HomeHighlights, HomeCaseStudy2, HomeCaseStudy1 } from './comp
 ### Maintenance Notes
 - **Animation Timing**: Adjust delays if adding/removing components
 - **Content Updates**: Update text arrays in HomeHero for new rotation options
+- **Randomization Logic**: Auto-rotation timing (1.2s intervals) can be adjusted in HomeHero component
 - **Image Optimization**: Replace placeholder images with optimized assets
 - **Button Variants**: Extend portfolio button system as needed
