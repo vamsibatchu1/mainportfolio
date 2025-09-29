@@ -51,6 +51,7 @@ export function MainNav({ className = "" }: MainNavProps) {
   const navItems: NavItem[] = [
     { title: "Home", path: "/home" },
     { title: "Work", path: "/work" },
+    { title: "Highlights", path: "/highlights" },
     { title: "Experiments", path: "/play" },
     { title: "Writing", path: "/writing" },
     { title: "About", path: "/about" },
@@ -119,10 +120,7 @@ export function MainNav({ className = "" }: MainNavProps) {
                         {item.title}
                       </TextScramble>
                     ) : (
-                      <>
-                        {item.title}
-                        {active && <span className="animate-[blink_1s_ease-in-out_infinite]">|</span>}
-                      </>
+                      item.title
                     )}
                   </button>
                 </motion.div>

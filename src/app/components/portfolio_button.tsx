@@ -12,7 +12,7 @@ interface BrandSymbolProps {
   className?: string;
 }
 
-const BrandSymbol: React.FC<BrandSymbolProps> = ({ 
+export const BrandSymbol: React.FC<BrandSymbolProps> = ({ 
   color = '#f9c842', 
   size = 20,
   className 
