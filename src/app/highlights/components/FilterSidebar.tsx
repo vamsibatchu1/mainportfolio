@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Checkbox } from '@/components/ui/checkbox';
+import { PortfolioButton } from '../../components/portfolio_button';
 import { jakartaFont, interFont } from '@/app/fonts';
 
 interface FilterOption {
@@ -26,60 +26,56 @@ export default function FilterSidebar({ onFiltersChange }: FilterSidebarProps) {
       id: 'categories',
       title: 'Categories',
       options: [
-        { id: 'recents', label: 'Recents', isActive: true },
-        { id: 'home', label: 'Home', isActive: true },
-        { id: 'applications', label: 'Applications', isActive: false },
-        { id: 'desktop', label: 'Desktop', isActive: false },
-        { id: 'downloads', label: 'Downloads', isActive: false },
-        { id: 'documents', label: 'Documents', isActive: false },
+        { id: '0-1-products', label: '0-1 products', isActive: true },
+        { id: 'enterprise', label: 'enterprise', isActive: false },
+        { id: 'mobile', label: 'mobile', isActive: false },
+        { id: 'consumer', label: 'consumer', isActive: false },
+        { id: 'big-bets', label: 'big bets', isActive: false },
       ],
     },
     {
       id: 'screens',
       title: 'Screens',
       options: [
-        { id: 'recents', label: 'Recents', isActive: true },
-        { id: 'home', label: 'Home', isActive: true },
-        { id: 'applications', label: 'Applications', isActive: false },
-        { id: 'desktop', label: 'Desktop', isActive: false },
-        { id: 'downloads', label: 'Downloads', isActive: false },
-        { id: 'documents', label: 'Documents', isActive: false },
+        { id: '0-1-products', label: '0-1 products', isActive: false },
+        { id: 'enterprise', label: 'enterprise', isActive: false },
+        { id: 'mobile', label: 'mobile', isActive: false },
+        { id: 'consumer', label: 'consumer', isActive: false },
+        { id: 'big-bets', label: 'big bets', isActive: false },
       ],
     },
     {
       id: 'ui-elements',
-      title: 'UI Elements',
+      title: 'UI elements',
       options: [
-        { id: 'recents', label: 'Recents', isActive: true },
-        { id: 'home', label: 'Home', isActive: true },
-        { id: 'applications', label: 'Applications', isActive: false },
-        { id: 'desktop', label: 'Desktop', isActive: false },
-        { id: 'downloads', label: 'Downloads', isActive: false },
-        { id: 'documents', label: 'Documents', isActive: false },
+        { id: '0-1-products', label: '0-1 products', isActive: false },
+        { id: 'enterprise', label: 'enterprise', isActive: false },
+        { id: 'mobile', label: 'mobile', isActive: false },
+        { id: 'consumer', label: 'consumer', isActive: false },
+        { id: 'big-bets', label: 'big bets', isActive: false },
       ],
     },
     {
       id: 'flows',
       title: 'Flows',
       options: [
-        { id: 'recents', label: 'Recents', isActive: true },
-        { id: 'home', label: 'Home', isActive: true },
-        { id: 'applications', label: 'Applications', isActive: false },
-        { id: 'desktop', label: 'Desktop', isActive: false },
-        { id: 'downloads', label: 'Downloads', isActive: false },
-        { id: 'documents', label: 'Documents', isActive: false },
+        { id: '0-1-products', label: '0-1 products', isActive: false },
+        { id: 'enterprise', label: 'enterprise', isActive: false },
+        { id: 'mobile', label: 'mobile', isActive: false },
+        { id: 'consumer', label: 'consumer', isActive: false },
+        { id: 'big-bets', label: 'big bets', isActive: false },
       ],
     },
   ]);
 
-  const handleFilterChange = (categoryId: string, optionId: string, checked: boolean) => {
+  const handleFilterChange = (categoryId: string, optionId: string) => {
     setFilters(prev => {
       const updated = prev.map(category => {
         if (category.id === categoryId) {
           return {
             ...category,
             options: category.options.map(option => 
-              option.id === optionId ? { ...option, isActive: checked } : option
+              option.id === optionId ? { ...option, isActive: !option.isActive } : option
             ),
           };
         }
@@ -108,29 +104,22 @@ export default function FilterSidebar({ onFiltersChange }: FilterSidebarProps) {
 
       {/* Filter Categories */}
       {filters.map((category) => (
-        <div key={category.id} className="flex flex-col gap-4 w-full">
+        <div key={category.id} className="flex flex-col gap-2 w-full">
           <div className="flex flex-col w-full">
             <div className={`${interFont.className} font-normal text-sm text-neutral-500 leading-5 w-full`}>
               {category.title}
             </div>
           </div>
-          <div className="flex flex-col gap-2 w-full">
+          <div className="flex flex-wrap gap-2 w-full">
             {category.options.map((option) => (
-              <div key={option.id} className="flex items-center space-x-2">
-                <Checkbox
-                  id={`${category.id}-${option.id}`}
-                  checked={option.isActive}
-                  onCheckedChange={(checked) => 
-                    handleFilterChange(category.id, option.id, checked as boolean)
-                  }
-                />
-                <label
-                  htmlFor={`${category.id}-${option.id}`}
-                  className={`${interFont.className} text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer`}
-                >
-                  {option.label}
-                </label>
-              </div>
+              <PortfolioButton
+                key={option.id}
+                variant={option.isActive ? 'default-selected' : 'default'}
+                onClick={() => handleFilterChange(category.id, option.id)}
+                className="h-[36px]"
+              >
+                {option.label}
+              </PortfolioButton>
             ))}
           </div>
         </div>

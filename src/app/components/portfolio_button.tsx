@@ -54,7 +54,7 @@ export interface PortfolioButtonProps extends React.ButtonHTMLAttributes<HTMLBut
 }
 
 // Base button styles
-const baseStyles = "box-border content-stretch flex gap-[5.662px] items-center justify-center px-[12px] py-[8px] relative rounded-[42.899px] size-full transition-colors duration-200";
+const baseStyles = "box-border flex gap-[5.662px] items-center justify-center px-[12px] py-[8px] relative rounded-[42.899px] w-fit transition-colors duration-200";
 const textStyles = `${jakartaFont.variable} font-jakarta font-medium leading-[1.1] text-[16px] text-nowrap tracking-[-0.64px]`;
 const borderStyles = "absolute border border-black border-solid inset-0 pointer-events-none rounded-[42.899px]";
 
