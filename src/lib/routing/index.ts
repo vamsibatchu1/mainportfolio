@@ -1,2 +1,2 @@
-// Re-export all from dynamic-paths.ts
-export * from './dynamic-paths'; 
+// Routing utilities will be exported here
+export {}; 

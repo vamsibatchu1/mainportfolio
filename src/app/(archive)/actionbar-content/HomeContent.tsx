@@ -3,7 +3,7 @@
 // import { motion } from 'framer-motion'; // Removed unused import
 import { Link } from 'lucide-react';
 import type { MenuContentProps } from './types';
-import { secFont, triFont } from '@/lib/config/fonts';
+import { secFont, triFont } from '@/app/fonts';
 
 export function HomeContent({ /* isActive */ }: MenuContentProps) {
   const items = [

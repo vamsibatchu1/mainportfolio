@@ -3,7 +3,7 @@ import { CalendarIcon, FolderOpen, HomeIcon, MailIcon, PencilIcon, UserIcon } fr
 import { Metadata } from 'next';
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
-import { priFont, secFont, triFont } from '@/lib/config/fonts';
+import { priFont, secFont, triFont } from '@/app/fonts';
 import { interFont, jakartaFont, handjetFont } from '@/app/fonts';
 
 // Export metadata for SEO

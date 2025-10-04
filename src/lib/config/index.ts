@@ -1,2 +1,2 @@
-// Re-export all from fonts.ts
-export * from './fonts'; 
+// Config utilities will be exported here
+export {}; 

@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Send, Paperclip, Mic } from 'lucide-react';
 import type { MenuContentProps } from './types';
-import { triFont } from '@/lib/config/fonts';
+import { triFont } from '@/app/fonts';
 
 type Message = {
   id: number;

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { dynamicPaths } from './dynamic-paths';
+import { dynamicPaths } from './config/dynamic-paths';
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

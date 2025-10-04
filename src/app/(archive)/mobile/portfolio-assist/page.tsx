@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { jakartaFont, kodeMonoFont } from '@/app/fonts';
 import { Header, PromptSection, ChatArea, ChatMessage, ResponseContent } from './components';
-import { generateResponse } from '@/lib/gemini';
+import { ChatService } from '@/services/api/chat';
 import { Rocket, Wrench } from 'lucide-react';
 
 export default function PortfolioAssist() {
@@ -85,7 +85,7 @@ export default function PortfolioAssist() {
       setTimeout(async () => {
         // Get actual AI response from Gemini
         try {
-          const aiResponseText = await generateResponse(prompt);
+          const aiResponseText = await ChatService.sendMessage(prompt);
           
           // Check if we should add an info card based on the prompt
           const shouldAddCard = shouldIncludeInfoCard(prompt);

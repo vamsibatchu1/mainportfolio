@@ -1,8 +1,8 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { NextRequest, NextResponse } from 'next/server';
 
-// Initialize the Gemini AI with API key (server-side only)
-const genAI = new GoogleGenerativeAI('AIzaSyCNv9zQirdKcVSzh0q1BDqUBvT0SMb4n08');
+// Initialize the Gemini AI with API key from environment variables
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || '');
 const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
 
 export async function POST(request: NextRequest) {

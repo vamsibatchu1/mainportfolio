@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import type { MenuContentProps } from './types';
-import {secFont, triFont } from '@/lib/config/fonts';
+import { secFont, triFont } from '@/app/fonts';
 
 // Removed sample experiment data - not needed for new layout
 // const experiments = [...];

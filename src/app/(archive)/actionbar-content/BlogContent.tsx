@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import type { MenuContentProps } from './types';
-import { secFont, triFont } from '@/lib/config/fonts';
+import { secFont, triFont } from '@/app/fonts';
 
 // NOTE: Content copied from AboutContent.tsx as requested.
 // Renamed function to BlogContent.
