@@ -6,9 +6,11 @@ import { Button } from '../../../../components/ui/button';
 import { Expand } from 'lucide-react';
 import { CaseStudyDialog } from '../../../components/casestudy_dialog';
 import { motion } from 'framer-motion';
+import { useHomepageAnimation } from '../../../context/HomepageAnimationContext';
 
 export default function HomeCaseStudy1() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { hasAnimated, isInitialized } = useHomepageAnimation();
 
   return (
     <div className="w-[1440px] mx-auto flex flex-col">
@@ -19,7 +21,7 @@ export default function HomeCaseStudy1() {
               className="content-stretch flex flex-col gap-[16px] items-start justify-start leading-none relative shrink-0 text-black w-[600px]"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 3.0, ease: "easeOut" }}
+              transition={{ duration: 0.8, delay: (isInitialized && hasAnimated) ? 0 : 3.0, ease: "easeOut" }}
             >
               <div className="content-stretch flex flex-col gap-[32px] items-start justify-start relative size-full">
                 <div className={`${triFont.variable} font-tri leading-[0] not-italic relative shrink-0 text-[18px] text-black tracking-[-0.68px] w-full`}>
@@ -44,7 +46,7 @@ export default function HomeCaseStudy1() {
                 className="basis-0 bg-[#e2e2e2] grow h-[300px] min-h-px min-w-px rounded-[14px] shrink-0"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 3.4, ease: "easeOut" }}
+                transition={{ duration: 0.8, delay: (isInitialized && hasAnimated) ? 0 : 3.4, ease: "easeOut" }}
               >
                 <img 
                   src="/images/casestudy1-t1.png" 
@@ -56,7 +58,7 @@ export default function HomeCaseStudy1() {
                 className="basis-0 bg-[#e2e2e2] grow h-[300px] min-h-px min-w-px rounded-[14px] shrink-0"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 3.8, ease: "easeOut" }}
+                transition={{ duration: 0.8, delay: (isInitialized && hasAnimated) ? 0 : 3.8, ease: "easeOut" }}
               >
                 <img 
               src="/images/casestudy1-t2.png" 
@@ -72,7 +74,7 @@ export default function HomeCaseStudy1() {
             className="bg-white box-border content-stretch flex h-[auto] items-center justify-between px-0 pt-[16px] relative shrink-0 w-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 4.2, ease: "easeOut" }}
+            transition={{ duration: 0.8, delay: (isInitialized && hasAnimated) ? 0 : 4.2, ease: "easeOut" }}
           >
             <div className={`${interFont.variable} font-inter font-semibold justify-center leading-[28px] relative shrink-0 text-[18px] text-neutral-950 text-nowrap`}>
               <p className="leading-[28px] whitespace-pre">Quick actions</p>

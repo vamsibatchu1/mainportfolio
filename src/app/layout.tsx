@@ -5,6 +5,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { priFont, secFont, triFont } from '@/app/fonts';
 import { interFont, jakartaFont, handjetFont } from '@/app/fonts';
+import { HomepageAnimationProvider } from './context/HomepageAnimationContext';
 
 // Export metadata for SEO
 export const metadata: Metadata = {
@@ -66,12 +67,14 @@ export default function RootLayout({
         {/* Add any additional head elements if needed */}
       </head>
       <body>
-        <div className="min-h-screen flex flex-col">
-          {/* Main content */}
-          <main className="flex-1">
-            {children}
-          </main>
-        </div>
+        <HomepageAnimationProvider>
+          <div className="min-h-screen flex flex-col">
+            {/* Main content */}
+            <main className="flex-1">
+              {children}
+            </main>
+          </div>
+        </HomepageAnimationProvider>
       </body>
     </html>
   );

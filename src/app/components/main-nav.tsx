@@ -15,8 +15,8 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from '../../components/ui/command';
-import { TextScramble } from '../../components/ui/text-scramble';
 import { motion } from 'framer-motion';
+import { useHomepageAnimation } from '../context/HomepageAnimationContext';
 
 interface NavItem {
   title: string;
@@ -31,22 +31,20 @@ export function MainNav({ className = "" }: MainNavProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
-  const [scramblingItem, setScramblingItem] = React.useState<string | null>(null);
-  const [scrambleKey, setScrambleKey] = React.useState(0);
-  const [hasAnimated, setHasAnimated] = React.useState(false);
+  const { hasAnimated, setHasAnimated, isInitialized } = useHomepageAnimation();
 
-  // Check if we should animate (only on home page and first visit)
-  const shouldAnimate = pathname === '/home' && !hasAnimated;
+  // Check if we should animate (only on home page and first visit, after initialization)
+  const shouldAnimate = pathname === '/home' && isInitialized && !hasAnimated;
 
   // Mark as animated after a delay to ensure it only happens once
   React.useEffect(() => {
     if (shouldAnimate) {
       const timer = setTimeout(() => {
         setHasAnimated(true);
-      }, 4000); // After all animations complete (increased to account for nav delay)
+      }, 5000); // After all animations complete (increased to account for all delays)
       return () => clearTimeout(timer);
     }
-  }, [shouldAnimate]);
+  }, [shouldAnimate, setHasAnimated]);
 
   const navItems: NavItem[] = [
     { title: "Home", path: "/home" },
@@ -58,9 +56,7 @@ export function MainNav({ className = "" }: MainNavProps) {
   ];
 
   const handleNavClick = (path: string, title: string) => {
-    console.log('Nav clicked:', title, 'Current scrambling:', scramblingItem);
-    setScramblingItem(title);
-    setScrambleKey(prev => prev + 1); // Force re-render of TextScramble
+    console.log('Nav clicked:', title);
     router.push(path);
   };
 
@@ -86,7 +82,6 @@ export function MainNav({ className = "" }: MainNavProps) {
           <div className="content-center flex flex-wrap gap-[20px] items-center justify-start relative shrink-0">
             {navItems.map((item, index) => {
               const active = isActive(item.path);
-              const isScrambling = scramblingItem === item.title;
               
               return (
                 <motion.div 
@@ -102,26 +97,11 @@ export function MainNav({ className = "" }: MainNavProps) {
                 >
                   <button
                     onClick={() => handleNavClick(item.path, item.title)}
-                    className={`${interFont.variable} font-inter font-normal leading-[20px] relative shrink-0 text-[18px] text-nowrap transition-colors duration-600 ${
+                    className={`${interFont.variable} font-inter font-normal leading-[20px] relative shrink-0 text-[18px] text-nowrap transition-colors duration-300 ${
                       active ? 'text-neutral-990' : 'text-neutral-500 hover:text-neutral-800'
                     }`}
                   >
-                    {isScrambling ? (
-                        <TextScramble
-                          key={scrambleKey}
-                          trigger={true}
-                          duration={1.5}
-                          speed={0.04}
-                        className={`${interFont.variable} font-inter font-normal leading-[20px] text-[18px] text-nowrap ${
-                          active ? 'text-neutral-950' : 'text-neutral-600'
-                        }`}
-                        onScrambleComplete={() => setScramblingItem(null)}
-                      >
-                        {item.title}
-                      </TextScramble>
-                    ) : (
-                      item.title
-                    )}
+                    {item.title}
                   </button>
                 </motion.div>
               );

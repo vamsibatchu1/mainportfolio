@@ -4,9 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { jakartaFont } from '../../../fonts';
 import { motion } from 'framer-motion';
 import { Briefcase, Palette, Monitor, Image, Layers } from 'lucide-react';
+import { useHomepageAnimation } from '../../../context/HomepageAnimationContext';
 
 export default function HomeHighlights() {
   const [currentSpecialty, setCurrentSpecialty] = useState(0);
+  const { hasAnimated, isInitialized } = useHomepageAnimation();
 
   const specialties = [
     {
@@ -58,7 +60,7 @@ export default function HomeHighlights() {
       className="w-[1440px] mx-auto flex flex-col"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.8, delay: 2.2, ease: "easeOut" }}
+      transition={{ duration: 0.8, delay: (isInitialized && hasAnimated) ? 0 : 2.2, ease: "easeOut" }}
     >
       <div className="bg-[#f2f2f2] box-border content-stretch flex gap-[40px] items-end justify-start overflow-clip pb-0 pt-[40px] px-0 relative rounded-[14px] size-full h-[400px]">
         {/* Text Content */}
