@@ -15,12 +15,12 @@ import { fourFont } from '@/app/fonts';
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 // Preload all animation files
-import homeAnimation from '@/animations/home.json';
-import workAnimation from '@/animations/work.json';
-import blogAnimation from '@/animations/blog.json';
-import experimentsAnimation from '@/animations/experiments.json';
-import aboutAnimation from '@/animations/about.json';
-import askAnimation from '@/animations/ask.json';
+import homeAnimation from './animations/home.json';
+import workAnimation from './animations/work.json';
+import blogAnimation from './animations/blog.json';
+import experimentsAnimation from './animations/experiments.json';
+import aboutAnimation from './animations/about.json';
+import askAnimation from './animations/ask.json';
 
 type MenuItem = {
   icon: (lottieRef: React.RefObject<LottieRefCurrentProps>, animation: AnimationData | null) => React.ReactNode;

@@ -39,34 +39,11 @@ export const fiveFont = Instrument_Serif({
   display: 'swap',
 });
 
-// Sixth Font: Devanagari
-export const sixFont = localFont({
-  src: '../../public/fonts/Devanagari.otf',
-  variable: '--font-six',
-  display: 'swap',
-});
-
-// Teko Font from Google
-export const tekoFont = Teko({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-teko',
-  display: 'swap',
-});
-
 // Kode Mono Font - Using IBM Plex Mono as fallback
 export const kodeMonoFont = IBM_Plex_Mono({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-kodemono',
-  display: 'swap',
-});
-
-// Lora Font from Google
-export const loraFont = Lora({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-lora',
   display: 'swap',
 });
 
@@ -103,15 +80,6 @@ export const handjetFont = Handjet({
   variable: '--font-handjet',
   display: 'swap',
 });
-
-// SF Pro Font - Using system font fallback
-export const sfProFont = {
-  variable: '--font-sf-pro',
-  className: 'font-sf-pro',
-  style: {
-    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif',
-  },
-};
 
 // Lato Font from Google - Slack's primary font
 export const latoFont = Lato({
