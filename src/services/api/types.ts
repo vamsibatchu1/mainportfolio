@@ -9,9 +9,14 @@ export interface ChatResponse {
   error?: string;
 }
 
-export interface ApiError {
-  error: string;
-  status?: number;
+export class ApiError extends Error {
+  public status?: number;
+
+  constructor(message: string, status?: number) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+  }
 }
 
 export interface ApiClientConfig {

@@ -1,4 +1,5 @@
-import { ApiClientConfig, ApiError } from './types';
+import { ApiClientConfig } from './types';
+import { ApiError } from './types';
 
 // Base API client configuration
 export class ApiClient {
