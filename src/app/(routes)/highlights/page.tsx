@@ -68,6 +68,7 @@ const sampleImages = [
 
 export default function HighlightsPage() {
   const [activeFilters, setActiveFilters] = useState<string[]>(['0-1-products']);
+  const [viewMode, setViewMode] = useState<'tiny' | 'compact' | 'relaxed'>('tiny');
 
   const handleFiltersChange = (filters: string[]) => {
     setActiveFilters(filters);
@@ -78,13 +79,13 @@ export default function HighlightsPage() {
       <div className="w-full flex flex-col gap-[96px]">
         <div className="flex gap-10 items-start justify-start w-full">
           {/* Filter Sidebar */}
-          <div className="flex-1 flex flex-col gap-10 items-start justify-start min-w-0">
-            <FilterSidebar onFiltersChange={handleFiltersChange} />
+          <div className="w-[320px] flex flex-col gap-10 items-start justify-start flex-shrink-0">
+            <FilterSidebar onFiltersChange={handleFiltersChange} onViewModeChange={setViewMode} />
           </div>
           
           {/* Image Gallery */}
-          <div className="flex flex-col gap-6 items-start justify-start flex-shrink-0">
-            <ImageGallery images={sampleImages} activeFilters={activeFilters} />
+          <div className="w-[1080px] flex flex-col gap-6 items-start justify-start flex-shrink-0">
+            <ImageGallery images={sampleImages} activeFilters={activeFilters} viewMode={viewMode} />
           </div>
         </div>
       </div>
