@@ -31,6 +31,7 @@ export function MainNav({ className = "" }: MainNavProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
+  const [isNavigating, setIsNavigating] = React.useState(false);
   const { hasAnimated, setHasAnimated, isInitialized } = useHomepageAnimation();
 
   // Check if we should animate (only on home page and first visit, after initialization)
@@ -56,8 +57,33 @@ export function MainNav({ className = "" }: MainNavProps) {
   ];
 
   const handleNavClick = (path: string, title: string) => {
-    console.log('Nav clicked:', title);
-    router.push(path);
+    console.log('Nav clicked:', title, 'Path:', path);
+    
+    // Prevent rapid clicking
+    if (isNavigating) {
+      console.log('Navigation in progress, ignoring click');
+      return;
+    }
+    
+    // Prevent navigation if already on the same page
+    if (pathname === path) {
+      console.log('Already on this page, skipping navigation');
+      return;
+    }
+    
+    setIsNavigating(true);
+    
+    try {
+      router.push(path);
+      
+      // Reset navigation state after a short delay
+      setTimeout(() => {
+        setIsNavigating(false);
+      }, 500);
+    } catch (error) {
+      console.error('Navigation error:', error);
+      setIsNavigating(false);
+    }
   };
 
   const isActive = (path: string) => pathname === path;
@@ -94,12 +120,20 @@ export function MainNav({ className = "" }: MainNavProps) {
                     delay: shouldAnimate ? 3.3 + (index * 0.10) : 0,
                     ease: "easeOut" 
                   }}
+                  style={{ pointerEvents: 'auto' }}
                 >
                   <button
-                    onClick={() => handleNavClick(item.path, item.title)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleNavClick(item.path, item.title);
+                    }}
                     className={`${interFont.variable} font-inter font-normal leading-[20px] relative shrink-0 text-[18px] text-nowrap transition-colors duration-300 ${
+                      isNavigating ? 'cursor-wait opacity-70' : 'cursor-pointer'
+                    } ${
                       active ? 'text-neutral-990' : 'text-neutral-500 hover:text-neutral-800'
                     }`}
+                    style={{ pointerEvents: 'auto', zIndex: 10 }}
                   >
                     {item.title}
                   </button>

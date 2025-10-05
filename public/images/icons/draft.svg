@@ -1,0 +1,36 @@
+<svg width="329" height="369" viewBox="0 0 329 369" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d_170_1907)">
+<g clip-path="url(#clip0_170_1907)">
+<foreignObject x="-49" y="-48.0471" width="426" height="465"><div xmlns="http://www.w3.org/1999/xhtml" style="backdrop-filter:blur(25px);clip-path:url(#bgblur_1_170_1907_clip_path);height:100%;width:100%"></div></foreignObject><rect data-figma-bg-blur-radius="50" x="1" y="1.95288" width="326" height="365" fill="white"/>
+</g>
+<path d="M326.5 2.45288V366.453H1.5V2.45288H326.5Z" stroke="black"/>
+</g>
+<path d="M326.5 2.45288V29.4529H1.5V2.45288H326.5Z" fill="white"/>
+<path d="M326.5 2.45288V29.4529H1.5V2.45288H326.5Z" stroke="black"/>
+<rect x="5" y="7.95288" width="318" height="1" fill="black"/>
+<rect x="5" y="13.9529" width="318" height="1" fill="black"/>
+<rect x="5" y="19.9529" width="318" height="1" fill="black"/>
+<rect x="5" y="10.9529" width="318" height="1" fill="black"/>
+<rect x="5" y="16.9529" width="318" height="1" fill="black"/>
+<rect x="5" y="22.9529" width="318" height="1" fill="black"/>
+<rect x="15.5" y="8.45288" width="15" height="15" fill="white" stroke="black"/>
+<path d="M39.5 323.453V356.832L2.30566 323.453H39.5Z" stroke="black"/>
+<line x1="40" y1="357.453" x2="327" y2="357.453" stroke="black"/>
+<line x1="2" y1="360.453" x2="327" y2="360.453" stroke="black"/>
+<line x1="2" y1="363.453" x2="327" y2="363.453" stroke="black"/>
+<defs>
+<filter id="filter0_d_170_1907" x="1" y="1.95288" width="328" height="367" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feMorphology radius="1" operator="dilate" in="SourceAlpha" result="effect1_dropShadow_170_1907"/>
+<feOffset dx="1" dy="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_170_1907"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_170_1907" result="shape"/>
+</filter>
+<clipPath id="bgblur_1_170_1907_clip_path" transform="translate(49 48.0471)"><rect x="1" y="1.95288" width="326" height="365"/>
+</clipPath><clipPath id="clip0_170_1907">
+<path d="M1 1.95288H327V366.953H1V1.95288Z" fill="white"/>
+</clipPath>
+</defs>
+</svg>

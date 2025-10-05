@@ -1,9 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import { ChevronRight, Folder, File } from "lucide-react"
+import { ChevronRight, File } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 import { jakartaFont } from "../../../fonts"
+import Image from "next/image"
 
 type Node = {
   name: string
@@ -99,7 +100,13 @@ export function FilesystemItem({
             >
               <ChevronIcon />
             </button>
-            <Folder className="size-6 text-sky-500 fill-sky-500" />
+            <Image
+              src={isOpen ? "/images/icons/macfolderselected.svg" : "/images/icons/macfolder.svg"}
+              alt="folder"
+              width={24}
+              height={20}
+              className="flex-shrink-0"
+            />
             <span className={jakartaFont.className}>
               {node.name}
             </span>

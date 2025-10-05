@@ -3,8 +3,8 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import MainLayout from '../../layout/MainLayout';
 import { FilesystemItem } from './components/filetree';
-import ExampleScrollArea from './components/tinyscroll';
 import { jakartaFont } from '../../fonts';
+import Image from 'next/image';
 
 // Sample file tree data
 const fileTreeData = {
@@ -14,15 +14,15 @@ const fileTreeData = {
       name: "drafts",
       nodes: [
         {
-          name: "product-thinking.md",
+          name: "product-thinking.txt",
           nodes: []
         },
         {
-          name: "design-systems.md",
+          name: "design-systems.txt", 
           nodes: []
         },
         {
-          name: "user-research.md",
+          name: "user-research.txt",
           nodes: []
         }
       ]
@@ -44,17 +44,114 @@ const fileTreeData = {
       name: "ideas",
       nodes: [
         {
-          name: "future-of-design.md",
+          name: "future-of-design.txt",
           nodes: []
         },
         {
-          name: "accessibility-notes.md",
+          name: "accessibility-notes.txt",
           nodes: []
         }
       ]
     }
   ]
 };
+
+// Notepad content component with shimmer loading
+function NotepadContent({ selectedFile }: { selectedFile: string | null }) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [showContent, setShowContent] = useState(false);
+  const [currentContent, setCurrentContent] = useState<string>('');
+
+  // Mock content for different files (same as tinyscroll)
+  const getFileContent = (fileName: string | null) => {
+    if (!fileName) return "Select a file to view its content";
+    
+    const contentMap: Record<string, string> = {
+      "product-thinking.txt": `Had this thought while walking to work today - what if we're approaching product thinking all wrong? 
+
+Everyone talks about user empathy like it's some magical skill you either have or don't. But I think it's more about asking the right questions at the right time. Not just "what do users want" but "what are they trying to accomplish and why does it matter to them?"
+
+Been working on this article idea about how product decisions often get made in boardrooms with zero user context. The disconnect between what executives think users want versus what they actually need is staggering. Maybe I should write about bridging that gap.
+
+Also, there's something about the iterative process that feels broken. We build, measure, learn - but what if we're measuring the wrong things? Vanity metrics vs real impact. Need to think more about this.
+
+The cross-functional collaboration piece is interesting too. Design speaks one language, engineering another, business yet another. How do we create a shared vocabulary that actually works?`,
+
+      "design-systems.txt": `Working on a piece about design systems and honestly, I think we've overcomplicated them.
+
+Everyone wants to build the next Material Design or Ant Design, but most teams don't need that level of complexity. Sometimes a simple style guide with consistent colors and typography is enough. The key is actually using it, not just having it.
+
+Had a conversation with a startup founder who said they spent 6 months building a design system and then never used it because it was too rigid. That's the problem - we build for perfection instead of flexibility.
+
+Been thinking about the documentation side. No one reads 50-page design system docs. Maybe we need bite-sized, contextual documentation that shows up when you need it, not when you're browsing the system.
+
+The component library part is interesting. When do you build vs buy? When do you customize vs compromise? These decisions can make or break adoption.
+
+Also, who owns the design system? Design? Engineering? Product? The answer is everyone and no one, which is usually the problem.`,
+
+      "user-research.txt": `Had an interesting user interview yesterday that got me thinking about how we approach research.
+
+The participant said something that completely shifted my perspective on the feature we're building. All our assumptions were wrong. This happens way too often - we think we know what users want, but we're really just projecting our own biases.
+
+Been reflecting on the research methods we use. User interviews are great for understanding motivations, but they're also performative. People tell you what they think you want to hear. Usability testing is better for finding friction points, but it's artificial.
+
+The contextual inquiry stuff is fascinating though. Watching someone actually use your product in their real environment reveals so much more than a lab setting ever could. The distractions, the interruptions, the real-world constraints.
+
+Been thinking about the analysis phase. How do you separate signal from noise? How do you know when you have enough data to make a decision? Sometimes I think we over-research because we're afraid to be wrong.
+
+The sharing part is crucial too. Beautiful research reports that no one reads are worthless. Need to find better ways to communicate insights that actually influence decisions.`
+    };
+
+    return contentMap[fileName] || `Just started thinking about this topic. Need to flesh out some ideas here.
+
+This would be where I jot down initial thoughts before turning them into a proper article. The messy first draft where everything is still forming.
+
+Need to research this more. Maybe talk to some people about it. Get different perspectives.
+
+What's the main point I want to make? What's the story I want to tell?
+
+Still working on this one...`;
+  };
+
+  useEffect(() => {
+    if (selectedFile) {
+      // Show loading state
+      setIsLoading(true);
+      setShowContent(false);
+      
+      // After 2 seconds, show content
+      const timer = setTimeout(() => {
+        setCurrentContent(getFileContent(selectedFile));
+        setIsLoading(false);
+        setShowContent(true);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    } else {
+      setCurrentContent(getFileContent(null));
+      setIsLoading(false);
+      setShowContent(true);
+    }
+  }, [selectedFile]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-start">
+        <span className="animate-pulse text-gray-600 text-base">
+          Pulling drafts...
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div 
+      className={`whitespace-pre-wrap transition-opacity duration-500 ${showContent ? 'opacity-100' : 'opacity-0'}`}
+    >
+      {currentContent}
+    </div>
+  );
+}
 
 export default function WritingPage() {
   const [fileTreeHeight, setFileTreeHeight] = useState(243); // Default height
@@ -144,19 +241,36 @@ export default function WritingPage() {
             </div>
           </div>
           
-          {/* Scroll Area Column */}
+          {/* Vintage Mac Notepad Column */}
           <div 
-            className="relative shrink-0 w-[426px]"
+            className="relative shrink-0 w-[329px]"
             style={{ height: `${fileTreeHeight}px` }}
           >
             {showScrollArea && (
-              <div className="animate-in fade-in duration-300">
-                <ExampleScrollArea 
-                  height={fileTreeHeight} 
-                  selectedFile={selectedFile}
+              <div className="animate-in fade-in duration-300 relative">
+                {/* Background notepad image */}
+                <img
+                  src="/images/icons/draft.svg"
+                  alt="vintage mac notepad"
+                  className="w-full h-full object-contain"
                 />
-              </div>
-            )}
+                
+                {/* Text overlay */}
+                <div 
+                  className="absolute inset-0 flex flex-col"
+                  style={{
+                    paddingTop: '52px',    // 28px + 24px
+                    paddingBottom: '64px', // 40px + 24px
+                    paddingLeft: '24px',
+                    paddingRight: '24px'
+                  }}
+                >
+                  <div className={`${jakartaFont.className} flex-1 overflow-auto text-sm leading-relaxed text-gray-900`}>
+                    <NotepadContent selectedFile={selectedFile} />
+            </div>
+          </div>
+        </div>
+      )}
           </div>
         </div>
       </div>
