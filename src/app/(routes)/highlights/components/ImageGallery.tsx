@@ -2,12 +2,14 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { FlipImage } from './flipimage';
 
 interface GalleryImage {
   id: string;
   src: string;
   alt: string;
   tags: string[];
+  description?: string;
 }
 
 interface ImageGalleryProps {
@@ -42,16 +44,10 @@ export default function ImageGallery({ images, activeFilters, viewMode }: ImageG
           {row.map((image) => (
             <div
               key={image.id}
-              className="bg-gray-200 rounded-[14px] flex-shrink-0 overflow-hidden"
+              className="rounded-[14px] flex-shrink-0 overflow-hidden"
               style={{ width: sizeCss, height: sizeCss }}
             >
-              <Image
-                src={image.src}
-                alt={image.alt}
-                width={0}
-                height={0}
-                className="w-full h-full object-cover"
-              />
+              <FlipImage src={image.src} alt={image.alt} backText={image.description ?? image.alt} />
             </div>
           ))}
           {/* Fill remaining slots in the row if less than itemsPerRow images */}

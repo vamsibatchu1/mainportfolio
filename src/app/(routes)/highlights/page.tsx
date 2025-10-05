@@ -7,7 +7,7 @@ import { FilterSidebar, ImageGallery } from './components';
 // Combined highlights image data (45 images total)
 const sampleImages = [
   // Syn Highlights (20 images) - Rows 1-5
-  { id: '1', src: '/images/syn-highlights/Highlight-1.svg', alt: 'Syn Highlight 1', tags: ['0-1-products', 'enterprise'] },
+  { id: '1', src: '/images/syn-highlights/Highlight-1.svg', alt: 'Adding a bunch of random text here to make sure this is properly tested in the HTML page.', tags: ['0-1-products', 'enterprise'] },
   { id: '2', src: '/images/syn-highlights/Highlight-2.svg', alt: 'Syn Highlight 2', tags: ['0-1-products', 'mobile'] },
   { id: '3', src: '/images/syn-highlights/Highlight-3.svg', alt: 'Syn Highlight 3', tags: ['0-1-products', 'consumer'] },
   { id: '4', src: '/images/syn-highlights/Highlight-4.svg', alt: 'Syn Highlight 4', tags: ['0-1-products', 'big-bets'] },
@@ -66,8 +66,11 @@ const sampleImages = [
   { id: '45', src: '/images/nav-highlights/Highlight.svg', alt: 'Nav Highlight', tags: ['enterprise', 'mobile'] },
 ];
 
+// Provide a default description for each image using its alt text.
+const sampleImagesWithDesc = sampleImages.map(img => ({ ...img, description: img.alt }));
+
 export default function HighlightsPage() {
-  const [activeFilters, setActiveFilters] = useState<string[]>(['0-1-products']);
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [viewMode, setViewMode] = useState<'tiny' | 'compact' | 'relaxed'>('tiny');
 
   const handleFiltersChange = (filters: string[]) => {
@@ -85,7 +88,7 @@ export default function HighlightsPage() {
           
           {/* Image Gallery */}
           <div className="w-[1080px] flex flex-col gap-6 items-start justify-start flex-shrink-0">
-            <ImageGallery images={sampleImages} activeFilters={activeFilters} viewMode={viewMode} />
+            <ImageGallery images={sampleImagesWithDesc} activeFilters={activeFilters} viewMode={viewMode} />
           </div>
         </div>
       </div>

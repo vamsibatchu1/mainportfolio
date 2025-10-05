@@ -28,7 +28,7 @@ export default function FilterSidebar({ onFiltersChange, onViewModeChange }: Fil
       id: 'categories',
       title: 'Categories',
       options: [
-        { id: '0-1-products', label: '0-1 products', isActive: true },
+        { id: '0-1-products', label: '0-1 products', isActive: false },
         { id: 'enterprise', label: 'enterprise', isActive: false },
         { id: 'mobile', label: 'mobile', isActive: false },
         { id: 'consumer', label: 'consumer', isActive: false },
@@ -56,11 +56,14 @@ export default function FilterSidebar({ onFiltersChange, onViewModeChange }: Fil
       id: 'ui-elements',
       title: 'UI elements',
       options: [
-        { id: '0-1-products', label: '0-1 products', isActive: false },
-        { id: 'enterprise', label: 'enterprise', isActive: false },
-        { id: 'mobile', label: 'mobile', isActive: false },
-        { id: 'consumer', label: 'consumer', isActive: false },
-        { id: 'big-bets', label: 'big bets', isActive: false },
+        { id: 'cards', label: 'cards', isActive: false },
+        { id: 'buttons', label: 'buttons', isActive: false },
+        { id: 'visualizations', label: 'visualizations', isActive: false },
+        { id: 'tables', label: 'tables', isActive: false },
+        { id: 'navigation', label: 'navigation', isActive: false },
+        { id: 'modals', label: 'modals', isActive: false },
+        { id: 'drawers', label: 'drawers', isActive: false },
+        { id: 'tabs', label: 'tabs', isActive: false },
       ],
     },
   ]);

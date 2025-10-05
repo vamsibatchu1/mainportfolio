@@ -50,7 +50,7 @@ export function MainNav({ className = "" }: MainNavProps) {
     { title: "Home", path: "/home" },
     { title: "Work", path: "/work" },
     { title: "Highlights", path: "/highlights" },
-    { title: "Experiments", path: "/play" },
+    { title: "Play", path: "/play" },
     { title: "Writing", path: "/writing" },
     { title: "About", path: "/about" },
   ];
