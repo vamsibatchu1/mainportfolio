@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { ChevronRight, File } from "lucide-react"
+import { ChevronRight } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 import { jakartaFont } from "../../../fonts"
 import Image from "next/image"
@@ -116,7 +116,7 @@ export function FilesystemItem({
       ) : (
         // FILE RENDERING - Completely separate from folder logic
         <div 
-          className="flex items-center gap-1.5 py-1 cursor-pointer hover:text-blue-600"
+          className="flex items-center gap-1.5 py-1 cursor-pointer hover:text-black:bg-black hover:text-gray-500"
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
@@ -126,8 +126,14 @@ export function FilesystemItem({
             }
           }}
         >
-          <File className="ml-[22px] size-6 text-gray-900" />
-          <span className={`${jakartaFont.className} ${selectedFile === node.name ? 'font-bold text-blue-600' : ''}`}>
+          <Image
+            src="/images/icons/macfile.svg"
+            alt="file"
+            width={24}
+            height={23}
+            className="ml-[22px] flex-shrink-0"
+          />
+          <span className={`${jakartaFont.className} ${selectedFile === node.name ? 'bg-black text-white px-2 py-1' : ''}`}>
             {node.name}
           </span>
         </div>

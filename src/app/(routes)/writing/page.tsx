@@ -3,6 +3,8 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import MainLayout from '../../layout/MainLayout';
 import { FilesystemItem } from './components/filetree';
+import ArticleCard from './components/article-card';
+import AllArticlesCarousel from './components/all-articles-carousel';
 import { jakartaFont } from '../../fonts';
 import Image from 'next/image';
 
@@ -211,14 +213,37 @@ export default function WritingPage() {
   return (
     <MainLayout>
       <div className="w-full flex flex-col gap-[96px]">
+
+        {/* Article Card Component */}
+        <ArticleCard
+          title="How prompt to UI tools are reshaping product development"
+          author="John Maverick"
+          publishDate="January 1, 2024"
+          summary="A complex and exciting new project is kicked off. The initial meetings are filled with ambition, but they soon devolve into a series of prolonged, circular discussions. Without a tangible focal point, product managers, engineers, and designers struggle to align. Even with a meticulously written Product Requirements Document (PRD), the full vision remains elusive,"
+          onReadArticle={() => console.log('Read article clicked')}
+          onSummarize={() => console.log('Summarize clicked')}
+        />
+
+        {/* All Articles Carousel */}
+        <AllArticlesCarousel
+          onArticleClick={(article) => console.log('Article clicked:', article.title)}
+        />
+
         {/* Drafts Component */}
         <div className="content-stretch flex gap-[40px] items-start relative size-full">
           {/* Main Text Column */}
-          <div className="basis-0 content-stretch flex flex-col gap-[20px] grow items-start leading-[1.1] min-h-px min-w-px relative self-stretch shrink-0 text-black">
-            <p className={`${jakartaFont.className} font-medium min-w-full relative shrink-0 text-[38px] w-[min-content]`}>
-              read through the drafts that are currently work in progress
-            </p>
-            <p className={`${jakartaFont.className} font-medium relative shrink-0 text-[15.875px] text-nowrap whitespace-pre`}>
+          <div className="content-stretch flex flex-col gap-[20px] items-start relative size-full">
+            <div className="content-stretch flex gap-[20px] items-start relative shrink-0 w-full">
+              <div className="h-[70px] relative shrink-0 w-[68.478px]">
+                <div className="absolute bottom-0 left-[-1.11%] right-[-1.11%] top-[-1.09%]">
+                  <img alt="Floppy disk icon" className="block max-w-none size-full" src="http://localhost:3845/assets/ecffe8959bb17e2317a2bd03128964c2d3068887.svg" />
+                </div>
+              </div>
+              <p className={`${jakartaFont.className} font-medium leading-[1.1] relative shrink-0 text-[32px] text-black flex-1`}>
+                read through the drafts that are currently work in progress
+              </p>
+            </div>
+            <p className={`${jakartaFont.className} font-medium leading-[1.1] relative shrink-0 text-[15.875px] text-black text-nowrap whitespace-pre`}>
               click on any folder to see read the drafts
             </p>
           </div>
@@ -273,7 +298,9 @@ export default function WritingPage() {
       )}
           </div>
         </div>
-      </div>
+
+         
+         </div>
     </MainLayout>
   );
 }
