@@ -2,7 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Lottie from 'lottie-react';
+import dynamic from 'next/dynamic';
+
+// Dynamically import Lottie to avoid SSR issues
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
+
+// Import Lottie animations
 import loadingAnimation from '/public/images/wip/loading.json';
 import viewAnimation from '/public/images/wip/view.json';
 import articleAnimation from '/public/images/wip/article.json';
@@ -44,9 +49,15 @@ export function WipLanding() {
   const [currentAnimation, setCurrentAnimation] = useState(0);
   const [showFinalMessage, setShowFinalMessage] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  const [isClient, setIsClient] = useState(false);
   
   // Code-level toggle: Change this to false to hide loading images
   const showLoadingImages = true;
+
+  // Ensure we're on the client side
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     // Don't run timer if final message is already shown
@@ -97,18 +108,18 @@ export function WipLanding() {
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                 }`}
               >
-                {/* Loading Image on the left - Conditionally rendered */}
-                {showLoadingImages && (
-                  <div className="flex-shrink-0 w-[120px] h-[120px] relative">
-                    <Lottie
-                      animationData={loadingAnimations[currentAnimation].animation}
-                      loop={false}
-                      autoplay={true}
-                      style={{ width: '120px', height: '120px' }}
-                      className="drop-shadow-lg"
-                    />
-                  </div>
-                )}
+                        {/* Loading Image on the left - Conditionally rendered */}
+                        {showLoadingImages && isClient && (
+                          <div className="flex-shrink-0 w-[120px] h-[120px] relative">
+                            <Lottie
+                              animationData={loadingAnimations[currentAnimation].animation}
+                              loop={false}
+                              autoplay={true}
+                              style={{ width: '120px', height: '120px' }}
+                              className="drop-shadow-lg"
+                            />
+                          </div>
+                        )}
 
                 {/* Loading Text - Always shown */}
                 <div className="flex-1">
