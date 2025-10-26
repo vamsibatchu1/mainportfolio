@@ -52,36 +52,53 @@ export function WipLanding() {
   const [showFinalMessage, setShowFinalMessage] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [showFadedButton, setShowFadedButton] = useState(false);
+  const [isBackgroundLoaded, setIsBackgroundLoaded] = useState(false);
+  const [startAnimations, setStartAnimations] = useState(false);
+  const [showFirstAnimation, setShowFirstAnimation] = useState(false);
   
   // Code-level toggle: Change this to false to hide loading images
   const showLoadingImages = true;
 
+  // Handle background loading and animation start
   useEffect(() => {
-    // Don't run timer if final message is already shown
-    if (showFinalMessage) return;
+    if (isBackgroundLoaded) {
+      // Start animations after 200ms delay
+      setTimeout(() => {
+        setStartAnimations(true);
+        // Show first animation with fade-in after a brief delay
+        setTimeout(() => {
+          setShowFirstAnimation(true);
+        }, 100);
+      }, 200);
+    }
+  }, [isBackgroundLoaded]);
+
+  useEffect(() => {
+    // Don't run timer if final message is already shown or animations haven't started
+    if (showFinalMessage || !startAnimations) return;
     
     const timer = setTimeout(() => {
       if (currentAnimation < loadingAnimations.length - 1) {
-        setIsVisible(false);
+        setShowFirstAnimation(false);
         setTimeout(() => {
           setCurrentAnimation(currentAnimation + 1);
-          setIsVisible(true);
+          setShowFirstAnimation(true);
         }, 300);
       } else {
-        setIsVisible(false);
+        setShowFirstAnimation(false);
         setTimeout(() => {
           setShowFinalMessage(true);
           setIsVisible(true);
-          // Show faded button after 2 seconds of landing message
+          // Show faded button after 1 second of landing message
           setTimeout(() => {
             setShowFadedButton(true);
-          }, 2000);
+          }, 1000);
         }, 300);
       }
     }, loadingAnimations[currentAnimation]?.duration || 2000);
 
     return () => clearTimeout(timer);
-  }, [currentAnimation, showFinalMessage]);
+  }, [currentAnimation, showFinalMessage, startAnimations, showFirstAnimation]);
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden fixed inset-0">
@@ -95,6 +112,7 @@ export function WipLanding() {
           priority
           quality={100}
           sizes="100vw"
+          onLoad={() => setIsBackgroundLoaded(true)}
         />
       </div>
 
@@ -103,23 +121,30 @@ export function WipLanding() {
         <div className="w-full max-w-[90vw] md:max-w-[960px] mx-auto">
           {/* Loading Animation Container */}
           <div className="flex flex-col items-center justify-center min-h-[400px] gap-16">
-            {!showFinalMessage ? (
-              <div 
-                className={`flex items-center gap-4 md:gap-8 transition-all duration-300 ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                }`}
+            {!showFinalMessage && startAnimations && (
+              <motion.div 
+                className="flex items-center gap-4 md:gap-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ 
+                  opacity: showFirstAnimation ? 1 : 0, 
+                  y: showFirstAnimation ? 0 : 20 
+                }}
+                transition={{ 
+                  duration: 0.6, 
+                  ease: "easeOut" 
+                }}
               >
-                        {/* Loading Image on the left - Conditionally rendered */}
-                        {showLoadingImages && (
-                          <div className="flex-shrink-0 w-[80px] h-[80px] md:w-[120px] md:h-[120px] relative">
-                            <Lottie
-                              animationData={loadingAnimations[currentAnimation].animation}
-                              loop={false}
-                              autoplay={true}
-                              className="w-full h-full drop-shadow-lg"
-                            />
-                          </div>
-                        )}
+                {/* Loading Image on the left - Conditionally rendered */}
+                {showLoadingImages && (
+                  <div className="flex-shrink-0 w-[80px] h-[80px] md:w-[120px] md:h-[120px] relative">
+                    <Lottie
+                      animationData={loadingAnimations[currentAnimation].animation}
+                      loop={false}
+                      autoplay={true}
+                      className="w-full h-full drop-shadow-lg"
+                    />
+                  </div>
+                )}
 
                 {/* Loading Text - Always shown */}
                 <div className="flex-1">
@@ -127,30 +152,32 @@ export function WipLanding() {
                     {loadingAnimations[currentAnimation].text}
                   </h2>
                 </div>
-              </div>
-            ) : (
-              /* Final Landing Message - Positioned at bottom of screen */
-              <div 
-                className={`fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[95vw] md:max-w-[960px] px-3 md:px-4 transition-opacity duration-300 ${
-                  isVisible ? 'opacity-100' : 'opacity-0'
-                }`}
-              >
-                <Image
-                  src="/images/wip/landing-message.svg"
-                  alt="Welcome message"
-                  width={960}
-                  height={794}
-                  className="w-full h-auto object-contain drop-shadow-lg"
-                  style={{
-                    imageRendering: 'crisp-edges'
-                  }}
-                  quality={100}
-                />
-              </div>
+              </motion.div>
             )}
           </div>
         </div>
       </div>
+
+      {/* Final Landing Message - Only shown when animations complete */}
+      {showFinalMessage && (
+        <div 
+          className={`fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[95vw] md:max-w-[960px] px-3 md:px-4 transition-opacity duration-300 ${
+            isVisible ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <Image
+            src="/images/wip/landing-message.svg"
+            alt="Welcome message"
+            width={960}
+            height={794}
+            className="w-full h-auto object-contain drop-shadow-lg"
+            style={{
+              imageRendering: 'crisp-edges'
+            }}
+            quality={100}
+          />
+        </div>
+      )}
       
       {/* FadedButton - Positioned at bottom right of entire page with Framer Motion */}
       {showFadedButton && (

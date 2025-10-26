@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Play } from 'lucide-react';
+import { MousePointerClick } from 'lucide-react';
 
 interface FadedButtonProps {
   onClick?: () => void;
@@ -27,8 +27,8 @@ export function FadedButton({ onClick, className = '' }: FadedButtonProps) {
     >
       <div className="flex items-center gap-[13.454px] px-[24px] py-[20.182px] w-full">
         {/* Play Icon */}
-        <div className="w-[32px] h-[32px] flex-shrink-0 flex items-center justify-center">
-          <Play className="w-6 h-6 text-white fill-white" />
+        <div className="w-[40px] h-[40px] flex-shrink-0 flex items-center justify-center">
+          <MousePointerClick className="w-8 h-8 text-white" />
         </div>
 
         {/* Main Text */}
