@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import { FadedButton } from './faded_button';
 
 // Dynamically import Lottie to avoid SSR issues
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
@@ -77,7 +78,7 @@ export function WipLanding() {
   }, [currentAnimation, showFinalMessage]);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden">
+    <div className="relative min-h-screen w-full overflow-hidden fixed inset-0">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -116,7 +117,7 @@ export function WipLanding() {
 
                 {/* Loading Text - Always shown */}
                 <div className="flex-1">
-                  <h2 className="text-[32px] md:text-[64px] font-medium text-white leading-[1.13] drop-shadow-lg font-jakarta">
+                  <h2 className="text-[32px] md:text-[64px] font-medium text-white leading-[1.13] drop-shadow-lg font-jakarta md:whitespace-nowrap">
                     {loadingAnimations[currentAnimation].text}
                   </h2>
                 </div>
@@ -128,6 +129,11 @@ export function WipLanding() {
                   isVisible ? 'opacity-100' : 'opacity-0'
                 }`}
               >
+                {/* FadedButton - Positioned 40px above landing message */}
+                <div className="absolute -top-[400px] right-10 w-auto">
+                  <FadedButton />
+                </div>
+                
                 <Image
                   src="/images/wip/landing-message.svg"
                   alt="Welcome message"
