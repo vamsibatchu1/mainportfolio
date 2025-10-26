@@ -49,15 +49,9 @@ export function WipLanding() {
   const [currentAnimation, setCurrentAnimation] = useState(0);
   const [showFinalMessage, setShowFinalMessage] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [isClient, setIsClient] = useState(false);
   
   // Code-level toggle: Change this to false to hide loading images
   const showLoadingImages = true;
-
-  // Ensure we're on the client side
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   useEffect(() => {
     // Don't run timer if final message is already shown
@@ -97,33 +91,32 @@ export function WipLanding() {
         />
       </div>
 
-      {/* Main Content Container - 960px max width */}
-      <div className="relative z-10 flex items-center justify-center min-h-screen px-4">
-        <div className="w-full max-w-[960px] mx-auto">
+      {/* Main Content Container - Responsive width */}
+      <div className="relative z-10 flex items-center justify-center min-h-screen px-5 md:px-4">
+        <div className="w-full max-w-[90vw] md:max-w-[960px] mx-auto">
           {/* Loading Animation Container */}
           <div className="flex flex-col items-center justify-center min-h-[400px] gap-16">
             {!showFinalMessage ? (
               <div 
-                className={`flex items-center gap-8 transition-all duration-300 ${
+                className={`flex items-center gap-4 md:gap-8 transition-all duration-300 ${
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                 }`}
               >
                         {/* Loading Image on the left - Conditionally rendered */}
-                        {showLoadingImages && isClient && (
-                          <div className="flex-shrink-0 w-[120px] h-[120px] relative">
+                        {showLoadingImages && (
+                          <div className="flex-shrink-0 w-[80px] h-[80px] md:w-[120px] md:h-[120px] relative">
                             <Lottie
                               animationData={loadingAnimations[currentAnimation].animation}
                               loop={false}
                               autoplay={true}
-                              style={{ width: '120px', height: '120px' }}
-                              className="drop-shadow-lg"
+                              className="w-full h-full drop-shadow-lg"
                             />
                           </div>
                         )}
 
                 {/* Loading Text - Always shown */}
                 <div className="flex-1">
-                  <h2 className="text-[64px] font-medium text-white leading-[1.13] whitespace-nowrap drop-shadow-lg font-jakarta">
+                  <h2 className="text-[32px] md:text-[64px] font-medium text-white leading-[1.13] drop-shadow-lg font-jakarta">
                     {loadingAnimations[currentAnimation].text}
                   </h2>
                 </div>
@@ -131,7 +124,7 @@ export function WipLanding() {
             ) : (
               /* Final Landing Message - Positioned at bottom of screen */
               <div 
-                className={`fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[960px] px-4 transition-opacity duration-300 ${
+                className={`fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[95vw] md:max-w-[960px] px-3 md:px-4 transition-opacity duration-300 ${
                   isVisible ? 'opacity-100' : 'opacity-0'
                 }`}
               >
