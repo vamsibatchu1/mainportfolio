@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import { motion } from 'framer-motion';
 import { FadedButton } from './faded_button';
 
 // Dynamically import Lottie to avoid SSR issues
@@ -50,6 +51,7 @@ export function WipLanding() {
   const [currentAnimation, setCurrentAnimation] = useState(0);
   const [showFinalMessage, setShowFinalMessage] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  const [showFadedButton, setShowFadedButton] = useState(false);
   
   // Code-level toggle: Change this to false to hide loading images
   const showLoadingImages = true;
@@ -70,6 +72,10 @@ export function WipLanding() {
         setTimeout(() => {
           setShowFinalMessage(true);
           setIsVisible(true);
+          // Show faded button after 2 seconds of landing message
+          setTimeout(() => {
+            setShowFadedButton(true);
+          }, 2000);
         }, 300);
       }
     }, loadingAnimations[currentAnimation]?.duration || 2000);
@@ -129,11 +135,6 @@ export function WipLanding() {
                   isVisible ? 'opacity-100' : 'opacity-0'
                 }`}
               >
-                {/* FadedButton - Positioned 40px above landing message */}
-                <div className="absolute -top-[400px] right-10 w-auto">
-                  <FadedButton />
-                </div>
-                
                 <Image
                   src="/images/wip/landing-message.svg"
                   alt="Welcome message"
@@ -150,6 +151,21 @@ export function WipLanding() {
           </div>
         </div>
       </div>
+      
+      {/* FadedButton - Positioned at bottom right of entire page with Framer Motion */}
+      {showFadedButton && (
+        <motion.div 
+          className="fixed bottom-[64px] right-[64px] w-auto z-20"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ 
+            duration: 0.6, 
+            ease: "easeOut" 
+          }}
+        >
+          <FadedButton />
+        </motion.div>
+      )}
     </div>
   );
 }
