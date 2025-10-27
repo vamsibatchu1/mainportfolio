@@ -33,7 +33,7 @@ export function FadedButton({ onClick, className = '' }: FadedButtonProps) {
 
         {/* Main Text */}
         <p className="flex-1 text-white text-[23.545px] font-normal leading-[33.636px] whitespace-nowrap font-jakarta">
-          Click to begin
+          Tap to begin
         </p>
 
         {/* Keyboard Shortcut */}
