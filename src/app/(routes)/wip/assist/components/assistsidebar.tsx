@@ -10,33 +10,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { Toggle } from '@/components/ui/toggle';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { PromptsSuggestions } from './prompts-suggestions';
-import { SlashMenu } from './slash-menu';
-import { SlashChip } from './slash-chip';
-import { LoadingComponent } from './loadingcomponent';
-
-// Types for dynamic responses
-interface Source {
-  id: string;
-  name: string;
-  type: 'package' | 'file' | 'url';
-}
-
-interface ResponseData {
-  id: string;
-  type: 'text' | 'sources' | 'research' | 'card';
-  content: string;
-  sources?: Source[];
-  researchCount?: number;
-}
-
-interface ChatMessage {
-  id: string;
-  question: string;
-  response: ResponseData;
-  timestamp: Date;
-  isLoading?: boolean;
-}
+import { PromptsSuggestions } from './prompt/PromptsSuggestions';
+import { SlashMenu } from './prompt/SlashMenu';
+import { SlashChip } from './prompt/SlashChip';
+import { QuestionBubble } from './questions/QuestionBubble';
+import { ResponseContainer } from './responses/ResponseContainer';
+import { llmManager } from './llm';
+import { ChatMessage, ResponseData, TextResponse, CodeResponse, MultiAgentResponse, ImageCardsResponse, DataStatsResponse } from '../types/responses';
 
 interface AssistSidebarProps {
   messages?: ChatMessage[];
@@ -121,18 +101,68 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
 
   const displayMessages = chatMessages.length > 0 ? chatMessages : [welcomeMessage];
 
-  const handleSend = () => {
+  // Helper function to convert ProcessedResponse to ResponseData
+  const convertToResponseData = (processedResponse: any, messageId: string): ResponseData => {
+    const baseResponse = {
+      id: messageId + '-response',
+      content: processedResponse.content,
+      timestamp: new Date()
+    };
+
+    switch (processedResponse.type) {
+      case 'code':
+        return {
+          ...baseResponse,
+          type: 'code',
+          language: processedResponse.metadata?.language || 'text',
+          code: processedResponse.content,
+          title: processedResponse.metadata?.title
+        } as CodeResponse;
+
+      case 'multi-agent':
+        return {
+          ...baseResponse,
+          type: 'multi-agent',
+          agents: processedResponse.metadata?.agents || []
+        } as MultiAgentResponse;
+
+      case 'image-cards':
+        return {
+          ...baseResponse,
+          type: 'image-cards',
+          cards: processedResponse.metadata?.cards || []
+        } as ImageCardsResponse;
+
+      case 'data-stats':
+        return {
+          ...baseResponse,
+          type: 'data-stats',
+          title: processedResponse.metadata?.title || 'Data Statistics',
+          stats: processedResponse.metadata?.stats || [],
+          chartData: processedResponse.metadata?.chartData
+        } as DataStatsResponse;
+
+      default:
+        return {
+          ...baseResponse,
+          type: 'text'
+        } as TextResponse;
+    }
+  };
+
+  const handleSend = async () => {
     if (inputValue.trim() || slashChips.length > 0) {
       const messageId = Date.now().toString();
+      const userQuestion = inputValue.trim();
       
       // Create initial message with loading state
       const userMessage: ChatMessage = {
         id: messageId,
-        question: inputValue.trim(),
+        question: userQuestion,
         response: {
           id: messageId + '-response',
           type: 'text',
-          content: 'Thank you for your question! This is a simulated response. In a real implementation, this would connect to an AI service to provide intelligent answers about the portfolio.'
+          content: 'Here goes the loading message'
         },
         timestamp: new Date(),
         isLoading: true
@@ -143,19 +173,52 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
       setSlashChips([]); // Clear chips after sending
       
       if (onSendMessage) {
-        onSendMessage(inputValue.trim());
+        onSendMessage(userQuestion);
       }
 
-      // After 1 second, replace loading with actual response
-      setTimeout(() => {
+      try {
+        // Generate AI response using LLM
+        const aiResponse = await llmManager.generateResponse(userQuestion);
+        
+        // Convert ProcessedResponse to ResponseData
+        const responseData = convertToResponseData(aiResponse, messageId);
+        
+        // Update the message with the actual response
         setChatMessages(prev => 
           prev.map(msg => 
             msg.id === messageId 
-              ? { ...msg, isLoading: false }
+              ? { 
+                  ...msg, 
+                  isLoading: false,
+                  response: responseData
+                }
               : msg
           )
         );
-      }, 1000);
+      } catch (error) {
+        console.error('Error generating response:', error);
+        
+        // Create error response
+        const errorResponse: TextResponse = {
+          id: messageId + '-response',
+          type: 'text',
+          content: 'I apologize, but I encountered an error while processing your request. Please try again.',
+          timestamp: new Date()
+        };
+        
+        // Update with error response
+        setChatMessages(prev => 
+          prev.map(msg => 
+            msg.id === messageId 
+              ? { 
+                  ...msg, 
+                  isLoading: false,
+                  response: errorResponse
+                }
+              : msg
+          )
+        );
+      }
     }
   };
 
@@ -203,91 +266,14 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
     }
   };
 
-  const renderResponse = (response: ResponseData, messageId?: string, isLoading?: boolean) => {
-    // Show loading component if message is in loading state
-    if (isLoading) {
-      return (
-        <div className="content-stretch flex flex-col gap-[10px] items-start justify-center relative shrink-0 w-full">
-          <LoadingComponent message="Here goes the loading message" />
-        </div>
-      );
-    }
-
-    switch (response.type) {
-      case 'text':
-        return (
-          <div className="content-stretch flex flex-col gap-[10px] items-start justify-center relative shrink-0 w-full">
-            <p className={`${interFont.className} font-normal leading-[20px] max-w-[400px] not-italic relative shrink-0 text-[14px] text-foreground whitespace-pre-wrap`}>
-              {response.content}
-            </p>
-            {/* Show prompts suggestions only for welcome message */}
-            {messageId === 'welcome' && (
-              <div className="mt-4">
-                <PromptsSuggestions onPromptClick={handlePromptClick} />
-              </div>
-            )}
-            {response.sources && response.sources.length > 0 && (
-              <>
-                <div className="bg-secondary box-border content-stretch flex gap-[8px] h-[36px] items-center justify-center px-[16px] py-[8px] relative rounded-[8px] shadow-xs shrink-0">
-                  <div className="flex flex-col font-medium justify-center leading-[0] relative shrink-0 text-secondary-foreground text-[14px] text-nowrap">
-                    <p className={`${interFont.className} leading-[20px] whitespace-pre`}>
-                      {response.sources.length} sources
-                    </p>
-                  </div>
-                  <div className="overflow-clip relative shrink-0 size-[16px]">
-                    <ChevronDown className="w-4 h-4 shrink-0" />
-                  </div>
-                </div>
-                <div className="content-stretch flex flex-col gap-[10px] items-start justify-center relative shrink-0 w-full">
-                  {response.sources.map((source, index) => (
-                    <div 
-                      key={source.id}
-                      className={`bg-background border border-solid box-border content-stretch flex gap-[8px] items-center justify-center px-[16px] py-[8px] relative rounded-[8px] shrink-0 ${
-                        index === 1 ? 'border-muted-foreground' : 'border-border'
-                      }`}
-                    >
-                      <p className={`${interFont.className} font-normal leading-[20px] relative shrink-0 text-foreground text-[14px] text-nowrap whitespace-pre`}>
-                        {source.name}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-        );
-
-      case 'research':
-        return (
-          <div className="content-stretch flex flex-col gap-[10px] items-start justify-center relative shrink-0 w-full">
-            <p className={`${interFont.className} font-normal leading-[20px] max-w-[400px] not-italic relative shrink-0 text-[16px] text-foreground whitespace-pre-wrap`}>
-              {response.content}
-            </p>
-            <div className="bg-neutral-100 border border-input border-solid box-border content-stretch flex gap-[8px] h-[36px] items-center px-[16px] py-[8px] relative rounded-[8px] shrink-0 w-full">
-              <p className={`${interFont.className} font-medium text-[14px] text-foreground whitespace-pre`}>
-                Researched {response.researchCount} pages
-              </p>
-            </div>
-          </div>
-        );
-
-      default:
-        return (
-          <p className={`${interFont.className} font-normal leading-[20px] max-w-[400px] not-italic relative shrink-0 text-[16px] text-foreground whitespace-pre-wrap`}>
-            {response.content}
-          </p>
-        );
-    }
-  };
-
   return (
     <div className={`box-border content-stretch flex flex-col items-start relative shadow-[0px_2.56px_51.2px_0px_rgba(21,62,90,0.3)] size-full ${className}`}>
       {/* Window Header */}
       <div className="bg-[#F6F6F6] border-[0.64px] border-black/20 border-solid box-border content-stretch flex flex-col items-start px-[21.333px] py-[18.667px] relative rounded-tl-[15.36px] rounded-tr-[15.36px] shrink-0 w-[460px]">
         <div className="content-stretch flex gap-[10.667px] items-center relative shrink-0 w-full">
-          <div className="relative shrink-0 size-[21.333px] bg-red-500 rounded-full"></div>
-          <div className="relative shrink-0 size-[21.333px] bg-yellow-500 rounded-full"></div>
-          <div className="relative shrink-0 size-[21.333px] bg-green-500 rounded-full"></div>
+          <div className="relative shrink-0 size-[16px] bg-red-500 rounded-full"></div>
+          <div className="relative shrink-0 size-[16px] bg-yellow-500 rounded-full"></div>
+          <div className="relative shrink-0 size-[16px] bg-green-500 rounded-full"></div>
         </div>
       </div>
 
@@ -302,18 +288,20 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
                 <div key={message.id} className="content-stretch flex flex-col gap-[24px] items-start relative shrink-0 w-full">
                   {/* Question Container - Only show if there's a question */}
                   {message.question && (
-                    <div className="content-stretch flex gap-[10px] items-center justify-end relative shrink-0 w-full">
-                      <div className="bg-black box-border content-stretch flex gap-[10px] items-center justify-center max-w-[400px] p-[12px] relative rounded-bl-[16px] rounded-tl-[16px] rounded-tr-[16px] shrink-0">
-                        <p className={`basis-0 ${interFont.className} font-normal grow leading-[20px] min-h-px min-w-px not-italic relative shrink-0 text-[14px] text-right text-white whitespace-normal break-words`}>
-                          {message.question}
-                        </p>
-                      </div>
-                    </div>
+                    <QuestionBubble 
+                      question={message.question} 
+                      timestamp={message.timestamp} 
+                    />
                   )}
 
                   {/* Response Container */}
                   <div className="content-stretch flex flex-col gap-[10px] items-start justify-center relative shrink-0 w-full">
-                    {renderResponse(message.response, message.id, message.isLoading)}
+                    <ResponseContainer 
+                      response={message.response} 
+                      messageId={message.id} 
+                      isLoading={message.isLoading}
+                      onPromptClick={handlePromptClick}
+                    />
                   </div>
                 </div>
               ))}
@@ -347,14 +335,14 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
             <div className="bg-popover border-[1.25px] border-border border-solid max-w-[640px] relative rounded-[12.5px] shrink-0 w-full">
               <div className="content-stretch flex flex-col items-start max-w-inherit overflow-clip relative rounded-[inherit] w-full">
                         {/* Command Main */}
-                        <div className="bg-transparent border-0 border-b-[1.25px] border-border border-solid h-[80px] relative shrink-0 w-full">
-                          <div className="box-border content-stretch flex gap-[10px] h-[80px] items-start overflow-clip p-[15px] relative rounded-[inherit] w-full">
+                        <div className="bg-transparent border-0 relative shrink-0 w-full">
+                          <div className="box-border content-stretch flex gap-[10px] h-[80px] items-start overflow-clip px-[15px] pt-[15px] relative rounded-[inherit] w-full">
                             <Textarea
                               value={inputValue}
                               onChange={handleInputChange}
                               onKeyPress={handleKeyPress}
                               placeholder="Ask anything to the portfolio assist"
-                              className={`basis-0 ${interFont.className} font-normal grow leading-[25px] min-h-px min-w-px overflow-ellipsis overflow-hidden relative shrink-0 text-[17.5px] text-muted-foreground resize-none border-none outline-none bg-transparent placeholder:text-muted-foreground h-full shadow-none focus:ring-0 focus:border-none focus:outline-none p-0`}
+                              className={`basis-0 ${interFont.className} font-normal grow leading-[25px] min-h-px min-w-px overflow-y-auto relative shrink-0 text-[17.5px] text-muted-foreground resize-none border-none outline-none bg-transparent placeholder:text-muted-foreground h-full shadow-none focus:ring-0 focus:border-none focus:outline-none p-0 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent`}
                               style={{
                                 userSelect: 'none',
                                 WebkitUserSelect: 'none',
