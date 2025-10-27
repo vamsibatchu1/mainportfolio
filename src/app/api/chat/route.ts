@@ -1,35 +1,68 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { NextRequest, NextResponse } from 'next/server';
+import OpenAI from 'openai';
 
-// Initialize the Gemini AI with API key from environment variables
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || '');
-const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 export async function POST(request: NextRequest) {
   try {
-    const { prompt } = await request.json();
+    const { messages } = await request.json();
 
-    if (!prompt) {
-      return NextResponse.json({ error: 'Prompt is required' }, { status: 400 });
+    if (!messages || !Array.isArray(messages)) {
+      return NextResponse.json(
+        { error: 'Messages array is required' },
+        { status: 400 }
+      );
     }
 
-    // Simple cost-effective prompt for the portfolio assistant
-    const contextualPrompt = `You are Vamsi Batchu's portfolio assistant. Vamsi is a product designer and a leader with 12+ years experience, currently working at Rocket. He specializes in design craft, leading teams and creating impactful products and AI enablement.
+    // Add system prompt if not present
+    const systemMessage = {
+      role: 'system',
+      content: `You are a helpful AI assistant for a portfolio website. You help users explore and understand the portfolio owner's work, projects, and expertise.
 
-Question: ${prompt}
+Key guidelines:
+- Be conversational and helpful
+- Focus on the portfolio owner's work, projects, and skills
+- Provide accurate and relevant information
+- If you don't know something specific about their work, say so politely
+- Keep responses concise but informative
+- Use a friendly, professional tone
 
-Respond as Vamsi in under 400 characters. Be friendly and professional.`;
+You can help with:
+- Explaining projects and case studies
+- Discussing technical skills and expertise
+- Providing insights about design decisions
+- Answering questions about the portfolio owner's background
+- Suggesting relevant projects or skills to explore
 
-    const result = await model.generateContent(contextualPrompt);
-    const response = await result.response;
-    const text = response.text();
+Remember: You're representing the portfolio owner, so be professional and helpful.`
+    };
 
-    return NextResponse.json({ response: text });
+    const allMessages = messages.some((m: any) => m.role === 'system') 
+      ? messages 
+      : [systemMessage, ...messages];
+
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: allMessages,
+      temperature: 0.7,
+      max_tokens: 2000,
+    });
+
+    const response = completion.choices[0]?.message?.content || '';
+
+    return NextResponse.json({
+      content: response,
+      usage: completion.usage,
+      finishReason: completion.choices[0]?.finish_reason,
+    });
+
   } catch (error) {
-    console.error('Gemini API Error:', error);
-    
-    return NextResponse.json({ 
-      error: "I'm having trouble connecting right now, but I'd be happy to share more about Vamsi's work and experience. Could you try asking your question again?" 
-    }, { status: 500 });
+    console.error('OpenAI API Error:', error);
+    return NextResponse.json(
+      { error: 'Failed to generate response' },
+      { status: 500 }
+    );
   }
-} 
+}

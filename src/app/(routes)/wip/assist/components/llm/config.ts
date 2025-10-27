@@ -1,8 +1,8 @@
 import { LLMConfig } from './types';
 
-// OpenAI Configuration
+// OpenAI Configuration (API key is now handled server-side)
 export const OPENAI_CONFIG: LLMConfig = {
-  apiKey: process.env.OPENAI_API_KEY || '',
+  apiKey: '', // Not needed on client side
   model: 'gpt-4o-mini', // Using GPT-4o-mini for cost efficiency
   temperature: 0.7,
   maxTokens: 2000,
