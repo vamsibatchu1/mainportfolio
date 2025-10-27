@@ -59,6 +59,7 @@ export function WipLanding() {
   const [startAnimations, setStartAnimations] = useState(false);
   const [showFirstAnimation, setShowFirstAnimation] = useState(false);
   const [showAssistSidebar, setShowAssistSidebar] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   
   // Code-level toggle: Change this to false to hide loading images
   const showLoadingImages = true;
@@ -116,14 +117,16 @@ export function WipLanding() {
         }, 300);
       } else {
         setShowFirstAnimation(false);
+        setIsTransitioning(true);
         setTimeout(() => {
           setShowFinalMessage(true);
           setIsVisible(true);
           // Show faded button after 1 second of landing message
           setTimeout(() => {
             setShowFadedButton(true);
+            setIsTransitioning(false);
           }, 1000);
-        }, 300);
+        }, 500);
       }
     }, loadingAnimations[currentAnimation]?.duration || 2000);
 
@@ -159,11 +162,11 @@ export function WipLanding() {
                     className="flex items-center gap-4 md:gap-8"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ 
-                      opacity: showFirstAnimation ? 1 : 0, 
-                      y: showFirstAnimation ? 0 : 20 
+                      opacity: showFirstAnimation && !isTransitioning ? 1 : 0, 
+                      y: showFirstAnimation && !isTransitioning ? 0 : 20 
                     }}
                     transition={{ 
-                      duration: 0.6, 
+                      duration: 0.8, 
                       ease: "easeOut" 
                     }}
                   >
@@ -193,10 +196,15 @@ export function WipLanding() {
 
           {/* Final Landing Message - Only shown when animations complete */}
           {showFinalMessage && (
-            <div 
-              className={`fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[80vw] md:max-w-[720px] px-3 md:px-4 transition-opacity duration-300 ${
-                isVisible ? 'opacity-100' : 'opacity-0'
-              }`}
+            <motion.div 
+              className={`fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[80vw] md:max-w-[720px] px-3 md:px-4`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ 
+                duration: 1.0, 
+                ease: "easeOut",
+                delay: 0.2
+              }}
             >
               <Image
                 src="/images/wip/landing-message.svg"
@@ -209,7 +217,7 @@ export function WipLanding() {
                 }}
                 quality={100}
               />
-            </div>
+            </motion.div>
           )}
           
           {/* FadedButton - Positioned at bottom right of entire page with Framer Motion */}
