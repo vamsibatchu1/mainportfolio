@@ -1,6 +1,7 @@
 // Base response types
 export type ResponseType = 
   | 'text'
+  | 'loading'
   | 'sources'
   | 'research'
   | 'code'
@@ -25,6 +26,11 @@ export interface Source {
 // Text response (current default)
 export interface TextResponse extends BaseResponse {
   type: 'text';
+}
+
+// Loading response
+export interface LoadingResponse extends BaseResponse {
+  type: 'loading';
 }
 
 // Sources response (existing)
@@ -84,6 +90,7 @@ export interface DataStatsResponse extends BaseResponse {
 // Union type for all responses
 export type ResponseData = 
   | TextResponse
+  | LoadingResponse
   | SourcesResponse
   | ResearchResponse
   | CodeResponse

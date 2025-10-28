@@ -1,22 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ChevronDown, Send, AppWindow, Code, Bold, Italic, Underline, ChevronRight, Folder, ChevronsUpDown } from 'lucide-react';
 import { interFont } from '@/app/fonts';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Textarea } from '@/components/ui/textarea';
-import { Toggle } from '@/components/ui/toggle';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { PromptsSuggestions } from './prompt/PromptsSuggestions';
-import { SlashMenu } from './prompt/SlashMenu';
-import { SlashChip } from './prompt/SlashChip';
 import { QuestionBubble } from './questions/QuestionBubble';
 import { ResponseContainer } from './responses/ResponseContainer';
+import { AssistPrompt } from './prompt/AssistPrompt';
 import { llmManager } from './llm';
-import { ChatMessage, ResponseData, TextResponse, CodeResponse, MultiAgentResponse, ImageCardsResponse, DataStatsResponse } from '../types/responses';
+import { ChatMessage, ResponseData, TextResponse, LoadingResponse, CodeResponse, MultiAgentResponse, ImageCardsResponse, DataStatsResponse } from '../types/responses';
 
 interface AssistSidebarProps {
   messages?: ChatMessage[];
@@ -31,21 +21,38 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderline, setIsUnderline] = useState(false);
-  const [selectedFramework, setSelectedFramework] = useState<string>('');
-  const [isFrameworkOpen, setIsFrameworkOpen] = useState(false);
+  const [selectedPersona, setSelectedPersona] = useState<string>('');
+  const [isPersonaOpen, setIsPersonaOpen] = useState(false);
+  const [selectedTone, setSelectedTone] = useState<string>('');
+  const [isToneOpen, setIsToneOpen] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState<string>('');
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [showSlashMenu, setShowSlashMenu] = useState(false);
   const [slashChips, setSlashChips] = useState<Array<{ id: string; command: string }>>([]);
   const chatContainerRef = React.useRef<HTMLDivElement>(null);
 
-  // Framework options
-  const frameworks = [
-    { value: 'react', label: 'React' },
-    { value: 'vue', label: 'Vue' },
-    { value: 'angular', label: 'Angular' },
-    { value: 'svelte', label: 'Svelte' },
-    { value: 'next', label: 'Next.js' },
-    { value: 'nuxt', label: 'Nuxt.js' },
+  // Persona options
+  const personas = [
+    { value: 'designer', label: 'Designer' },
+    { value: 'recruiter', label: 'Recruiter' },
+    { value: 'curious-mind', label: 'Curious mind' },
+  ];
+
+  // Tone options
+  const tones = [
+    { value: 'general', label: 'General' },
+    { value: 'professional', label: 'Professional' },
+    { value: 'sarcastic', label: 'Sarcastic' },
+    { value: 'friendly', label: 'Friendly' },
+  ];
+
+  // Filter options
+  const filters = [
+    { value: 'recent', label: 'Recent' },
+    { value: 'popular', label: 'Popular' },
+    { value: 'trending', label: 'Trending' },
+    { value: 'featured', label: 'Featured' },
   ];
 
   // Welcome message from AI
@@ -154,6 +161,91 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
     if (inputValue.trim() || slashChips.length > 0) {
       const messageId = Date.now().toString();
       const userQuestion = inputValue.trim();
+      
+      // Check for variant test commands
+      if (userQuestion === '1' || userQuestion === '2' || userQuestion === '3' || userQuestion === '4') {
+        let testResponse: ResponseData;
+        
+        switch (userQuestion) {
+          case '1':
+            // Variant General
+            testResponse = {
+              id: messageId + '-response',
+              type: 'text',
+              content: 'This is a general text response variant.',
+              timestamp: new Date()
+            } as TextResponse;
+            break;
+            
+          case '2':
+            // Variant Loading
+            testResponse = {
+              id: messageId + '-response',
+              type: 'loading',
+              content: 'This is a loading response variant.',
+              timestamp: new Date()
+            } as LoadingResponse;
+            break;
+            
+          case '3':
+            // Variant Agent
+            testResponse = {
+              id: messageId + '-response',
+              type: 'multi-agent',
+              content: 'This is a test of the agent response variant.',
+              timestamp: new Date(),
+              agents: [
+                {
+                  id: 'agent-1',
+                  name: 'Email Agent',
+                  status: 'running',
+                  result: 'Processing emails...'
+                },
+                {
+                  id: 'agent-2', 
+                  name: 'File Agent',
+                  status: 'completed',
+                  result: 'Files processed successfully'
+                }
+              ]
+            } as MultiAgentResponse;
+            break;
+            
+          case '4':
+            // Variant Agent Tabs
+            testResponse = {
+              id: messageId + '-response',
+              type: 'code',
+              content: 'This is a test of the agent tabs variant.',
+              timestamp: new Date(),
+              language: 'javascript',
+              code: 'console.log("Hello World");',
+              title: 'Sample Code'
+            } as CodeResponse;
+            break;
+            
+          default:
+            testResponse = {
+              id: messageId + '-response',
+              type: 'text',
+              content: 'Unknown variant.',
+              timestamp: new Date()
+            } as TextResponse;
+        }
+        
+        // Create test message
+        const testMessage: ChatMessage = {
+          id: messageId,
+          question: `Test Variant ${userQuestion}`,
+          response: testResponse,
+          timestamp: new Date()
+        };
+        
+        setChatMessages(prev => [...prev, testMessage]);
+        setInputValue('');
+        setSlashChips([]);
+        return;
+      }
       
       // Create initial message with loading state
       const userMessage: ChatMessage = {
@@ -308,177 +400,39 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
             </div>
           </div>
 
-          {/* Prompt Container */}
-          <div className="box-border content-stretch flex flex-col gap-[16px] items-start p-[24px] relative shrink-0 w-full">
-            {/* Chips Container - Above prompt with 4px gap */}
-            <div className="relative">
-              {slashChips.length > 0 && (
-                <div className="flex flex-wrap gap-[6px]">
-                  {slashChips.map((chip) => (
-                    <SlashChip
-                      key={chip.id}
-                      command={chip.command}
-                      onRemove={() => handleChipRemove(chip.id)}
-                    />
-                  ))}
-                </div>
-              )}
-              
-              {/* Slash Menu - Positioned absolutely over chips */}
-              {showSlashMenu && (
-                <div className="absolute top-[-72px] left-0 z-50">
-                  <SlashMenu onItemClick={handleSlashMenuItemClick} />
-                </div>
-              )}
-            </div>
+          {/* Assist Prompt Component */}
+          <AssistPrompt
+            // Assist Selections
+            slashChips={slashChips}
+            onChipRemove={handleChipRemove}
+            showSlashMenu={showSlashMenu}
+            onSlashMenuItemClick={handleSlashMenuItemClick}
             
-            <div className="bg-popover border-[1.25px] border-border border-solid max-w-[640px] relative rounded-[12.5px] shrink-0 w-full">
-              <div className="content-stretch flex flex-col items-start max-w-inherit overflow-clip relative rounded-[inherit] w-full">
-                        {/* Command Main */}
-                        <div className="bg-transparent border-0 relative shrink-0 w-full">
-                          <div className="box-border content-stretch flex gap-[10px] h-[80px] items-start overflow-clip px-[15px] pt-[15px] relative rounded-[inherit] w-full">
-                            <Textarea
-                              value={inputValue}
-                              onChange={handleInputChange}
+            // Assist Prompt
+            inputValue={inputValue}
+            onInputChange={handleInputChange}
                               onKeyPress={handleKeyPress}
-                              placeholder="Ask anything to the portfolio assist"
-                              className={`basis-0 ${interFont.className} font-normal grow leading-[25px] min-h-px min-w-px overflow-y-auto relative shrink-0 text-[17.5px] text-muted-foreground resize-none border-none outline-none bg-transparent placeholder:text-muted-foreground h-full shadow-none focus:ring-0 focus:border-none focus:outline-none p-0 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent`}
-                              style={{
-                                userSelect: 'none',
-                                WebkitUserSelect: 'none',
-                                MozUserSelect: 'none',
-                                msUserSelect: 'none',
-                                outline: 'none',
-                                boxShadow: 'none',
-                                border: 'none',
-                                WebkitAppearance: 'none',
-                                MozAppearance: 'none',
-                                appearance: 'none',
-                                padding: '0'
-                              }}
-                              rows={4}
-                            />
-                            <div className={`border border-[#e8e8e8] border-solid box-border content-stretch flex gap-[8px] items-center justify-center px-[16px] py-[8px] relative rounded-[8px] shrink-0 size-[36px] transition-colors ${
-                              inputValue.trim() || slashChips.length > 0 ? 'bg-black' : 'bg-[#F5F5F5]'
-                            }`}>
-                              <Button
-                                onClick={handleSend}
-                                size="icon"
-                                variant="ghost"
-                                className={`overflow-clip relative shrink-0 size-4 p-0 transition-colors ${
-                                  inputValue.trim() || slashChips.length > 0
-                                    ? 'hover:bg-gray-800 hover:text-white focus:bg-gray-800 focus:text-white' 
-                                    : 'hover:bg-muted hover:text-foreground focus:bg-muted focus:text-foreground'
-                                }`}
-                              >
-                                <Send className={`w-4 h-4 transition-colors ${
-                                  inputValue.trim() || slashChips.length > 0 ? 'text-white' : 'text-foreground'
-                                }`} />
-                              </Button>
-                            </div>
-                  </div>
-                </div>
-
-                {/* Command Tools */}
-                <div className="box-border content-stretch flex flex-col items-start px-[10px] py-[12px] relative shrink-0 w-full">
-                  <div className="content-stretch flex gap-[16px] items-center relative shrink-0 w-full">
-                    {/* Tabs */}
-                    <div className="bg-neutral-100 box-border content-stretch flex h-[36px] items-center p-[3px] relative rounded-[10px] shrink-0">
-                      <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'agent' | 'code')}>
-                        <TabsList className="bg-transparent h-full p-0 w-full">
-                          <TabsTrigger 
-                            value="agent" 
-                            className="box-border content-stretch flex gap-[8px] items-center justify-center px-[8px] py-[4px] relative rounded-[8px] shrink-0 data-[state=active]:bg-background data-[state=active]:border data-[state=active]:border-solid data-[state=active]:border-transparent hover:bg-background/80 transition-colors"
-                          >
-                            <div className="overflow-clip relative shrink-0 size-[16px]">
-                              <AppWindow className="w-4 h-4" />
-                            </div>
-                            <p className={`${interFont.className} font-medium leading-[20px] relative shrink-0 text-foreground text-[14px] text-center text-nowrap whitespace-pre`}>
-                              Agent
-                            </p>
-                          </TabsTrigger>
-                          <TabsTrigger 
-                            value="code" 
-                            className="box-border content-stretch flex gap-[8px] items-center justify-center px-[8px] py-[4px] relative rounded-[8px] shrink-0 data-[state=active]:bg-background data-[state=active]:border data-[state=active]:border-solid data-[state=active]:border-transparent hover:bg-background/80 transition-colors"
-                          >
-                            <div className="overflow-clip relative shrink-0 size-[16px]">
-                              <Code className="w-4 h-4" />
-                            </div>
-                            <p className={`${interFont.className} font-medium leading-[20px] relative shrink-0 text-foreground text-[14px] text-center text-nowrap whitespace-pre`}>
-                              Code
-                            </p>
-                          </TabsTrigger>
-                        </TabsList>
-                      </Tabs>
-                    </div>
-
-                    {/* Framework Combobox */}
-                    <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-[200px]">
-                      <Popover open={isFrameworkOpen} onOpenChange={setIsFrameworkOpen}>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            aria-expanded={isFrameworkOpen}
-                            className="bg-background border border-input border-solid h-[36px] relative rounded-[8px] shrink-0 w-full justify-between px-[16px] py-[8px] hover:bg-muted focus:bg-muted transition-colors"
-                          >
-                            <span className={`${interFont.className} font-medium leading-[20px] text-[14px] text-foreground`}>
-                              {selectedFramework ? frameworks.find(f => f.value === selectedFramework)?.label : "Select framework..."}
-                            </span>
-                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-[200px] p-0 bg-background border border-border" align="start">
-                          <Command className="bg-background">
-                            <CommandInput 
-                              placeholder="Search framework..." 
-                              className={`${interFont.className} font-normal text-[14px]`}
-                            />
-                            <CommandList>
-                              <CommandEmpty className={`${interFont.className} font-normal text-[14px]`}>
-                                No framework found.
-                              </CommandEmpty>
-                              <CommandGroup>
-                                {frameworks.map((framework) => (
-                                  <CommandItem
-                                    key={framework.value}
-                                    value={framework.value}
-                                    onSelect={(currentValue) => {
-                                      setSelectedFramework(currentValue === selectedFramework ? "" : currentValue);
-                                      setIsFrameworkOpen(false);
-                                    }}
-                                    className={`${interFont.className} font-medium leading-[20px] text-[14px] transition-colors`}
-                                    style={{
-                                      '--hover-bg': '#F5F5F5',
-                                      '--focus-bg': '#F5F5F5'
-                                    } as React.CSSProperties}
-                                    onMouseEnter={(e) => {
-                                      e.currentTarget.style.backgroundColor = '#F5F5F5';
-                                    }}
-                                    onMouseLeave={(e) => {
-                                      e.currentTarget.style.backgroundColor = '';
-                                    }}
-                                    onFocus={(e) => {
-                                      e.currentTarget.style.backgroundColor = '#F5F5F5';
-                                    }}
-                                    onBlur={(e) => {
-                                      e.currentTarget.style.backgroundColor = '';
-                                    }}
-                                  >
-                                    {framework.label}
-                                  </CommandItem>
-                                ))}
-                              </CommandGroup>
-                            </CommandList>
-                          </Command>
-                        </PopoverContent>
-                      </Popover>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+            onSend={handleSend}
+            
+            // Assist Tools
+            activeTab={activeTab}
+            onTabChange={(value) => setActiveTab(value as 'agent' | 'code')}
+            selectedPersona={selectedPersona}
+            onPersonaChange={setSelectedPersona}
+            isPersonaOpen={isPersonaOpen}
+            onPersonaOpenChange={setIsPersonaOpen}
+            personas={personas}
+            selectedTone={selectedTone}
+            onToneChange={setSelectedTone}
+            isToneOpen={isToneOpen}
+            onToneOpenChange={setIsToneOpen}
+            tones={tones}
+            selectedFilter={selectedFilter}
+            onFilterChange={setSelectedFilter}
+            isFilterOpen={isFilterOpen}
+            onFilterOpenChange={setIsFilterOpen}
+            filters={filters}
+          />
         </div>
       </div>
     </div>

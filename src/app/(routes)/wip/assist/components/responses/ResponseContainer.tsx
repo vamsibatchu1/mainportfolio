@@ -4,20 +4,28 @@ import { ResponseContainerProps, ResponseData } from '../../types/responses';
 import { LoadingComponent } from './LoadingComponent';
 import { TextResponse } from './TextResponse';
 import { ResearchResponseComponent } from './ResearchResponse';
+import { VariantGeneral, VariantLoading, VariantAgent, VariantAgentTabs } from './variants';
 
 export function ResponseContainer({ response, messageId, isLoading, onPromptClick }: ResponseContainerProps) {
   // Show loading component if message is in loading state
   if (isLoading) {
-    return (
-      <div className="content-stretch flex flex-col gap-[10px] items-start justify-center relative shrink-0 w-full">
-        <LoadingComponent message="Here goes the loading message" />
-      </div>
-    );
+    return <VariantLoading content="Searching files, reading the documentation and creating a report" />;
   }
 
-  // Render different response types
+  // Render different response types using variants
   switch (response.type) {
     case 'text':
+      return <VariantGeneral content={response.content} />;
+
+    case 'loading':
+      return <VariantLoading content={response.content} />;
+
+    case 'multi-agent':
+      return <VariantAgent content="Initated the agent process" />;
+
+    case 'code':
+      return <VariantAgentTabs content="Initated the agent process" />;
+
     case 'sources':
       return (
         <TextResponse 
@@ -31,11 +39,7 @@ export function ResponseContainer({ response, messageId, isLoading, onPromptClic
       return <ResearchResponseComponent response={response} />;
 
     default:
-      // Fallback to simple text for unknown types
-      return (
-        <p className={`${interFont.className} font-normal leading-[20px] max-w-[400px] not-italic relative shrink-0 text-[16px] text-foreground whitespace-pre-wrap`}>
-          {response.content}
-        </p>
-      );
+      // Fallback to general variant for unknown types
+      return <VariantGeneral content={response.content} />;
   }
 }
