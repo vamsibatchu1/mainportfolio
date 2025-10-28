@@ -224,20 +224,10 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
       }
       
       // Check for variant test commands
-      if (userQuestion === '1' || userQuestion === '2' || userQuestion === '3' || userQuestion === '4') {
+      if (userQuestion === '2' || userQuestion === '3' || userQuestion === '4') {
         let testResponse: ResponseData;
         
         switch (userQuestion) {
-          case '1':
-            // Variant General
-            testResponse = {
-              id: messageId + '-response',
-              type: 'text',
-              content: 'This is a general text response variant.',
-              timestamp: new Date()
-            } as TextResponse;
-            break;
-            
           case '2':
             // Variant Loading
             testResponse = {
@@ -432,7 +422,7 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
   };
 
   return (
-    <div className={`box-border content-stretch flex flex-col items-start relative shadow-[0px_2.56px_51.2px_0px_rgba(21,62,90,0.3)] size-full ${className}`}>
+    <div className={`box-border content-stretch flex flex-col items-start relative shadow-[0px_2.56px_51.2px_0px_rgba(21,62,90,0.3)] h-auto w-[460px] ${className}`}>
       {/* Window Header */}
       <div className="bg-[#F6F6F6] border-[0.64px] border-black/20 border-solid box-border content-stretch flex flex-col items-start px-[21.333px] py-[18.667px] relative rounded-tl-[15.36px] rounded-tr-[15.36px] shrink-0 w-[460px]">
         <div className="content-stretch flex gap-[10.667px] items-center relative shrink-0 w-full">
@@ -459,21 +449,26 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
                     />
                   )}
 
-                  {/* Response Container */}
-                  <div className="content-stretch flex flex-col gap-[10px] items-start justify-center relative shrink-0 w-full">
-                    <ResponseContainer 
-                      response={message.response} 
-                      messageId={message.id} 
-                      isLoading={message.isLoading}
-                      onPromptClick={handlePromptClick}
-                    />
-                  </div>
+                  {/* Response Container - Skip welcome message content when showing suggestions */}
+                  {!(message.id === 'welcome' && displayMessages.length === 1) && (
+                    <div className="content-stretch flex flex-col gap-[10px] items-start justify-center relative shrink-0 w-full">
+                      <ResponseContainer 
+                        response={message.response} 
+                        messageId={message.id} 
+                        isLoading={message.isLoading}
+                        onPromptClick={handlePromptClick}
+                      />
+                    </div>
+                  )}
                 </div>
               ))}
 
               {/* Prompt Suggestions - Show only when there's only the welcome message */}
               {displayMessages.length === 1 && displayMessages[0].id === 'welcome' && (
                 <div className="content-stretch flex flex-col gap-[16px] items-start relative shrink-0 w-full">
+                  <p className={`${interFont.className} font-normal leading-[20px] max-w-[320px] not-italic relative shrink-0 text-[16px] text-foreground whitespace-pre-wrap`}>
+                    Hi! I'm your Portfolio Assistant. I can help you learn about my work, projects, and experience. What would you like to know?
+                  </p>
                   <p className={`${interFont.className} font-medium leading-[20px] relative shrink-0 text-[14px] text-muted-foreground`}>
                     Try asking me about:
                   </p>

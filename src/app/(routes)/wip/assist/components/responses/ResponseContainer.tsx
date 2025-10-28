@@ -2,9 +2,7 @@ import React from 'react';
 import { interFont } from '@/app/fonts';
 import { ResponseContainerProps, ResponseData } from '../../types/responses';
 import { LoadingComponent } from './LoadingComponent';
-import { TextResponse } from './TextResponse';
-import { ResearchResponseComponent } from './ResearchResponse';
-import { VariantGeneral, VariantLoading, VariantAgent, VariantAgentTabs, VariantRoast, VariantFeedback, VariantPodcast, VariantCollab } from './variants';
+import { VariantText, VariantLoading, VariantAgent, VariantAgentTabs, VariantRoast, VariantFeedback, VariantPodcast, VariantCollab } from './variants';
 
 export function ResponseContainer({ response, messageId, isLoading, onPromptClick }: ResponseContainerProps) {
   // Show loading component if message is in loading state
@@ -15,7 +13,7 @@ export function ResponseContainer({ response, messageId, isLoading, onPromptClic
   // Render different response types using variants
   switch (response.type) {
     case 'text':
-      return <VariantGeneral content={response.content} />;
+      return <VariantText content={response.content} />;
 
     case 'loading':
       return <VariantLoading content={response.content} />;
@@ -27,16 +25,10 @@ export function ResponseContainer({ response, messageId, isLoading, onPromptClic
       return <VariantAgentTabs content="Initated the agent process" />;
 
     case 'sources':
-      return (
-        <TextResponse 
-          response={response} 
-          messageId={messageId} 
-          onPromptClick={onPromptClick} 
-        />
-      );
+      return <VariantText content={response.content} />;
 
     case 'research':
-      return <ResearchResponseComponent response={response} />;
+      return <VariantText content={response.content} />;
 
     case 'roast':
       return <VariantRoast content={response.content} />;
@@ -51,7 +43,7 @@ export function ResponseContainer({ response, messageId, isLoading, onPromptClic
       return <VariantCollab content={response.content} />;
 
     default:
-      // Fallback to general variant for unknown types
-      return <VariantGeneral content={response.content} />;
+      // Fallback to text variant for unknown types
+      return <VariantText content={response.content} />;
   }
 }

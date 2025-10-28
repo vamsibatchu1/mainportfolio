@@ -1,4 +1,4 @@
-export { VariantGeneral } from './VariantGeneral';
+export { VariantText } from './VariantText';
 export { VariantLoading } from './VariantLoading';
 export { VariantAgent } from './VariantAgent';
 export { VariantAgentTabs } from './VariantAgentTabs';
