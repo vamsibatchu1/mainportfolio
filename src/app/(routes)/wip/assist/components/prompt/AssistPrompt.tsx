@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Send, AppWindow, Code, ChevronsUpDown, Filter } from 'lucide-react';
+import { Send, AppWindow, Code, ChevronsUpDown, Filter, User, Volume2 } from 'lucide-react';
 import { interFont } from '@/app/fonts';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,7 @@ import { SlashChip } from './SlashChip';
 
 interface AssistPromptProps {
   // Assist Selections
-  slashChips: Array<{ id: string; command: string }>;
+  slashChips: Array<{ id: string; command: string; icon: React.ComponentType<{ className?: string }>; label: string }>;
   onChipRemove: (chipId: string) => void;
   showSlashMenu: boolean;
   onSlashMenuItemClick: (item: any) => void;
@@ -23,6 +23,7 @@ interface AssistPromptProps {
   onInputChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onKeyPress: (e: React.KeyboardEvent) => void;
   onSend: () => void;
+  textareaRef?: React.RefObject<HTMLTextAreaElement>;
   
   // Assist Tools
   activeTab: 'agent' | 'code';
@@ -56,6 +57,7 @@ export function AssistPrompt({
   onInputChange,
   onKeyPress,
   onSend,
+  textareaRef,
   
   // Assist Tools
   activeTab,
@@ -76,6 +78,28 @@ export function AssistPrompt({
   onFilterOpenChange,
   filters,
 }: AssistPromptProps) {
+  // Get placeholder text based on active slash command
+  const getPlaceholderText = () => {
+    if (slashChips.length === 0) {
+      return "Ask anything to the portfolio assist";
+    }
+    
+    const activeCommand = slashChips[0].command;
+    
+    switch (activeCommand) {
+      case 'roast-my-portfolio':
+        return "Paste your portfolio URL here for a brutally honest review...";
+      case 'generate-portfolio-podcast':
+        return "Tell me which case study you'd like to turn into a podcast...";
+      case 'leave-feedback':
+        return "Share your thoughts on my work and design process...";
+      case 'send-collaboration-request':
+        return "Describe your project and how we can work together...";
+      default:
+        return "Ask anything to the portfolio assist";
+    }
+  };
+
   return (
     <div className="box-border content-stretch flex flex-col gap-[16px] items-start pt-[8px] px-[24px] pb-[24px] relative shrink-0 w-full">
       {/* Assist Selections - Chips Container */}
@@ -86,6 +110,8 @@ export function AssistPrompt({
               <SlashChip
                 key={chip.id}
                 command={chip.command}
+                icon={chip.icon}
+                label={chip.label}
                 onRemove={() => onChipRemove(chip.id)}
               />
             ))}
@@ -94,8 +120,18 @@ export function AssistPrompt({
         
         {/* Slash Menu - Positioned absolutely over chips */}
         {showSlashMenu && (
-          <div className="absolute top-[-72px] left-0 z-50">
-            <SlashMenu onItemClick={onSlashMenuItemClick} />
+          <div className="absolute top-[-96px] left-0 z-50">
+            <SlashMenu 
+              onItemClick={onSlashMenuItemClick} 
+              onItemSelect={() => {
+                // Refocus textarea after item selection
+                setTimeout(() => {
+                  if (textareaRef?.current) {
+                    textareaRef.current.focus();
+                  }
+                }, 50);
+              }}
+            />
           </div>
         )}
       </div>
@@ -107,10 +143,11 @@ export function AssistPrompt({
           <div className="bg-transparent border-0 relative shrink-0 w-full">
             <div className="box-border content-stretch flex gap-[10px] h-[80px] items-start overflow-clip px-[15px] pt-[15px] relative rounded-[inherit] w-full">
               <Textarea
+                ref={textareaRef}
                 value={inputValue}
                 onChange={onInputChange}
                 onKeyPress={onKeyPress}
-                placeholder="Ask anything to the portfolio assist"
+                placeholder={getPlaceholderText()}
                 className={`basis-0 ${interFont.className} font-normal grow leading-[25px] min-h-px min-w-px overflow-y-auto relative shrink-0 text-[17.5px] text-muted-foreground resize-none border-none outline-none bg-transparent placeholder:text-muted-foreground h-full shadow-none focus:ring-0 focus:border-none focus:outline-none p-0 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent`}
                 style={{
                   userSelect: 'none',
@@ -153,19 +190,19 @@ export function AssistPrompt({
             <div className="content-stretch flex gap-[8px] items-center relative shrink-0 w-full">
              
               {/* Tool 1 - Persona Combobox */}
-              <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-[120px]">
+              <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0">
                 <Popover open={isPersonaOpen} onOpenChange={onPersonaOpenChange}>
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
                       role="combobox"
                       aria-expanded={isPersonaOpen}
-                      className="bg-background border border-input border-solid h-[36px] relative rounded-[8px] shrink-0 w-full justify-between px-[16px] py-[8px] hover:bg-muted focus:bg-muted transition-colors"
+                      className="bg-background border border-input border-solid h-[36px] relative rounded-[8px] shrink-0 w-fit justify-start px-[16px] py-[8px] hover:bg-muted focus:bg-muted transition-colors"
                     >
+                      <User className="h-4 w-4 shrink-0 opacity-50 mr-0" />
                       <span className={`${interFont.className} font-medium leading-[20px] text-[14px] text-foreground`}>
                         {selectedPersona ? personas.find(p => p.value === selectedPersona)?.label : "Persona"}
                       </span>
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-[200px] p-0 bg-background border border-border" align="start">
@@ -216,19 +253,19 @@ export function AssistPrompt({
               </div>
 
               {/* Tool 2 - Tone Combobox */}
-              <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-[120px]">
+              <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0">
                 <Popover open={isToneOpen} onOpenChange={onToneOpenChange}>
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
                       role="combobox"
                       aria-expanded={isToneOpen}
-                      className="bg-background border border-input border-solid h-[36px] relative rounded-[8px] shrink-0 w-full justify-between px-[16px] py-[8px] hover:bg-muted focus:bg-muted transition-colors"
+                      className="bg-background border border-input border-solid h-[36px] relative rounded-[8px] shrink-0 w-fit justify-start px-[16px] py-[8px] hover:bg-muted focus:bg-muted transition-colors"
                     >
+                      <Volume2 className="h-4 w-4 shrink-0 opacity-50 mr-0" />
                       <span className={`${interFont.className} font-medium leading-[20px] text-[14px] text-foreground`}>
                         {selectedTone ? tones.find(t => t.value === selectedTone)?.label : "Tone"}
                       </span>
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-[200px] p-0 bg-background border border-border" align="start">

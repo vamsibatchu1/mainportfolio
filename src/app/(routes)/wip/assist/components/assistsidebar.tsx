@@ -7,7 +7,7 @@ import { ResponseContainer } from './responses/ResponseContainer';
 import { AssistPrompt } from './prompt/AssistPrompt';
 import { PromptsSuggestions } from './prompt/PromptsSuggestions';
 import { llmManager } from './llm';
-import { ChatMessage, ResponseData, TextResponse, LoadingResponse, CodeResponse, MultiAgentResponse, ImageCardsResponse, DataStatsResponse } from '../types/responses';
+import { ChatMessage, ResponseData, TextResponse, LoadingResponse, CodeResponse, MultiAgentResponse, ImageCardsResponse, DataStatsResponse, RoastResponse, FeedbackResponse, PodcastResponse, CollabResponse } from '../types/responses';
 
 interface AssistSidebarProps {
   messages?: ChatMessage[];
@@ -42,8 +42,9 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
 
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([welcomeMessage]);
   const [showSlashMenu, setShowSlashMenu] = useState(false);
-  const [slashChips, setSlashChips] = useState<Array<{ id: string; command: string }>>([]);
+  const [slashChips, setSlashChips] = useState<Array<{ id: string; command: string; icon: React.ComponentType<{ className?: string }>; label: string }>>([]);
   const chatContainerRef = React.useRef<HTMLDivElement>(null);
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
   // Persona options
   const personas = [
@@ -156,6 +157,71 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
     if (inputValue.trim() || slashChips.length > 0) {
       const messageId = Date.now().toString();
       const userQuestion = inputValue.trim();
+      
+      // Check for slash command responses
+      if (slashChips.length > 0) {
+        const activeCommand = slashChips[0].command;
+        let slashResponse: ResponseData;
+        
+        switch (activeCommand) {
+          case 'roast-my-portfolio':
+            slashResponse = {
+              id: messageId + '-response',
+              type: 'roast',
+              content: userQuestion || 'Analyzing your portfolio for areas of improvement...',
+              timestamp: new Date()
+            } as RoastResponse;
+            break;
+            
+          case 'generate-portfolio-podcast':
+            slashResponse = {
+              id: messageId + '-response',
+              type: 'podcast',
+              content: userQuestion || 'Generating podcast content from your case studies...',
+              timestamp: new Date()
+            } as PodcastResponse;
+            break;
+            
+          case 'leave-feedback':
+            slashResponse = {
+              id: messageId + '-response',
+              type: 'feedback',
+              content: userQuestion || 'Processing your feedback...',
+              timestamp: new Date()
+            } as FeedbackResponse;
+            break;
+            
+          case 'send-collaboration-request':
+            slashResponse = {
+              id: messageId + '-response',
+              type: 'collab',
+              content: userQuestion || 'Processing your collaboration request...',
+              timestamp: new Date()
+            } as CollabResponse;
+            break;
+            
+          default:
+            slashResponse = {
+              id: messageId + '-response',
+              type: 'text',
+              content: userQuestion || 'Processing your request...',
+              timestamp: new Date()
+            } as TextResponse;
+        }
+        
+        // Create slash command message
+        const slashMessage: ChatMessage = {
+          id: messageId,
+          question: userQuestion || `${slashChips[0].label} request`,
+          response: slashResponse,
+          timestamp: new Date()
+        };
+        
+        setChatMessages(prev => [...prev, slashMessage]);
+        setInputValue('');
+        setSlashChips([]);
+        return;
+      }
       
       // Check for variant test commands
       if (userQuestion === '1' || userQuestion === '2' || userQuestion === '3' || userQuestion === '4') {
@@ -314,12 +380,24 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
   };
 
   const handleSlashMenuItemClick = (item: any) => {
-    // Add chip for the selected command
+    // Replace existing chip with new command (mutually exclusive)
     const chipId = Date.now().toString();
-    const commandName = item.label.toLowerCase().replace(/\s+/g, '-');
     
-    setSlashChips(prev => [...prev, { id: chipId, command: commandName }]);
+    setSlashChips([{ 
+      id: chipId, 
+      command: item.label.toLowerCase().replace(/\s+/g, '-'),
+      icon: item.icon,
+      label: item.label
+    }]);
+    setInputValue(''); // Clear the input to remove the slash
     setShowSlashMenu(false);
+    
+    // Refocus the textarea after a short delay to ensure the menu has closed
+    setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+      }
+    }, 50);
   };
 
   const handleChipRemove = (chipId: string) => {
@@ -416,8 +494,9 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
             // Assist Prompt
             inputValue={inputValue}
             onInputChange={handleInputChange}
-                              onKeyPress={handleKeyPress}
+            onKeyPress={handleKeyPress}
             onSend={handleSend}
+            textareaRef={textareaRef}
             
             // Assist Tools
             activeTab={activeTab}

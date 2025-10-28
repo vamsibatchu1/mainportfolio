@@ -6,15 +6,20 @@ import { interFont } from '@/app/fonts';
 
 interface SlashChipProps {
   command: string;
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
   onRemove?: () => void;
   className?: string;
 }
 
-export function SlashChip({ command, onRemove, className = '' }: SlashChipProps) {
+export function SlashChip({ command, icon: IconComponent, label, onRemove, className = '' }: SlashChipProps) {
   return (
     <div className={`inline-flex items-center gap-[6px] bg-[#F5F5F5] border border-[#e8e8e8] border-solid rounded-[6px] px-[8px] py-[4px] ${className}`}>
+      <div className="overflow-clip relative shrink-0 size-[12px]">
+        <IconComponent className="w-3 h-3 text-muted-foreground" />
+      </div>
       <span className={`${interFont.className} text-[12px] font-medium text-foreground`}>
-        /{command}
+        {label}
       </span>
       {onRemove && (
         <button

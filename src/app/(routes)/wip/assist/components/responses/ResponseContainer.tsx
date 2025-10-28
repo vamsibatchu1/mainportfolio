@@ -4,7 +4,7 @@ import { ResponseContainerProps, ResponseData } from '../../types/responses';
 import { LoadingComponent } from './LoadingComponent';
 import { TextResponse } from './TextResponse';
 import { ResearchResponseComponent } from './ResearchResponse';
-import { VariantGeneral, VariantLoading, VariantAgent, VariantAgentTabs } from './variants';
+import { VariantGeneral, VariantLoading, VariantAgent, VariantAgentTabs, VariantRoast, VariantFeedback, VariantPodcast, VariantCollab } from './variants';
 
 export function ResponseContainer({ response, messageId, isLoading, onPromptClick }: ResponseContainerProps) {
   // Show loading component if message is in loading state
@@ -37,6 +37,18 @@ export function ResponseContainer({ response, messageId, isLoading, onPromptClic
 
     case 'research':
       return <ResearchResponseComponent response={response} />;
+
+    case 'roast':
+      return <VariantRoast content={response.content} />;
+
+    case 'feedback':
+      return <VariantFeedback content={response.content} />;
+
+    case 'podcast':
+      return <VariantPodcast content={response.content} />;
+
+    case 'collab':
+      return <VariantCollab content={response.content} />;
 
     default:
       // Fallback to general variant for unknown types

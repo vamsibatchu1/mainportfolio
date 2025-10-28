@@ -7,7 +7,11 @@ export type ResponseType =
   | 'code'
   | 'multi-agent' 
   | 'image-cards'
-  | 'data-stats';
+  | 'data-stats'
+  | 'roast'
+  | 'feedback'
+  | 'podcast'
+  | 'collab';
 
 export interface BaseResponse {
   id: string;
@@ -87,6 +91,26 @@ export interface DataStatsResponse extends BaseResponse {
   chartData?: any;
 }
 
+// Roast response (slash command specific)
+export interface RoastResponse extends BaseResponse {
+  type: 'roast';
+}
+
+// Feedback response (slash command specific)
+export interface FeedbackResponse extends BaseResponse {
+  type: 'feedback';
+}
+
+// Podcast response (slash command specific)
+export interface PodcastResponse extends BaseResponse {
+  type: 'podcast';
+}
+
+// Collaboration response (slash command specific)
+export interface CollabResponse extends BaseResponse {
+  type: 'collab';
+}
+
 // Union type for all responses
 export type ResponseData = 
   | TextResponse
@@ -96,7 +120,11 @@ export type ResponseData =
   | CodeResponse
   | MultiAgentResponse
   | ImageCardsResponse
-  | DataStatsResponse;
+  | DataStatsResponse
+  | RoastResponse
+  | FeedbackResponse
+  | PodcastResponse
+  | CollabResponse;
 
 // Chat message interface (updated)
 export interface ChatMessage {
