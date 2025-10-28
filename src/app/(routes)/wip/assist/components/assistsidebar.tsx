@@ -5,6 +5,7 @@ import { interFont } from '@/app/fonts';
 import { QuestionBubble } from './questions/QuestionBubble';
 import { ResponseContainer } from './responses/ResponseContainer';
 import { AssistPrompt } from './prompt/AssistPrompt';
+import { PromptsSuggestions } from './prompt/PromptsSuggestions';
 import { llmManager } from './llm';
 import { ChatMessage, ResponseData, TextResponse, LoadingResponse, CodeResponse, MultiAgentResponse, ImageCardsResponse, DataStatsResponse } from '../types/responses';
 
@@ -27,7 +28,19 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
   const [isToneOpen, setIsToneOpen] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState<string>('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  // Welcome message as a ChatMessage object
+  const welcomeMessage: ChatMessage = {
+    id: 'welcome',
+    question: '',
+    response: {
+      id: 'welcome-response',
+      type: 'text',
+      content: 'Hi! I\'m your Portfolio Assistant. I can help you learn about my work, projects, and experience. What would you like to know?'
+    },
+    timestamp: new Date()
+  };
+
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([welcomeMessage]);
   const [showSlashMenu, setShowSlashMenu] = useState(false);
   const [slashChips, setSlashChips] = useState<Array<{ id: string; command: string }>>([]);
   const chatContainerRef = React.useRef<HTMLDivElement>(null);
@@ -56,30 +69,12 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
   ];
 
   // Welcome message from AI
-  const welcomeMessage: ChatMessage = {
-    id: 'welcome',
-    question: '',
-    response: {
-      id: 'welcome-response',
-      type: 'text',
-      content: 'Welcome to Portfolio Assist! I\'m here to help you explore my portfolio and answer any questions you might have. You can ask me about my projects, design process, technical skills, or anything else you\'d like to know. What would you like to learn about?'
-    },
-    timestamp: new Date()
-  };
-
   // Auto-scroll to bottom function
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   };
-
-  // Initialize with welcome message
-  React.useEffect(() => {
-    if (chatMessages.length === 0) {
-      setChatMessages([welcomeMessage]);
-    }
-  }, [chatMessages.length]);
 
   // Auto-scroll when messages change
   React.useEffect(() => {
@@ -106,7 +101,7 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
     }
   }, [showSlashMenu]);
 
-  const displayMessages = chatMessages.length > 0 ? chatMessages : [welcomeMessage];
+  const displayMessages = chatMessages;
 
   // Helper function to convert ProcessedResponse to ResponseData
   const convertToResponseData = (processedResponse: any, messageId: string): ResponseData => {
@@ -397,6 +392,16 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
                   </div>
                 </div>
               ))}
+
+              {/* Prompt Suggestions - Show only when there's only the welcome message */}
+              {displayMessages.length === 1 && displayMessages[0].id === 'welcome' && (
+                <div className="content-stretch flex flex-col gap-[16px] items-start relative shrink-0 w-full">
+                  <p className={`${interFont.className} font-medium leading-[20px] relative shrink-0 text-[14px] text-muted-foreground`}>
+                    Try asking me about:
+                  </p>
+                  <PromptsSuggestions onPromptClick={handlePromptClick} />
+                </div>
+              )}
             </div>
           </div>
 

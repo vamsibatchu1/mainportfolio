@@ -44,9 +44,9 @@ export function PromptsSuggestions({ onPromptClick, className = '' }: PromptsSug
             <div className="box-border content-stretch flex flex-col gap-[12px] items-start overflow-clip px-0 py-[16px] relative rounded-[inherit]">
               <div className="box-border content-stretch flex gap-[8px] items-start px-[16px] py-0 relative shrink-0 w-[195px]">
                 <div className="basis-0 content-stretch flex flex-col gap-[6px] grow items-start min-h-px min-w-px relative shrink-0">
-                  <div className="bg-secondary border border-[#e8e8e8] border-solid box-border content-stretch flex gap-[8px] items-center justify-center px-[16px] py-[8px] relative rounded-[8px] shrink-0 size-[36px]">
-                    <div className="overflow-clip relative shrink-0 size-[16px]">
-                      <IconComponent className="w-4 h-4 text-foreground" />
+                  <div className="content-stretch flex gap-[8px] items-center justify-center px-[16px] py-[8px] relative shrink-0 size-[36px]">
+                    <div className="overflow-clip relative shrink-0 size-[20px]">
+                      <IconComponent className="w-5 h-5 text-foreground" />
                     </div>
                   </div>
                   <p className={`${interFont.className} font-normal leading-[20px] min-w-full relative shrink-0 text-muted-foreground text-[14px] w-[min-content]`}>
