@@ -1,5 +1,8 @@
 import { AssistSidebar } from './components/assistsidebar';
 
+// Force this page to be dynamic
+export const dynamic = 'force-dynamic';
+
 export default function WipAssistPage() {
   return (
     <div className="relative min-h-screen w-full overflow-hidden fixed inset-0">

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import Lottie from 'lottie-react';
+import dynamic from 'next/dynamic';
 import { Terminal } from 'lucide-react';
 import { interFont } from '@/app/fonts';
 import assistBrowsingAnimation from '../../../../../../../assets/animations/assist-browsing.json';
+
+// Dynamically import Lottie to avoid SSR issues
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 interface VariantAgentTabsProps {
   content: string;
