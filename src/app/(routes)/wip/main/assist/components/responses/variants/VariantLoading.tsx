@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { interFont } from '@/app/fonts';
-import assistLoadingAnimation from '../../../../../../../assets/animations/assist-loading.json';
+import assistLoadingAnimation from '../../../../../../../../assets/animations/assist-loading.json';
 
 // Dynamically import Lottie to avoid SSR issues
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });

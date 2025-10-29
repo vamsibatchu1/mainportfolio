@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import { Settings, Terminal, ChevronDown, ChevronUp } from 'lucide-react';
 import { interFont } from '@/app/fonts';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import assistScanningAnimation from '../../../../../../../assets/animations/assist-scanning.json';
+import assistScanningAnimation from '../../../../../../../../assets/animations/assist-scanning.json';
 
 // Dynamically import Lottie to avoid SSR issues
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });

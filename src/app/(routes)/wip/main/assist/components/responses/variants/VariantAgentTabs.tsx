@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { Terminal } from 'lucide-react';
 import { interFont } from '@/app/fonts';
-import assistBrowsingAnimation from '../../../../../../../assets/animations/assist-browsing.json';
+import assistBrowsingAnimation from '../../../../../../../../assets/animations/assist-browsing.json';
 
 // Dynamically import Lottie to avoid SSR issues
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
-interface VariantRoastProps {
+interface VariantAgentTabsProps {
   content: string;
 }
 
@@ -82,7 +82,7 @@ const CodepenSkeleton = () => (
   </div>
 );
 
-export function VariantRoast({ content }: VariantRoastProps) {
+export function VariantAgentTabs({ content }: VariantAgentTabsProps) {
   const [showHeader, setShowHeader] = useState(false);
   const [showTab1, setShowTab1] = useState(false);
   const [showTab2, setShowTab2] = useState(false);

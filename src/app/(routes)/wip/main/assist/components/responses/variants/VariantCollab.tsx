@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { Terminal } from 'lucide-react';
 import { interFont } from '@/app/fonts';
-import assistBrowsingAnimation from '../../../../../../../assets/animations/assist-browsing.json';
+import assistBrowsingAnimation from '../../../../../../../../assets/animations/assist-browsing.json';
 import { animate } from "framer-motion";
 
 // Dynamically import Lottie to avoid SSR issues

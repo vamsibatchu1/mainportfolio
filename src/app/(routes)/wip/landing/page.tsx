@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { FadedButton } from './faded_button';
-import { AssistSidebar } from '../assist/components/assistsidebar';
+import { AssistSidebar } from '../main/assist/components/assistsidebar';
 
 // Dynamically import Lottie to avoid SSR issues
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
@@ -49,7 +49,7 @@ const loadingAnimations = [
   }
 ];
 
-export function WipLanding() {
+export default function WipLanding() {
   const router = useRouter();
   const [currentAnimation, setCurrentAnimation] = useState(0);
   const [showFinalMessage, setShowFinalMessage] = useState(false);
@@ -58,17 +58,15 @@ export function WipLanding() {
   const [isBackgroundLoaded, setIsBackgroundLoaded] = useState(false);
   const [startAnimations, setStartAnimations] = useState(false);
   const [showFirstAnimation, setShowFirstAnimation] = useState(false);
-  const [showAssistSidebar, setShowAssistSidebar] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   
   // Code-level toggle: Change this to false to hide loading images
   const showLoadingImages = true;
 
-  // Handle button click to show AssistSidebar and change URL
+  // Handle button click to navigate to main page
   const handleBeginClick = () => {
-    setShowAssistSidebar(true);
-    // Change URL to /wip/assist without page reload
-    router.push('/wip/assist', { scroll: false });
+    // Navigate to /wip/main without page reload
+    router.push('/wip/main', { scroll: false });
   };
 
   // Handle background loading and animation start
@@ -85,24 +83,18 @@ export function WipLanding() {
     }
   }, [isBackgroundLoaded]);
 
-  // Check if we should show sidebar directly (for direct navigation to /wip/assist)
-  useEffect(() => {
-    if (window.location.pathname === '/wip/assist') {
-      setShowAssistSidebar(true);
-    }
-  }, []);
 
   // Handle keyboard events
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.key === 'Enter' && showFadedButton && !showAssistSidebar) {
+      if (event.key === 'Enter' && showFadedButton) {
         handleBeginClick();
       }
     };
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [showFadedButton, showAssistSidebar]);
+  }, [showFadedButton]);
 
   useEffect(() => {
     // Don't run timer if final message is already shown or animations haven't started
@@ -149,10 +141,7 @@ export function WipLanding() {
         />
       </div>
 
-      {/* Conditional Content Rendering */}
-      {!showAssistSidebar ? (
-        <>
-          {/* Main Content Container - Responsive width */}
+      {/* Main Content Container - Responsive width */}
           <div className="relative z-10 flex items-center justify-center min-h-screen px-5 md:px-4">
             <div className="w-full max-w-[90vw] md:max-w-[960px] mx-auto">
               {/* Loading Animation Container */}
@@ -234,13 +223,6 @@ export function WipLanding() {
               <FadedButton onClick={handleBeginClick} />
             </motion.div>
           )}
-        </>
-              ) : (
-                /* AssistSidebar - Show when user clicks "Click to begin" */
-                <div className="fixed bottom-0 right-[48px] z-10">
-                  <AssistSidebar />
-                </div>
-              )}
     </div>
   );
 }

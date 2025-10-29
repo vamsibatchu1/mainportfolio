@@ -1,5 +1,5 @@
 import React from 'react';
-import { WipLanding } from './components/WipLanding';
+import WipLanding from './landing/page';
 
 // Force this page to be dynamic
 export const dynamic = 'force-dynamic';

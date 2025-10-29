@@ -1,4 +1,5 @@
-import { AssistSidebar } from './components/assistsidebar';
+import React from 'react';
+import { AssistSidebar } from './assist/components/assistsidebar';
 
 // Force this page to be dynamic
 export const dynamic = 'force-dynamic';
