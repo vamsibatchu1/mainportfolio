@@ -6,15 +6,15 @@ export const dynamic = 'force-dynamic';
 export default function WipAssistPage() {
   return (
     <div className="relative h-screen w-full overflow-hidden fixed inset-0">
-      {/* Main Layout - Flex Row with Two Columns */}
+      {/* Main Layout - Flex Row */}
       <div className="relative z-10 flex flex-row h-full w-full">
-        {/* Main Window - 70% width */}
-        <div className="w-[75%] h-full bg-gray-100">
+        {/* Main Window - 65% width */}
+        <div className="w-[65%] h-full bg-white">
           {/* Main content area - can be customized later */}
         </div>
 
-        {/* Right Column with Background Image */}
-        <div className="w-[25%] h-full relative flex items-center justify-center">
+        {/* Right Column with Background Image - 35% width */}
+        <div className="w-[35%] h-full relative flex items-center justify-center min-h-[600px]">
           {/* Background Image for right column only */}
           <div className="absolute inset-0 z-0">
             <img

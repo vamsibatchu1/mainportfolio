@@ -422,9 +422,9 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
   };
 
   return (
-    <div className={`box-border content-stretch flex flex-col items-start relative shadow-[0px_2.56px_51.2px_0px_rgba(21,62,90,0.3)] h-auto w-[460px] ${className}`}>
+    <div className={`box-border content-stretch flex flex-col items-start relative shadow-[0px_2.56px_51.2px_0px_rgba(21,62,90,0.3)] h-auto w-[80%] max-w-[460px] min-w-[300px] ${className}`}>
       {/* Window Header */}
-      <div className="bg-[#F6F6F6] border-[0.64px] border-black/20 border-solid box-border content-stretch flex flex-col items-start px-[21.333px] py-[18.667px] relative rounded-tl-[15.36px] rounded-tr-[15.36px] shrink-0 w-[460px]">
+      <div className="bg-[#F6F6F6] border-[0.64px] border-black/20 border-solid box-border content-stretch flex flex-col items-start px-[21.333px] py-[18.667px] relative rounded-tl-[15.36px] rounded-tr-[15.36px] shrink-0 w-full">
         <div className="content-stretch flex gap-[10.667px] items-center relative shrink-0 w-full">
           <div className="relative shrink-0 size-[16px] bg-red-500 rounded-full"></div>
           <div className="relative shrink-0 size-[16px] bg-yellow-500 rounded-full"></div>
@@ -433,7 +433,7 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
       </div>
 
       {/* Main Content */}
-      <div className="bg-white content-stretch flex flex-col items-start relative shrink-0 w-[460px]">
+      <div className="bg-white content-stretch flex flex-col items-start relative shrink-0 w-full">
         <div className="content-stretch flex flex-col items-start justify-end relative shrink-0 w-full">
           {/* Chat Container */}
           <div className="box-border content-stretch flex gap-[10px] h-[calc(100vh-360px)] items-start justify-center px-[24px] py-[16px] relative shrink-0 w-full">
@@ -451,14 +451,14 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
 
                   {/* Response Container - Skip welcome message content when showing suggestions */}
                   {!(message.id === 'welcome' && displayMessages.length === 1) && (
-                    <div className="content-stretch flex flex-col gap-[10px] items-start justify-center relative shrink-0 w-full">
-                      <ResponseContainer 
-                        response={message.response} 
-                        messageId={message.id} 
-                        isLoading={message.isLoading}
-                        onPromptClick={handlePromptClick}
-                      />
-                    </div>
+                  <div className="content-stretch flex flex-col gap-[10px] items-start justify-center relative shrink-0 w-full">
+                    <ResponseContainer 
+                      response={message.response} 
+                      messageId={message.id} 
+                      isLoading={message.isLoading}
+                      onPromptClick={handlePromptClick}
+                    />
+                  </div>
                   )}
                 </div>
               ))}
@@ -489,7 +489,7 @@ export function AssistSidebar({ messages = [], onSendMessage, className = '' }: 
             // Assist Prompt
             inputValue={inputValue}
             onInputChange={handleInputChange}
-            onKeyPress={handleKeyPress}
+                              onKeyPress={handleKeyPress}
             onSend={handleSend}
             textareaRef={textareaRef}
             
