@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { jakartaFont, ebGaramondFont } from '@/app/fonts';
 import { motion } from 'framer-motion';
 
@@ -99,7 +99,11 @@ const initializeGrid = (): CrosswordCell[][] => {
 export default function CrosswordSection() {
   const [grid, setGrid] = useState<CrosswordCell[][]>(initializeGrid());
   const [selectedCell, setSelectedCell] = useState<{ row: number; col: number } | null>(null);
-  const [hoveredClue, setHoveredClue] = useState<number | null>(null);
+  const [hoveredClue, setHoveredClue] = useState<{ number: number; direction: 'horizontal' | 'vertical' } | null>(null);
+  const [isInView, setIsInView] = useState(false);
+  const [isUserHovering, setIsUserHovering] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const autoHighlightIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const verticalClues = crosswordClues.filter(c => c.direction === 'vertical').sort((a, b) => a.number - b.number);
   const horizontalClues = crosswordClues.filter(c => c.direction === 'horizontal').sort((a, b) => a.number - b.number);
@@ -129,26 +133,92 @@ export default function CrosswordSection() {
     return cells;
   };
 
+  // Intersection Observer to detect when section is in view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsInView(entry.isIntersecting);
+        });
+      },
+      {
+        threshold: 0.3, // Trigger when 30% of the section is visible
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
+  // Auto-highlighting logic
+  useEffect(() => {
+    // Clear any existing interval
+    if (autoHighlightIntervalRef.current) {
+      clearInterval(autoHighlightIntervalRef.current);
+    }
+
+    // Only auto-highlight if section is in view and user is not manually hovering
+    if (isInView && !isUserHovering) {
+      // Start with a random clue
+      const randomClue = crosswordClues[Math.floor(Math.random() * crosswordClues.length)];
+      setHoveredClue({ number: randomClue.number, direction: randomClue.direction });
+
+      // Set up interval to randomly highlight clues
+      autoHighlightIntervalRef.current = setInterval(() => {
+        const randomClue = crosswordClues[Math.floor(Math.random() * crosswordClues.length)];
+        setHoveredClue({ number: randomClue.number, direction: randomClue.direction });
+      }, 800); // Change clue every 0.8 seconds
+    } else {
+      // Clear highlight when section is out of view or user is hovering
+      if (!isUserHovering) {
+        setHoveredClue(null);
+      }
+    }
+
+    return () => {
+      if (autoHighlightIntervalRef.current) {
+        clearInterval(autoHighlightIntervalRef.current);
+      }
+    };
+  }, [isInView, isUserHovering]);
+
   return (
-    <div className="w-full flex flex-col lg:flex-row gap-6 lg:gap-8">
+    <div ref={sectionRef} className="w-full flex flex-col lg:flex-row gap-6 lg:gap-8">
       {/* Column 1: Vertical Clues */}
       <div className="flex flex-col gap-2 flex-1 min-w-0">
         <div className={`${jakartaFont.className} font-jakarta font-semibold text-xl text-black mb-2`}>
           Vertical
         </div>
         <div className={`${ebGaramondFont.className} font-eb-garamond text-base sm:text-lg text-black leading-relaxed`}>
-          {verticalClues.map((clue, index) => (
-            <React.Fragment key={`vertical-${clue.number}`}>
-              <span
-                className="cursor-pointer transition-colors hover:text-blue-600"
-                onMouseEnter={() => setHoveredClue(clue.number)}
-                onMouseLeave={() => setHoveredClue(null)}
-              >
-                <span className="font-semibold">{clue.number}.</span> {clue.clue}
-              </span>
-              {index < verticalClues.length - 1 && '  '}
-            </React.Fragment>
-          ))}
+          {verticalClues.map((clue, index) => {
+            const isHovered = hoveredClue?.number === clue.number && hoveredClue?.direction === 'vertical';
+            return (
+              <React.Fragment key={`vertical-${clue.number}`}>
+                <span
+                  className={`cursor-pointer transition-colors ${isHovered ? 'px-1' : ''}`}
+                  style={isHovered ? { backgroundColor: '#FFE500' } : {}}
+                  onMouseEnter={() => {
+                    setIsUserHovering(true);
+                    setHoveredClue({ number: clue.number, direction: 'vertical' });
+                  }}
+                  onMouseLeave={() => {
+                    setIsUserHovering(false);
+                    setHoveredClue(null);
+                  }}
+                >
+                  <span className="font-semibold">{clue.number}.</span> {clue.clue}
+                </span>
+                {index < verticalClues.length - 1 && '  '}
+              </React.Fragment>
+            );
+          })}
         </div>
       </div>
 
@@ -158,18 +228,28 @@ export default function CrosswordSection() {
           Horizontal
         </div>
         <div className={`${ebGaramondFont.className} font-eb-garamond text-base sm:text-lg text-black leading-relaxed`}>
-          {horizontalClues.map((clue, index) => (
-            <React.Fragment key={`horizontal-${clue.number}`}>
-              <span
-                className="cursor-pointer transition-colors hover:text-blue-600"
-                onMouseEnter={() => setHoveredClue(clue.number)}
-                onMouseLeave={() => setHoveredClue(null)}
-              >
-                <span className="font-semibold">{clue.number}.</span> {clue.clue}
-              </span>
-              {index < horizontalClues.length - 1 && '  '}
-            </React.Fragment>
-          ))}
+          {horizontalClues.map((clue, index) => {
+            const isHovered = hoveredClue?.number === clue.number && hoveredClue?.direction === 'horizontal';
+            return (
+              <React.Fragment key={`horizontal-${clue.number}`}>
+                <span
+                  className={`cursor-pointer transition-colors ${isHovered ? 'px-1' : ''}`}
+                  style={isHovered ? { backgroundColor: '#FFE500' } : {}}
+                  onMouseEnter={() => {
+                    setIsUserHovering(true);
+                    setHoveredClue({ number: clue.number, direction: 'horizontal' });
+                  }}
+                  onMouseLeave={() => {
+                    setIsUserHovering(false);
+                    setHoveredClue(null);
+                  }}
+                >
+                  <span className="font-semibold">{clue.number}.</span> {clue.clue}
+                </span>
+                {index < horizontalClues.length - 1 && '  '}
+              </React.Fragment>
+            );
+          })}
         </div>
       </div>
 
@@ -181,7 +261,7 @@ export default function CrosswordSection() {
               row.map((cell, colIndex) => {
                 const isSelected = selectedCell?.row === rowIndex && selectedCell?.col === colIndex;
                 const highlightedCells = hoveredClue !== null 
-                  ? highlightClue(crosswordClues.find(c => c.number === hoveredClue)!)
+                  ? highlightClue(crosswordClues.find(c => c.number === hoveredClue.number && c.direction === hoveredClue.direction)!)
                   : [];
                 const isHighlighted = highlightedCells.some(c => c.row === rowIndex && c.col === colIndex);
 
@@ -192,10 +272,10 @@ export default function CrosswordSection() {
                       w-10 h-10 border border-gray-300 flex items-center justify-center relative
                       ${cell.isBlocked ? 'bg-black' : 'bg-white'}
                       ${isSelected ? 'ring-2 ring-blue-500 z-10' : ''}
-                      ${isHighlighted ? 'bg-yellow-100' : ''}
                       ${!cell.isBlocked ? 'cursor-pointer hover:bg-gray-100' : ''}
                       transition-colors
                     `}
+                    style={isHighlighted ? { backgroundColor: '#FFE500' } : {}}
                     onClick={() => handleCellClick(rowIndex, colIndex)}
                   >
                     {cell.number && (
