@@ -6,6 +6,11 @@ const nextConfig = {
       ...config.resolve.alias,
       'gsap/MorphSVGPlugin': 'gsap/dist/MorphSVGPlugin'
     };
+    // Exclude .old folder from webpack processing
+    config.watchOptions = {
+      ...config.watchOptions,
+      ignored: ['**/.old/**', '**/node_modules/**'],
+    };
     return config;
   },
   images: {
