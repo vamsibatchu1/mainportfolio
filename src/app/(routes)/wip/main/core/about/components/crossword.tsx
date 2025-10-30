@@ -24,20 +24,22 @@ interface CrosswordClue {
 }
 
 // 10x10 Crossword Grid
-// Design-related terms with proper intersections
+// Skills and Expertise intersecting to create meaningful work
 const crosswordClues: CrosswordClue[] = [
-  // Horizontal clues
+  // Expertise (Horizontal) - what you work on
   { number: 1, direction: 'horizontal', clue: 'Platforms for large organizations with complex workflows and enterprise solutions', answer: 'ENTERPRISE', startRow: 0, startCol: 0 },
   { number: 2, direction: 'horizontal', clue: 'Touch-based applications for smartphones and tablets with intuitive interfaces', answer: 'MOBILE', startRow: 2, startCol: 0 },
   { number: 3, direction: 'horizontal', clue: 'User-facing products that engage consumers with delightful experiences', answer: 'CONSUMER', startRow: 4, startCol: 0 },
-  { number: 4, direction: 'horizontal', clue: 'Reusable component libraries and design systems for consistency and scalability', answer: 'SYSTEMS', startRow: 6, startCol: 1 },
+  { number: 4, direction: 'horizontal', clue: 'Reusable component libraries and design systems for consistency and scalability', answer: 'SYSTEMS', startRow: 5, startCol: 0 },
   { number: 5, direction: 'horizontal', clue: 'High-impact initiatives and moonshot projects that drive innovation', answer: 'BIGBETS', startRow: 8, startCol: 0 },
   
-  // Vertical clues
+  // Skills (Vertical) - capabilities you bring
   { number: 1, direction: 'vertical', clue: 'Artificial intelligence products and machine learning interfaces that make AI accessible', answer: 'AI', startRow: 0, startCol: 1 },
   { number: 2, direction: 'vertical', clue: 'Visual design craft and aesthetic excellence for beautiful interfaces', answer: 'DESIGN', startRow: 0, startCol: 4 },
   { number: 3, direction: 'vertical', clue: 'User experience focus and interaction design prioritizing usability', answer: 'UX', startRow: 0, startCol: 7 },
   { number: 4, direction: 'vertical', clue: 'Product strategy and vision aligning design with business goals', answer: 'STRATEGY', startRow: 1, startCol: 9 },
+  { number: 5, direction: 'vertical', clue: 'Research and user insights to inform design decisions', answer: 'RESEARCH', startRow: 2, startCol: 3 },
+  { number: 6, direction: 'vertical', clue: 'Prototyping and rapid iteration to validate concepts', answer: 'PROTOTYPE', startRow: 1, startCol: 6 },
 ];
 
 // Initialize 10x10 grid
@@ -191,10 +193,10 @@ export default function CrosswordSection() {
 
   return (
     <div ref={sectionRef} className="w-full flex flex-col lg:flex-row gap-6 lg:gap-8">
-      {/* Column 1: Vertical Clues */}
+      {/* Column 1: Skills (Vertical) */}
       <div className="flex flex-col gap-2 flex-1 min-w-0">
         <div className={`${jakartaFont.className} font-jakarta font-semibold text-xl text-black mb-2`}>
-          Vertical
+          Skills
         </div>
         <div className={`${ebGaramondFont.className} font-eb-garamond text-base sm:text-lg text-black leading-relaxed`}>
           {verticalClues.map((clue, index) => {
@@ -222,10 +224,10 @@ export default function CrosswordSection() {
         </div>
       </div>
 
-      {/* Column 2: Horizontal Clues */}
+      {/* Column 2: Expertise (Horizontal) */}
       <div className="flex flex-col gap-2 flex-1 min-w-0">
         <div className={`${jakartaFont.className} font-jakarta font-semibold text-xl text-black mb-2`}>
-          Horizontal
+          Expertise
         </div>
         <div className={`${ebGaramondFont.className} font-eb-garamond text-base sm:text-lg text-black leading-relaxed`}>
           {horizontalClues.map((clue, index) => {
