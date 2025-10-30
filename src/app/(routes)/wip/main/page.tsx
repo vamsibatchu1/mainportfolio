@@ -13,12 +13,12 @@ export default function WipAssistPage() {
       {/* Main Layout - Flex Row */}
       <div className="relative z-10 flex flex-row h-full w-full">
         {/* Main Window - 65% width */}
-        <div className="w-[65%] h-full bg-white overflow-y-auto">
+        <div className="w-[70%] h-full bg-white overflow-y-auto">
           <CorePage />
         </div>
 
-        {/* Right Column with Background Image - 35% width */}
-        <div className="w-[35%] h-full relative flex items-center justify-center min-h-[600px]">
+        {/* Right Column with Background Image - 30% width */}
+        <div className="w-[30%] h-full relative flex items-end justify-center min-h-[600px]">
           {/* Background Image for right column only */}
           <div className="absolute inset-0 z-0">
             <img
@@ -28,7 +28,7 @@ export default function WipAssistPage() {
             />
           </div>
           
-          {/* Assist Sidebar - Centered */}
+          {/* Assist Sidebar - Stuck to bottom */}
           <AssistSidebar className="z-20 relative" />
         </div>
       </div>
