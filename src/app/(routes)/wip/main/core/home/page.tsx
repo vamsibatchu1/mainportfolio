@@ -1,25 +1,27 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { HomeHero, HomeHighlights, HomeCaseStudy2, HomeCaseStudy1, HomeCaseStudy3 } from './components';
 
 export default function HomePage() {
   return (
-    <div className="h-full w-full p-6">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="max-w-4xl mx-auto"
-      >
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">Home</h1>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-          <p className="text-gray-600 leading-relaxed">
-            This is the Home section within the Core area. This could serve as your main 
-            dashboard or landing page for the core functionality.
-          </p>
-        </div>
-      </motion.div>
+    <div className="w-full flex flex-col gap-[96px] p-10 pt-10">
+      {/* Home Hero Section */}
+      <HomeHero />
+      
+      {/* Home Highlights Section */}
+      <HomeHighlights />
+      
+      {/* Home Case Study 1 Section */}
+      <HomeCaseStudy1 />
+
+      {/* Home Case Study 2 Section */}
+      <HomeCaseStudy2 />
+
+      {/* Home Case Study 3 Section */}
+      <HomeCaseStudy3 />
+
+      {/* Additional sections will be added here as components */}
     </div>
   );
 }

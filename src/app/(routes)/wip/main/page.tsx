@@ -1,5 +1,8 @@
+'use client';
+
 import React from 'react';
 import { AssistSidebar } from './assist/components/assistsidebar';
+import CorePage from './core/page';
 
 // Force this page to be dynamic
 export const dynamic = 'force-dynamic';
@@ -10,8 +13,8 @@ export default function WipAssistPage() {
       {/* Main Layout - Flex Row */}
       <div className="relative z-10 flex flex-row h-full w-full">
         {/* Main Window - 65% width */}
-        <div className="w-[65%] h-full bg-white">
-          {/* Main content area - can be customized later */}
+        <div className="w-[65%] h-full bg-white overflow-y-auto">
+          <CorePage />
         </div>
 
         {/* Right Column with Background Image - 35% width */}

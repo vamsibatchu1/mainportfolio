@@ -1,7 +1,3 @@
-// Work components exports
-// Add your work-specific components here
-
-// Example:
-// export { WorkGrid } from './WorkGrid';
-// export { ProjectCard } from './ProjectCard';
-// export { CaseStudyViewer } from './CaseStudyViewer';
+export { WorkTab } from './WorkTab';
+export { ChatBot } from './chatbot';
+export { Editor } from './editor';
