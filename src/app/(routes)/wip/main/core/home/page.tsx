@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { HomeHero, HomeHighlights, HomeCaseStudy2, HomeCaseStudy1, HomeCaseStudy3 } from './components';
+import { HomeHero, HomeHighlights, HomeCaseStudy1, HomeHighlightCarousel } from './components';
 
 export default function HomePage() {
   return (
@@ -15,12 +15,8 @@ export default function HomePage() {
       {/* Home Case Study 1 Section */}
       <HomeCaseStudy1 />
 
-      {/* Home Case Study 2 Section */}
-      <HomeCaseStudy2 />
-
-      {/* Home Case Study 3 Section */}
-      <HomeCaseStudy3 />
-
+      {/* Home Highlight Carousel Section */}
+      <HomeHighlightCarousel />
       {/* Additional sections will be added here as components */}
     </div>
   );
