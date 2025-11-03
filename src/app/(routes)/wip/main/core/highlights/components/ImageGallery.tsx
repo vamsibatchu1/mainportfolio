@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
+import { motion } from 'framer-motion';
 import { FlipImage } from './flipimage';
 
 interface GalleryImage {
@@ -26,7 +26,6 @@ export default function ImageGallery({ images, activeFilters, viewMode }: ImageG
   });
 
   // Determine items per row based on viewMode
-  // For responsive design, we'll use CSS Grid with grid-template-columns
   const getGridColumns = (mode: 'tiny' | 'compact' | 'relaxed') => {
     switch (mode) {
       case 'tiny':
@@ -40,16 +39,55 @@ export default function ImageGallery({ images, activeFilters, viewMode }: ImageG
     }
   };
 
+  // Calculate columns per row based on viewMode for delay calculation
+  const getColumnsPerRow = (mode: 'tiny' | 'compact' | 'relaxed'): number => {
+    // Using a reasonable default for desktop - will be responsive
+    switch (mode) {
+      case 'tiny':
+        return 4; // Default for desktop
+      case 'compact':
+        return 3; // Default for desktop
+      case 'relaxed':
+        return 2; // Default for desktop
+      default:
+        return 4;
+    }
+  };
+
+  // Calculate delay for each card based on Z-pattern
+  const calculateDelay = (index: number, columnsPerRow: number): number => {
+    const row = Math.floor(index / columnsPerRow);
+    const col = index % columnsPerRow;
+    
+    // Base delay: 0.2s after filter sidebar
+    // Row delay: 0.3s per row
+    // Column delay: 0.2s per column
+    const baseDelay = 0.5;
+    const rowDelay = row * 0.4;
+    const colDelay = col * 0.095;
+    
+    return baseDelay + rowDelay + colDelay;
+  };
+
+  const columnsPerRow = getColumnsPerRow(viewMode);
+
   return (
     <div className={`w-full grid ${getGridColumns(viewMode)} gap-6`}>
-      {filteredImages.map((image) => (
-        <div
-          key={image.id}
-          className="rounded-[14px] overflow-hidden aspect-square"
-        >
-          <FlipImage src={image.src} alt={image.alt} backText={image.description ?? image.alt} />
-        </div>
-      ))}
+      {filteredImages.map((image, index) => {
+        const delay = calculateDelay(index, columnsPerRow);
+        
+        return (
+          <motion.div
+            key={image.id}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay, ease: "easeOut" }}
+            className="rounded-[14px] overflow-hidden aspect-square"
+          >
+            <FlipImage src={image.src} alt={image.alt} backText={image.description ?? image.alt} />
+          </motion.div>
+        );
+      })}
     </div>
   );
 }

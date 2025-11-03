@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { FilterSidebar, ImageGallery } from './components';
 
 // Combined highlights image data (45 images total)
@@ -80,7 +81,13 @@ export default function HighlightsPage() {
     <div className="w-full flex flex-col gap-6 p-10 pt-10">
       {/* Filter Sidebar - Sticky at top */}
       <div className="sticky top-0 z-10 bg-white pb-4 pt-2 border-b border-gray-200">
-        <FilterSidebar onFiltersChange={handleFiltersChange} onViewModeChange={setViewMode} />
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0, ease: "easeOut" }}
+        >
+          <FilterSidebar onFiltersChange={handleFiltersChange} onViewModeChange={setViewMode} />
+        </motion.div>
       </div>
       
       {/* Image Gallery */}

@@ -3,23 +3,14 @@
 import React from 'react';
 import Image from 'next/image';
 import { ebGaramondFont, jakartaFont } from '@/app/fonts';
-import { motion } from 'framer-motion';
-import { useHomepageAnimation } from '@/app/context/HomepageAnimationContext';
 
-export default function HomeHighlight2() {
-  const { hasAnimated, isInitialized } = useHomepageAnimation();
-
+export default function HomeHighlight2Card() {
   const firstParagraph = "Led the design and strategy for emerging AI initiatives, including the development of Rocket Logic Synopsis, a native AI-powered mortgage communication intelligence platform";
   
   const secondParagraph = "This project transformed compliance oversight from a fragmented, manual process into an intelligent system—reducing investigation time by 85% and impacting 3,244+ team members who previously reviewed 164,498 calls quarterly.";
 
   return (
-    <motion.div 
-      className="w-full max-w-[1440px] mx-auto flex flex-col"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8, delay: (isInitialized && hasAnimated) ? 0 : 3.0, ease: "easeOut" }}
-    >
+    <div className="w-full max-w-[1440px] mx-auto flex flex-col">
       {/* Main Content */}
       <div className="flex gap-[24px] items-end justify-start w-full">
         {/* Left side - Text content */}
@@ -61,7 +52,7 @@ export default function HomeHighlight2() {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

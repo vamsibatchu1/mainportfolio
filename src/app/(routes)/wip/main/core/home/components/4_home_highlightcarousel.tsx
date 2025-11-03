@@ -4,15 +4,13 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ebGaramondFont } from '@/app/fonts';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useHomepageAnimation } from '@/app/context/HomepageAnimationContext';
 
 interface CarouselItem {
   image: string;
   text: string;
 }
 
-export default function HomeHighlightCarousel() {
-  const { hasAnimated, isInitialized } = useHomepageAnimation();
+export default function HomeHighlightCarouselCard() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   // Six combinations of images and text
@@ -55,12 +53,7 @@ export default function HomeHighlightCarousel() {
   const currentItem = carouselItems[activeIndex];
 
   return (
-    <motion.div 
-      className="w-full max-w-[1440px] mx-auto flex gap-[32px] items-start"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8, delay: (isInitialized && hasAnimated) ? 0 : 2.2, ease: "easeOut" }}
-    >
+    <div className="w-full max-w-[1440px] mx-auto flex gap-[32px] items-start">
       {/* Image Section */}
       <div className="flex-1 bg-[#f2f2f2] h-[480px] rounded-[14px] overflow-hidden relative">
         <AnimatePresence mode="wait">
@@ -124,7 +117,7 @@ export default function HomeHighlightCarousel() {
           </motion.p>
         </AnimatePresence>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

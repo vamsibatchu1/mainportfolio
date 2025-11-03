@@ -89,66 +89,44 @@ const StaggeredText = ({ text, className, delay = 0, staggerDelay = 0.1 }: {
 
 export default function AboutPage() {
   return (
-    <motion.div 
-      className="w-full min-h-screen flex flex-col p-10 pt-10 gap-8 overflow-y-auto"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-    >
-      {/* Section 2.5: About SVG */}
-      <div className="flex justify-center items-center w-full px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          className="flex justify-center w-full"
-        >
-          <Image 
-            src="/images/wip/about.webp" 
-            alt="About" 
-            width={1200} 
-            height={600} 
-            className="w-full max-w-full h-auto"
-          />
-        </motion.div>
-      </div>
-
+    <div className="w-full min-h-screen flex flex-col p-10 pt-10 gap-8 overflow-y-auto max-w-[1440px] mx-auto">
       {/* Section 1: Main Heading (Combined with Section 2) */}
       <div className="text-left w-full flex flex-col gap-12 mb-16">
         <motion.p 
           className={`${ebGaramondFont.className} text-black text-2xl sm:text-4xl md:text-5xl lg:text-[64px] leading-[100%] tracking-[-0.02em]`}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0, ease: "easeOut" }}
         >
           Design to me is fundamentally about providing clarity in complexity. It&apos;s about seeing beyond immediate feature requests to uncover the deeper patterns and opportunities that can transform how people work and live.
         </motion.p>
-        <p className={`${ebGaramondFont.className} text-black text-lg sm:text-xl md:text-2xl lg:text-4xl leading-relaxed`}>
+        <motion.p 
+          className={`${ebGaramondFont.className} text-black text-lg sm:text-xl md:text-2xl lg:text-4xl leading-relaxed`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+        >
           Just like a crossword puzzle, design is about finding the connections between the words (features) to create a meaningful whole.
-        </p>
+        </motion.p>
       </div>
 
       {/* Section 2: Crossword */}
-      <div className="flex justify-center items-center w-full px-4">
+      <div className="flex justify-center items-center w-full">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 2.4, ease: "easeOut" }}
-          className="flex justify-center w-full max-w-[1200px]"
+          transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
+          className="flex justify-center w-full max-w-[1440px] mx-auto"
         >
           <CrosswordSection />
         </motion.div>
       </div>
-
-
 
       {/* Section 4: TBD */}
       <div className="flex justify-center items-center mt-36 w-full">
        
       </div>
 
-      
-
-    </motion.div>
+    </div>
   );
 }

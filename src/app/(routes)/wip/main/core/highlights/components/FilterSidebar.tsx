@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { PortfolioButton } from '@/app/components/portfolio_button';
-import { jakartaFont, interFont } from '@/app/fonts';
+import { jakartaFont, interFont, ebGaramondFont } from '@/app/fonts';
 import { Slider } from '@/components/ui/slider';
 
 interface FilterOption {
@@ -106,7 +106,7 @@ export default function FilterSidebar({ onFiltersChange, onViewModeChange }: Fil
     <div className="flex flex-row gap-8 w-full items-start">
       {/* Column 1: Text Content Only */}
       <div className="flex flex-col gap-4 flex-1 min-w-0">
-        <div className={`${jakartaFont.className} font-medium text-2xl text-black leading-tight`}>
+        <div className={`${ebGaramondFont.className} font-normal text-[32px] text-black leading-[120%]`}>
           Every interaction tells a story—filter through screens, systems, and products that shipped.
         </div>
       </div>

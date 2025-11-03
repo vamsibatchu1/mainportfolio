@@ -1,22 +1,48 @@
 'use client';
 
 import React from 'react';
-import { HomeHero, HomeHighlights, HomeCaseStudy1, HomeHighlightCarousel } from './components';
+import { motion } from 'framer-motion';
+import { HomeHeroCard, HomeHighlight1Card, HomeHighlight2Card, HomeHighlightCarouselCard } from './components';
 
 export default function HomePage() {
   return (
     <div className="w-full flex flex-col gap-[96px] p-10 pt-10">
       {/* Home Hero Section */}
-      <HomeHero />
+      <motion.div
+        initial={{ opacity: 0, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0, ease: "easeOut" }}
+      >
+        <HomeHeroCard />
+      </motion.div>
       
-      {/* Home Highlights Section */}
-      <HomeHighlights />
+      {/* Home Highlight 1 Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
+      >
+        <HomeHighlight1Card />
+      </motion.div>
       
-      {/* Home Case Study 1 Section */}
-      <HomeCaseStudy1 />
+      {/* Home Highlight 2 Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 1.2, ease: "easeInOut" }}
+      >
+        <HomeHighlight2Card />
+      </motion.div>
 
       {/* Home Highlight Carousel Section */}
-      <HomeHighlightCarousel />
+      <motion.div
+        initial={{ opacity: 0, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 1.2, ease: "easeOut" }}
+      >
+        <HomeHighlightCarouselCard />
+      </motion.div>
+      
       {/* Additional sections will be added here as components */}
     </div>
   );
