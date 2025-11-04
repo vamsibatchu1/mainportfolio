@@ -27,7 +27,7 @@ export default function AdminPage() {
     setIsScanning(false);
   };
 
-  const handleImageSelect = (image: ImageInfo) => {
+  const handleImageSelect = (image: ImageInfo | null) => {
     setSelectedImage(image);
   };
 

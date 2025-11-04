@@ -24,7 +24,7 @@ interface ImageAttributes {
 
 interface ImageDatabaseProps {
   images: ImageInfo[];
-  onImageSelect: (image: ImageInfo) => void;
+  onImageSelect: (image: ImageInfo | null) => void;
   onImageReplace: (imageId: string, newImageFile: File) => void;
   selectedImage: ImageInfo | null;
 }
