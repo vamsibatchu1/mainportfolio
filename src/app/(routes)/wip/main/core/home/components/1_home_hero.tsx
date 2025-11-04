@@ -11,7 +11,7 @@ export default function HomeHeroCard() {
   return (
     <div className="w-full max-w-[1440px] mx-auto flex flex-col gap-8">
       {/* Section 2.5: About SVG - Appears first */}
-      <div className="flex justify-center items-center w-full px-4">
+      <div className="flex justify-center items-center w-full">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -50,7 +50,7 @@ export default function HomeHeroCard() {
         {/* Image Section - Left */}
         <div className="w-[700px] h-[400px] relative shrink-0">
           <Image
-            src="/images/wip/home/thumb_hero.png"
+            src="/images/wip/home/thumb_hero.webp"
             alt="Hero"
             width={700}
             height={400}

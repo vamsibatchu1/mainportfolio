@@ -12,7 +12,7 @@ export default function HomeHighlight1Card() {
       {/* First Row: Image */}
       <div className="w-full">
         <Image
-          src="/images/wip/home/thumb_hbp.png"
+          src="/images/wip/home/thumb_hbp.webp"
           alt="Rocket Logic redesign"
           width={1440}
           height={800}

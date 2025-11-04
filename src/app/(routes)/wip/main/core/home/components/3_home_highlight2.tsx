@@ -34,7 +34,7 @@ export default function HomeHighlight2Card() {
         <div className="flex gap-[40px] items-center justify-start flex-1">
           <div className="w-[388px] h-[388px] relative shrink-0">
             <Image
-              src="/images/wip/home/thumb_synopsis1.png"
+              src="/images/wip/home/thumb_synopsis1.webp"
               alt="Synopsis 1"
               width={388}
               height={388}
@@ -43,7 +43,7 @@ export default function HomeHighlight2Card() {
           </div>
           <div className="w-[388px] h-[388px] relative shrink-0">
             <Image
-              src="/images/wip/home/thumb_synopsis2.png"
+              src="/images/wip/home/thumb_synopsis2.webp"
               alt="Synopsis 2"
               width={388}
               height={388}

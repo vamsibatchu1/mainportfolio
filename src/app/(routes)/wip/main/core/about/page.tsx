@@ -89,7 +89,7 @@ const StaggeredText = ({ text, className, delay = 0, staggerDelay = 0.1 }: {
 
 export default function AboutPage() {
   return (
-    <div className="w-full min-h-screen flex flex-col p-10 pt-10 gap-8 overflow-y-auto max-w-[1440px] mx-auto">
+    <div className="w-full min-h-screen flex flex-col pt-12 gap-8 overflow-y-auto max-w-[1440px] mx-auto">
       {/* Section 1: Main Heading (Combined with Section 2) */}
       <div className="text-left w-full flex flex-col gap-12 mb-16">
         <motion.p 

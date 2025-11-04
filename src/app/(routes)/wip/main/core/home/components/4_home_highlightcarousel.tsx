@@ -16,27 +16,27 @@ export default function HomeHighlightCarouselCard() {
   // Six combinations of images and text
   const carouselItems: CarouselItem[] = [
     {
-      image: "/images/wip/home/thumb_carousel1.png",
+      image: "/images/wip/home/thumb_carousel1.webp",
       text: "Led the design and strategy for emerging AI initiatives, including the development of Rocket Logic Synopsis, a native AI-powered mortgage communication intelligence platform"
     },
     {
-      image: "/images/wip/home/thumb_carousel2.png",
+      image: "/images/wip/home/thumb_carousel2.webp",
       text: "This project transformed compliance oversight from a fragmented, manual process into an intelligent system—reducing investigation time by 85% and impacting 3,244+ team members"
     },
     {
-      image: "/images/wip/home/thumb_carousel3.png",
+      image: "/images/wip/home/thumb_carousel3.webp",
       text: "Spearheaded the end-end redesign of Rocket Logic and the redesign involved running design sprints with bankers, coming up with new design patterns and flows"
     },
     {
-      image: "/images/wip/home/thumb_carousel4.png",
+      image: "/images/wip/home/thumb_carousel4.webp",
       text: "Creating intuitive and user-centered product experiences that drive engagement and business value across enterprise platforms"
     },
     {
-      image: "/images/wip/home/thumb_carousel5.png",
+      image: "/images/wip/home/thumb_carousel5.webp",
       text: "Designing beautiful interfaces and seamless user experiences that delight and convert users while maintaining accessibility standards"
     },
     {
-      image: "/images/wip/home/thumb_carousel6.png",
+      image: "/images/wip/home/thumb_carousel6.webp",
       text: "Building cohesive brand identities and visual systems that communicate values and connect with audiences through thoughtful design"
     }
   ];

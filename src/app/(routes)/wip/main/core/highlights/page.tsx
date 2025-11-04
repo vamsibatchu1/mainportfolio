@@ -78,9 +78,9 @@ export default function HighlightsPage() {
   };
 
   return (
-    <div className="w-full flex flex-col gap-6 p-10 pt-10">
+    <div className="w-full flex flex-col gap-6 pt-12 max-w-[1440px] mx-auto">
       {/* Filter Sidebar - Sticky at top */}
-      <div className="sticky top-0 z-10 bg-white pb-4 pt-2 border-b border-gray-200">
+      <div className="sticky top-0 z-10 bg-white pb-4 pt-2 border-b border-gray-200 max-w-[1440px] mx-auto w-full">
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}

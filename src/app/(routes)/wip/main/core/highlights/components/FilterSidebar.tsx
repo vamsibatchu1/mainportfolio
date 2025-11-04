@@ -103,7 +103,7 @@ export default function FilterSidebar({ onFiltersChange, onViewModeChange }: Fil
   };
 
   return (
-    <div className="flex flex-row gap-8 w-full items-start">
+    <div className="flex flex-row gap-8 w-full max-w-[1440px] mx-auto items-start">
       {/* Column 1: Text Content Only */}
       <div className="flex flex-col gap-4 flex-1 min-w-0">
         <div className={`${ebGaramondFont.className} font-normal text-[32px] text-black leading-[120%]`}>

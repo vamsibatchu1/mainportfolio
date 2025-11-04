@@ -72,7 +72,7 @@ export default function ImageGallery({ images, activeFilters, viewMode }: ImageG
   const columnsPerRow = getColumnsPerRow(viewMode);
 
   return (
-    <div className={`w-full grid ${getGridColumns(viewMode)} gap-6`}>
+    <div className={`w-full max-w-[1440px] mx-auto grid ${getGridColumns(viewMode)} gap-6`}>
       {filteredImages.map((image, index) => {
         const delay = calculateDelay(index, columnsPerRow);
         

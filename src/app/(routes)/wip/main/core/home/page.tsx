@@ -6,7 +6,7 @@ import { HomeHeroCard, HomeHighlight1Card, HomeHighlight2Card, HomeHighlightCaro
 
 export default function HomePage() {
   return (
-    <div className="w-full flex flex-col gap-[96px] p-10 pt-10">
+    <div className="w-full flex flex-col gap-[96px] pt-12">
       {/* Home Hero Section */}
       <motion.div
         initial={{ opacity: 0, y: 0 }}

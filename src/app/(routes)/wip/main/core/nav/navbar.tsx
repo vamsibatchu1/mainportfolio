@@ -118,7 +118,7 @@ export function MainNav({ className = "", onTabChange, activeTab, tabs }: MainNa
 
   return (
     <>
-      <div className={`w-full box-border content-stretch flex items-center justify-between py-[16px] relative size-full ${className}`}>
+      <div className={`w-full max-w-[1440px] mx-auto box-border content-stretch flex items-center justify-between py-[16px] relative size-full ${className}`}>
         {/* Left side - Navigation items */}
         <div className="content-stretch flex gap-[24px] items-center justify-start relative shrink-0">
           <div className="content-center flex flex-wrap gap-[20px] items-center justify-start relative shrink-0">
