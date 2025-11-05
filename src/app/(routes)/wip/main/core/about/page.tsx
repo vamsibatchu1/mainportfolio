@@ -89,7 +89,7 @@ const StaggeredText = ({ text, className, delay = 0, staggerDelay = 0.1 }: {
 
 export default function AboutPage() {
   return (
-    <div className="w-full min-h-screen flex flex-col pt-12 gap-8 overflow-y-auto max-w-[1440px] mx-auto">
+    <div className="w-full min-h-screen flex flex-col pt-12 gap-8 max-w-[1440px] mx-auto hide-scrollbar">
       {/* Section 1: Main Heading (Combined with Section 2) */}
       <div className="text-left w-full flex flex-col gap-12 mb-16">
         <motion.p 
@@ -116,23 +116,14 @@ export default function AboutPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
-          className="flex justify-center w-full max-w-[1440px] mx-auto"
+          className="flex justify-center w-full"
         >
           <CrosswordSection />
         </motion.div>
       </div>
 
       {/* Section 3: Testimonials */}
-      <div className="flex justify-center items-center w-full mt-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.2, ease: "easeOut" }}
-          className="flex justify-center w-full max-w-[1440px] mx-auto"
-        >
-          <Testimonials />
-        </motion.div>
-      </div>
+      <Testimonials />
 
     </div>
   );

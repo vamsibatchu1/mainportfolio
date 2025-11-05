@@ -32,7 +32,7 @@ export default function Testimonials() {
   const [selectedTestimonial, setSelectedTestimonial] = useState<Testimonial>(testimonials[0]);
 
   return (
-    <div className="w-full max-w-[1440px] mx-auto flex gap-[40px] items-start">
+    <div className="w-full flex gap-[40px] items-start mt-16">
       {/* Left Column: Header + Buttons */}
       <div className="flex flex-col gap-[40px] flex-1 items-start">
         {/* Header */}

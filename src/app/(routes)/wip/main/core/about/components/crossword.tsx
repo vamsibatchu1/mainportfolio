@@ -192,7 +192,7 @@ export default function CrosswordSection() {
   }, [isInView, isUserHovering]);
 
   return (
-    <div ref={sectionRef} className="w-full flex flex-col lg:flex-row gap-[40px] lg:gap-[40px] max-w-[1440px] mx-auto">
+    <div ref={sectionRef} className="w-full flex flex-col lg:flex-row gap-[40px] lg:gap-[40px] w-full mx-auto">
       {/* Column 1: Skills (Vertical) */}
       <div className="flex flex-col gap-2 flex-1 min-w-0">
         <div className={`${jakartaFont.className} font-jakarta font-semibold text-xl text-black mb-2`}>

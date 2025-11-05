@@ -42,7 +42,7 @@ export default function HomeHeroCard() {
       
       {/* Hero Section: Image and Text - Appears third */}
       <motion.div 
-        className="w-full max-w-[1440px] mx-auto flex gap-[40px]"
+        className="w-full flex gap-[40px]"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}

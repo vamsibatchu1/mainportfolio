@@ -9,6 +9,7 @@ import HighlightsPage from './highlights/page';
 import WorkPage from './work/page';
 import WritingPage from './writing/page';
 import PlayPage from './play/page';
+import { useContainerScale } from '@/hooks/use-container-scale';
 
 type TabType = 'home' | 'about' | 'highlights' | 'work' | 'writing' | 'play';
 
@@ -24,6 +25,14 @@ const tabComponents = {
 export default function CorePage() {
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const ActiveComponent = tabComponents[activeTab];
+  const { scale, containerRef } = useContainerScale();
+
+  // Debug: Log scale value
+  React.useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[CorePage] Current scale:', scale);
+    }
+  }, [scale]);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab as TabType);
@@ -39,9 +48,12 @@ export default function CorePage() {
   ];
 
   return (
-    <div className="h-full w-full flex flex-col overflow-hidden">
+    <div 
+      ref={containerRef}
+      className="h-full w-full flex flex-col overflow-hidden px-[64px]"
+    >
       {/* Use the navbar component */}
-      <div className="flex-shrink-0 px-6">
+      <div className="flex-shrink-0">
         <MainNav 
           onTabChange={handleTabChange}
           activeTab={activeTab}
@@ -49,11 +61,21 @@ export default function CorePage() {
         />
       </div>
 
-      {/* Content Area */}
-      <div className="flex-1 overflow-y-auto">
-        <AnimatePresence mode="wait">
-          <ActiveComponent key={activeTab} />
-        </AnimatePresence>
+      {/* Content Area - Scaled */}
+      <div className="flex-1 overflow-y-auto overflow-x-hidden relative hide-scrollbar">
+        <div 
+          id="scaled-content-container"
+          style={{ 
+            transform: `scale(${scale})`,
+            transformOrigin: 'top left',
+            width: scale !== 1 ? `${100 / scale}%` : '100%',
+            position: 'relative',
+          } as React.CSSProperties}
+        >
+          <AnimatePresence mode="wait">
+            <ActiveComponent key={activeTab} />
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );
