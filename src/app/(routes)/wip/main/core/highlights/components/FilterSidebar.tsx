@@ -1,9 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { PortfolioButton } from '@/app/components/portfolio_button';
-import { jakartaFont, interFont, ebGaramondFont } from '@/app/fonts';
-import { Slider } from '@/components/ui/slider';
+import { interFont, ebGaramondFont } from '@/app/fonts';
 
 interface FilterOption {
   id: string;
@@ -68,14 +66,13 @@ export default function FilterSidebar({ onFiltersChange, onViewModeChange }: Fil
     },
   ]);
 
-  // view mode: 0 -> tiny, 1 -> compact, 2 -> relaxed
-  const [viewSliderValue, setViewSliderValue] = useState<number>(0);
-
-  const viewValueToMode = (value: number): 'tiny' | 'compact' | 'relaxed' => {
-    if (value <= 0) return 'tiny';
-    if (value === 1) return 'compact';
-    return 'relaxed';
-  };
+  // Combine all options into a flat list
+  const allOptions = filters.flatMap(category => 
+    category.options.map(option => ({
+      ...option,
+      categoryId: category.id,
+    }))
+  );
 
   const handleFilterChange = (categoryId: string, optionId: string) => {
     setFilters(prev => {
@@ -104,101 +101,31 @@ export default function FilterSidebar({ onFiltersChange, onViewModeChange }: Fil
 
   return (
     <div className="flex flex-row gap-8 w-full max-w-[1440px] mx-auto items-start">
-      {/* Column 1: Text Content Only */}
-      <div className="flex flex-col gap-4 flex-1 min-w-0">
-        <div className={`${ebGaramondFont.className} font-normal text-[32px] text-black leading-[120%]`}>
+      {/* Column 1: Text Content - 30% */}
+      <div className="flex flex-col gap-4 w-[30%] min-w-0">
+        <div className={`${ebGaramondFont.className} font-normal text-[48px] text-black leading-[110%]`}>
           Every interaction tells a story—filter through screens, systems, and products that shipped.
         </div>
       </div>
 
-      {/* Column 2: Choose View + Categories */}
-      <div className="flex flex-col gap-6 flex-1 min-w-0">
-        {/* Choose view slider */}
-        <div className="flex flex-col gap-2">
-          <div className={`${interFont.className} font-normal text-sm text-neutral-500 leading-5`}>
-            Choose view
-          </div>
-          <div className="flex items-center w-full">
-            <Slider
-              min={0}
-              max={2}
-              step={1}
-              value={[viewSliderValue]}
-              onValueChange={(v: number[]) => {
-                const val = Array.isArray(v) ? v[0] : Number(v);
-                const safeVal = Math.max(0, Math.min(2, Number(val)));
-                setViewSliderValue(safeVal);
-                onViewModeChange(viewValueToMode(safeVal));
-              }}
-              aria-label="choose view"
-              className="w-full"
-            />
-          </div>
-          <div className="flex justify-between w-full mt-1">
-            <div className={`${interFont.className} text-xs text-neutral-500`}>tiny</div>
-            <div className={`${interFont.className} text-xs text-neutral-500`}>compact</div>
-            <div className={`${interFont.className} text-xs text-neutral-500`}>relaxed</div>
-          </div>
-        </div>
-
-        {/* Categories */}
-        <div className="flex flex-col gap-2">
-          <div className={`${interFont.className} font-normal text-sm text-neutral-500 leading-5 mb-2`}>
-            {filters.find(c => c.id === 'categories')?.title || 'Categories'}
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {filters.find(c => c.id === 'categories')?.options.map((option) => (
-              <PortfolioButton
-                key={option.id}
-                variant={option.isActive ? 'default-selected' : 'default'}
-                onClick={() => handleFilterChange('categories', option.id)}
-                className="h-[36px] flex-shrink-0"
-              >
-                {option.label}
-              </PortfolioButton>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Column 3: Screens + UI Elements */}
-      <div className="flex flex-col gap-6 flex-1 min-w-0">
-        {/* Screens - Reduced items */}
-        <div className="flex flex-col gap-2">
-          <div className={`${interFont.className} font-normal text-sm text-neutral-500 leading-5 mb-2`}>
-            {filters.find(c => c.id === 'screens')?.title || 'Screens'}
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {filters.find(c => c.id === 'screens')?.options.slice(0, 6).map((option) => (
-              <PortfolioButton
-                key={option.id}
-                variant={option.isActive ? 'default-selected' : 'default'}
-                onClick={() => handleFilterChange('screens', option.id)}
-                className="h-[36px] flex-shrink-0"
-              >
-                {option.label}
-              </PortfolioButton>
-            ))}
-          </div>
-        </div>
-
-        {/* UI Elements - Reduced items */}
-        <div className="flex flex-col gap-2">
-          <div className={`${interFont.className} font-normal text-sm text-neutral-500 leading-5 mb-2`}>
-            {filters.find(c => c.id === 'ui-elements')?.title || 'UI elements'}
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {filters.find(c => c.id === 'ui-elements')?.options.slice(0, 6).map((option) => (
-              <PortfolioButton
-                key={option.id}
-                variant={option.isActive ? 'default-selected' : 'default'}
-                onClick={() => handleFilterChange('ui-elements', option.id)}
-                className="h-[36px] flex-shrink-0"
-              >
-                {option.label}
-              </PortfolioButton>
-            ))}
-          </div>
+      {/* Column 2: Combined Chips - 70% */}
+      <div className="flex flex-col gap-6 w-[70%] min-w-0">
+        {/* Combined Chips - All categories, screens, and UI elements */}
+        <div className="flex flex-wrap gap-2">
+          {allOptions.map((option) => (
+            <button
+              key={`${option.categoryId}-${option.id}`}
+              onClick={() => handleFilterChange(option.categoryId, option.id)}
+              className={`${ebGaramondFont.className} px-3 py-1.5 border border-black transition-colors ${
+                option.isActive
+                  ? 'bg-black text-white border-black'
+                  : 'bg-white text-black border-black hover:opacity-70'
+              }`}
+              style={{ width: 'auto', fontSize: '32px' }}
+            >
+              #{option.label}
+            </button>
+          ))}
         </div>
       </div>
     </div>

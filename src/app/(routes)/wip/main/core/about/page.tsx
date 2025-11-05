@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { jakartaFont, fiveFont, ebGaramondFont } from '@/app/fonts';
-import { Slack, CrosswordSection } from './components';
+import { Slack, CrosswordSection, Testimonials } from './components';
 import { Instrument_Serif } from 'next/font/google';
 
 const instrumentSerif = Instrument_Serif({ 
@@ -122,9 +122,16 @@ export default function AboutPage() {
         </motion.div>
       </div>
 
-      {/* Section 4: TBD */}
-      <div className="flex justify-center items-center mt-36 w-full">
-       
+      {/* Section 3: Testimonials */}
+      <div className="flex justify-center items-center w-full mt-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.2, ease: "easeOut" }}
+          className="flex justify-center w-full max-w-[1440px] mx-auto"
+        >
+          <Testimonials />
+        </motion.div>
       </div>
 
     </div>
