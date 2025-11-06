@@ -192,13 +192,25 @@ export default function CrosswordSection() {
   }, [isInView, isUserHovering]);
 
   return (
-    <div ref={sectionRef} className="w-full flex flex-col lg:flex-row gap-[40px] lg:gap-[40px] w-full mx-auto">
+    <div ref={sectionRef} className="w-full flex flex-col">
+      {/* Paragraph above crossword */}
+      <motion.p 
+        className={`${ebGaramondFont.className} text-black text-lg sm:text-xl md:text-2xl lg:text-4xl leading-relaxed mb-12`}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+      >
+        Just like a crossword puzzle, design is about finding the connections between the words (features) to create a meaningful whole.
+      </motion.p>
+      
+      {/* Crossword grid section */}
+      <div className="w-full flex flex-col lg:flex-row lg:justify-between gap-[48px] lg:gap-[48px] w-full mx-auto">
       {/* Column 1: Skills (Vertical) */}
       <div className="flex flex-col gap-2 flex-1 min-w-0">
-        <div className={`${jakartaFont.className} font-jakarta font-semibold text-xl text-black mb-2`}>
+        <div className={`${jakartaFont.className} font-jakarta font-semibold text-[24px] text-black mb-2`}>
           Skills
         </div>
-        <div className={`${ebGaramondFont.className} font-eb-garamond text-base sm:text-lg text-black leading-relaxed`}>
+        <div className={`${ebGaramondFont.className} font-eb-garamond text-[24px] text-black leading-[130%]`}>
           {verticalClues.map((clue, index) => {
             const isHovered = hoveredClue?.number === clue.number && hoveredClue?.direction === 'vertical';
             return (
@@ -226,10 +238,10 @@ export default function CrosswordSection() {
 
       {/* Column 2: Expertise (Horizontal) */}
       <div className="flex flex-col gap-2 flex-1 min-w-0">
-        <div className={`${jakartaFont.className} font-jakarta font-semibold text-xl text-black mb-2`}>
+        <div className={`${jakartaFont.className} font-jakarta font-semibold text-[24px] text-black mb-2`}>
           Expertise
         </div>
-        <div className={`${ebGaramondFont.className} font-eb-garamond text-base sm:text-lg text-black leading-relaxed`}>
+        <div className={`${ebGaramondFont.className} font-eb-garamond text-[24px] text-black leading-[130%]`}>
           {horizontalClues.map((clue, index) => {
             const isHovered = hoveredClue?.number === clue.number && hoveredClue?.direction === 'horizontal';
             return (
@@ -257,8 +269,8 @@ export default function CrosswordSection() {
 
       {/* Columns 3 & 4: Crossword Grid */}
       <div className="flex flex-col gap-4 flex-[2] min-w-0">
-        <div className="flex justify-center w-full overflow-x-auto">
-          <div className="grid grid-cols-10 gap-0 border-2 border-black" style={{ minWidth: '400px' }}>
+        <div className="flex justify-end w-full overflow-x-auto">
+          <div className="grid grid-cols-10 gap-1" style={{ minWidth: '400px' }}>
             {grid.map((row, rowIndex) =>
               row.map((cell, colIndex) => {
                 const isSelected = selectedCell?.row === rowIndex && selectedCell?.col === colIndex;
@@ -271,17 +283,17 @@ export default function CrosswordSection() {
                   <div
                     key={`${rowIndex}-${colIndex}`}
                     className={`
-                      w-10 h-10 border border-gray-300 flex items-center justify-center relative
-                      ${cell.isBlocked ? 'bg-black' : 'bg-white'}
+                      w-14 h-14 border border-white flex items-center justify-center relative
+                      ${cell.isBlocked ? 'bg-[#85BEEA]' : 'bg-[#E6E1DF]'}
                       ${isSelected ? 'ring-2 ring-blue-500 z-10' : ''}
-                      ${!cell.isBlocked ? 'cursor-pointer hover:bg-gray-100' : ''}
+                      ${!cell.isBlocked ? 'cursor-pointer hover:bg-gray-300' : ''}
                       transition-colors
                     `}
                     style={isHighlighted ? { backgroundColor: '#FFE500' } : {}}
                     onClick={() => handleCellClick(rowIndex, colIndex)}
                   >
                     {cell.number && (
-                      <span className={`${jakartaFont.className} font-jakarta absolute top-0 left-1 text-[10px] font-semibold leading-none`}>
+                      <span className={`${jakartaFont.className} font-jakarta absolute top-2 left-2 text-[10px] font-semibold leading-none`}>
                         {cell.number}
                       </span>
                     )}
@@ -296,6 +308,7 @@ export default function CrosswordSection() {
             )}
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ const testimonials: Testimonial[] = [
   {
     id: 'marie',
     name: 'Marie, Senior Researcher',
-    text: 'Just like a crossword puzzle, design is about finding the connections between the words (features) to create a meaningful whole. like a crossword puzzle, design is about finding the connections between the words (features) to create a meaningful whole.',
+    text: 'Visioning and creativity are where Vamsi truly shines. He has an incredible knack for thinking big-picture, setting bold, aspirational goals that align with Rocket Mortgage’s innovative spirit. This is evident in his advocation for user journeys, benchmark measurements, and design changes to include specific banker goals',
   },
   {
     id: 'james',
@@ -32,7 +32,7 @@ export default function Testimonials() {
   const [selectedTestimonial, setSelectedTestimonial] = useState<Testimonial>(testimonials[0]);
 
   return (
-    <div className="w-full flex gap-[40px] items-start mt-16">
+    <div className="w-full max-w-[1440px] mx-auto flex gap-[40px] items-start mt-16 mb-32">
       {/* Left Column: Header + Buttons */}
       <div className="flex flex-col gap-[40px] flex-1 items-start">
         {/* Header */}
@@ -48,13 +48,17 @@ export default function Testimonials() {
           <div className="flex flex-col gap-[40px] items-center justify-center w-full">
             <button
               onClick={() => setSelectedTestimonial(testimonials[0])}
-              className={`bg-white border border-black box-border flex gap-[16.976px] items-center justify-center p-[32px] rounded-br-[64px] rounded-tl-[64px] rounded-tr-[64px] transition-all ${
+              className={`border border-black box-border flex gap-[16.976px] items-center justify-center p-[32px] rounded-br-[64px] rounded-tl-[64px] rounded-tr-[64px] transition-all ${
                 selectedTestimonial.id === 'marie'
-                  ? 'opacity-100'
-                  : 'opacity-70 hover:opacity-100'
+                  ? 'bg-black'
+                  : 'bg-white opacity-70 hover:opacity-100'
               }`}
             >
-              <p className={`${ebGaramondFont.className} font-normal leading-[1.1] text-[51px] text-black whitespace-nowrap`}>
+              <p className={`${ebGaramondFont.className} font-normal leading-[1.1] text-[51px] whitespace-nowrap ${
+                selectedTestimonial.id === 'marie'
+                  ? 'text-white'
+                  : 'text-black'
+              }`}>
                 {testimonials[0].name}
               </p>
             </button>
@@ -64,13 +68,17 @@ export default function Testimonials() {
           <div className="flex flex-col gap-[40px] items-start justify-center">
             <button
               onClick={() => setSelectedTestimonial(testimonials[1])}
-              className={`bg-white border border-black box-border flex gap-[16.976px] items-center justify-end p-[32px] rounded-bl-[64px] rounded-tl-[64px] rounded-tr-[64px] transition-all ${
+              className={`border border-black box-border flex gap-[16.976px] items-center justify-end p-[32px] rounded-bl-[64px] rounded-tl-[64px] rounded-tr-[64px] transition-all ${
                 selectedTestimonial.id === 'james'
-                  ? 'opacity-100'
-                  : 'opacity-70 hover:opacity-100'
+                  ? 'bg-black'
+                  : 'bg-white opacity-70 hover:opacity-100'
               }`}
             >
-              <p className={`${ebGaramondFont.className} font-normal leading-[1.1] text-[51px] text-black whitespace-nowrap`}>
+              <p className={`${ebGaramondFont.className} font-normal leading-[1.1] text-[51px] whitespace-nowrap ${
+                selectedTestimonial.id === 'james'
+                  ? 'text-white'
+                  : 'text-black'
+              }`}>
                 {testimonials[1].name}
               </p>
             </button>
@@ -80,13 +88,17 @@ export default function Testimonials() {
           <div className="flex flex-col gap-[40px] items-start justify-center">
             <button
               onClick={() => setSelectedTestimonial(testimonials[2])}
-              className={`bg-white border border-black box-border flex gap-[16.976px] items-center justify-center p-[32px] rounded-br-[64px] rounded-tl-[64px] rounded-tr-[64px] transition-all ${
+              className={`border border-black box-border flex gap-[16.976px] items-center justify-center p-[32px] rounded-br-[64px] rounded-tl-[64px] rounded-tr-[64px] transition-all ${
                 selectedTestimonial.id === 'fred'
-                  ? 'opacity-100'
-                  : 'opacity-70 hover:opacity-100'
+                  ? 'bg-black'
+                  : 'bg-white opacity-70 hover:opacity-100'
               }`}
             >
-              <p className={`${ebGaramondFont.className} font-normal leading-[1.1] text-[51px] text-black whitespace-nowrap`}>
+              <p className={`${ebGaramondFont.className} font-normal leading-[1.1] text-[51px] whitespace-nowrap ${
+                selectedTestimonial.id === 'fred'
+                  ? 'text-white'
+                  : 'text-black'
+              }`}>
                 {testimonials[2].name}
               </p>
             </button>
@@ -117,7 +129,7 @@ export default function Testimonials() {
             height: '440px',
           }}
         >
-          <p className={`${jakartaFont.className} font-normal leading-[1.23] text-[29px] text-[#515151]`}>
+          <p className={`${jakartaFont.className} font-normal text-[24px] leading-[150%] text-[#515151]`}>
             {selectedTestimonial.text}
           </p>
         </div>

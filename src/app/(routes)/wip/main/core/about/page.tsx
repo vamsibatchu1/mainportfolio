@@ -90,30 +90,34 @@ const StaggeredText = ({ text, className, delay = 0, staggerDelay = 0.1 }: {
 export default function AboutPage() {
   return (
     <div className="w-full min-h-screen flex flex-col pt-12 gap-8 max-w-[1440px] mx-auto hide-scrollbar">
-      {/* Section 1: Main Heading (Combined with Section 2) */}
-      <div className="text-left w-full flex flex-col gap-12 mb-16">
+      {/* Section 1: Main Heading */}
+      <div className="text-left w-full flex flex-col gap-[64px] mb-16">
         <motion.p 
-          className={`${ebGaramondFont.className} text-black text-2xl sm:text-4xl md:text-5xl lg:text-[64px] leading-[100%] tracking-[-0.02em]`}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          className={`${ebGaramondFont.className} text-black text-[24px] sm:text-[32px] md:text-[40px] lg:text-[64px] leading-[110%]`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0, ease: "easeOut" }}
         >
-          Design to me is fundamentally about providing clarity in complexity. It&apos;s about seeing beyond immediate feature requests to uncover the deeper patterns and opportunities that can transform how people work and live.
+          Originally from India, I am a designer currently living in Atlanta with my wife and dog. I like to call myself a product builder and a software tinkerer. With a background in computer science,
+          I found my calling in it's intersection with art and curiosity.
         </motion.p>
-        <motion.p 
-          className={`${ebGaramondFont.className} text-black text-lg sm:text-xl md:text-2xl lg:text-4xl leading-relaxed`}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-        >
-          Just like a crossword puzzle, design is about finding the connections between the words (features) to create a meaningful whole.
-        </motion.p>
+        <div className="flex flex-row justify-left w-full gap-[48px]">
+          <div className="flex flex-col w-[60%]">
+          <Image src="/images/wip/about/about_design.jpeg" alt="About Me" width={960} height={600}/>
+          </div>
+          <div className="flex flex-col items-end justify-end w-[40%]">
+            <p className={`${ebGaramondFont.className} text-black text-[28px] leading-[110%]`}>
+              I truly believe in the power of design to show not what is, but what it could be. Today, I work as a design executive, advisor, and operator. I split my time between hands-on work, where I stay close to the details across design, product, and engineering, and high-level leadership, where I help teams align, move forward, and deliver with clarity.
+
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Section 2: Crossword */}
       <div className="flex justify-center items-center w-full">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 0 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
           className="flex justify-center w-full"
@@ -123,7 +127,13 @@ export default function AboutPage() {
       </div>
 
       {/* Section 3: Testimonials */}
-      <Testimonials />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 1.2, ease: "easeOut" }}
+      >
+        <Testimonials />
+      </motion.div>
 
     </div>
   );
