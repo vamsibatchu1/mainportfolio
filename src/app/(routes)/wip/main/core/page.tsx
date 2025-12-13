@@ -28,6 +28,7 @@ export default function CorePage() {
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const ActiveComponent = tabComponents[activeTab];
   const { scale, containerRef } = useContainerScale();
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
 
   // Debug: Log scale value
   React.useEffect(() => {
@@ -35,6 +36,13 @@ export default function CorePage() {
       console.log('[CorePage] Current scale:', scale);
     }
   }, [scale]);
+
+  // Reset scroll position when tab changes
+  React.useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [activeTab]);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab as TabType);
@@ -64,7 +72,7 @@ export default function CorePage() {
       </div>
 
       {/* Content Area - Scaled */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden relative hide-scrollbar">
+      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto overflow-x-hidden relative hide-scrollbar">
         <div 
           id="scaled-content-container"
           style={{ 
