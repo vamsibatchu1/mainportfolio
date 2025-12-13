@@ -4,7 +4,7 @@ import React from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { interFont } from '@/app/fonts';
 import { Button } from '@/components/ui/button';
-import { Github, Sun, Search, ArrowUpRight, CircleFadingPlus, FileInput, FolderPlus } from 'lucide-react';
+import { Sun, Search, ArrowUpRight, CircleFadingPlus, FileInput, FolderPlus } from 'lucide-react';
 import {
   CommandDialog,
   CommandEmpty,
@@ -161,24 +161,6 @@ export function MainNav({ className = "", onTabChange, activeTab, tabs }: MainNa
 
         {/* Right side - Action buttons */}
         <div className="content-stretch flex gap-[8px] items-center justify-start relative shrink-0">
-          {/* GitHub Button */}
-          <motion.div
-            initial={shouldAnimate ? { opacity: 0 } : { opacity: 1 }}
-            animate={{ opacity: 1 }}
-            transition={{ 
-              duration: 0.6, 
-              delay: shouldAnimate ? 3.80 : 0,
-              ease: "easeOut" 
-            }}
-          >
-            <Button variant="ghost" size="default" className="h-[36px] px-[16px] py-[8px]">
-              <Github className="w-4 h-4 mr-2" />
-              <span className={`${interFont.variable} font-inter font-medium text-[14px] leading-[20px]`}>
-                GitHub
-              </span>
-            </Button>
-          </motion.div>
-
           {/* Search Button */}
           <motion.div
             initial={shouldAnimate ? { opacity: 0 } : { opacity: 1 }}

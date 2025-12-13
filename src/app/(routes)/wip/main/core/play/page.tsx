@@ -1,25 +1,118 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useRef } from 'react';
+import { InfiniteCanvas, CanvasControls, DetailPanel } from './components';
+import type { CanvasCard, InfiniteCanvasHandle } from './components/infinite-canvas';
+
+// Sample card data - replace with your actual data
+const sampleCards: CanvasCard[] = [
+  {
+    id: '1',
+    x: 100,
+    y: 100,
+    image: '/images/wip/about/about_design.jpeg',
+    title: 'The Territoriet Sound Machine',
+    author: 'Olssøn Barbieri',
+    year: '2015',
+    source: 'OLSSONBARBIERI.COM',
+    keyStrength: 'Inquisitiveness',
+    type: 'Installation',
+    kind: 'Practice',
+    description: 'The Territoriet Sound Machine is an installation that translates the taste of wine into sound stories using an analogue machine that processes punch-cards. This innovative approach allows users to experience wine in a multi-sensory manner, enhancing their understanding and appreciation of both wine and sound through creative technological integration.',
+  },
+  {
+    id: '2',
+    x: 500,
+    y: 200,
+    image: '/images/wip/about/about_design.jpeg',
+    title: 'Project Two',
+    author: 'Designer Name',
+    year: '2020',
+    source: 'EXAMPLE.COM',
+    keyStrength: 'Innovation',
+    type: 'Digital',
+    kind: 'Experiment',
+    description: 'A fascinating project that explores the boundaries of digital interaction.',
+  },
+  {
+    id: '3',
+    x: 300,
+    y: 500,
+    image: '/images/wip/about/about_design.jpeg',
+    title: 'Project Three',
+    author: 'Another Designer',
+    year: '2018',
+    source: 'DESIGN.COM',
+    keyStrength: 'Creativity',
+    type: 'Physical',
+    kind: 'Installation',
+    description: 'An immersive installation that challenges perceptions.',
+  },
+  {
+    id: '4',
+    x: 800,
+    y: 400,
+    image: '/images/wip/about/about_design.jpeg',
+    title: 'Project Four',
+    author: 'Creative Team',
+    year: '2022',
+    source: 'CREATIVE.COM',
+    keyStrength: 'Experimentation',
+    type: 'Hybrid',
+    kind: 'Research',
+    description: 'A research project exploring new forms of interaction.',
+  },
+  {
+    id: '5',
+    x: 200,
+    y: 800,
+    image: '/images/wip/about/about_design.jpeg',
+    title: 'Project Five',
+    author: 'Studio Name',
+    year: '2019',
+    source: 'STUDIO.COM',
+    keyStrength: 'Vision',
+    type: 'Digital',
+    kind: 'Product',
+    description: 'A visionary product that reimagines user experience.',
+  },
+];
 
 export default function PlayPage() {
+  const [selectedCard, setSelectedCard] = useState<CanvasCard | null>(null);
+  const canvasRef = useRef<InfiniteCanvasHandle>(null);
+
+  const handleZoomIn = () => {
+    canvasRef.current?.zoomIn();
+  };
+
+  const handleZoomOut = () => {
+    canvasRef.current?.zoomOut();
+  };
+
   return (
-    <div className="h-full w-full p-6">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="max-w-4xl mx-auto"
-      >
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">Play</h1>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-          <p className="text-gray-600 leading-relaxed">
-            This is the Play section within the Core area. This could contain interactive 
-            elements, experiments, or fun projects.
-          </p>
-        </div>
-      </motion.div>
+    <div className="h-screen w-full relative overflow-hidden">
+      {/* Main canvas area - takes up 70% width */}
+      <div className="absolute inset-0 right-[30%]">
+        <InfiniteCanvas
+          ref={canvasRef}
+          cards={sampleCards}
+          onCardSelect={setSelectedCard}
+          selectedCardId={selectedCard?.id || null}
+        />
+      </div>
+
+      {/* Controls */}
+      <CanvasControls
+        onZoomIn={handleZoomIn}
+        onZoomOut={handleZoomOut}
+      />
+
+      {/* Detail Panel - 30% width on the right */}
+      <DetailPanel
+        card={selectedCard}
+        onClose={() => setSelectedCard(null)}
+      />
     </div>
   );
 }

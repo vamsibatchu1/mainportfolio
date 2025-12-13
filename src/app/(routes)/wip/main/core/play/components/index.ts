@@ -1,7 +1,3 @@
-// Play components exports
-// Add your play-specific components here
-
-// Example:
-// export { Playground } from './Playground';
-// export { InteractiveDemo } from './InteractiveDemo';
-// export { GameBoard } from './GameBoard';
+export { default as InfiniteCanvas, type InfiniteCanvasHandle, type CanvasCard } from './infinite-canvas';
+export { default as CanvasControls } from './canvas-controls';
+export { default as DetailPanel } from './detail-panel';

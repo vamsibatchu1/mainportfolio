@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { jakartaFont, fiveFont, ebGaramondFont } from '@/app/fonts';
-import { Slack, CrosswordSection, Testimonials, Values } from './components';
+import { Slack, CrosswordSection, Testimonials, Values, ExpandingText, aboutTextData } from './components';
 import { Instrument_Serif } from 'next/font/google';
 
 const instrumentSerif = Instrument_Serif({ 
@@ -92,15 +92,13 @@ export default function AboutPage() {
     <div className="w-full min-h-screen flex flex-col pt-12 gap-8 max-w-[1440px] mx-auto hide-scrollbar">
       {/* Section 1: Main Heading */}
       <div className="text-left w-full flex flex-col gap-[64px] mb-16">
-        <motion.p 
-          className={`${ebGaramondFont.className} text-black text-[24px] sm:text-[32px] md:text-[40px] lg:text-[64px] leading-[110%]`}
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0, ease: "easeOut" }}
         >
-          Originally from India, I am a designer currently living in Atlanta with my wife and dog. I like to call myself a product builder and a software tinkerer. With a background in computer science,
-          I found my calling in it's intersection with art and curiosity.
-        </motion.p>
+          <ExpandingText segments={aboutTextData} />
+        </motion.div>
         <div className="flex flex-row justify-left w-full gap-[48px]">
           <div className="flex flex-col w-[60%]">
           <Image src="/images/wip/about/about_design.jpeg" alt="About Me" width={960} height={600}/>

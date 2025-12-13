@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { ebGaramondFont, jakartaFont } from '@/app/fonts';
 
@@ -30,13 +30,49 @@ const testimonials: Testimonial[] = [
 
 export default function Testimonials() {
   const [selectedTestimonial, setSelectedTestimonial] = useState<Testimonial>(testimonials[0]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const leftColumnRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const calculateScale = () => {
+      if (!containerRef.current || !leftColumnRef.current) return;
+
+      const containerWidth = containerRef.current.offsetWidth;
+      const imageWidth = 640;
+      const gap = 40;
+      const availableWidth = containerWidth - imageWidth - gap;
+
+      // Get the natural width of the left column content
+      leftColumnRef.current.style.transform = 'scale(1)';
+      const naturalWidth = leftColumnRef.current.scrollWidth;
+      
+      if (naturalWidth > availableWidth && availableWidth > 0) {
+        const calculatedScale = availableWidth / naturalWidth;
+        setScale(Math.min(1, Math.max(0.5, calculatedScale))); // Clamp between 0.5 and 1
+      } else {
+        setScale(1);
+      }
+    };
+
+    calculateScale();
+    window.addEventListener('resize', calculateScale);
+    return () => window.removeEventListener('resize', calculateScale);
+  }, []);
 
   return (
-    <div className="w-full max-w-[1440px] mx-auto flex gap-[40px] items-start mt-16 mb-32">
+    <div ref={containerRef} className="w-full max-w-[1440px] mx-auto flex gap-[40px] items-start mt-16 mb-32 min-w-0">
       {/* Left Column: Header + Buttons */}
-      <div className="flex flex-col gap-[40px] flex-1 items-start">
+      <div 
+        ref={leftColumnRef}
+        className="flex flex-col gap-[40px] flex-1 min-w-0 items-start origin-top-left"
+        style={{
+          transform: `scale(${scale})`,
+          transformOrigin: 'top left',
+        }}
+      >
         {/* Header */}
-        <div className="flex flex-col gap-[20px] items-start w-full">
+        <div className="flex flex-col gap-[20px] items-start w-full min-w-0">
           <p className={`${ebGaramondFont.className} font-normal leading-[1.1] text-[64px] text-black`}>
             Here&apos;s what people who worked with me are saying
           </p>
@@ -109,19 +145,17 @@ export default function Testimonials() {
       {/* Right Column: Image with Text Overlay */}
       <div className="relative shrink-0 w-[640px] h-[640px]">
         {/* Background Image */}
-        <div className="absolute inset-0">
-          <Image
-            src="/images/wip/about/testimonial_bg.png"
-            alt="Testimonial background"
-            width={640}
-            height={640}
-            className="w-full h-full object-cover"
-          />
-        </div>
+        <Image
+          src="/images/wip/about/testimonial_bg.png"
+          alt="Testimonial background"
+          fill
+          className="object-cover"
+          sizes="640px"
+        />
 
         {/* Text Overlay */}
         <div
-          className="absolute"
+          className="absolute z-10"
           style={{
             left: '130px',
             top: '160px',
