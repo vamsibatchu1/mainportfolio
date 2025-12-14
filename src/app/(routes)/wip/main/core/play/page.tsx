@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { InfiniteCanvas, CanvasControls, DetailPanel } from './components';
+import { InfiniteCanvas, CanvasControls } from './components';
 import type { CanvasCard, InfiniteCanvasHandle } from './components/infinite-canvas';
 
 // Sample card data - replace with your actual data
@@ -10,11 +10,13 @@ const sampleCards: CanvasCard[] = [
     id: '1',
     x: 100,
     y: 100,
+    width: 240,
+    height: 300,
     image: '/images/wip/about/about_design.jpeg',
-    title: 'The Territoriet Sound Machine',
+    title: 'YOU',
     author: 'Olssøn Barbieri',
     year: '2015',
-    source: 'OLSSONBARBIERI.COM',
+    source: 'whenwe.love/moving/you.html?t=20',
     keyStrength: 'Inquisitiveness',
     type: 'Installation',
     kind: 'Practice',
@@ -24,11 +26,13 @@ const sampleCards: CanvasCard[] = [
     id: '2',
     x: 500,
     y: 200,
+    width: 280,
+    height: 320,
     image: '/images/wip/about/about_design.jpeg',
-    title: 'Project Two',
+    title: 'MOVING',
     author: 'Designer Name',
     year: '2020',
-    source: 'EXAMPLE.COM',
+    source: 'whenwe.love/moving/only/M...',
     keyStrength: 'Innovation',
     type: 'Digital',
     kind: 'Experiment',
@@ -38,11 +42,13 @@ const sampleCards: CanvasCard[] = [
     id: '3',
     x: 300,
     y: 500,
+    width: 220,
+    height: 280,
     image: '/images/wip/about/about_design.jpeg',
-    title: 'Project Three',
+    title: 'ME',
     author: 'Another Designer',
     year: '2018',
-    source: 'DESIGN.COM',
+    source: 'whenwe.love/moving/me.html?t=20',
     keyStrength: 'Creativity',
     type: 'Physical',
     kind: 'Installation',
@@ -52,11 +58,13 @@ const sampleCards: CanvasCard[] = [
     id: '4',
     x: 800,
     y: 400,
+    width: 260,
+    height: 310,
     image: '/images/wip/about/about_design.jpeg',
-    title: 'Project Four',
+    title: 'EXPLORE',
     author: 'Creative Team',
     year: '2022',
-    source: 'CREATIVE.COM',
+    source: 'whenwe.love/explore/index.html',
     keyStrength: 'Experimentation',
     type: 'Hybrid',
     kind: 'Research',
@@ -66,11 +74,13 @@ const sampleCards: CanvasCard[] = [
     id: '5',
     x: 200,
     y: 800,
+    width: 200,
+    height: 260,
     image: '/images/wip/about/about_design.jpeg',
-    title: 'Project Five',
+    title: 'CREATE',
     author: 'Studio Name',
     year: '2019',
-    source: 'STUDIO.COM',
+    source: 'whenwe.love/create/studio.html?t=20',
     keyStrength: 'Vision',
     type: 'Digital',
     kind: 'Product',
@@ -92,13 +102,14 @@ export default function PlayPage() {
 
   return (
     <div className="h-screen w-full relative overflow-hidden">
-      {/* Main canvas area - takes up 70% width */}
-      <div className="absolute inset-0 right-[30%]">
+      {/* Main canvas area - full width */}
+      <div className="absolute inset-0">
         <InfiniteCanvas
           ref={canvasRef}
           cards={sampleCards}
           onCardSelect={setSelectedCard}
           selectedCardId={selectedCard?.id || null}
+          selectedCard={selectedCard}
         />
       </div>
 
@@ -106,12 +117,6 @@ export default function PlayPage() {
       <CanvasControls
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
-      />
-
-      {/* Detail Panel - 30% width on the right */}
-      <DetailPanel
-        card={selectedCard}
-        onClose={() => setSelectedCard(null)}
       />
     </div>
   );

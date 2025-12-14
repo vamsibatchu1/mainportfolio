@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { jakartaFont, fiveFont, ebGaramondFont } from '@/app/fonts';
-import { Slack, CrosswordSection, Testimonials, Values, ExpandingText, aboutTextData } from './components';
+import { Testimonials, ExpandingText, aboutTextData } from './components';
 import { Instrument_Serif } from 'next/font/google';
 
 const instrumentSerif = Instrument_Serif({ 
@@ -101,39 +101,15 @@ export default function AboutPage() {
         </motion.div>
         <div className="flex flex-row justify-left w-full gap-[48px]">
           <div className="flex flex-col w-[60%]">
-          <Image src="/images/wip/about/about_design.jpeg" alt="About Me" width={960} height={600}/>
+            <Image src="/images/wip/about/about_design.jpeg" alt="About Me" width={960} height={600}/>
           </div>
-          <div className="flex flex-col items-end justify-end w-[40%]">
-            <p className={`${ebGaramondFont.className} text-black text-[28px] leading-[120%]`}>
-              I truly believe in the power of design to show not what is, but what it could be. Today, I work as a design executive, advisor, and operator. I split my time between hands-on work, where I stay close to the details across design, product, and engineering, and high-level leadership, where I help teams align, move forward, and deliver with clarity.
-
-            </p>
+          <div className="flex flex-col w-[40%]">
+            <Image src="/images/wip/about/vamsi.jpg" alt="Vamsi" width={640} height={600} className="w-full h-auto object-cover"/>
           </div>
         </div>
       </div>
 
-      {/* Section 2: Crossword */}
-      {/* <div className="flex justify-center items-center w-full">
-        <motion.div
-          initial={{ opacity: 0, y: 0 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
-          className="flex justify-center w-full"
-        >
-          <CrosswordSection />
-        </motion.div>
-      </div> */}
-
-      {/* Section 3: Values */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 1.0, ease: "easeOut" }}
-      >
-        <Values />
-      </motion.div>
-
-      {/* Section 4: Testimonials */}
+      {/* Section 2: Testimonials */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

@@ -2,11 +2,15 @@
 
 import React, { useState, useRef, useEffect, useCallback, useImperativeHandle, forwardRef } from 'react';
 import { motion } from 'framer-motion';
+import { BrowserTab } from './browser-tab';
+import { InlineDetailPanel } from './inline-detail-panel';
 
 export interface CanvasCard {
   id: string;
   x: number;
   y: number;
+  width?: number; // Optional width, defaults to 200
+  height?: number; // Optional height, defaults to 260
   image: string;
   title: string;
   author?: string;
@@ -22,6 +26,7 @@ interface InfiniteCanvasProps {
   cards: CanvasCard[];
   onCardSelect: (card: CanvasCard | null) => void;
   selectedCardId: string | null;
+  selectedCard: CanvasCard | null;
 }
 
 export interface InfiniteCanvasHandle {
@@ -30,14 +35,14 @@ export interface InfiniteCanvasHandle {
 }
 
 const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
-  ({ cards, onCardSelect, selectedCardId }, ref) => {
+  ({ cards, onCardSelect, selectedCardId, selectedCard }, ref) => {
     const canvasRef = useRef<HTMLDivElement>(null);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [scale, setScale] = useState(1);
     const [isDragging, setIsDragging] = useState(false);
     const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-    const [scopePosition, setScopePosition] = useState({ x: 0, y: 0 });
     const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
+    const mouseDownPos = useRef({ x: 0, y: 0 });
 
     // Expose zoom functions via ref
     useImperativeHandle(ref, () => ({
@@ -45,27 +50,11 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
       zoomOut: () => setScale((prev) => Math.max(0.5, prev - 0.1)),
     }));
 
-    // Handle mouse move for scope
-    useEffect(() => {
-      const handleMouseMove = (e: MouseEvent) => {
-        if (!canvasRef.current || isDragging) return;
-        const rect = canvasRef.current.getBoundingClientRect();
-        setScopePosition({
-          x: e.clientX - rect.left,
-          y: e.clientY - rect.top,
-        });
-      };
-
-      const canvas = canvasRef.current;
-      if (canvas) {
-        canvas.addEventListener('mousemove', handleMouseMove);
-        return () => canvas.removeEventListener('mousemove', handleMouseMove);
-      }
-    }, [isDragging]);
 
     // Handle pan
     const handleMouseDown = useCallback((e: React.MouseEvent) => {
       if (e.button !== 0) return; // Only left mouse button
+      mouseDownPos.current = { x: e.clientX, y: e.clientY };
       setIsDragging(true);
       setDragStart({
         x: e.clientX - position.x,
@@ -96,62 +85,38 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
       }
     }, [isDragging, dragStart]);
 
-    // Check if card is under scope (circle collision detection)
-    const isCardUnderScope = useCallback((card: CanvasCard) => {
-      if (!canvasRef.current) return false;
-      
-      const cardSize = 200; // Card size in canvas coordinates
-      const scopeRadius = 150; // Scope circle radius
-      
-      // Card center in canvas coordinates
-      const cardCenterX = card.x + cardSize / 2;
-      const cardCenterY = card.y + cardSize / 2;
-      
-      // Card center in screen coordinates
-      const cardScreenX = position.x + cardCenterX * scale;
-      const cardScreenY = position.y + cardCenterY * scale;
-      
-      // Card half-size in screen coordinates
-      const cardHalfSize = (cardSize / 2) * scale;
-      
-      // Distance from scope center to card center
-      const dx = scopePosition.x - cardScreenX;
-      const dy = scopePosition.y - cardScreenY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      
-      // Check if scope circle overlaps with card (circle-rectangle collision)
-      const closestX = Math.max(cardScreenX - cardHalfSize, Math.min(scopePosition.x, cardScreenX + cardHalfSize));
-      const closestY = Math.max(cardScreenY - cardHalfSize, Math.min(scopePosition.y, cardScreenY + cardHalfSize));
-      const closestDistance = Math.sqrt(
-        Math.pow(scopePosition.x - closestX, 2) + Math.pow(scopePosition.y - closestY, 2)
+    const handleCardClick = (card: CanvasCard, e: React.MouseEvent) => {
+      e.stopPropagation(); // Prevent canvas click from firing
+      onCardSelect(card);
+    };
+
+    const handleCanvasClick = (e: React.MouseEvent) => {
+      // Only close if it was a click (not a drag) - check if mouse moved less than 5px
+      const mouseMoveDistance = Math.sqrt(
+        Math.pow(e.clientX - mouseDownPos.current.x, 2) + 
+        Math.pow(e.clientY - mouseDownPos.current.y, 2)
       );
       
-      return closestDistance <= scopeRadius;
-    }, [position, scale, scopePosition]);
-
-    // Update hovered card based on scope position
-    useEffect(() => {
-      const cardUnderScope = cards.find(card => isCardUnderScope(card));
-      setHoveredCardId(cardUnderScope?.id || null);
-    }, [cards, isCardUnderScope, scopePosition]);
-
-    const handleCardClick = (card: CanvasCard) => {
-      if (hoveredCardId === card.id || selectedCardId === card.id) {
-        onCardSelect(card);
+      // Close panel when clicking on canvas background (not on cards or panel)
+      // Cards and panel will stop propagation, so this only fires for canvas background
+      if (selectedCard && mouseMoveDistance < 5) {
+        onCardSelect(null);
       }
     };
 
     return (
       <div
         ref={canvasRef}
-        className="relative w-full h-full overflow-hidden bg-[#1a1a1a] cursor-grab active:cursor-grabbing"
+        className="relative w-full h-full overflow-hidden bg-[#F7F6F3] cursor-grab active:cursor-grabbing canvas-background"
         onMouseDown={handleMouseDown}
+        onClick={handleCanvasClick}
         style={{
           backgroundImage: `
-            linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
+            linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px)
           `,
-          backgroundSize: '50px 50px',
+          backgroundSize: '20px 20px',
+          backgroundPosition: '0 0',
         }}
       >
         {/* Canvas content */}
@@ -167,60 +132,55 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
             const isHovered = hoveredCardId === card.id;
             const isSelected = selectedCardId === card.id;
             
+            // Use source as URL if available, otherwise generate one
+            const url = card.source || `example.com/${card.title.toLowerCase().replace(/\s+/g, '/')}.html?t=20`;
+            
+            // Use title for header text, truncate if too long
+            const headerText = card.title.length > 20 
+              ? card.title.substring(0, 17) + '...'
+              : card.title;
+            
+            const cardWidth = card.width || 200;
+            const cardHeight = card.height || 260;
+            
             return (
-              <motion.div
+              <div
                 key={card.id}
-                className="absolute cursor-pointer"
+                className="absolute"
                 style={{
                   left: `${card.x}px`,
                   top: `${card.y}px`,
-                  width: '200px',
-                  height: '200px',
+                  width: `${cardWidth}px`,
+                  height: `${cardHeight}px`,
                 }}
-                onClick={() => handleCardClick(card)}
-                animate={{
-                  scale: isHovered || isSelected ? 1.05 : 1,
-                  zIndex: isHovered || isSelected ? 10 : 1,
-                }}
-                transition={{ duration: 0.2 }}
+                onMouseEnter={() => setHoveredCardId(card.id)}
+                onMouseLeave={() => setHoveredCardId(null)}
               >
-                <div className="w-full h-full rounded-lg overflow-hidden border-2 border-white/20 shadow-lg">
-                  <img
-                    src={card.image}
-                    alt={card.title}
-                    className="w-full h-full object-cover"
-                  />
-                  {(isHovered || isSelected) && (
-                    <motion.div
-                      className="absolute inset-0 border-4 border-yellow-400 rounded-lg pointer-events-none"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.2 }}
-                    />
-                  )}
-                </div>
-              </motion.div>
+                <BrowserTab
+                  headerText={headerText}
+                  url={url}
+                  image={card.image}
+                  imageAlt={card.title}
+                  isHovered={isHovered}
+                  isSelected={isSelected}
+                  onClick={(e) => handleCardClick(card, e)}
+                />
+              </div>
             );
           })}
-        </div>
 
-        {/* Scope highlight */}
-        <motion.div
-          className="absolute pointer-events-none"
-          style={{
-            left: scopePosition.x - 150,
-            top: scopePosition.y - 150,
-            width: '300px',
-            height: '300px',
-          }}
-          animate={{
-            x: scopePosition.x - 150,
-            y: scopePosition.y - 150,
-          }}
-          transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-        >
-          <div className="w-full h-full rounded-full border-4 border-yellow-400/50 shadow-[0_0_20px_rgba(250,204,21,0.5)]" />
-        </motion.div>
+          {/* Inline Detail Panel - positioned next to selected card */}
+          {selectedCard && (
+            <InlineDetailPanel
+              card={selectedCard}
+              onClose={() => onCardSelect(null)}
+              cardX={selectedCard.x}
+              cardY={selectedCard.y}
+              cardWidth={selectedCard.width || 200}
+              cardHeight={selectedCard.height || 260}
+            />
+          )}
+        </div>
       </div>
     );
   }
