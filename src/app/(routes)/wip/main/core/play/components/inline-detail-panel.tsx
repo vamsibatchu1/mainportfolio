@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Minus, Plus, List, Triangle, Square, Circle, Hexagon } from 'lucide-react';
 import { interFont } from '@/app/fonts';
@@ -35,17 +35,23 @@ export function InlineDetailPanel({
 }: InlineDetailPanelProps) {
   const [openSections, setOpenSections] = useState<Set<string>>(new Set(['index']));
 
+  // Reset to INDEX open whenever the card changes
+  useEffect(() => {
+    if (card) {
+      setOpenSections(new Set(['index']));
+    }
+  }, [card?.id]); // Reset when card ID changes
+
   if (!card) return null;
 
   const toggleSection = (sectionId: string) => {
     setOpenSections((prev) => {
-      const next = new Set(prev);
-      if (next.has(sectionId)) {
-        next.delete(sectionId);
-      } else {
-        next.add(sectionId);
+      // If clicking the already open section, close it
+      if (prev.has(sectionId)) {
+        return new Set<string>();
       }
-      return next;
+      // Otherwise, close all others and open only this one
+      return new Set([sectionId]);
     });
   };
 
@@ -152,7 +158,7 @@ export function InlineDetailPanel({
                   {/* Section Header */}
                   <button
                     onClick={() => toggleSection(section.id)}
-                    className="w-full flex items-center gap-3 py-3 text-left hover:bg-gray-100/50 transition-colors rounded px-1 -mx-1"
+                    className="w-full flex items-center gap-3 py-3 text-left transition-colors rounded px-1 -mx-1"
                   >
                     {/* Icon */}
                     <div className="flex-shrink-0">{section.icon}</div>

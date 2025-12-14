@@ -74,6 +74,106 @@ export function BrowserTab({
           </div>
         </div>
       </div>
+      
+      {/* Selection Border - Square border with square corners, 12px outward */}
+      {isSelected && (
+        <motion.div
+          className="absolute pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.2 }}
+          style={{
+            top: '-12px',
+            left: '-12px',
+            right: '-12px',
+            bottom: '-12px',
+          }}
+        >
+          {/* Corner squares - positioned at corners, extending beyond border */}
+          {/* Top-left corner */}
+          <div 
+            className="absolute bg-white border-2 border-purple-600"
+            style={{
+              top: '-6px',
+              left: '-6px',
+              width: '12px',
+              height: '12px',
+            }}
+          />
+          {/* Top-right corner */}
+          <div 
+            className="absolute bg-white border-2 border-purple-600"
+            style={{
+              top: '-6px',
+              right: '-6px',
+              width: '12px',
+              height: '12px',
+            }}
+          />
+          {/* Bottom-left corner */}
+          <div 
+            className="absolute bg-white border-2 border-purple-600"
+            style={{
+              bottom: '-6px',
+              left: '-6px',
+              width: '12px',
+              height: '12px',
+            }}
+          />
+          {/* Bottom-right corner */}
+          <div 
+            className="absolute bg-white border-2 border-purple-600"
+            style={{
+              bottom: '-6px',
+              right: '-6px',
+              width: '12px',
+              height: '12px',
+            }}
+          />
+          
+          {/* Main border lines - stop at corner squares */}
+          {/* Top border */}
+          <div 
+            className="absolute bg-purple-600"
+            style={{
+              top: '-1px',
+              left: '6px',
+              right: '6px',
+              height: '2px',
+            }}
+          />
+          {/* Bottom border */}
+          <div 
+            className="absolute bg-purple-600"
+            style={{
+              bottom: '-1px',
+              left: '6px',
+              right: '6px',
+              height: '2px',
+            }}
+          />
+          {/* Left border */}
+          <div 
+            className="absolute bg-purple-600"
+            style={{
+              top: '6px',
+              bottom: '6px',
+              left: '-1px',
+              width: '2px',
+            }}
+          />
+          {/* Right border */}
+          <div 
+            className="absolute bg-purple-600"
+            style={{
+              top: '6px',
+              bottom: '6px',
+              right: '-1px',
+              width: '2px',
+            }}
+          />
+        </motion.div>
+      )}
     </motion.div>
   );
 }
