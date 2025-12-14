@@ -51,7 +51,7 @@ export default function CanvasControls({
         {/* Zoom In */}
         <button
           onClick={onZoomIn}
-          className="w-10 h-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center text-white transition-colors border border-white/20"
+          className="w-10 h-10 flex items-center justify-center text-black transition-colors"
           aria-label="Zoom in"
         >
           <ZoomIn size={20} />
@@ -60,7 +60,7 @@ export default function CanvasControls({
         {/* Zoom Out */}
         <button
           onClick={onZoomOut}
-          className="w-10 h-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center text-white transition-colors border border-white/20"
+          className="w-10 h-10 flex items-center justify-center text-black transition-colors"
           aria-label="Zoom out"
         >
           <ZoomOut size={20} />
@@ -69,7 +69,7 @@ export default function CanvasControls({
         {/* Question */}
         <button
           onClick={handleQuestion}
-          className="w-10 h-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center text-white transition-colors border border-white/20"
+          className="w-10 h-10 flex items-center justify-center text-black transition-colors"
           aria-label="Ask a question"
         >
           <HelpCircle size={20} />
@@ -78,7 +78,7 @@ export default function CanvasControls({
         {/* Fullscreen */}
         <button
           onClick={handleFullscreen}
-          className="w-10 h-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center text-white transition-colors border border-white/20"
+          className="w-10 h-10 flex items-center justify-center text-black transition-colors"
           aria-label="Toggle fullscreen"
         >
           {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}

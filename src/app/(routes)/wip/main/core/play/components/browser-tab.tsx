@@ -51,13 +51,6 @@ export function BrowserTab({
             <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
             <div className="w-3 h-3 rounded-full bg-[#28c840]"></div>
           </div>
-          
-          {/* Header Text */}
-          <div className="flex-1 text-center min-w-0">
-            <span className="text-[10px] font-bold text-gray-800 uppercase tracking-wider block truncate">
-              {headerText}
-            </span>
-          </div>
         </div>
 
         {/* URL Bar */}
@@ -79,18 +72,26 @@ export function BrowserTab({
               sizes="(max-width: 400px) 200px, 400px"
             />
           </div>
-          
-          {/* Selection/Hover Indicator */}
-          {(isHovered || isSelected) && (
-            <motion.div
-              className="absolute inset-0 border-4 border-yellow-400 pointer-events-none rounded-b-lg"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.2 }}
-            />
-          )}
         </div>
       </div>
+      
+      {/* Selection Indicator - Black dotted border with 16px gap outside */}
+      {isSelected && (
+        <motion.div
+          className="absolute pointer-events-none"
+          style={{
+            top: '-16px',
+            left: '-16px',
+            right: '-16px',
+            bottom: '-16px',
+            border: '1px dotted black',
+            borderRadius: '8px',
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.2 }}
+        />
+      )}
     </motion.div>
   );
 }

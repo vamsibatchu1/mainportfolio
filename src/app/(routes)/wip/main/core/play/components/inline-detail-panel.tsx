@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Minus, Plus, Sparkles, Triangle, Square, Circle, Hexagon } from 'lucide-react';
+import { Minus, Plus, List, Triangle, Square, Circle, Hexagon } from 'lucide-react';
 import { interFont } from '@/app/fonts';
 import type { CanvasCard } from './infinite-canvas';
 
@@ -13,6 +13,7 @@ interface InlineDetailPanelProps {
   cardY: number;
   cardWidth: number;
   cardHeight: number;
+  panelSide: 'left' | 'right';
 }
 
 interface AccordionSection {
@@ -30,6 +31,7 @@ export function InlineDetailPanel({
   cardY,
   cardWidth,
   cardHeight,
+  panelSide,
 }: InlineDetailPanelProps) {
   const [openSections, setOpenSections] = useState<Set<string>>(new Set(['index']));
 
@@ -47,17 +49,20 @@ export function InlineDetailPanel({
     });
   };
 
-  // Position the panel to the right of the card with some spacing
-  const panelX = cardX + cardWidth + 20;
-  const panelY = cardY;
+  // Position the panel to the left or right of the card with 12px spacing
   const panelWidth = 360; // Fixed width for the detail panel
+  const gap = 12;
+  const panelX = panelSide === 'right' 
+    ? cardX + cardWidth + gap
+    : cardX - panelWidth - gap;
+  const panelY = cardY; // Top aligned with card
 
   // Define sections based on card data
   const sections: AccordionSection[] = [
     {
       id: 'index',
       title: 'INDEX',
-      icon: <Sparkles size={16} className="text-[#FF6B35]" fill="#FF6B35" />,
+      icon: <List size={12} className="text-black" />,
       defaultOpen: true,
       content: (
         <div className="pt-2">
@@ -73,7 +78,7 @@ export function InlineDetailPanel({
     {
       id: 'initiatives',
       title: 'INITIATIVES',
-      icon: <Triangle size={12} className="text-black" fill="black" />,
+      icon: <Triangle size={12} className="text-black" />,
       content: (
         <div className="pt-2">
           <p className={`${interFont.variable} font-inter text-sm text-black leading-relaxed`}>
@@ -85,7 +90,7 @@ export function InlineDetailPanel({
     {
       id: 'research',
       title: 'RESEARCH',
-      icon: <Square size={12} className="text-black" fill="black" />,
+      icon: <Square size={12} className="text-black" />,
       content: (
         <div className="pt-2">
           <p className={`${interFont.variable} font-inter text-sm text-black leading-relaxed`}>
@@ -97,7 +102,7 @@ export function InlineDetailPanel({
     {
       id: 'artifacts',
       title: 'ARTIFACTS',
-      icon: <Circle size={12} className="text-black" fill="black" />,
+      icon: <Circle size={12} className="text-black" />,
       content: (
         <div className="pt-2">
           <p className={`${interFont.variable} font-inter text-sm text-black leading-relaxed`}>
@@ -109,7 +114,7 @@ export function InlineDetailPanel({
     {
       id: 'paths',
       title: 'PATHS',
-      icon: <Hexagon size={12} className="text-black" fill="black" />,
+      icon: <Hexagon size={12} className="text-black" />,
       content: (
         <div className="pt-2">
           <p className={`${interFont.variable} font-inter text-sm text-black leading-relaxed`}>
@@ -123,11 +128,11 @@ export function InlineDetailPanel({
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, x: -20 }}
+        initial={{ opacity: 0, x: panelSide === 'right' ? -20 : 20 }}
         animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -20 }}
+        exit={{ opacity: 0, x: panelSide === 'right' ? -20 : 20 }}
         transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-        className={`absolute bg-[#f5f5f5] rounded-lg shadow-lg overflow-hidden z-50 ${interFont.variable} font-inter`}
+        className={`absolute overflow-hidden z-50 ${interFont.variable} font-inter`}
         style={{
           left: `${panelX}px`,
           top: `${panelY}px`,
@@ -135,7 +140,7 @@ export function InlineDetailPanel({
           maxHeight: '700px',
         }}
       >
-        <div className="p-6" onClick={(e) => e.stopPropagation()}>
+        <div className="px-5" onClick={(e) => e.stopPropagation()}>
           {/* Accordion Sections */}
           <div className="space-y-0">
             {sections.map((section, index) => {

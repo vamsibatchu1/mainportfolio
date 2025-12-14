@@ -101,9 +101,9 @@ export default function PlayPage() {
   };
 
   return (
-    <div className="h-screen w-full relative overflow-hidden">
+    <div className="w-full h-screen relative overflow-hidden" style={{ height: '100vh', minHeight: '100vh' }}>
       {/* Main canvas area - full width */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 w-full h-full">
         <InfiniteCanvas
           ref={canvasRef}
           cards={sampleCards}

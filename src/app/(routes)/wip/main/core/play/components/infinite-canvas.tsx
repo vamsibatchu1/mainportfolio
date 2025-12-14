@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect, useCallback, useImperativeHandle, forwardRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useImperativeHandle, forwardRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { BrowserTab } from './browser-tab';
 import { InlineDetailPanel } from './inline-detail-panel';
@@ -43,6 +43,9 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
     const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
     const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
     const mouseDownPos = useRef({ x: 0, y: 0 });
+    
+    // Store original card positions
+    const originalPositions = useRef<Map<string, { x: number; y: number }>>(new Map());
 
     // Expose zoom functions via ref
     useImperativeHandle(ref, () => ({
@@ -104,6 +107,394 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
       }
     };
 
+    // Generate deterministic random side for panel based on card ID
+    const getPanelSide = useCallback((cardId: string): 'left' | 'right' => {
+      // Simple hash function to get consistent side for each card
+      let hash = 0;
+      for (let i = 0; i < cardId.length; i++) {
+        hash = ((hash << 5) - hash) + cardId.charCodeAt(i);
+        hash = hash & hash; // Convert to 32-bit integer
+      }
+      return hash % 2 === 0 ? 'right' : 'left';
+    }, []);
+
+    // Calculate panel bounds
+    const panelBounds = useMemo(() => {
+      if (!selectedCard) return null;
+      
+      const cardWidth = selectedCard.width || 200;
+      const cardHeight = selectedCard.height || 260;
+      const panelSide = getPanelSide(selectedCard.id);
+      const panelWidth = 360;
+      const gap = 12;
+      const panelX = panelSide === 'right' 
+        ? selectedCard.x + cardWidth + gap
+        : selectedCard.x - panelWidth - gap;
+      const panelY = selectedCard.y; // Top aligned with card
+      const panelHeight = 700; // max height
+      
+      return {
+        x: panelX,
+        y: panelY,
+        width: panelWidth,
+        height: panelHeight,
+      };
+    }, [selectedCard, getPanelSide]);
+
+    // Check if two rectangles overlap
+    const rectanglesOverlap = useCallback((
+      rect1: { x: number; y: number; width: number; height: number },
+      rect2: { x: number; y: number; width: number; height: number }
+    ): boolean => {
+      return !(
+        rect1.x + rect1.width < rect2.x ||
+        rect2.x + rect2.width < rect1.x ||
+        rect1.y + rect1.height < rect2.y ||
+        rect2.y + rect2.height < rect1.y
+      );
+    }, []);
+
+    // Calculate adjusted position for a card to avoid panel
+    const calculateAdjustedPosition = useCallback((
+      card: CanvasCard,
+      panelBounds: { x: number; y: number; width: number; height: number }
+    ): { x: number; y: number } => {
+      const cardWidth = card.width || 200;
+      const cardHeight = card.height || 260;
+      
+      const cardRect = {
+        x: card.x,
+        y: card.y,
+        width: cardWidth,
+        height: cardHeight,
+      };
+
+      // Check if card overlaps with panel
+      if (!rectanglesOverlap(cardRect, panelBounds)) {
+        return { x: card.x, y: card.y };
+      }
+
+      // Calculate distances to move in each direction
+      const overlapRight = card.x + cardWidth - panelBounds.x;
+      const overlapLeft = panelBounds.x + panelBounds.width - card.x;
+      const overlapBottom = card.y + cardHeight - panelBounds.y;
+      const overlapTop = panelBounds.y + panelBounds.height - card.y;
+
+      // Find the minimum overlap direction and move card away
+      const overlaps = [
+        { dir: 'right', dist: overlapRight },
+        { dir: 'left', dist: overlapLeft },
+        { dir: 'bottom', dist: overlapBottom },
+        { dir: 'top', dist: overlapTop },
+      ].filter(o => o.dist > 0);
+
+      if (overlaps.length === 0) return { x: card.x, y: card.y };
+
+      // Find minimum overlap
+      const minOverlap = Math.min(...overlaps.map(o => o.dist));
+      const direction = overlaps.find(o => o.dist === minOverlap)?.dir;
+
+      let newX = card.x;
+      let newY = card.y;
+      const padding = 40; // Space to add between card and panel
+
+      switch (direction) {
+        case 'right':
+          newX = panelBounds.x - cardWidth - padding;
+          break;
+        case 'left':
+          newX = panelBounds.x + panelBounds.width + padding;
+          break;
+        case 'bottom':
+          newY = panelBounds.y - cardHeight - padding;
+          break;
+        case 'top':
+          newY = panelBounds.y + panelBounds.height + padding;
+          break;
+      }
+
+      return { x: newX, y: newY };
+    }, [rectanglesOverlap]);
+
+    // Calculate adjusted positions for all cards, ensuring 40px gap between cards
+    const cardPositions = useMemo(() => {
+      const positions = new Map<string, { x: number; y: number }>();
+      const cardGap = 40; // Minimum gap between cards
+      
+      // Helper function to check if two rectangles are too close (less than gap apart)
+      const rectanglesTooClose = (
+        rect1: { x: number; y: number; width: number; height: number },
+        rect2: { x: number; y: number; width: number; height: number },
+        gap: number
+      ): boolean => {
+        // Check horizontal distance
+        const horizontalGap = Math.max(
+          rect2.x - (rect1.x + rect1.width),
+          rect1.x - (rect2.x + rect2.width)
+        );
+        
+        // Check vertical distance
+        const verticalGap = Math.max(
+          rect2.y - (rect1.y + rect1.height),
+          rect1.y - (rect2.y + rect2.height)
+        );
+        
+        // If both gaps are negative or less than required, they're too close
+        if (horizontalGap < 0 && verticalGap < 0) {
+          // They overlap, definitely too close
+          return true;
+        }
+        
+        // If one gap is negative, they overlap in that dimension
+        if (horizontalGap < 0) {
+          return verticalGap < gap;
+        }
+        if (verticalGap < 0) {
+          return horizontalGap < gap;
+        }
+        
+        // Both gaps are positive, check if either is less than required gap
+        return horizontalGap < gap || verticalGap < gap;
+      };
+      
+      // Helper function to get card position (from positions map or original)
+      const getCardPosition = (card: CanvasCard): { x: number; y: number } => {
+        return positions.get(card.id) || originalPositions.current.get(card.id) || { x: card.x, y: card.y };
+      };
+      
+      cards.forEach((card) => {
+        // Store original position if not already stored
+        if (!originalPositions.current.has(card.id)) {
+          originalPositions.current.set(card.id, { x: card.x, y: card.y });
+        }
+
+        let finalPosition: { x: number; y: number };
+        
+        if (panelBounds && selectedCard && card.id !== selectedCard.id) {
+          // First, adjust position to avoid panel
+          finalPosition = calculateAdjustedPosition(card, panelBounds);
+          
+          const cardWidth = card.width || 200;
+          const cardHeight = card.height || 260;
+          
+          // Iterate multiple times to resolve all collisions
+          let hasCollision = true;
+          let iterations = 0;
+          const maxIterations = 10; // Prevent infinite loops
+          
+          while (hasCollision && iterations < maxIterations) {
+            hasCollision = false;
+            iterations++;
+            
+            const cardRect = {
+              x: finalPosition.x,
+              y: finalPosition.y,
+              width: cardWidth,
+              height: cardHeight,
+            };
+            
+            // Check against all other cards
+            cards.forEach((otherCard) => {
+              if (otherCard.id === card.id || otherCard.id === selectedCard.id) return;
+              
+              const otherPosition = getCardPosition(otherCard);
+              const otherWidth = otherCard.width || 200;
+              const otherHeight = otherCard.height || 260;
+              
+              const otherRect = {
+                x: otherPosition.x,
+                y: otherPosition.y,
+                width: otherWidth,
+                height: otherHeight,
+              };
+              
+              // Check if cards are too close (less than gap apart)
+              if (rectanglesTooClose(cardRect, otherRect, cardGap)) {
+                hasCollision = true;
+                
+                // Calculate distances to move in each direction to achieve gap
+                const horizontalGap = otherRect.x - (cardRect.x + cardRect.width);
+                const verticalGap = otherRect.y - (cardRect.y + cardHeight);
+                
+                // Determine which direction needs adjustment
+                const needsRightMove = horizontalGap < cardGap && horizontalGap >= 0;
+                const needsLeftMove = (cardRect.x - (otherRect.x + otherRect.width)) < cardGap && (cardRect.x - (otherRect.x + otherRect.width)) >= 0;
+                const needsBottomMove = verticalGap < cardGap && verticalGap >= 0;
+                const needsTopMove = (cardRect.y - (otherRect.y + otherRect.height)) < cardGap && (cardRect.y - (otherRect.y + otherRect.height)) >= 0;
+                
+                // If cards overlap, calculate overlap amounts
+                const overlapRight = cardRect.x + cardRect.width - otherRect.x;
+                const overlapLeft = otherRect.x + otherRect.width - cardRect.x;
+                const overlapBottom = cardRect.y + cardHeight - otherRect.y;
+                const overlapTop = otherRect.y + otherRect.height - cardRect.y;
+                
+                // Determine best direction to move
+                const moves = [];
+                if (overlapRight > 0) moves.push({ dir: 'right', dist: overlapRight });
+                if (overlapLeft > 0) moves.push({ dir: 'left', dist: overlapLeft });
+                if (overlapBottom > 0) moves.push({ dir: 'bottom', dist: overlapBottom });
+                if (overlapTop > 0) moves.push({ dir: 'top', dist: overlapTop });
+                if (needsRightMove) moves.push({ dir: 'right', dist: cardGap - horizontalGap });
+                if (needsLeftMove) moves.push({ dir: 'left', dist: cardGap - (cardRect.x - (otherRect.x + otherRect.width)) });
+                if (needsBottomMove) moves.push({ dir: 'bottom', dist: cardGap - verticalGap });
+                if (needsTopMove) moves.push({ dir: 'top', dist: cardGap - (cardRect.y - (otherRect.y + otherRect.height)) });
+                
+                if (moves.length > 0) {
+                  const minMove = Math.min(...moves.map(m => m.dist));
+                  const direction = moves.find(m => m.dist === minMove)?.dir;
+                  
+                  switch (direction) {
+                    case 'right':
+                      finalPosition.x = otherRect.x - cardWidth - cardGap;
+                      break;
+                    case 'left':
+                      finalPosition.x = otherRect.x + otherRect.width + cardGap;
+                      break;
+                    case 'bottom':
+                      finalPosition.y = otherRect.y - cardHeight - cardGap;
+                      break;
+                    case 'top':
+                      finalPosition.y = otherRect.y + otherRect.height + cardGap;
+                      break;
+                  }
+                }
+              }
+            });
+            
+            // Also check against selected card
+            if (selectedCard) {
+              const selectedPosition = { x: selectedCard.x, y: selectedCard.y };
+              const selectedWidth = selectedCard.width || 200;
+              const selectedHeight = selectedCard.height || 260;
+              
+              const selectedRect = {
+                x: selectedPosition.x,
+                y: selectedPosition.y,
+                width: selectedWidth,
+                height: selectedHeight,
+              };
+              
+              if (rectanglesTooClose(cardRect, selectedRect, cardGap)) {
+                hasCollision = true;
+                
+                const horizontalGap = selectedRect.x - (cardRect.x + cardRect.width);
+                const verticalGap = selectedRect.y - (cardRect.y + cardHeight);
+                
+                const needsRightMove = horizontalGap < cardGap && horizontalGap >= 0;
+                const needsLeftMove = (cardRect.x - (selectedRect.x + selectedRect.width)) < cardGap && (cardRect.x - (selectedRect.x + selectedRect.width)) >= 0;
+                const needsBottomMove = verticalGap < cardGap && verticalGap >= 0;
+                const needsTopMove = (cardRect.y - (selectedRect.y + selectedRect.height)) < cardGap && (cardRect.y - (selectedRect.y + selectedRect.height)) >= 0;
+                
+                const overlapRight = cardRect.x + cardRect.width - selectedRect.x;
+                const overlapLeft = selectedRect.x + selectedRect.width - cardRect.x;
+                const overlapBottom = cardRect.y + cardHeight - selectedRect.y;
+                const overlapTop = selectedRect.y + selectedRect.height - cardRect.y;
+                
+                const moves = [];
+                if (overlapRight > 0) moves.push({ dir: 'right', dist: overlapRight });
+                if (overlapLeft > 0) moves.push({ dir: 'left', dist: overlapLeft });
+                if (overlapBottom > 0) moves.push({ dir: 'bottom', dist: overlapBottom });
+                if (overlapTop > 0) moves.push({ dir: 'top', dist: overlapTop });
+                if (needsRightMove) moves.push({ dir: 'right', dist: cardGap - horizontalGap });
+                if (needsLeftMove) moves.push({ dir: 'left', dist: cardGap - (cardRect.x - (selectedRect.x + selectedRect.width)) });
+                if (needsBottomMove) moves.push({ dir: 'bottom', dist: cardGap - verticalGap });
+                if (needsTopMove) moves.push({ dir: 'top', dist: cardGap - (cardRect.y - (selectedRect.y + selectedRect.height)) });
+                
+                if (moves.length > 0) {
+                  const minMove = Math.min(...moves.map(m => m.dist));
+                  const direction = moves.find(m => m.dist === minMove)?.dir;
+                  
+                  switch (direction) {
+                    case 'right':
+                      finalPosition.x = selectedRect.x - cardWidth - cardGap;
+                      break;
+                    case 'left':
+                      finalPosition.x = selectedRect.x + selectedRect.width + cardGap;
+                      break;
+                    case 'bottom':
+                      finalPosition.y = selectedRect.y - cardHeight - cardGap;
+                      break;
+                    case 'top':
+                      finalPosition.y = selectedRect.y + selectedRect.height + cardGap;
+                      break;
+                  }
+                }
+              }
+            }
+          }
+          
+          positions.set(card.id, finalPosition);
+        } else {
+          // Use original position
+          const original = originalPositions.current.get(card.id) || { x: card.x, y: card.y };
+          positions.set(card.id, original);
+        }
+      });
+
+      return positions;
+    }, [cards, panelBounds, selectedCard, calculateAdjustedPosition, rectanglesOverlap]);
+
+    // Clear original positions when panel closes
+    useEffect(() => {
+      if (!selectedCard) {
+        originalPositions.current.clear();
+      }
+    }, [selectedCard]);
+
+    // Auto-adjust canvas to show selected card and panel
+    useEffect(() => {
+      if (!selectedCard || !canvasRef.current || !panelBounds) return;
+
+      const canvas = canvasRef.current;
+      const viewportWidth = canvas.clientWidth;
+      const viewportHeight = canvas.clientHeight;
+
+      // Calculate combined bounds of card and panel
+      const cardWidth = selectedCard.width || 200;
+      const cardHeight = selectedCard.height || 260;
+      
+      const combinedLeft = Math.min(selectedCard.x, panelBounds.x);
+      const combinedTop = selectedCard.y; // Top aligned
+      const combinedRight = Math.max(
+        selectedCard.x + cardWidth,
+        panelBounds.x + panelBounds.width
+      );
+      const combinedBottom = Math.max(
+        selectedCard.y + cardHeight,
+        panelBounds.y + panelBounds.height
+      );
+      
+      const combinedWidth = combinedRight - combinedLeft;
+      const combinedHeight = combinedBottom - combinedTop;
+
+      // Add padding around the content
+      const padding = 40;
+      const targetWidth = combinedWidth + padding * 2;
+      const targetHeight = combinedHeight + padding * 2;
+
+      // Calculate required scale to fit in viewport
+      const scaleX = viewportWidth / targetWidth;
+      const scaleY = viewportHeight / targetHeight;
+      const requiredScale = Math.max(
+        Math.min(scaleX, scaleY, 1), // Don't zoom in beyond 1x
+        0.5 // Don't zoom out beyond 0.5x
+      );
+
+      // Calculate center of combined bounds
+      const centerX = (combinedLeft + combinedRight) / 2;
+      const centerY = (combinedTop + combinedBottom) / 2;
+
+      // Calculate position to center the content in viewport
+      // Account for current scale
+      const newScale = requiredScale;
+      const newPositionX = viewportWidth / 2 - centerX * newScale;
+      const newPositionY = viewportHeight / 2 - centerY * newScale;
+
+      // Smoothly animate to new position and scale
+      setPosition({ x: newPositionX, y: newPositionY });
+      setScale(newScale);
+    }, [selectedCard, panelBounds]);
+
     return (
       <div
         ref={canvasRef}
@@ -111,6 +502,8 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
         onMouseDown={handleMouseDown}
         onClick={handleCanvasClick}
         style={{
+          width: '100%',
+          height: '100%',
           backgroundImage: `
             linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
             linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px)
@@ -120,10 +513,24 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
         }}
       >
         {/* Canvas content */}
-        <div
+        <motion.div
           className="absolute inset-0"
+          animate={{
+            x: position.x,
+            y: position.y,
+            scale: scale,
+          }}
+          transition={
+            isDragging
+              ? { duration: 0 } // Immediate during drag
+              : {
+                  type: 'spring',
+                  damping: 30,
+                  stiffness: 200,
+                  mass: 0.5,
+                }
+          }
           style={{
-            transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
             transformOrigin: '0 0',
           }}
         >
@@ -143,13 +550,28 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
             const cardWidth = card.width || 200;
             const cardHeight = card.height || 260;
             
+            // Get the position (adjusted if panel is open, otherwise original)
+            const cardPosition = cardPositions.get(card.id) || { x: card.x, y: card.y };
+            
             return (
-              <div
+              <motion.div
                 key={card.id}
                 className="absolute"
+                initial={{
+                  left: card.x,
+                  top: card.y,
+                }}
+                animate={{
+                  left: cardPosition.x,
+                  top: cardPosition.y,
+                }}
+                transition={{
+                  type: 'spring',
+                  damping: 25,
+                  stiffness: 200,
+                  mass: 0.8,
+                }}
                 style={{
-                  left: `${card.x}px`,
-                  top: `${card.y}px`,
                   width: `${cardWidth}px`,
                   height: `${cardHeight}px`,
                 }}
@@ -165,7 +587,7 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
                   isSelected={isSelected}
                   onClick={(e) => handleCardClick(card, e)}
                 />
-              </div>
+              </motion.div>
             );
           })}
 
@@ -178,9 +600,10 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
               cardY={selectedCard.y}
               cardWidth={selectedCard.width || 200}
               cardHeight={selectedCard.height || 260}
+              panelSide={getPanelSide(selectedCard.id)}
             />
           )}
-        </div>
+        </motion.div>
       </div>
     );
   }
