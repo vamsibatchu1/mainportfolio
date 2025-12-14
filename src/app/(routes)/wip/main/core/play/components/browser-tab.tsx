@@ -92,7 +92,7 @@ export function BrowserTab({
           {/* Corner squares - positioned at corners, extending beyond border */}
           {/* Top-left corner */}
           <div 
-            className="absolute bg-white border-2 border-purple-600"
+            className="absolute bg-white border-2 border-black"
             style={{
               top: '-6px',
               left: '-6px',
@@ -102,7 +102,7 @@ export function BrowserTab({
           />
           {/* Top-right corner */}
           <div 
-            className="absolute bg-white border-2 border-purple-600"
+            className="absolute bg-white border-2 border-black"
             style={{
               top: '-6px',
               right: '-6px',
@@ -112,7 +112,7 @@ export function BrowserTab({
           />
           {/* Bottom-left corner */}
           <div 
-            className="absolute bg-white border-2 border-purple-600"
+            className="absolute bg-white border-2 border-black"
             style={{
               bottom: '-6px',
               left: '-6px',
@@ -122,7 +122,7 @@ export function BrowserTab({
           />
           {/* Bottom-right corner */}
           <div 
-            className="absolute bg-white border-2 border-purple-600"
+            className="absolute bg-white border-2 border-black"
             style={{
               bottom: '-6px',
               right: '-6px',
@@ -131,45 +131,45 @@ export function BrowserTab({
             }}
           />
           
-          {/* Main border lines - stop at corner squares */}
+          {/* Main border lines - stop at corner squares, dotted style */}
           {/* Top border */}
           <div 
-            className="absolute bg-purple-600"
+            className="absolute border-t-2 border-black border-dotted"
             style={{
               top: '-1px',
               left: '6px',
               right: '6px',
-              height: '2px',
+              height: '0',
             }}
           />
           {/* Bottom border */}
           <div 
-            className="absolute bg-purple-600"
+            className="absolute border-b-2 border-black border-dotted"
             style={{
               bottom: '-1px',
               left: '6px',
               right: '6px',
-              height: '2px',
+              height: '0',
             }}
           />
           {/* Left border */}
           <div 
-            className="absolute bg-purple-600"
+            className="absolute border-l-2 border-black border-dotted"
             style={{
               top: '6px',
               bottom: '6px',
               left: '-1px',
-              width: '2px',
+              width: '0',
             }}
           />
           {/* Right border */}
           <div 
-            className="absolute bg-purple-600"
+            className="absolute border-r-2 border-black border-dotted"
             style={{
               top: '6px',
               bottom: '6px',
               right: '-1px',
-              width: '2px',
+              width: '0',
             }}
           />
         </motion.div>

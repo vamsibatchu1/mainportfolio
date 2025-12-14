@@ -4,7 +4,7 @@ import React from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { interFont } from '@/app/fonts';
 import { Button } from '@/components/ui/button';
-import { Sun, Search, ArrowUpRight, CircleFadingPlus, FileInput, FolderPlus } from 'lucide-react';
+import { Search, ArrowUpRight, CircleFadingPlus, FileInput, FolderPlus } from 'lucide-react';
 import {
   CommandDialog,
   CommandEmpty,
@@ -188,21 +188,6 @@ export function MainNav({ className = "", onTabChange, activeTab, tabs }: MainNa
                 ⌘K
               </kbd>
             </button>
-          </motion.div>
-
-          {/* Brightness Toggle Button */}
-          <motion.div
-            initial={shouldAnimate ? { opacity: 0 } : { opacity: 1 }}
-            animate={{ opacity: 1 }}
-            transition={{ 
-              duration: 0.6, 
-              delay: shouldAnimate ? 4.00 : 0,
-              ease: "easeOut" 
-            }}
-          >
-            <Button variant="outline" size="icon" className="w-[36px] h-[36px] bg-neutral-100 border-neutral-200 shadow-sm">
-              <Sun className="w-4 h-4" />
-            </Button>
           </motion.div>
         </div>
       </div>
