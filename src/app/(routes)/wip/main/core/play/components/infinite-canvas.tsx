@@ -118,7 +118,7 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
       return hash % 2 === 0 ? 'right' : 'left';
     }, []);
 
-    // Calculate panel bounds
+    // Calculate panel bounds - account for 2x scale of selected card
     const panelBounds = useMemo(() => {
       if (!selectedCard) return null;
       
@@ -127,10 +127,18 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
       const panelSide = getPanelSide(selectedCard.id);
       const panelWidth = 360;
       const gap = 12;
+      
+      // When card scales 2x from center, calculate the scaled card's position
+      // Center stays at: (x + width/2, y + height/2)
+      // Scaled card top-left: (centerX - scaledWidth/2, centerY - scaledHeight/2)
+      const scaledCardX = selectedCard.x - cardWidth / 2;
+      const scaledCardY = selectedCard.y - cardHeight / 2;
+      const scaledCardWidth = cardWidth * 2;
+      
       const panelX = panelSide === 'right' 
-        ? selectedCard.x + cardWidth + gap
-        : selectedCard.x - panelWidth - gap;
-      const panelY = selectedCard.y; // Top aligned with card
+        ? scaledCardX + scaledCardWidth + gap
+        : scaledCardX - panelWidth - gap;
+      const panelY = scaledCardY; // Top aligned with scaled card
       const panelHeight = 700; // max height
       
       return {
@@ -449,18 +457,23 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
       const viewportWidth = canvas.clientWidth;
       const viewportHeight = canvas.clientHeight;
 
-      // Calculate combined bounds of card and panel
+      // Calculate scaled card bounds (2x scale from center)
       const cardWidth = selectedCard.width || 200;
       const cardHeight = selectedCard.height || 260;
+      const scaledCardX = selectedCard.x - cardWidth / 2;
+      const scaledCardY = selectedCard.y - cardHeight / 2;
+      const scaledCardWidth = cardWidth * 2;
+      const scaledCardHeight = cardHeight * 2;
       
-      const combinedLeft = Math.min(selectedCard.x, panelBounds.x);
-      const combinedTop = selectedCard.y; // Top aligned
+      // Calculate combined bounds of scaled card and panel
+      const combinedLeft = Math.min(scaledCardX, panelBounds.x);
+      const combinedTop = scaledCardY; // Top aligned with scaled card
       const combinedRight = Math.max(
-        selectedCard.x + cardWidth,
+        scaledCardX + scaledCardWidth,
         panelBounds.x + panelBounds.width
       );
       const combinedBottom = Math.max(
-        selectedCard.y + cardHeight,
+        scaledCardY + scaledCardHeight,
         panelBounds.y + panelBounds.height
       );
       
@@ -504,6 +517,8 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
         style={{
           width: '100%',
           height: '100%',
+          minHeight: '100vh',
+          maxHeight: '100vh',
           backgroundImage: `
             linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
             linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px)
@@ -512,9 +527,9 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
           backgroundPosition: '0 0',
         }}
       >
-        {/* Canvas content */}
+        {/* Canvas content - extends beyond viewport for infinite canvas */}
         <motion.div
-          className="absolute inset-0"
+          className="absolute"
           animate={{
             x: position.x,
             y: position.y,
@@ -532,6 +547,21 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
           }
           style={{
             transformOrigin: '0 0',
+            // Make container large enough to hold all cards
+            minWidth: '5000px',
+            minHeight: '5000px',
+            width: '5000px',
+            height: '5000px',
+            top: 0,
+            left: 0,
+            // Extend background pattern to content area
+            backgroundImage: `
+              linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px)
+            `,
+            backgroundSize: '20px 20px',
+            backgroundPosition: '0 0',
+            backgroundColor: '#F7F6F3',
           }}
         >
           {/* Cards */}
@@ -560,10 +590,12 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
                 initial={{
                   left: card.x,
                   top: card.y,
+                  scale: 1,
                 }}
                 animate={{
                   left: cardPosition.x,
                   top: cardPosition.y,
+                  scale: isSelected ? 2 : 1,
                 }}
                 transition={{
                   type: 'spring',
@@ -574,6 +606,7 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
                 style={{
                   width: `${cardWidth}px`,
                   height: `${cardHeight}px`,
+                  transformOrigin: 'center center',
                 }}
                 onMouseEnter={() => setHoveredCardId(card.id)}
                 onMouseLeave={() => setHoveredCardId(null)}
@@ -592,17 +625,26 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
           })}
 
           {/* Inline Detail Panel - positioned next to selected card */}
-          {selectedCard && (
-            <InlineDetailPanel
-              card={selectedCard}
-              onClose={() => onCardSelect(null)}
-              cardX={selectedCard.x}
-              cardY={selectedCard.y}
-              cardWidth={selectedCard.width || 200}
-              cardHeight={selectedCard.height || 260}
-              panelSide={getPanelSide(selectedCard.id)}
-            />
-          )}
+          {selectedCard && (() => {
+            // Calculate scaled card position (2x scale from center)
+            const cardWidth = selectedCard.width || 200;
+            const cardHeight = selectedCard.height || 260;
+            const scaledCardX = selectedCard.x - cardWidth / 2;
+            const scaledCardY = selectedCard.y - cardHeight / 2;
+            const scaledCardWidth = cardWidth * 2;
+            
+            return (
+              <InlineDetailPanel
+                card={selectedCard}
+                onClose={() => onCardSelect(null)}
+                cardX={scaledCardX}
+                cardY={scaledCardY}
+                cardWidth={scaledCardWidth}
+                cardHeight={cardHeight * 2}
+                panelSide={getPanelSide(selectedCard.id)}
+              />
+            );
+          })()}
         </motion.div>
       </div>
     );

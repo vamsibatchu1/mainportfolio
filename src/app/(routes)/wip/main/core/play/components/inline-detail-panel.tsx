@@ -140,7 +140,7 @@ export function InlineDetailPanel({
           maxHeight: '700px',
         }}
       >
-        <div className="px-5" onClick={(e) => e.stopPropagation()}>
+        <div className="px-10 -mt-4" onClick={(e) => e.stopPropagation()}>
           {/* Accordion Sections */}
           <div className="space-y-0">
             {sections.map((section, index) => {

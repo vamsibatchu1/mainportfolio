@@ -37,7 +37,7 @@ export function BrowserTab({
         onClick?.(e);
       }}
       animate={{
-        scale: isHovered || isSelected ? 1.05 : 1,
+        scale: 1, // Scale is now handled by parent container
         zIndex: isHovered || isSelected ? 10 : 1,
       }}
       transition={{ duration: 0.2 }}
@@ -74,24 +74,6 @@ export function BrowserTab({
           </div>
         </div>
       </div>
-      
-      {/* Selection Indicator - Black dotted border with 16px gap outside */}
-      {isSelected && (
-        <motion.div
-          className="absolute pointer-events-none"
-          style={{
-            top: '-16px',
-            left: '-16px',
-            right: '-16px',
-            bottom: '-16px',
-            border: '1px dotted black',
-            borderRadius: '8px',
-          }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.2 }}
-        />
-      )}
     </motion.div>
   );
 }
