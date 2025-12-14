@@ -73,7 +73,7 @@ export default function Testimonials() {
       >
         {/* Header */}
         <div className="flex flex-col gap-[20px] items-start w-full min-w-0">
-          <p className={`${ebGaramondFont.className} font-normal leading-[1.1] text-[64px] text-black`}>
+          <p className={`${ebGaramondFont.className} font-normal leading-[1.1] text-[48px] text-black`}>
             Here&apos;s what people who worked with me are saying
           </p>
         </div>

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { jakartaFont, fiveFont, ebGaramondFont } from '@/app/fonts';
+import { jakartaFont, fiveFont, ebGaramondFont, interFont } from '@/app/fonts';
 import { Testimonials, ExpandingText, aboutTextData } from './components';
 import { Instrument_Serif } from 'next/font/google';
 
@@ -100,8 +100,11 @@ export default function AboutPage() {
           <ExpandingText segments={aboutTextData} />
         </motion.div>
         <div className="flex flex-row justify-left w-full gap-[48px]">
-          <div className="flex flex-col w-[60%]">
+          <div className="flex flex-col w-[60%] gap-4">
             <Image src="/images/wip/about/about_design.jpeg" alt="About Me" width={960} height={600}/>
+            <p className={`${interFont.variable} font-inter text-[16px] text-gray-500 leading-relaxed max-w-[600px]`}>
+              Design is not just about what exists, but about unlocking the possibility of transformative experiences that reshape how we interact with the world.
+            </p>
           </div>
           <div className="flex flex-col w-[40%]">
             <Image src="/images/wip/about/vamsi.jpg" alt="Vamsi" width={640} height={600} className="w-full h-auto object-cover"/>
