@@ -118,8 +118,8 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
       return hash % 2 === 0 ? 'right' : 'left';
     }, []);
 
-    // Calculate panel bounds - account for 2x scale of selected card
-    const panelBounds = useMemo(() => {
+    // Calculate combined bounds of expanded card (2x) and panel for collision detection
+    const combinedSelectionBounds = useMemo(() => {
       if (!selectedCard) return null;
       
       const cardWidth = selectedCard.width || 200;
@@ -134,6 +134,7 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
       const scaledCardX = selectedCard.x - cardWidth / 2;
       const scaledCardY = selectedCard.y - cardHeight / 2;
       const scaledCardWidth = cardWidth * 2;
+      const scaledCardHeight = cardHeight * 2;
       
       const panelX = panelSide === 'right' 
         ? scaledCardX + scaledCardWidth + gap
@@ -141,13 +142,45 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
       const panelY = scaledCardY; // Top aligned with scaled card
       const panelHeight = 700; // max height
       
+      // Calculate combined bounds (expanded card + panel)
+      const combinedLeft = Math.min(scaledCardX, panelX);
+      const combinedTop = scaledCardY;
+      const combinedRight = Math.max(
+        scaledCardX + scaledCardWidth,
+        panelX + panelWidth
+      );
+      const combinedBottom = Math.max(
+        scaledCardY + scaledCardHeight,
+        panelY + panelHeight
+      );
+      
       return {
-        x: panelX,
-        y: panelY,
-        width: panelWidth,
-        height: panelHeight,
+        // Panel bounds (for positioning)
+        panel: {
+          x: panelX,
+          y: panelY,
+          width: panelWidth,
+          height: panelHeight,
+        },
+        // Combined bounds (for collision detection)
+        combined: {
+          x: combinedLeft,
+          y: combinedTop,
+          width: combinedRight - combinedLeft,
+          height: combinedBottom - combinedTop,
+        },
       };
     }, [selectedCard, getPanelSide]);
+    
+    // Panel bounds for positioning
+    const panelBounds = useMemo(() => {
+      return combinedSelectionBounds?.panel || null;
+    }, [combinedSelectionBounds]);
+    
+    // Combined bounds for collision detection
+    const collisionBounds = useMemo(() => {
+      return combinedSelectionBounds?.combined || null;
+    }, [combinedSelectionBounds]);
 
     // Check if two rectangles overlap
     const rectanglesOverlap = useCallback((
@@ -162,10 +195,10 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
       );
     }, []);
 
-    // Calculate adjusted position for a card to avoid panel
+    // Calculate adjusted position for a card to avoid combined selection area (expanded card + panel)
     const calculateAdjustedPosition = useCallback((
       card: CanvasCard,
-      panelBounds: { x: number; y: number; width: number; height: number }
+      collisionBounds: { x: number; y: number; width: number; height: number }
     ): { x: number; y: number } => {
       const cardWidth = card.width || 200;
       const cardHeight = card.height || 260;
@@ -177,16 +210,16 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
         height: cardHeight,
       };
 
-      // Check if card overlaps with panel
-      if (!rectanglesOverlap(cardRect, panelBounds)) {
+      // Check if card overlaps with combined selection area (expanded card + panel)
+      if (!rectanglesOverlap(cardRect, collisionBounds)) {
         return { x: card.x, y: card.y };
       }
 
       // Calculate distances to move in each direction
-      const overlapRight = card.x + cardWidth - panelBounds.x;
-      const overlapLeft = panelBounds.x + panelBounds.width - card.x;
-      const overlapBottom = card.y + cardHeight - panelBounds.y;
-      const overlapTop = panelBounds.y + panelBounds.height - card.y;
+      const overlapRight = card.x + cardWidth - collisionBounds.x;
+      const overlapLeft = collisionBounds.x + collisionBounds.width - card.x;
+      const overlapBottom = card.y + cardHeight - collisionBounds.y;
+      const overlapTop = collisionBounds.y + collisionBounds.height - card.y;
 
       // Find the minimum overlap direction and move card away
       const overlaps = [
@@ -208,16 +241,16 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
 
       switch (direction) {
         case 'right':
-          newX = panelBounds.x - cardWidth - padding;
+          newX = collisionBounds.x - cardWidth - padding;
           break;
         case 'left':
-          newX = panelBounds.x + panelBounds.width + padding;
+          newX = collisionBounds.x + collisionBounds.width + padding;
           break;
         case 'bottom':
-          newY = panelBounds.y - cardHeight - padding;
+          newY = collisionBounds.y - cardHeight - padding;
           break;
         case 'top':
-          newY = panelBounds.y + panelBounds.height + padding;
+          newY = collisionBounds.y + collisionBounds.height + padding;
           break;
       }
 
@@ -278,9 +311,9 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
 
         let finalPosition: { x: number; y: number };
         
-        if (panelBounds && selectedCard && card.id !== selectedCard.id) {
-          // First, adjust position to avoid panel
-          finalPosition = calculateAdjustedPosition(card, panelBounds);
+        if (collisionBounds && selectedCard && card.id !== selectedCard.id) {
+          // First, adjust position to avoid combined selection area (expanded card + panel)
+          finalPosition = calculateAdjustedPosition(card, collisionBounds);
           
           const cardWidth = card.width || 200;
           const cardHeight = card.height || 260;
@@ -369,34 +402,24 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
               }
             });
             
-            // Also check against selected card
-            if (selectedCard) {
-              const selectedPosition = { x: selectedCard.x, y: selectedCard.y };
-              const selectedWidth = selectedCard.width || 200;
-              const selectedHeight = selectedCard.height || 260;
-              
-              const selectedRect = {
-                x: selectedPosition.x,
-                y: selectedPosition.y,
-                width: selectedWidth,
-                height: selectedHeight,
-              };
-              
-              if (rectanglesTooClose(cardRect, selectedRect, cardGap)) {
+            // Also check against combined selection area (expanded card + panel)
+            if (selectedCard && collisionBounds) {
+              // Use the combined collision bounds which includes the expanded card and panel
+              if (rectanglesTooClose(cardRect, collisionBounds, cardGap)) {
                 hasCollision = true;
                 
-                const horizontalGap = selectedRect.x - (cardRect.x + cardRect.width);
-                const verticalGap = selectedRect.y - (cardRect.y + cardHeight);
+                const horizontalGap = collisionBounds.x - (cardRect.x + cardRect.width);
+                const verticalGap = collisionBounds.y - (cardRect.y + cardHeight);
                 
                 const needsRightMove = horizontalGap < cardGap && horizontalGap >= 0;
-                const needsLeftMove = (cardRect.x - (selectedRect.x + selectedRect.width)) < cardGap && (cardRect.x - (selectedRect.x + selectedRect.width)) >= 0;
+                const needsLeftMove = (cardRect.x - (collisionBounds.x + collisionBounds.width)) < cardGap && (cardRect.x - (collisionBounds.x + collisionBounds.width)) >= 0;
                 const needsBottomMove = verticalGap < cardGap && verticalGap >= 0;
-                const needsTopMove = (cardRect.y - (selectedRect.y + selectedRect.height)) < cardGap && (cardRect.y - (selectedRect.y + selectedRect.height)) >= 0;
+                const needsTopMove = (cardRect.y - (collisionBounds.y + collisionBounds.height)) < cardGap && (cardRect.y - (collisionBounds.y + collisionBounds.height)) >= 0;
                 
-                const overlapRight = cardRect.x + cardRect.width - selectedRect.x;
-                const overlapLeft = selectedRect.x + selectedRect.width - cardRect.x;
-                const overlapBottom = cardRect.y + cardHeight - selectedRect.y;
-                const overlapTop = selectedRect.y + selectedRect.height - cardRect.y;
+                const overlapRight = cardRect.x + cardRect.width - collisionBounds.x;
+                const overlapLeft = collisionBounds.x + collisionBounds.width - cardRect.x;
+                const overlapBottom = cardRect.y + cardHeight - collisionBounds.y;
+                const overlapTop = collisionBounds.y + collisionBounds.height - cardRect.y;
                 
                 const moves = [];
                 if (overlapRight > 0) moves.push({ dir: 'right', dist: overlapRight });
@@ -404,9 +427,9 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
                 if (overlapBottom > 0) moves.push({ dir: 'bottom', dist: overlapBottom });
                 if (overlapTop > 0) moves.push({ dir: 'top', dist: overlapTop });
                 if (needsRightMove) moves.push({ dir: 'right', dist: cardGap - horizontalGap });
-                if (needsLeftMove) moves.push({ dir: 'left', dist: cardGap - (cardRect.x - (selectedRect.x + selectedRect.width)) });
+                if (needsLeftMove) moves.push({ dir: 'left', dist: cardGap - (cardRect.x - (collisionBounds.x + collisionBounds.width)) });
                 if (needsBottomMove) moves.push({ dir: 'bottom', dist: cardGap - verticalGap });
-                if (needsTopMove) moves.push({ dir: 'top', dist: cardGap - (cardRect.y - (selectedRect.y + selectedRect.height)) });
+                if (needsTopMove) moves.push({ dir: 'top', dist: cardGap - (cardRect.y - (collisionBounds.y + collisionBounds.height)) });
                 
                 if (moves.length > 0) {
                   const minMove = Math.min(...moves.map(m => m.dist));
@@ -414,16 +437,16 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
                   
                   switch (direction) {
                     case 'right':
-                      finalPosition.x = selectedRect.x - cardWidth - cardGap;
+                      finalPosition.x = collisionBounds.x - cardWidth - cardGap;
                       break;
                     case 'left':
-                      finalPosition.x = selectedRect.x + selectedRect.width + cardGap;
+                      finalPosition.x = collisionBounds.x + collisionBounds.width + cardGap;
                       break;
                     case 'bottom':
-                      finalPosition.y = selectedRect.y - cardHeight - cardGap;
+                      finalPosition.y = collisionBounds.y - cardHeight - cardGap;
                       break;
                     case 'top':
-                      finalPosition.y = selectedRect.y + selectedRect.height + cardGap;
+                      finalPosition.y = collisionBounds.y + collisionBounds.height + cardGap;
                       break;
                   }
                 }
@@ -440,7 +463,7 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
       });
 
       return positions;
-    }, [cards, panelBounds, selectedCard, calculateAdjustedPosition, rectanglesOverlap]);
+    }, [cards, collisionBounds, selectedCard, calculateAdjustedPosition, rectanglesOverlap]);
 
     // Clear original positions when panel closes
     useEffect(() => {
@@ -451,34 +474,15 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
 
     // Auto-adjust canvas to show selected card and panel
     useEffect(() => {
-      if (!selectedCard || !canvasRef.current || !panelBounds) return;
+      if (!selectedCard || !canvasRef.current || !collisionBounds) return;
 
       const canvas = canvasRef.current;
       const viewportWidth = canvas.clientWidth;
       const viewportHeight = canvas.clientHeight;
 
-      // Calculate scaled card bounds (2x scale from center)
-      const cardWidth = selectedCard.width || 200;
-      const cardHeight = selectedCard.height || 260;
-      const scaledCardX = selectedCard.x - cardWidth / 2;
-      const scaledCardY = selectedCard.y - cardHeight / 2;
-      const scaledCardWidth = cardWidth * 2;
-      const scaledCardHeight = cardHeight * 2;
-      
-      // Calculate combined bounds of scaled card and panel
-      const combinedLeft = Math.min(scaledCardX, panelBounds.x);
-      const combinedTop = scaledCardY; // Top aligned with scaled card
-      const combinedRight = Math.max(
-        scaledCardX + scaledCardWidth,
-        panelBounds.x + panelBounds.width
-      );
-      const combinedBottom = Math.max(
-        scaledCardY + scaledCardHeight,
-        panelBounds.y + panelBounds.height
-      );
-      
-      const combinedWidth = combinedRight - combinedLeft;
-      const combinedHeight = combinedBottom - combinedTop;
+      // Use pre-calculated combined bounds
+      const combinedWidth = collisionBounds.width;
+      const combinedHeight = collisionBounds.height;
 
       // Add padding around the content
       const padding = 40;
@@ -494,8 +498,8 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
       );
 
       // Calculate center of combined bounds
-      const centerX = (combinedLeft + combinedRight) / 2;
-      const centerY = (combinedTop + combinedBottom) / 2;
+      const centerX = collisionBounds.x + collisionBounds.width / 2;
+      const centerY = collisionBounds.y + collisionBounds.height / 2;
 
       // Calculate position to center the content in viewport
       // Account for current scale
@@ -506,7 +510,7 @@ const InfiniteCanvas = forwardRef<InfiniteCanvasHandle, InfiniteCanvasProps>(
       // Smoothly animate to new position and scale
       setPosition({ x: newPositionX, y: newPositionY });
       setScale(newScale);
-    }, [selectedCard, panelBounds]);
+    }, [selectedCard, collisionBounds]);
 
     return (
       <div
