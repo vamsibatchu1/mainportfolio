@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { jakartaFont, fiveFont, ebGaramondFont, interFont } from '@/app/fonts';
-import { Testimonials, ExpandingText, aboutTextData } from './components';
+import { Testimonials, ExpandingText, aboutTextData, CareerJourney, Values } from './components';
 import { Instrument_Serif } from 'next/font/google';
 
 const instrumentSerif = Instrument_Serif({ 
@@ -112,11 +112,29 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Section 2: Testimonials */}
+      {/* Section 2: Career Journey */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 1.2, ease: "easeOut" }}
+        transition={{ duration: 0.6, delay: 1.0, ease: "easeOut" }}
+      >
+        <CareerJourney />
+      </motion.div>
+
+      {/* Section 3: Values */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 1.1, ease: "easeOut" }}
+      >
+        <Values />
+      </motion.div>
+
+      {/* Section 4: Testimonials */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 1.3, ease: "easeOut" }}
       >
         <Testimonials />
       </motion.div>
