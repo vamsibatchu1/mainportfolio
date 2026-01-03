@@ -5,20 +5,18 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { fiveFont, jakartaFont, fourFont } from '../fonts';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Pause, RotateCcw, Play, ArrowRight, Package, Layout, FileX, Settings, Briefcase, Zap, CheckCircle } from 'lucide-react';
+import { ArrowRight, Package, Layout, FileX, Settings, Briefcase, Zap, CheckCircle } from 'lucide-react';
 
 export default function WelcomeScreen() {
   const router = useRouter();
   const [currentSymbol, setCurrentSymbol] = useState(0);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
-  const [isScrolling, setIsScrolling] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
   const [isLoadingPhase, setIsLoadingPhase] = useState(false);
   const [loadingIndex, setLoadingIndex] = useState(0);
   const [showControlIcons, setShowControlIcons] = useState(true);
   const [showInstructionText, setShowInstructionText] = useState(true);
   const [startLoadingMessages, setStartLoadingMessages] = useState(false);
+  const [showLandingImage, setShowLandingImage] = useState(false);
   
   const symbols = ['/images/refresh-images/symbol1.svg', 
     '/images/refresh-images/symbol2.svg', 
@@ -50,7 +48,16 @@ export default function WelcomeScreen() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSymbol((prev) => (prev + 1) % symbols.length);
+      setCurrentSymbol((prev) => {
+        const nextSymbol = (prev + 1) % symbols.length;
+        // After cycling through all symbols once, show landing image
+        if (nextSymbol === 0 && prev === symbols.length - 1) {
+          setTimeout(() => {
+            setShowLandingImage(true);
+          }, 500); // Small delay after completing cycle
+        }
+        return nextSymbol;
+      });
     }, 250);
 
     return () => clearInterval(interval);
@@ -58,46 +65,6 @@ export default function WelcomeScreen() {
 
 
 
-  // Auto-scroll effect
-  useEffect(() => {
-    if (isExiting) return;
-    
-    const timer = setTimeout(() => {
-      setIsScrolling(true);
-    }, 3500); // Start scrolling after 3 seconds
-
-    return () => clearTimeout(timer);
-  }, [isExiting]);
-
-  useEffect(() => {
-    if (!isScrolling || isPaused || isExiting) return;
-
-    const interval = setInterval(() => {
-      setScrollProgress((prev) => {
-        const newProgress = prev + 0.01;
-        return newProgress >= 1 ? 0 : newProgress; // Loop back to start
-      });
-    }, 50); // Smooth scrolling
-
-    return () => clearInterval(interval);
-  }, [isScrolling, isPaused, isExiting]);
-
-  const handlePause = () => {
-    setIsPaused(!isPaused);
-  };
-
-  const handleRestart = () => {
-    setIsPaused(false);
-    // Reset scroll progress to exactly 0 and ensure it's applied
-    setScrollProgress(0);
-    // Force multiple resets to ensure it takes effect
-    setTimeout(() => {
-      setScrollProgress(0);
-    }, 10);
-    setTimeout(() => {
-      setScrollProgress(0);
-    }, 50);
-  };
 
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
     if (event.key === 'Enter' && !isExiting && !isLoadingPhase) {
@@ -208,33 +175,6 @@ export default function WelcomeScreen() {
     }
   };
 
-  const movieReelVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { delay: 2.0, duration: 0.8, ease: "easeOut" }
-    },
-    exit: {
-      opacity: 0,
-      y: -30,
-      transition: {
-        duration: 0.6,
-        ease: "easeInOut"
-      }
-    }
-  };
-
-  const movieReelColumnVariants = {
-    hidden: { opacity: 0, x: 20 },
-    visible: { 
-      opacity: 1, 
-      x: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
-  };
 
 
 
@@ -243,9 +183,28 @@ export default function WelcomeScreen() {
 
   return (
     <div className="min-h-screen bg-[#000000] flex flex-col items-center justify-center relative">
+      {/* Landing Image - shown after symbol animation */}
+      <AnimatePresence>
+        {showLandingImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
+            className="fixed bottom-0 left-0 right-0 flex justify-center items-end pb-8"
+          >
+            <img
+              src="/images/port/landing.png"
+              alt="Landing"
+              className="max-w-full h-auto"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Main content that fades during loading */}
       <AnimatePresence mode="wait">
-        {!isExiting && !isLoadingPhase && (
+        {!isExiting && !isLoadingPhase && !showLandingImage && (
           <motion.div 
             className="w-[800px] flex flex-col gap-4"
             variants={containerVariants}
@@ -253,12 +212,11 @@ export default function WelcomeScreen() {
             animate="visible"
             exit="exit"
           >
-            {/* First flex row */}
+            {/* First column only - Symbol animation */}
             <motion.div 
-              className="flex flex-row gap-5"
+              className="flex justify-center"
               variants={containerVariants}
             >
-              {/* First column - 160px width */}
               <motion.div className="w-[160px]" variants={itemVariants}>
                 <div className="w-[160px] flex items-end">
                   <Image
@@ -270,111 +228,13 @@ export default function WelcomeScreen() {
                   />
                 </div>
               </motion.div>
-              
-              {/* Second column - 400px width */}
-              <motion.div className="w-[400px]" variants={itemVariants}>
-                <div className="w-full h-full lex items-end">
-                  <Image
-                    src="/images/refresh-images/vamsibatchu.svg"
-                    alt="Vamsi Batchu"
-                    width={400}
-                    height={400}
-                    className="w-full h-full"
-                  />
-                </div>
-              </motion.div>
-              
-              {/* Third column - 200px width */}
-              <motion.div className="w-[200px]" variants={itemVariants}>
-                <div className="w-full h-full flex items-end">
-                  {/* Text block */}
-                  <p className={`${fiveFont.className} text-white text-[32px] leading-[92%] tracking-[-0.04em]`}>
-                    product designer &amp; creative technologist crafting possibilities with craft &amp; code.
-                  </p>
-                </div>
-              </motion.div>
-            </motion.div>
-            
-            
-            {/* Second flex row - Movie reel */}
-            {/* //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
-
-            <motion.div 
-              className="w-[800px] h-[200px] bg-[#232323] p-[12px] overflow-hidden"
-              variants={movieReelVariants}
-            >
-              <div 
-                className="flex flex-row gap-3 transition-transform duration-300 ease-out"
-                style={{
-                  transform: `translateX(${scrollProgress * -400}px)`
-                }}
-              >
-                {/* First column - Text */}
-                <motion.div 
-                  className="flex-shrink-0 w-[220px] h-[176px] flex items-start"
-                  variants={movieReelColumnVariants}
-                  initial="hidden"
-                  animate="visible"
-                  transition={{ delay: 2.2 }}
-                >
-                  <div className={`${jakartaFont.className} text-white font-bold text-[26px] leading-[130%] tracking-[-0.05em]`}>
-                    <p>Currently at rocket mortgage, leading 0 to 1 AI product experiences for enterprise users.</p>
-                  </div>
-                </motion.div>
-                
-                {/* Second column - Image */}
-                <motion.div 
-                  className="flex-shrink-0 w-[295px] h-[176px] flex"
-                  variants={movieReelColumnVariants}
-                  initial="hidden"
-                  animate="visible"
-                  transition={{ delay: 2.4 }}
-                >
-                    <Image
-                        src="/images/refresh-images/productshot1.svg"
-                        alt="Rocket Mortgage"
-                        width={340}
-                        height={176}
-                        className="w-full h-full"
-                    />
-                </motion.div>
-                
-                {/* Third column - Image */}
-                <motion.div 
-                  className="flex-shrink-0 w-[295px] h-[176px] flex"
-                  variants={movieReelColumnVariants}
-                  initial="hidden"
-                  animate="visible"
-                  transition={{ delay: 2.6 }}
-                >
-                    <Image
-                        src="/images/refresh-images/productshot2.svg"
-                        alt="Rocket Mortgage"
-                        width={340}
-                        height={176}
-                        className="w-full h-full"
-                    />
-                </motion.div>
-                
-                {/* Fourth column - Text */}
-                <motion.div 
-                  className="flex-shrink-0 w-[180px] h-[176px] flex items-start"
-                  variants={movieReelColumnVariants}
-                  initial="hidden"
-                  animate="visible"
-                  transition={{ delay: 2.8 }}
-                >
-                  <div className={`${jakartaFont.className} text-white font-bold text-[26px] leading-[130%] tracking-[-0.05em]`}>
-                    <p>Creating next generation financial tools.</p>
-                  </div>
-                </motion.div>
-              </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
       
       {/* Instructions section - stays visible during loading */}
+      {!showLandingImage && (
       <div className="fixed bottom-10 left-8 right-8">
         <div className="w-[800px] mx-auto flex justify-between items-center">
           <AnimatePresence>
@@ -413,37 +273,10 @@ export default function WelcomeScreen() {
               </motion.div>
             )}
             
-            {/* Control Icons - Hide during loading phase */}
-            {showControlIcons && (
-              <motion.div 
-                className="flex items-center gap-2"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0, y: 20 }}
-                transition={{ 
-                  delay: 2.4, 
-                  duration: 0.8, 
-                  ease: "easeOut",
-                  exit: { duration: 0.4, ease: "easeIn" }
-                }}
-              >
-                <button
-                  onClick={handlePause}
-                  className="text-white/60 hover:text-white/80 transition-colors"
-                >
-                  {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
-                </button>
-                <button
-                  onClick={handleRestart}
-                  className="text-white/60 hover:text-white/80 transition-colors"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                </button>
-              </motion.div>
-            )}
           </AnimatePresence>
         </div>
       </div>
+      )}
     </div>
   );
 } 
