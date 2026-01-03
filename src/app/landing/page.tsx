@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { fiveFont, jakartaFont, fourFont } from './fonts';
+import { fiveFont, jakartaFont, fourFont } from '../fonts';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Pause, RotateCcw, Play, ArrowRight, Package, Layout, FileX, Settings, Briefcase, Zap, CheckCircle } from 'lucide-react';
 
