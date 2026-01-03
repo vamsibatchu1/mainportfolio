@@ -19,6 +19,16 @@ export default function WelcomeScreen() {
   const [showControlIcons, setShowControlIcons] = useState(true);
   const [showInstructionText, setShowInstructionText] = useState(true);
   const [startLoadingMessages, setStartLoadingMessages] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
   const symbols = ['/images/refresh-images/symbol1.svg', 
     '/images/refresh-images/symbol2.svg', 
@@ -241,12 +251,12 @@ export default function WelcomeScreen() {
 
 
   return (
-    <div className="min-h-screen bg-[#000000] flex flex-col items-center justify-center relative">
+    <div className="min-h-screen bg-[#000000] flex flex-col items-center justify-center relative px-6 md:px-0 py-10">
       {/* Main content that fades during loading */}
       <AnimatePresence mode="wait">
         {!isExiting && !isLoadingPhase && (
           <motion.div 
-            className="w-[800px] flex flex-col gap-4"
+            className="w-full max-w-[800px] flex flex-col gap-4"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
@@ -254,52 +264,126 @@ export default function WelcomeScreen() {
           >
             {/* First flex row */}
             <motion.div 
-              className="flex flex-row gap-5"
+              className="flex flex-col md:flex-row gap-5"
               variants={containerVariants}
             >
               {/* First column - 160px width */}
-              <motion.div className="w-[160px]" variants={itemVariants}>
-                <div className="w-[160px] flex items-end">
+              <motion.div 
+                className="w-[120px] md:w-[160px] h-[120px] md:h-[160px]" 
+                variants={itemVariants}
+                initial="hidden"
+                animate="visible"
+                transition={isMobile ? { delay: 0, duration: 0.6, ease: "easeOut" } : undefined}
+              >
+                <div className="w-[120px] md:w-[160px] h-[120px] md:h-[160px] flex items-end">
                   <Image
                     src={symbols[currentSymbol]}
                     alt={`Symbol ${currentSymbol + 1}`}
                     width={160}
                     height={160}
-                    className="w-[160px] h-auto transition-opacity duration-300"
+                    className="w-[120px] md:w-[160px] h-[120px] md:h-[160px] object-contain transition-opacity duration-300"
                   />
                 </div>
               </motion.div>
               
               {/* Second column - 400px width */}
-              <motion.div className="w-[400px]" variants={itemVariants}>
+              <motion.div 
+                className="w-full md:w-[400px]" 
+                variants={itemVariants}
+                initial="hidden"
+                animate="visible"
+                transition={isMobile ? { delay: 0.3, duration: 0.6, ease: "easeOut" } : undefined}
+              >
                 <div className="w-full h-full lex items-end">
                   <Image
                     src="/images/refresh-images/vamsibatchu.svg"
                     alt="Vamsi Batchu"
                     width={400}
                     height={400}
-                    className="w-full h-full"
+                    className="w-full h-auto"
                   />
                 </div>
               </motion.div>
               
               {/* Third column - 200px width */}
-              <motion.div className="w-[200px]" variants={itemVariants}>
+              <motion.div 
+                className="w-full md:w-[200px]" 
+                variants={itemVariants}
+                initial="hidden"
+                animate="visible"
+                transition={isMobile ? { delay: 0.6, duration: 0.6, ease: "easeOut" } : undefined}
+              >
                 <div className="w-full h-full flex items-end">
                   {/* Text block */}
-                  <p className={`${fiveFont.className} text-white text-[32px] leading-[92%] tracking-[-0.04em]`}>
-                    product designer &amp; creative technologist crafting possibilities with craft &amp; code.
-                  </p>
+                  <div className="flex flex-col gap-2">
+                    <p className={`${fiveFont.className} text-white text-[24px] md:text-[32px] leading-[92%] tracking-[-0.04em]`}>
+                      product designer &amp; creative technologist crafting possibilities with craft &amp; code.
+                    </p>
+                    {/* Mobile-only Rocket Mortgage text */}
+                    <p className={`${fiveFont.className} text-white text-[24px] md:hidden leading-[92%] tracking-[-0.04em]`}>
+                      Currently at rocket mortgage, leading 0 to 1 AI product experiences for enterprise users.
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             </motion.div>
             
+            {/* Mobile-only images - outside carousel */}
+            <div className="flex flex-col gap-4 md:hidden">
+              <motion.div
+                variants={movieReelColumnVariants}
+                initial="hidden"
+                animate="visible"
+                transition={isMobile ? { delay: 0.9, duration: 0.6, ease: "easeOut" } : { delay: 2.4 }}
+              >
+                <Image
+                  src="/images/refresh-images/productshot1.svg"
+                  alt="Rocket Mortgage"
+                  width={340}
+                  height={176}
+                  className="w-full h-auto"
+                />
+              </motion.div>
+              <motion.div
+                variants={movieReelColumnVariants}
+                initial="hidden"
+                animate="visible"
+                transition={isMobile ? { delay: 1.2, duration: 0.6, ease: "easeOut" } : { delay: 2.6 }}
+              >
+                <Image
+                  src="/images/refresh-images/productshot2.svg"
+                  alt="Rocket Mortgage"
+                  width={340}
+                  height={176}
+                  className="w-full h-auto"
+                />
+              </motion.div>
+            </div>
             
-            {/* Second flex row - Movie reel */}
+            {/* Mobile Enter Site Button */}
+            {!isExiting && !isLoadingPhase && (
+              <motion.button
+                onClick={() => {
+                  if (isMobile) {
+                    router.push('/home');
+                  } else {
+                    setIsLoadingPhase(true);
+                  }
+                }}
+                className={`${jakartaFont.className} md:hidden w-full bg-white text-black font-bold py-4 px-6 text-[16px] mt-3 uppercase`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.5, duration: 0.6, ease: "easeOut" }}
+              >
+                enter site
+              </motion.button>
+            )}
+            
+            {/* Second flex row - Movie reel (Desktop only) */}
             {/* //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
 
             <motion.div 
-              className="w-[800px] h-[200px] bg-[#232323] p-[12px] overflow-hidden"
+              className="hidden md:block w-[800px] h-[200px] bg-[#232323] p-[12px] overflow-hidden"
               variants={movieReelVariants}
             >
               <div 
@@ -374,8 +458,8 @@ export default function WelcomeScreen() {
       </AnimatePresence>
       
       {/* Instructions section - stays visible during loading */}
-      <div className="fixed bottom-10 left-8 right-8">
-        <div className="w-[800px] mx-auto flex justify-between items-center">
+      <div className="hidden md:flex fixed bottom-10 left-8 right-8">
+        <div className="w-full max-w-[800px] mx-auto flex justify-between items-center">
           <AnimatePresence>
             {/* Instructions */}
             {showInstructionText && (
