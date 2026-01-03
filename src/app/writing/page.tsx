@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { jakartaFont, ebGaramondFont, interFont } from '@/app/fonts';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ChevronDown, Home, PenTool, FlaskConical, Briefcase } from 'lucide-react';
+import { ChevronDown, ChevronRight, Home, PenTool, FlaskConical, Briefcase } from 'lucide-react';
 
 const articles = [
   {
@@ -139,6 +139,37 @@ export default function WritingPage() {
       </nav>
 
       <div className="w-full min-h-screen bg-white flex flex-col gap-[40px] md:gap-[80px] pt-6 md:pt-[40px] max-w-[1200px] mx-auto px-6 md:px-4 pb-6 md:pb-12">
+        {/* Substack Subscription Row */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className={`${jakartaFont.variable} font-jakarta w-full bg-white border-2 border-dotted border-black rounded-none px-4 py-2 flex flex-col md:flex-row md:justify-between items-start md:items-center gap-4`}
+        >
+          {/* First Column */}
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+            <img
+              src="/images/port/substack.png"
+              alt="Substack"
+              className="w-8 h-8 md:w-10 md:h-10"
+            />
+            <p className="text-[14px] md:text-[16px] text-black">
+              I regularly post articles on substack.
+            </p>
+          </div>
+          
+          {/* Second Column */}
+          <a
+            href="https://vamsibatchu.substack.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-[14px] md:text-[16px] text-black hover:opacity-70 transition-opacity"
+          >
+            Subscribe here
+            <ChevronRight className="w-4 h-4" />
+          </a>
+        </motion.div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-[40px]">
           {articles.map((article, index) => (
             <motion.div

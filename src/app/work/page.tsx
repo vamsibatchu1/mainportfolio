@@ -94,33 +94,67 @@ export default function WorkPage() {
         </div>
       </nav>
 
-      <div className="w-full min-h-screen bg-white flex flex-col items-start md:items-center justify-start md:justify-center max-w-[1200px] mx-auto px-6 md:px-4 pt-6 md:pt-[40px] pb-6 md:pb-12">
+      <div className="w-full min-h-screen bg-white flex flex-col md:flex-col gap-[40px] md:gap-[80px] pt-6 md:pt-[40px] max-w-[1200px] mx-auto px-6 md:px-4 pb-6 md:pb-12">
+        {/* Message and Email Button */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="flex flex-col items-start md:items-center gap-3 md:gap-12 text-left md:text-center max-w-2xl"
+          transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+          className="flex flex-col items-start md:items-center gap-3 md:gap-12 text-left md:text-center order-2 md:order-1"
         >
           {/* Message */}
-          <p className={`${ebGaramondFont.className} text-black text-[24px] md:text-[32px] lg:text-[40px] leading-tight md:leading-[1.2] tracking-[-0.02em]`}>
+          <p className={`${ebGaramondFont.className} text-black text-[24px] md:text-[32px] lg:text-[40px] leading-tight md:leading-[1.2] tracking-[-0.02em] max-w-2xl`}>
             For access to work samples, please send an email to:
-          </p>
-
-          {/* Email Address */}
-          <p className={`${interFont.variable} font-inter text-black text-[14px] md:text-[24px] font-medium`}>
-            {email}
           </p>
 
           {/* Email Button */}
           <motion.a
             href={`mailto:${email}`}
-            className={`${jakartaFont.variable} font-jakarta flex items-center gap-3 px-6 md:px-8 py-3 md:py-4 bg-black text-white hover:opacity-80 transition-opacity text-[16px] md:text-[18px]`}
+            className={`${jakartaFont.variable} font-jakarta bg-white border-2 border-dotted border-black text-black px-4 py-2 text-[14px] md:text-[16px] hover:opacity-70 transition-opacity rounded-none flex items-center gap-3`}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <Mail className="w-5 h-5 md:w-6 md:h-6" />
-            Send Email
+            <Mail className="w-4 h-4 md:w-5 md:h-5" />
+            {email}
           </motion.a>
+        </motion.div>
+
+        {/* Work Samples Images Row */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="w-full flex flex-col md:flex-row order-2 md:order-1"
+          style={{ gap: '32px' }}
+        >
+          <div className="w-full md:w-1/4">
+            <img
+              src="/images/port/work1.png"
+              alt="Work sample 1"
+              className="w-full h-auto"
+            />
+          </div>
+          <div className="w-full md:w-1/4">
+            <img
+              src="/images/port/work2.png"
+              alt="Work sample 2"
+              className="w-full h-auto"
+            />
+          </div>
+          <div className="w-full md:w-1/4">
+            <img
+              src="/images/port/work3.png"
+              alt="Work sample 3"
+              className="w-full h-auto"
+            />
+          </div>
+          <div className="w-full md:w-1/4">
+            <img
+              src="/images/port/work4.png"
+              alt="Work sample 4"
+              className="w-full h-auto"
+            />
+          </div>
         </motion.div>
       </div>
     </div>

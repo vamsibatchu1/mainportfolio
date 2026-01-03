@@ -131,17 +131,29 @@ export default function ExperimentsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
-            className="flex flex-col gap-4 md:gap-6"
+            className="flex flex-col gap-4"
           >
             {/* Title */}
             <h2 className={`${ebGaramondFont.className} text-[24px] md:text-[48px] font-normal text-black leading-[1.1]`}>
               {experiment.title}
             </h2>
             
-            {/* Description - 2 lines */}
-            <p className={`${interFont.variable} font-inter text-[14px] md:text-[16px] text-gray-500 leading-tight`}>
-              {experiment.description}
-            </p>
+            {/* Description and Button Row */}
+            <div className="flex flex-col md:flex-row md:justify-between gap-6 w-full">
+              {/* First Column - Description Text */}
+              <div className="w-[80%] md:w-[840px]">
+                <p className={`${interFont.variable} font-inter text-[14px] md:text-[16px] text-gray-500 leading-tight`}>
+                  {experiment.description}
+                </p>
+              </div>
+              
+              {/* Second Column - Button */}
+              <div className="w-full md:w-[260px] flex md:justify-end items-start">
+                <button className={`${jakartaFont.variable} font-jakarta bg-white border-2 border-dotted border-black text-black px-4 py-2 text-[14px] md:text-[16px] hover:opacity-70 transition-opacity rounded-none`}>
+                  checkout experiment
+                </button>
+              </div>
+            </div>
             
             {/* 3 Images in a row */}
             <div className="flex flex-col md:flex-row gap-4 md:gap-[40px] w-full">
