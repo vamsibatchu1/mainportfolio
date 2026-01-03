@@ -140,7 +140,7 @@ export default function WelcomeScreen() {
           
           setTimeout(() => {
             setIsExiting(true);
-            // Navigate to layout page after fade-out animation completes
+            // Navigate to home page after fade-out animation completes
             setTimeout(() => {
               router.push('/home');
             }, 300); // Wait for fade-out animation
@@ -240,7 +240,6 @@ export default function WelcomeScreen() {
 
 
 
-
   return (
     <div className="min-h-screen bg-[#000000] flex flex-col items-center justify-center relative">
       {/* Main content that fades during loading */}
@@ -330,13 +329,13 @@ export default function WelcomeScreen() {
                   animate="visible"
                   transition={{ delay: 2.4 }}
                 >
-                    <Image
-                        src="/images/refresh-images/productshot1.svg"
-                        alt="Rocket Mortgage"
-                        width={340}
-                        height={176}
-                        className="w-full h-full"
-                    />
+                  <Image
+                      src="/images/refresh-images/productshot1.svg"
+                      alt="Rocket Mortgage"
+                      width={340}
+                      height={176}
+                      className="w-full h-full"
+                  />
                 </motion.div>
                 
                 {/* Third column - Image */}
@@ -347,13 +346,13 @@ export default function WelcomeScreen() {
                   animate="visible"
                   transition={{ delay: 2.6 }}
                 >
-                    <Image
-                        src="/images/refresh-images/productshot2.svg"
-                        alt="Rocket Mortgage"
-                        width={340}
-                        height={176}
-                        className="w-full h-full"
-                    />
+                  <Image
+                      src="/images/refresh-images/productshot2.svg"
+                      alt="Rocket Mortgage"
+                      width={340}
+                      height={176}
+                      className="w-full h-full"
+                  />
                 </motion.div>
                 
                 {/* Fourth column - Text */}
@@ -446,4 +445,4 @@ export default function WelcomeScreen() {
       </div>
     </div>
   );
-} 
+}

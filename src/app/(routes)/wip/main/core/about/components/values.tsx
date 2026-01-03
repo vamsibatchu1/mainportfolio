@@ -312,7 +312,16 @@ export default function Values() {
 
   return (
     <div className="w-full max-w-[1440px] mx-auto mb-32">
-      <div className="bg-black rounded-lg p-16 relative overflow-hidden" style={{ minHeight: '600px'}}>
+      <div 
+        className="rounded-lg p-16 relative overflow-hidden" 
+        style={{ 
+          minHeight: '600px',
+          backgroundImage: 'url(/images/wip/about/values2.svg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
         <div ref={containerRef} className="relative w-full h-full" style={{ minHeight: '600px' }}>
           {clusters.map((cluster) => {
             const isHovered = hoveredClusters.has(cluster.id);

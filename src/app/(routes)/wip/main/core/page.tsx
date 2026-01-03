@@ -10,9 +10,10 @@ import WorkPage from './work/page';
 import WritingPage from './writing/page';
 import PlayPage from './play/page';
 import MobilePage from './mobile/page';
+import PublicPage from './public/page';
 import { useContainerScale } from '@/hooks/use-container-scale';
 
-type TabType = 'home' | 'about' | 'highlights' | 'work' | 'writing' | 'play' | 'mobile';
+type TabType = 'home' | 'about' | 'highlights' | 'work' | 'writing' | 'play' | 'mobile' | 'public';
 
 const tabComponents = {
   home: HomePage,
@@ -22,6 +23,7 @@ const tabComponents = {
   writing: WritingPage,
   play: PlayPage,
   mobile: MobilePage,
+  public: PublicPage,
 };
 
 export default function CorePage() {
@@ -55,6 +57,7 @@ export default function CorePage() {
     { title: "Work", path: "/work" },
     { title: "Writing", path: "/writing" },
     { title: "Play", path: "/play" },
+    { title: "Public", path: "/public" },
   ];
 
   return (

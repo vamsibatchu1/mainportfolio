@@ -173,7 +173,7 @@ export default function WipLanding() {
 
                     {/* Loading Text - Always shown */}
                     <div className="flex-1">
-                      <h2 className="text-[32px] md:text-[64px] font-medium text-white leading-[1.13] drop-shadow-lg font-jakarta md:whitespace-nowrap">
+                      <h2 className="text-[24px] md:text-[64px] font-medium text-white leading-[1.13] drop-shadow-lg font-jakarta md:whitespace-nowrap">
                         {loadingAnimations[currentAnimation].text}
                       </h2>
                     </div>
@@ -212,7 +212,7 @@ export default function WipLanding() {
           {/* FadedButton - Positioned at bottom right of entire page with Framer Motion */}
           {showFadedButton && (
             <motion.div 
-              className="fixed bottom-[64px] right-[64px] w-auto z-20"
+              className="fixed bottom-[32px] right-[16px] md:bottom-[64px] md:right-[64px] w-auto z-20"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ 
