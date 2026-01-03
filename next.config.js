@@ -22,14 +22,6 @@ const nextConfig = {
       'images.pexels.com'
     ],
   },
-  async rewrites() {
-    return [
-      {
-        source: '/',
-        destination: '/home',
-      },
-    ];
-  },
   async redirects() {
     return [
       {

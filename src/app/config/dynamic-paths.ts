@@ -5,6 +5,8 @@
 export const dynamicPaths = [
   '/work',
   '/home',
+  '/writing',
+  '/experiments',
   '/about',
   '/blog',
   '/contact',
