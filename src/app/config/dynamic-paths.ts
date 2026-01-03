@@ -3,6 +3,7 @@
  * to prevent "document is not defined" errors during build
  */
 export const dynamicPaths = [
+  '/',
   '/work',
   '/home',
   '/writing',

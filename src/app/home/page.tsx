@@ -1,18 +1,43 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { ebGaramondFont, interFont, jakartaFont } from '@/app/fonts';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ChevronDown, Home, PenTool, FlaskConical, Briefcase } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronRight, Home, PenTool, FlaskConical, Briefcase } from 'lucide-react';
 import { ExpandingText, aboutTextData } from '../(routes)/wip/main/core/about/components';
 
 export default function HomePage() {
   const pathname = usePathname();
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [carouselIndex, setCarouselIndex] = useState(0);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const carouselImages = [
+    { src: '/images/port/high1.svg', alt: 'Portfolio highlight 1' },
+    { src: '/images/port/high2.svg', alt: 'Portfolio highlight 2' },
+    { src: '/images/port/high3.svg', alt: 'Portfolio highlight 3' },
+    { src: '/images/port/high4.svg', alt: 'Portfolio highlight 4' },
+  ];
+
+  const handlePrevious = () => {
+    setCarouselIndex((prev) => (prev === 0 ? carouselImages.length - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    setCarouselIndex((prev) => (prev === carouselImages.length - 1 ? 0 : prev + 1));
+  };
+
+  // Auto-scroll carousel every 2 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCarouselIndex((prev) => (prev === carouselImages.length - 1 ? 0 : prev + 1));
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [carouselImages.length]);
 
   const navItems = [
     { href: '/home', label: 'Home', icon: Home },
@@ -97,7 +122,9 @@ export default function HomePage() {
       </nav>
 
       <div className="w-full min-h-screen bg-white flex flex-col gap-[40px] md:gap-[80px] pt-6 md:pt-[40px] max-w-[1200px] mx-auto px-6 md:px-4 pb-6 md:pb-12">
-      {/* Section 1: Originally from India paragraph */}
+      
+
+      {/* Section 1: About paragraph */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -107,72 +134,111 @@ export default function HomePage() {
         <ExpandingText segments={aboutTextData} />
       </motion.div>
 
-      {/* Section 5: Images section from about */}
+      {/* Section 2: Portrait of Vamsi */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
         className="flex flex-col md:flex-row justify-left w-full gap-6 md:gap-[48px]"
       >
-        <div className="flex flex-col w-full md:w-[60%] gap-4">
-          <Image src="/images/wip/about/about_design.jpeg" alt="About Me" width={960} height={600} className="w-full h-auto"/>
-          <p className={`${interFont.variable} font-inter text-[18px] md:text-[16px] text-gray-500 leading-relaxed max-w-full md:max-w-[600px] hidden md:block`}>
-            Design is not just about what exists, but about unlocking the possibility of transformative experiences that reshape how we interact with the world.
-          </p>
-        </div>
         <div className="flex flex-col w-full md:w-[40%]">
           <Image src="/images/wip/about/vamsi.jpg" alt="Vamsi" width={640} height={600} className="w-full h-auto object-cover"/>
         </div>
+        
+        
+        <div className="flex flex-col w-full md:w-[70%] gap-4">
+        <img
+          src="/images/port/hero2.webp"
+          alt="Hero"
+          className="h-auto"
+        />
+        </div>
+        
       </motion.div>
 
-      {/* Section 2: Clarity paragraph */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-        className="text-left w-full flex flex-col gap-6 md:gap-12"
-      >
-        <p className={`${ebGaramondFont.className} text-black text-[18px] md:text-5xl lg:text-[64px] leading-[100%] tracking-[-0.02em]`}>
-          Design to me is fundamentally about providing clarity in complexity. It&apos;s about seeing beyond immediate feature requests to uncover the deeper patterns and opportunities that can transform how people work and live.
-        </p>
-      </motion.div>
 
-      {/* Section 3: Proven track record section with image */}
+      {/* Section 3: Work Highlights */}
       <motion.div 
-        className="w-full flex flex-col md:flex-row gap-6 md:gap-[33px]"
+        className="w-full flex flex-col gap-6"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
       >
-        {/* Image Section - Left */}
-        <div className="w-full md:w-[583px] relative shrink-0">
-          <img
-            src="/new/port2.svg"
-            alt="Hero"
-            className="w-full h-auto"
-          />
+        {/* Mobile Carousel */}
+        <div className="md:hidden w-full">
+          <div className="w-full overflow-hidden relative">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={carouselIndex}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="w-full"
+              >
+                <img
+                  src={carouselImages[carouselIndex].src}
+                  alt={carouselImages[carouselIndex].alt}
+                  className="w-full h-auto"
+                />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+          {/* Carousel Navigation Arrows */}
+          <div className="flex justify-between w-full mt-6">
+            <button
+              onClick={handlePrevious}
+              className="w-8 h-8 border-2 border-dotted border-black flex items-center justify-center hover:opacity-70 transition-opacity bg-transparent"
+              aria-label="Previous image"
+            >
+              <ChevronLeft className="w-4 h-4 text-black" />
+            </button>
+            <button
+              onClick={handleNext}
+              className="w-8 h-8 border-2 border-dotted border-black flex items-center justify-center hover:opacity-70 transition-opacity bg-transparent"
+              aria-label="Next image"
+            >
+              <ChevronRight className="w-4 h-4 text-black" />
+            </button>
+          </div>
         </div>
 
-        {/* Text Section - Right */}
-        <div className="w-full md:w-[583px] h-auto flex flex-col gap-4 md:gap-[20px] items-start justify-start md:justify-end">
-          <p className={`${ebGaramondFont.className} font-normal leading-[1.1] text-[18px] md:text-[33px] text-black w-full`}>
-            {heroHeader}
-          </p>
+        {/* Desktop Grid */}
+        <div className="hidden md:flex md:flex-row gap-6 w-full">
+          {carouselImages.map((image, index) => (
+            <div key={index} className="w-1/4">
+              <img
+                src={image.src}
+                alt={image.alt}
+                className="w-full h-auto"
+              />
+            </div>
+          ))}
         </div>
       </motion.div>
 
-      {/* Section 5.5: Port1 SVG */}
+
+      {/* Section 4: Worktypes */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 1.3, ease: "easeOut" }}
-        className="flex justify-center items-center w-full"
+        transition={{ duration: 0.6, delay: 1.6, ease: "easeOut" }}
+        className="w-full flex flex-col md:flex-row gap-6 md:gap-[40px]"
       >
-        <img 
-          src="/new/port1.svg" 
-          alt="Portfolio" 
-          className="w-full max-w-full h-auto"
-        />
+        {/* Left column - Text */}
+        <div className="w-full md:w-[580px]">
+          <p className={`${ebGaramondFont.className} text-black text-[18px] md:text-[40px] leading-[100%] tracking-[-0.02em] text-left`}>
+            Throughout the past decade, I had the opportunity to lead and work on a variety of projects including ...
+          </p>
+        </div>
+        {/* Right column - Image */}
+        <div className="w-full md:w-[580px]">
+          <img
+            src="/images/port/worktypes2.webp"
+            alt="Work Types"
+            className="w-full h-auto"
+          />
+        </div>
       </motion.div>
 
       </div>

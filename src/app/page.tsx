@@ -22,6 +22,7 @@ export default function WelcomeScreen() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -168,6 +169,7 @@ export default function WelcomeScreen() {
   }, [startLoadingMessages, router, loadingMessages.length]);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [handleKeyPress]);
